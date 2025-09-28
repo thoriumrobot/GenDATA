@@ -7,6 +7,7 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.Collections;
+import java.util.jar.JarFile;
 
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.classLoader.IBytecodeMethod;
@@ -115,12 +116,16 @@ public class WalaSliceCLI {
       
       if (Files.exists(rtJarPath)) {
         System.out.println("[DEBUG] Adding rt.jar: " + rtJarPath);
-        scope.addToScope(ClassLoaderReference.Primordial, rtJarPath.toFile());
+        try {
+          scope.addToScope(ClassLoaderReference.Primordial, new JarFile(rtJarPath.toFile()));
+        } catch (Exception e) {
+          System.out.println("[DEBUG] Failed to add rt.jar: " + e.getMessage());
+        }
       } else if (Files.exists(modulesPath)) {
         System.out.println("[DEBUG] Adding Java modules: " + modulesPath);
         // For Java 9+, try to add modules
         try {
-          scope.addToScope(ClassLoaderReference.Primordial, modulesPath.toFile());
+          scope.addToScope(ClassLoaderReference.Primordial, new JarFile(modulesPath.toFile()));
         } catch (Exception e) {
           System.out.println("[DEBUG] Failed to add modules, continuing without runtime");
         }

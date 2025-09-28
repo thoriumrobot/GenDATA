@@ -29,7 +29,7 @@ from gbt import load_cfgs as load_cfgs_gbt, extract_features_from_cfg
 from causal_model import load_cfgs as load_cfgs_causal, extract_features_and_labels, parse_warnings, run_index_checker, preprocess_data
 from cfg import generate_control_flow_graphs, save_cfgs
 from augment_slices import augment_file
-from annotation_placement import AnnotationPlacementManager
+from place_annotations import AnnotationPlacementManager
 from checker_framework_integration import CheckerFrameworkEvaluator, CheckerType, EvaluationResult
 
 # Set up logging
