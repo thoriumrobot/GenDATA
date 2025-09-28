@@ -1,0 +1,186 @@
+{
+  "method_name": "accept",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(MemberReference(member=coin_toss_mode, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 121,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "If(BinaryOperation(operandl=MethodInvocation(arguments=[], member=nextDouble, postfix_operators=[], prefix_operators=[], qualifier=generator, selectors=[], type_arguments=None), operandr=MemberReference(member=keep_probability, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=<))",
+      "line": 122,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "MethodInvocation(arguments=[MemberReference(member=next, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=add, postfix_operators=[], prefix_operators=[], qualifier=values, selectors=[], type_arguments=None)",
+      "line": 135,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Return(None)",
+      "line": 128,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "If(BinaryOperation(operandl=MethodInvocation(arguments=[], member=nextDouble, postfix_operators=[], prefix_operators=[], qualifier=generator, selectors=[], type_arguments=None), operandr=BinaryOperation(operandl=Cast(expression=MemberReference(member=num_elts, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type=BasicType(dimensions=[], name=double)), operandr=MemberReference(member=observed, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=/), operator=<))",
+      "line": 133,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "If(BinaryOperation(operandl=MethodInvocation(arguments=[], member=size, postfix_operators=[], prefix_operators=[], qualifier=values, selectors=[], type_arguments=None), operandr=MemberReference(member=num_elts, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=<))",
+      "line": 134,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"index\"), name=SuppressWarnings)], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MethodInvocation(arguments=[], member=size, postfix_operators=[], prefix_operators=[], qualifier=values, selectors=[], type_arguments=None)], member=nextInt, postfix_operators=[], prefix_operators=[], qualifier=generator, selectors=[], type_arguments=None), name=rem)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 138,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "MethodInvocation(arguments=[MemberReference(member=rem, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MemberReference(member=next, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=set, postfix_operators=[], prefix_operators=[], qualifier=values, selectors=[], type_arguments=None)",
+      "line": 140,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 6
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 4
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "variable": "rem"
+    },
+    {
+      "source": 9,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 6
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 4
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 8,
+      "target": 9,
+      "variable": "rem"
+    }
+  ]
+}

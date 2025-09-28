@@ -1,0 +1,146 @@
+{
+  "method_name": "getErrorStream",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=cached_stderr, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator===))",
+      "line": 167,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Return(MethodInvocation(arguments=[], member=getErrorStream, postfix_operators=[], prefix_operators=[], qualifier=p, selectors=[], type_arguments=None))",
+      "line": 168,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[], member=toString, postfix_operators=[], prefix_operators=[], qualifier=cached_stderr, selectors=[], type_arguments=None), name=text)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=String, sub_type=None))",
+      "line": 171,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Try",
+      "line": 172,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ClassCreator(arguments=[MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"UTF-8\")], member=getBytes, postfix_operators=[], prefix_operators=[], qualifier=text, selectors=[], type_arguments=None)], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=ByteArrayInputStream, sub_type=None)), name=is)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=InputStream, sub_type=None))",
+      "line": 173,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "Return(MemberReference(member=is, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 174,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "Catch(e)",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "Throw(ClassCreator(arguments=[MemberReference(member=e, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=Error, sub_type=None)))",
+      "line": 176,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 8
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "is"
+    },
+    {
+      "source": 8,
+      "target": 9
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 8
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 8,
+      "target": 9
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "is"
+    }
+  ]
+}

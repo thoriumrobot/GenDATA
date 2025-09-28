@@ -1,0 +1,156 @@
+{
+  "method_name": "regexException",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "Try",
+      "line": 253,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=s, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=compile, postfix_operators=[], prefix_operators=[], qualifier=Pattern, selectors=[], type_arguments=None), name=p)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=Pattern, sub_type=None))",
+      "line": 254,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=p, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=getGroupCount, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), name=actualGroups)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 255,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=actualGroups, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=groups, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=<))",
+      "line": 256,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "Return(ClassCreator(arguments=[MethodInvocation(arguments=[MemberReference(member=s, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MemberReference(member=groups, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MemberReference(member=actualGroups, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=regexErrorMessage, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), MemberReference(member=s, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), Literal(postfix_operators=[], prefix_operators=['-'], qualifier=None, selectors=[], value=1)], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=PatternSyntaxException, sub_type=None)))",
+      "line": 257,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "Catch(pse)",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "Return(MemberReference(member=pse, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 260,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "Return(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null))",
+      "line": 262,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 7
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "p"
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "actualGroups"
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 9
+    },
+    {
+      "source": 7,
+      "target": 8
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 7
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 9
+    },
+    {
+      "source": 7,
+      "target": 8
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "p"
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "actualGroups"
+    }
+  ]
+}

@@ -1,0 +1,204 @@
+{
+  "method_name": "getEntry",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=key, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=maskNull, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), name=k)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=Object, sub_type=None))",
+      "line": 434,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=k, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=hasher, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), name=h)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 435,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[], member=getTable, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), name=tab)], modifiers=set(), type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=K, sub_type=None)), TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=V, sub_type=None))], dimensions=[None], name=Entry, sub_type=None))",
+      "line": 436,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=h, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=tab, selectors=[])], member=indexFor, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), name=index)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 437,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=tab, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=MemberReference(member=index, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))]), name=e)], modifiers=set(), type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=K, sub_type=None)), TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=V, sub_type=None))], dimensions=[], name=Entry, sub_type=None))",
+      "line": 438,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "While(BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=e, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator=!=), operandr=BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=hash, postfix_operators=[], prefix_operators=[], qualifier=e, selectors=[]), operandr=MemberReference(member=h, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator===), operandr=MethodInvocation(arguments=[MemberReference(member=k, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MethodInvocation(arguments=[], member=get, postfix_operators=[], prefix_operators=[], qualifier=e, selectors=[], type_arguments=None)], member=eq, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), operator=&&), operator=&&))",
+      "line": 439,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "Assignment(expressionl=MemberReference(member=e, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=MemberReference(member=next, postfix_operators=[], prefix_operators=[], qualifier=e, selectors=[]))",
+      "line": 440,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "Return(MemberReference(member=e, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 441,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "k"
+    },
+    {
+      "source": 2,
+      "target": 7,
+      "variable": "k"
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "variable": "h"
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "variable": "h"
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "variable": "tab"
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 7
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "variable": "e"
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 7
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "k"
+    },
+    {
+      "source": 2,
+      "target": 7,
+      "variable": "k"
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "variable": "h"
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "variable": "h"
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "variable": "tab"
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "variable": "e"
+    }
+  ]
+}

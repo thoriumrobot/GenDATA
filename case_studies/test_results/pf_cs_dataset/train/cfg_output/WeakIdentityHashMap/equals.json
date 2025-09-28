@@ -1,0 +1,79 @@
+{
+  "method_name": "equals",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=o, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=ReferenceType(arguments=None, dimensions=[], name=Map, sub_type=ReferenceType(arguments=None, dimensions=None, name=Entry, sub_type=None)), operator=instanceof))",
+      "line": 1122,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Return(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=false))",
+      "line": 1123,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Cast(expression=MemberReference(member=o, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type=ReferenceType(arguments=None, dimensions=[], name=Map, sub_type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=K, sub_type=None)), TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=V, sub_type=None))], dimensions=None, name=Entry, sub_type=None))), name=e)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=Map, sub_type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=K, sub_type=None)), TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=V, sub_type=None))], dimensions=None, name=Entry, sub_type=None)))",
+      "line": 1124,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Return(BinaryOperation(operandl=MethodInvocation(arguments=[MemberReference(member=key, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MethodInvocation(arguments=[], member=getKey, postfix_operators=[], prefix_operators=[], qualifier=e, selectors=[], type_arguments=None)], member=eq, postfix_operators=[], prefix_operators=[], qualifier=WeakIdentityHashMap, selectors=[], type_arguments=None), operandr=MethodInvocation(arguments=[MemberReference(member=value, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MethodInvocation(arguments=[], member=getValue, postfix_operators=[], prefix_operators=[], qualifier=e, selectors=[], type_arguments=None)], member=eq, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), operator=&&))",
+      "line": 1125,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    }
+  ],
+  "dataflow_edges": []
+}

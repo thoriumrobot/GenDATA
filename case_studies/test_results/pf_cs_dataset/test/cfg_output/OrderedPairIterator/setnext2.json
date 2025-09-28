@@ -1,0 +1,45 @@
+{
+  "method_name": "setnext2",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "Assignment(expressionl=MemberReference(member=next2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=TernaryExpression(condition=MethodInvocation(arguments=[], member=hasNext, postfix_operators=[], prefix_operators=[], qualifier=itor2, selectors=[], type_arguments=None), if_false=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), if_true=MethodInvocation(arguments=[], member=next, postfix_operators=[], prefix_operators=[], qualifier=itor2, selectors=[], type_arguments=None)))",
+      "line": 74,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": []
+}

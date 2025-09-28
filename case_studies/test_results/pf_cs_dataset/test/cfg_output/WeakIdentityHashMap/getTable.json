@@ -1,0 +1,51 @@
+{
+  "method_name": "getTable",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "MethodInvocation(arguments=[], member=expungeStaleEntries, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 353,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Return(MemberReference(member=table, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 354,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    }
+  ],
+  "dataflow_edges": []
+}

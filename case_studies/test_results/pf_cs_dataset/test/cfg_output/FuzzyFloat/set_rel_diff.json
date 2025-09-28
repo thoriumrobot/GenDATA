@@ -1,0 +1,73 @@
+{
+  "method_name": "set_rel_diff",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "Assignment(expressionl=MemberReference(member=min_ratio, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operandr=MemberReference(member=rel_diff, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=-))",
+      "line": 64,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Assignment(expressionl=MemberReference(member=max_ratio, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operandr=MemberReference(member=rel_diff, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=+))",
+      "line": 65,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Assignment(expressionl=MemberReference(member=off, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=BinaryOperation(operandl=MemberReference(member=rel_diff, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0.0), operator===))",
+      "line": 66,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": []
+}

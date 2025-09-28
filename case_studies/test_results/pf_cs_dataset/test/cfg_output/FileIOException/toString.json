@@ -1,0 +1,188 @@
+{
+  "method_name": "toString",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=SuperMethodInvocation(arguments=[], member=toString, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type_arguments=None), name=result)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=String, sub_type=None))",
+      "line": 292,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=fileName, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator=!=))",
+      "line": 293,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Assignment(expressionl=MemberReference(member=result, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type=+=, value=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\" in file \"), operandr=MemberReference(member=fileName, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=+))",
+      "line": 294,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=lineNumber, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=['-'], qualifier=None, selectors=[], value=1), operator=!=))",
+      "line": 296,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "Assignment(expressionl=MemberReference(member=result, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type=+=, value=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\" at line \"), operandr=MemberReference(member=lineNumber, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=+))",
+      "line": 297,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "Return(MemberReference(member=result, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 299,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 7
+    },
+    {
+      "source": 5,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "result"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "result"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "result"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "result"
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 7
+    },
+    {
+      "source": 5,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "result"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "result"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "result"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "result"
+    }
+  ]
+}

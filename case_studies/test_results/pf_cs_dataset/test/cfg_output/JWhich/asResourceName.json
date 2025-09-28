@@ -1,0 +1,138 @@
+{
+  "method_name": "asResourceName",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"/\")], member=startsWith, postfix_operators=[], prefix_operators=['!'], qualifier=resource, selectors=[], type_arguments=None))",
+      "line": 117,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Assignment(expressionl=MemberReference(member=resource, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"/\"), operandr=MemberReference(member=resource, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=+))",
+      "line": 118,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Assignment(expressionl=MemberReference(member=resource, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value='.'), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value='/')], member=replace, postfix_operators=[], prefix_operators=[], qualifier=resource, selectors=[], type_arguments=None))",
+      "line": 120,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Assignment(expressionl=MemberReference(member=resource, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=BinaryOperation(operandl=MemberReference(member=resource, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\".class\"), operator=+))",
+      "line": 121,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "Return(MemberReference(member=resource, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 122,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "resource"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "resource"
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "resource"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "resource"
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "method_name": "nextEntry",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=modCount, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=expectedModCount, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=!=))",
+      "line": 834,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Throw(ClassCreator(arguments=[], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=ConcurrentModificationException, sub_type=None)))",
+      "line": 835,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "If(BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=nextKey, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator===), operandr=MethodInvocation(arguments=[], member=hasNext, postfix_operators=[], prefix_operators=['!'], qualifier=, selectors=[], type_arguments=None), operator=&&))",
+      "line": 836,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Throw(ClassCreator(arguments=[], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=NoSuchElementException, sub_type=None)))",
+      "line": 837,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "Assignment(expressionl=MemberReference(member=lastReturned, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=MemberReference(member=entry, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 839,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "Assignment(expressionl=MemberReference(member=entry, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=MemberReference(member=next, postfix_operators=[], prefix_operators=[], qualifier=entry, selectors=[]))",
+      "line": 840,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "Assignment(expressionl=MemberReference(member=currentKey, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=MemberReference(member=nextKey, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 841,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "Assignment(expressionl=MemberReference(member=nextKey, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null))",
+      "line": 842,
+      "node_type": "control"
+    },
+    {
+      "id": 10,
+      "label": "Return(MemberReference(member=lastReturned, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 843,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "variable": "lastReturned"
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 10
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 10
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 6,
+      "target": 10,
+      "variable": "lastReturned"
+    }
+  ]
+}

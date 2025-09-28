@@ -1,0 +1,37 @@
+{
+  "method_name": "maskNull",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "Return(TernaryExpression(condition=BinaryOperation(operandl=MemberReference(member=key, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator===), if_false=MemberReference(member=key, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), if_true=MemberReference(member=NULL_KEY, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])))",
+      "line": 280,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    }
+  ],
+  "dataflow_edges": []
+}

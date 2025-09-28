@@ -1,0 +1,160 @@
+{
+  "method_name": "hasNext",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "While(MethodInvocation(arguments=[], member=hasNext, postfix_operators=[], prefix_operators=[], qualifier=hashIterator, selectors=[], type_arguments=None))",
+      "line": 463,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[], member=next, postfix_operators=[], prefix_operators=[], qualifier=hashIterator, selectors=[], type_arguments=None), name=ent)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=Map, sub_type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=WeakKey, sub_type=None)), TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=V, sub_type=None))], dimensions=None, name=Entry, sub_type=None)))",
+      "line": 464,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[], member=getKey, postfix_operators=[], prefix_operators=[], qualifier=ent, selectors=[], type_arguments=None), name=wk)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=WeakKey, sub_type=None))",
+      "line": 465,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), name=k)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=K, sub_type=None))",
+      "line": 466,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "If(BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=wk, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator=!=), operandr=BinaryOperation(operandl=Assignment(expressionl=MemberReference(member=k, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=MethodInvocation(arguments=[], member=get, postfix_operators=[], prefix_operators=[], qualifier=wk, selectors=[], type_arguments=None)), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator===), operator=&&))",
+      "line": 467,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "Continue",
+      "line": 469,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "Assignment(expressionl=MemberReference(member=next, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=ClassCreator(arguments=[MemberReference(member=ent, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MemberReference(member=k, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=K, sub_type=None)), TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=V, sub_type=None))], dimensions=None, name=Entry, sub_type=None)))",
+      "line": 471,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "Return(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=true))",
+      "line": 472,
+      "node_type": "control"
+    },
+    {
+      "id": 10,
+      "label": "Return(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=false))",
+      "line": 474,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 10
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "variable": "wk"
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 10
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 4,
+      "target": 6,
+      "variable": "wk"
+    }
+  ]
+}

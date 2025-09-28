@@ -1,0 +1,76 @@
+{
+  "method_name": "setValue",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[MemberReference(member=value, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None)]), name=oldValue)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=V, sub_type=None))",
+      "line": 1114,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Assignment(expressionl=This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[MemberReference(member=value, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None)]), type==, value=MemberReference(member=value, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 1115,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Return(MemberReference(member=oldValue, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 1116,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "variable": "oldValue"
+    },
+    {
+      "source": 3,
+      "target": 4
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 2,
+      "target": 4,
+      "variable": "oldValue"
+    }
+  ]
+}

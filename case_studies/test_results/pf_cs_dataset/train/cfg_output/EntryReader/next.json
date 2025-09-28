@@ -1,0 +1,142 @@
+{
+  "method_name": "next",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "Try",
+      "line": 591,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[], member=readLine, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), name=result)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=String, sub_type=None))",
+      "line": 592,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=result, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator=!=))",
+      "line": 593,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Return(MemberReference(member=result, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 594,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "Throw(ClassCreator(arguments=[], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=NoSuchElementException, sub_type=None)))",
+      "line": 596,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "Catch(e)",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "Throw(ClassCreator(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"unexpected IOException\"), MemberReference(member=e, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=Error, sub_type=None)))",
+      "line": 599,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 7
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "result"
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "variable": "result"
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 6
+    },
+    {
+      "source": 7,
+      "target": 8
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 7
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 6
+    },
+    {
+      "source": 7,
+      "target": 8
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "result"
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "variable": "result"
+    }
+  ]
+}

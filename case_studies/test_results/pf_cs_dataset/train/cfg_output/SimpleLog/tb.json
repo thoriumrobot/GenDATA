@@ -1,0 +1,194 @@
+{
+  "method_name": "tb",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(MemberReference(member=enabled, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 153,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "MethodInvocation(arguments=[], member=setLogfile, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 154,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ClassCreator(arguments=[], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=Throwable, sub_type=None)), name=t)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=Throwable, sub_type=None))",
+      "line": 155,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "MethodInvocation(arguments=[], member=fillInStackTrace, postfix_operators=[], prefix_operators=[], qualifier=t, selectors=[], type_arguments=None)",
+      "line": 156,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[], member=getStackTrace, postfix_operators=[], prefix_operators=[], qualifier=t, selectors=[], type_arguments=None), name=ste_arr)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[None], name=StackTraceElement, sub_type=None))",
+      "line": 157,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "For(BinaryOperation(operandl=MemberReference(member=ii, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=ste_arr, selectors=[]), operator=<))",
+      "line": 158,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=ste_arr, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=MemberReference(member=ii, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))]), name=ste)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=StackTraceElement, sub_type=None))",
+      "line": 159,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"%s  %s%n\"), MemberReference(member=indent_str, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MemberReference(member=ste, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=printf, postfix_operators=[], prefix_operators=[], qualifier=logfile, selectors=[], type_arguments=None)",
+      "line": 160,
+      "node_type": "control"
+    },
+    {
+      "id": 10,
+      "label": "Update(MemberReference(member=ii, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 158,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 8,
+      "variable": "ste_arr"
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "variable": "ste"
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 7
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 7
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 6,
+      "target": 8,
+      "variable": "ste_arr"
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "variable": "ste"
+    }
+  ]
+}

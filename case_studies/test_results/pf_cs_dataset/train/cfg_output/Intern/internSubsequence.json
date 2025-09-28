@@ -1,0 +1,248 @@
+{
+  "method_name": "internSubsequence",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=assertsEnabled, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MethodInvocation(arguments=[MemberReference(member=seq, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=isInterned, postfix_operators=[], prefix_operators=['!'], qualifier=Intern, selectors=[], type_arguments=None), operator=&&))",
+      "line": 1000,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Throw(ClassCreator(arguments=[], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=IllegalArgumentException, sub_type=None)))",
+      "line": 1001,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ClassCreator(arguments=[MemberReference(member=seq, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MemberReference(member=start, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MemberReference(member=end, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[None], name=String, sub_type=None))], dimensions=None, name=SequenceAndIndices, sub_type=None)), name=sai)], modifiers=set(), type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[None], name=String, sub_type=None))], dimensions=[], name=SequenceAndIndices, sub_type=None))",
+      "line": 1003,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"nullness\"), name=SuppressWarnings)], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=sai, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=get, postfix_operators=[], prefix_operators=[], qualifier=internedStringSequenceAndIndices, selectors=[], type_arguments=None), name=lookup)], modifiers=set(), type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[None], name=String, sub_type=None))], dimensions=[], name=WeakReference, sub_type=None))",
+      "line": 1006,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=TernaryExpression(condition=BinaryOperation(operandl=MemberReference(member=lookup, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator=!=), if_false=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), if_true=MethodInvocation(arguments=[], member=get, postfix_operators=[], prefix_operators=[], qualifier=lookup, selectors=[], type_arguments=None)), name=result1)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[None], name=String, sub_type=None))",
+      "line": 1008,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=result1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator=!=))",
+      "line": 1009,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "Return(MemberReference(member=result1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 1010,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=seq, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MemberReference(member=start, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), BinaryOperation(operandl=MemberReference(member=end, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=start, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=-)], member=subarray, postfix_operators=[], prefix_operators=[], qualifier=ArraysMDE, selectors=[], type_arguments=None), name=subseq_uninterned)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[None], name=String, sub_type=None))",
+      "line": 1012,
+      "node_type": "control"
+    },
+    {
+      "id": 10,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=subseq_uninterned, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=intern, postfix_operators=[], prefix_operators=[], qualifier=Intern, selectors=[], type_arguments=None), name=subseq)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[None], name=String, sub_type=None))",
+      "line": 1013,
+      "node_type": "control"
+    },
+    {
+      "id": 11,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"nullness\"), name=SuppressWarnings)], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=sai, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), ClassCreator(arguments=[MemberReference(member=subseq, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[None], name=String, sub_type=None))], dimensions=None, name=WeakReference, sub_type=None))], member=put, postfix_operators=[], prefix_operators=[], qualifier=internedStringSequenceAndIndices, selectors=[], type_arguments=None), name=ignore)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=Object, sub_type=None))",
+      "line": 1015,
+      "node_type": "control"
+    },
+    {
+      "id": 12,
+      "label": "Return(MemberReference(member=subseq, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 1020,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "sai"
+    },
+    {
+      "source": 4,
+      "target": 11,
+      "variable": "sai"
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "lookup"
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "result1"
+    },
+    {
+      "source": 6,
+      "target": 8,
+      "variable": "result1"
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 9,
+      "target": 10,
+      "variable": "subseq_uninterned"
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 10,
+      "target": 12,
+      "variable": "subseq"
+    },
+    {
+      "source": 11,
+      "target": 12
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 11,
+      "target": 12
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "sai"
+    },
+    {
+      "source": 4,
+      "target": 11,
+      "variable": "sai"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "lookup"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "result1"
+    },
+    {
+      "source": 6,
+      "target": 8,
+      "variable": "result1"
+    },
+    {
+      "source": 9,
+      "target": 10,
+      "variable": "subseq_uninterned"
+    },
+    {
+      "source": 10,
+      "target": 12,
+      "variable": "subseq"
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "method_name": "run",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "Try",
+      "line": 304,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "MethodInvocation(arguments=[MethodInvocation(arguments=[], member=getErrorStream, postfix_operators=[], prefix_operators=[], qualifier=p, selectors=[], type_arguments=None), MemberReference(member=cached_stderr, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MethodInvocation(arguments=[], member=defaultCharset, postfix_operators=[], prefix_operators=[], qualifier=Charset, selectors=[], type_arguments=None)], member=copy, postfix_operators=[], prefix_operators=[], qualifier=IOUtils, selectors=[], type_arguments=None)",
+      "line": 305,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Catch(e)",
+      "line": null,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 4,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 4,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": []
+}

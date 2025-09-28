@@ -1,0 +1,101 @@
+{
+  "method_name": "get_description",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=re, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator===))",
+      "line": 187,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Return(MemberReference(member=first_line, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 195,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=body, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=matcher, postfix_operators=[], prefix_operators=[], qualifier=re, selectors=[], type_arguments=None), name=descr)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=Matcher, sub_type=None))",
+      "line": 191,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "If(MethodInvocation(arguments=[], member=find, postfix_operators=[], prefix_operators=[], qualifier=descr, selectors=[], type_arguments=None))",
+      "line": 192,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "Return(MethodInvocation(arguments=[], member=group, postfix_operators=[], prefix_operators=[], qualifier=descr, selectors=[], type_arguments=None))",
+      "line": 193,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 3
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 3
+    }
+  ],
+  "dataflow_edges": []
+}

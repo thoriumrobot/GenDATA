@@ -1,0 +1,292 @@
+{
+  "method_name": "log_time",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(MemberReference(member=enabled, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 301,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "MethodInvocation(arguments=[], member=setLogfile, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 302,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[], member=peek, postfix_operators=[], prefix_operators=[], qualifier=start_times, selectors=[], type_arguments=None), name=start_time)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=Long, sub_type=None))",
+      "line": 303,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=start_time, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator===))",
+      "line": 304,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "Throw(ClassCreator(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"Too many pops before calling log_time\")], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=Error, sub_type=None)))",
+      "line": 305,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=BinaryOperation(operandl=MethodInvocation(arguments=[], member=currentTimeMillis, postfix_operators=[], prefix_operators=[], qualifier=System, selectors=[], type_arguments=None), operandr=MethodInvocation(arguments=[], member=longValue, postfix_operators=[], prefix_operators=[], qualifier=start_time, selectors=[], type_arguments=None), operator=-), name=elapsed)], modifiers=set(), type=BasicType(dimensions=[], name=long))",
+      "line": 307,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "MethodInvocation(arguments=[MemberReference(member=indent_str, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=print, postfix_operators=[], prefix_operators=[], qualifier=logfile, selectors=[], type_arguments=None)",
+      "line": 308,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=elapsed, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1000), operator=>))",
+      "line": 309,
+      "node_type": "control"
+    },
+    {
+      "id": 10,
+      "label": "MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"[%,f secs] \"), BinaryOperation(operandl=MemberReference(member=elapsed, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1000.0), operator=/)], member=printf, postfix_operators=[], prefix_operators=[], qualifier=logfile, selectors=[], type_arguments=None)",
+      "line": 310,
+      "node_type": "control"
+    },
+    {
+      "id": 11,
+      "label": "MethodInvocation(arguments=[BinaryOperation(operandl=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"[\"), operandr=MemberReference(member=elapsed, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=+), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\" ms] \"), operator=+)], member=print, postfix_operators=[], prefix_operators=[], qualifier=logfile, selectors=[], type_arguments=None)",
+      "line": 312,
+      "node_type": "control"
+    },
+    {
+      "id": 12,
+      "label": "Assignment(expressionl=MemberReference(member=format, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=MethodInvocation(arguments=[MemberReference(member=format, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=add_newline, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None))",
+      "line": 314,
+      "node_type": "control"
+    },
+    {
+      "id": 13,
+      "label": "MethodInvocation(arguments=[MemberReference(member=format, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MemberReference(member=args, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=printf, postfix_operators=[], prefix_operators=[], qualifier=logfile, selectors=[], type_arguments=None)",
+      "line": 315,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "start_time"
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 9,
+      "variable": "elapsed"
+    },
+    {
+      "source": 7,
+      "target": 10,
+      "variable": "elapsed"
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "variable": "elapsed"
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 9,
+      "target": 11
+    },
+    {
+      "source": 10,
+      "target": 12
+    },
+    {
+      "source": 11,
+      "target": 12
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 13,
+      "variable": "format"
+    },
+    {
+      "source": 12,
+      "target": 13,
+      "variable": "format"
+    },
+    {
+      "source": 13,
+      "target": 1
+    },
+    {
+      "source": 13,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 9,
+      "target": 11
+    },
+    {
+      "source": 10,
+      "target": 12
+    },
+    {
+      "source": 11,
+      "target": 12
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 13,
+      "target": 1
+    },
+    {
+      "source": 13,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "start_time"
+    },
+    {
+      "source": 7,
+      "target": 9,
+      "variable": "elapsed"
+    },
+    {
+      "source": 7,
+      "target": 10,
+      "variable": "elapsed"
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "variable": "elapsed"
+    },
+    {
+      "source": 12,
+      "target": 13,
+      "variable": "format"
+    },
+    {
+      "source": 12,
+      "target": 13,
+      "variable": "format"
+    }
+  ]
+}

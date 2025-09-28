@@ -1,0 +1,37 @@
+{
+  "method_name": "findClass",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "Return(ClassReference(postfix_operators=[], prefix_operators=[], qualifier=, selectors=[MethodInvocation(arguments=[MethodInvocation(arguments=[MemberReference(member=className, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=asResourceName, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)], member=getResource, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None, type_arguments=None)], type=ReferenceType(arguments=None, dimensions=None, name=JWhich, sub_type=None)))",
+      "line": 113,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    }
+  ],
+  "dataflow_edges": []
+}

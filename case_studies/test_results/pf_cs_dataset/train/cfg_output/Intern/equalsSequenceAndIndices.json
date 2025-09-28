@@ -1,0 +1,37 @@
+{
+  "method_name": "equalsSequenceAndIndices",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "Return(BinaryOperation(operandl=BinaryOperation(operandl=BinaryOperation(operandl=This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[MemberReference(member=seq, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None)]), operandr=MemberReference(member=seq, postfix_operators=[], prefix_operators=[], qualifier=other, selectors=[]), operator===), operandr=BinaryOperation(operandl=This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[MemberReference(member=start, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None)]), operandr=MemberReference(member=start, postfix_operators=[], prefix_operators=[], qualifier=other, selectors=[]), operator===), operator=&&), operandr=BinaryOperation(operandl=This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[MemberReference(member=end, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None)]), operandr=MemberReference(member=end, postfix_operators=[], prefix_operators=[], qualifier=other, selectors=[]), operator===), operator=&&))",
+      "line": 1063,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    }
+  ],
+  "dataflow_edges": []
+}

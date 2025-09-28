@@ -1,0 +1,87 @@
+{
+  "method_name": "format",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=elapsedMillis, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), name=runningMillis)], modifiers=set(), type=BasicType(dimensions=[], name=long))",
+      "line": 93,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=startTime, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0), operator=!=))",
+      "line": 94,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Assignment(expressionl=MemberReference(member=runningMillis, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type=+=, value=BinaryOperation(operandl=MethodInvocation(arguments=[], member=currentTimeMillis, postfix_operators=[], prefix_operators=[], qualifier=System, selectors=[], type_arguments=None), operandr=MemberReference(member=startTime, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=-))",
+      "line": 95,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Return(BinaryOperation(operandl=MemberReference(member=timeFormat, postfix_operators=[], prefix_operators=[], qualifier=Stopwatch, selectors=[ArraySelector(index=MemberReference(member=digits, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])), MethodInvocation(arguments=[BinaryOperation(operandl=MemberReference(member=runningMillis, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1000.0), operator=/)], member=format, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None, type_arguments=None)]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"s\"), operator=+))",
+      "line": 97,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 5
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 5
+    }
+  ],
+  "dataflow_edges": []
+}

@@ -1,0 +1,65 @@
+{
+  "method_name": "exitValue",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(BinaryOperation(operandl=BinaryOperation(operandl=MethodInvocation(arguments=[], member=exitValue, postfix_operators=[], prefix_operators=[], qualifier=p, selectors=[], type_arguments=None), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0), operator===), operandr=MemberReference(member=timed_out, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=&&))",
+      "line": 152,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Return(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=255))",
+      "line": 153,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Return(MethodInvocation(arguments=[], member=exitValue, postfix_operators=[], prefix_operators=[], qualifier=p, selectors=[], type_arguments=None))",
+      "line": 155,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    }
+  ],
+  "dataflow_edges": []
+}

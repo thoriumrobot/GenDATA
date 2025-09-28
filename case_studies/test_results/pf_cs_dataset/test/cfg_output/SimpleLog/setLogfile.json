@@ -1,0 +1,151 @@
+{
+  "method_name": "setLogfile",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=logfile, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator=!=))",
+      "line": 102,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Return(None)",
+      "line": 103,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "If(BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=filename, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator===), operandr=MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"-\")], member=equals, postfix_operators=[], prefix_operators=[], qualifier=filename, selectors=[], type_arguments=None), operator=||))",
+      "line": 105,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Assignment(expressionl=MemberReference(member=logfile, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=MemberReference(member=out, postfix_operators=[], prefix_operators=[], qualifier=System, selectors=[]))",
+      "line": 106,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "Try",
+      "line": 108,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "Assignment(expressionl=MemberReference(member=logfile, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=ClassCreator(arguments=[MemberReference(member=filename, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=PrintStream, sub_type=None)))",
+      "line": 109,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "Catch(e)",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "Throw(ClassCreator(arguments=[BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"Can't open \"), operandr=MemberReference(member=filename, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=+), MemberReference(member=e, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=RuntimeException, sub_type=None)))",
+      "line": 111,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 8,
+      "target": 9
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 8,
+      "target": 9
+    }
+  ],
+  "dataflow_edges": []
+}

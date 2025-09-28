@@ -1,0 +1,108 @@
+{
+  "method_name": "need",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[], member=nextToken, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), name=t)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=String, sub_type=None))",
+      "line": 217,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "If(MethodInvocation(arguments=[MemberReference(member=t, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=equals, postfix_operators=[], prefix_operators=[], qualifier=tok, selectors=[], type_arguments=None))",
+      "line": 218,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Return(None)",
+      "line": 219,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "MethodInvocation(arguments=[MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"Token %s found where %s expected\"), MemberReference(member=t, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MemberReference(member=tok, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=format, postfix_operators=[], prefix_operators=[], qualifier=String, selectors=[], type_arguments=None)], member=tok_error, postfix_operators=[], prefix_operators=[], qualifier=errorHandler, selectors=[], type_arguments=None)",
+      "line": 222,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "t"
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "variable": "t"
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "t"
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "variable": "t"
+    }
+  ]
+}

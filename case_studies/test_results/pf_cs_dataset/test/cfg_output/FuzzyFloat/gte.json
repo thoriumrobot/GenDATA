@@ -1,0 +1,37 @@
+{
+  "method_name": "gte",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "Return(BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=d1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=d2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=>=), operandr=MethodInvocation(arguments=[MemberReference(member=d1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MemberReference(member=d2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=eq, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), operator=||))",
+      "line": 191,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    }
+  ],
+  "dataflow_edges": []
+}

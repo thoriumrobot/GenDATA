@@ -1,0 +1,104 @@
+{
+  "method_name": "stringToInputStream",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "Try",
+      "line": 198,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ClassCreator(arguments=[MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"UTF-8\")], member=getBytes, postfix_operators=[], prefix_operators=[], qualifier=text, selectors=[], type_arguments=None)], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=ByteArrayInputStream, sub_type=None)), name=is)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=InputStream, sub_type=None))",
+      "line": 199,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Return(MemberReference(member=is, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 200,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Catch(e)",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "Throw(ClassCreator(arguments=[MemberReference(member=e, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=Error, sub_type=None)))",
+      "line": 202,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 5
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "is"
+    },
+    {
+      "source": 5,
+      "target": 6
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 5
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 5,
+      "target": 6
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "is"
+    }
+  ]
+}

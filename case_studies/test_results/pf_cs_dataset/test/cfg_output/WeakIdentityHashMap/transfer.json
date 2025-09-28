@@ -1,0 +1,304 @@
+{
+  "method_name": "transfer",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "For(BinaryOperation(operandl=MemberReference(member=j, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=src, selectors=[]), operator=<))",
+      "line": 525,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=src, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=MemberReference(member=j, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))]), name=e)], modifiers=set(), type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=K, sub_type=None)), TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=V, sub_type=None))], dimensions=[], name=Entry, sub_type=None))",
+      "line": 526,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Assignment(expressionl=MemberReference(member=src, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=MemberReference(member=j, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))]), type==, value=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null))",
+      "line": 527,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "While(BinaryOperation(operandl=MemberReference(member=e, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator=!=))",
+      "line": 528,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=next, postfix_operators=[], prefix_operators=[], qualifier=e, selectors=[]), name=next)], modifiers=set(), type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=K, sub_type=None)), TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=V, sub_type=None))], dimensions=[], name=Entry, sub_type=None))",
+      "line": 529,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[], member=get, postfix_operators=[], prefix_operators=[], qualifier=e, selectors=[], type_arguments=None), name=key)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=Object, sub_type=None))",
+      "line": 530,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=key, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator===))",
+      "line": 531,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "Assignment(expressionl=MemberReference(member=next, postfix_operators=[], prefix_operators=[], qualifier=e, selectors=[]), type==, value=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null))",
+      "line": 532,
+      "node_type": "control"
+    },
+    {
+      "id": 10,
+      "label": "Assignment(expressionl=MemberReference(member=value, postfix_operators=[], prefix_operators=[], qualifier=e, selectors=[]), type==, value=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null))",
+      "line": 533,
+      "node_type": "control"
+    },
+    {
+      "id": 11,
+      "label": "MemberReference(member=size, postfix_operators=['--'], prefix_operators=[], qualifier=, selectors=[])",
+      "line": 534,
+      "node_type": "control"
+    },
+    {
+      "id": 12,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=hash, postfix_operators=[], prefix_operators=[], qualifier=e, selectors=[]), MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=dest, selectors=[])], member=indexFor, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), name=i)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 536,
+      "node_type": "control"
+    },
+    {
+      "id": 13,
+      "label": "Assignment(expressionl=MemberReference(member=next, postfix_operators=[], prefix_operators=[], qualifier=e, selectors=[]), type==, value=MemberReference(member=dest, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=MemberReference(member=i, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))]))",
+      "line": 537,
+      "node_type": "control"
+    },
+    {
+      "id": 14,
+      "label": "Assignment(expressionl=MemberReference(member=dest, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=MemberReference(member=i, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))]), type==, value=MemberReference(member=e, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 538,
+      "node_type": "control"
+    },
+    {
+      "id": 15,
+      "label": "Assignment(expressionl=MemberReference(member=e, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=MemberReference(member=next, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 540,
+      "node_type": "control"
+    },
+    {
+      "id": 16,
+      "label": "Update(MemberReference(member=j, postfix_operators=[], prefix_operators=['++'], qualifier=, selectors=[]))",
+      "line": 525,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 16
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "variable": "key"
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 12
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 11,
+      "target": 15
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 13,
+      "target": 14
+    },
+    {
+      "source": 13,
+      "target": 15,
+      "variable": "next"
+    },
+    {
+      "source": 13,
+      "target": 15,
+      "variable": "next"
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 15,
+      "target": 5
+    },
+    {
+      "source": 15,
+      "target": 5
+    },
+    {
+      "source": 16,
+      "target": 2
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 16
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 12
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 11,
+      "target": 15
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 13,
+      "target": 14
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 15,
+      "target": 5
+    },
+    {
+      "source": 15,
+      "target": 5
+    },
+    {
+      "source": 16,
+      "target": 2
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 7,
+      "target": 8,
+      "variable": "key"
+    },
+    {
+      "source": 13,
+      "target": 15,
+      "variable": "next"
+    },
+    {
+      "source": 13,
+      "target": 15,
+      "variable": "next"
+    }
+  ]
+}

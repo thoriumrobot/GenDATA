@@ -1,0 +1,76 @@
+{
+  "method_name": "equals",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"unchecked\"), name=SuppressWarnings)], declarators=[VariableDeclarator(dimensions=[], initializer=Cast(expression=MemberReference(member=a1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=T, sub_type=None))], dimensions=[], name=SequenceAndIndices, sub_type=None)), name=sai1)], modifiers=set(), type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=T, sub_type=None))], dimensions=[], name=SequenceAndIndices, sub_type=None))",
+      "line": 1090,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"unchecked\"), name=SuppressWarnings)], declarators=[VariableDeclarator(dimensions=[], initializer=Cast(expression=MemberReference(member=a2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=T, sub_type=None))], dimensions=[], name=SequenceAndIndices, sub_type=None)), name=sai2)], modifiers=set(), type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=T, sub_type=None))], dimensions=[], name=SequenceAndIndices, sub_type=None))",
+      "line": 1092,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Return(MethodInvocation(arguments=[MemberReference(member=sai2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=equals, postfix_operators=[], prefix_operators=[], qualifier=sai1, selectors=[], type_arguments=None))",
+      "line": 1094,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "sai2"
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "sai2"
+    }
+  ]
+}

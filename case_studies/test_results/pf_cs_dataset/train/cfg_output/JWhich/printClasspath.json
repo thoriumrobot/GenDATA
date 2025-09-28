@@ -1,0 +1,95 @@
+{
+  "method_name": "printClasspath",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"\\nClasspath:\")], member=println, postfix_operators=[], prefix_operators=[], qualifier=System.out, selectors=[], type_arguments=None)",
+      "line": 158,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ClassCreator(arguments=[MethodInvocation(arguments=[], member=getClasspath, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), MemberReference(member=pathSeparator, postfix_operators=[], prefix_operators=[], qualifier=File, selectors=[])], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=StringTokenizer, sub_type=None)), name=tokenizer)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=StringTokenizer, sub_type=None))",
+      "line": 159,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "While(MethodInvocation(arguments=[], member=hasMoreTokens, postfix_operators=[], prefix_operators=[], qualifier=tokenizer, selectors=[], type_arguments=None))",
+      "line": 160,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "MethodInvocation(arguments=[MethodInvocation(arguments=[], member=nextToken, postfix_operators=[], prefix_operators=[], qualifier=tokenizer, selectors=[], type_arguments=None)], member=println, postfix_operators=[], prefix_operators=[], qualifier=System.out, selectors=[], type_arguments=None)",
+      "line": 161,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 1
+    },
+    {
+      "source": 5,
+      "target": 4
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 1
+    },
+    {
+      "source": 5,
+      "target": 4
+    }
+  ],
+  "dataflow_edges": []
+}

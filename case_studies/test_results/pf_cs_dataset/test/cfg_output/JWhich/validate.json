@@ -1,0 +1,188 @@
+{
+  "method_name": "validate",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ClassCreator(arguments=[MethodInvocation(arguments=[], member=getClasspath, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), MemberReference(member=pathSeparator, postfix_operators=[], prefix_operators=[], qualifier=File, selectors=[])], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=StringTokenizer, sub_type=None)), name=tokenizer)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=StringTokenizer, sub_type=None))",
+      "line": 133,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "While(MethodInvocation(arguments=[], member=hasMoreTokens, postfix_operators=[], prefix_operators=[], qualifier=tokenizer, selectors=[], type_arguments=None))",
+      "line": 135,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[], member=nextToken, postfix_operators=[], prefix_operators=[], qualifier=tokenizer, selectors=[], type_arguments=None), name=element)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=String, sub_type=None))",
+      "line": 136,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ClassCreator(arguments=[MemberReference(member=element, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=File, sub_type=None)), name=f)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=File, sub_type=None))",
+      "line": 137,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "If(MethodInvocation(arguments=[], member=exists, postfix_operators=[], prefix_operators=['!'], qualifier=f, selectors=[], type_arguments=None))",
+      "line": 139,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "MethodInvocation(arguments=[BinaryOperation(operandl=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"\\nClasspath element '\"), operandr=MemberReference(member=element, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=+), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"' does not exist.\"), operator=+)], member=println, postfix_operators=[], prefix_operators=[], qualifier=System.out, selectors=[], type_arguments=None)",
+      "line": 140,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "If(BinaryOperation(operandl=BinaryOperation(operandl=MethodInvocation(arguments=[], member=isDirectory, postfix_operators=[], prefix_operators=[], qualifier=f, selectors=[], type_arguments=None), operandr=MethodInvocation(arguments=[], member=toLowerCase, postfix_operators=[], prefix_operators=[], qualifier=element, selectors=[], type_arguments=None), operator=&&), operandr=MethodInvocation(arguments=[], member=toLowerCase, postfix_operators=[], prefix_operators=[], qualifier=element, selectors=[], type_arguments=None), operator=&&))",
+      "line": 141,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "MethodInvocation(arguments=[BinaryOperation(operandl=BinaryOperation(operandl=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"\\nClasspath element '\"), operandr=MemberReference(member=element, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=+), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"' \"), operator=+), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"is not a directory, .jar file, or .zip file.\"), operator=+)], member=println, postfix_operators=[], prefix_operators=[], qualifier=System.out, selectors=[], type_arguments=None)",
+      "line": 145,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 7,
+      "variable": "element"
+    },
+    {
+      "source": 4,
+      "target": 9,
+      "variable": "element"
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 3
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 3
+    },
+    {
+      "source": 9,
+      "target": 3
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 3
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 3
+    },
+    {
+      "source": 9,
+      "target": 3
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 4,
+      "target": 7,
+      "variable": "element"
+    },
+    {
+      "source": 4,
+      "target": 9,
+      "variable": "element"
+    }
+  ]
+}

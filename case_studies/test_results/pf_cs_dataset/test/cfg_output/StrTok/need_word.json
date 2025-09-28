@@ -1,0 +1,140 @@
+{
+  "method_name": "need_word",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[], member=nextToken, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), name=t)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=String, sub_type=None))",
+      "line": 232,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "If(MethodInvocation(arguments=[], member=isWord, postfix_operators=[], prefix_operators=['!'], qualifier=, selectors=[], type_arguments=None))",
+      "line": 233,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "MethodInvocation(arguments=[MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"'%s' found where identifier expected\"), MemberReference(member=t, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=format, postfix_operators=[], prefix_operators=[], qualifier=String, selectors=[], type_arguments=None)], member=tok_error, postfix_operators=[], prefix_operators=[], qualifier=errorHandler, selectors=[], type_arguments=None)",
+      "line": 234,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Unknown(AssertStatement)",
+      "line": 236,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "Return(MemberReference(member=t, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 237,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "variable": "t"
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "variable": "t"
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "variable": "t"
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 2,
+      "target": 4,
+      "variable": "t"
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "variable": "t"
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "variable": "t"
+    }
+  ]
+}

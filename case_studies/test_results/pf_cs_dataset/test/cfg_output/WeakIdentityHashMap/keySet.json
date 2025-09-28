@@ -1,0 +1,62 @@
+{
+  "method_name": "keySet",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=our_keySet, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), name=ks)], modifiers=set(), type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=K, sub_type=None))], dimensions=[], name=Set, sub_type=None))",
+      "line": 901,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Return(TernaryExpression(condition=BinaryOperation(operandl=MemberReference(member=ks, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator=!=), if_false=Assignment(expressionl=MemberReference(member=our_keySet, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=ClassCreator(arguments=[], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=KeySet, sub_type=None))), if_true=MemberReference(member=ks, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])))",
+      "line": 902,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "ks"
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "ks"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "method_name": "put",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "MethodInvocation(arguments=[], member=processQueue, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 355,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Return(MethodInvocation(arguments=[MethodInvocation(arguments=[MemberReference(member=key, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MemberReference(member=queue, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=WeakKeyCreate, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), MemberReference(member=value, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=put, postfix_operators=[], prefix_operators=[], qualifier=hash, selectors=[], type_arguments=None))",
+      "line": 356,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    }
+  ],
+  "dataflow_edges": []
+}

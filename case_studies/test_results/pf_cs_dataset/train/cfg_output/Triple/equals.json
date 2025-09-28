@@ -1,0 +1,152 @@
+{
+  "method_name": "equals",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=obj, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=ReferenceType(arguments=[TypeArgument(pattern_type=?, type=None), TypeArgument(pattern_type=?, type=None), TypeArgument(pattern_type=?, type=None)], dimensions=[], name=Triple, sub_type=None), operator=instanceof))",
+      "line": 57,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"unchecked\"), name=SuppressWarnings)], declarators=[VariableDeclarator(dimensions=[], initializer=Cast(expression=MemberReference(member=obj, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=T1, sub_type=None)), TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=T2, sub_type=None)), TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=T3, sub_type=None))], dimensions=[], name=Triple, sub_type=None)), name=other)], modifiers=set(), type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=T1, sub_type=None)), TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=T2, sub_type=None)), TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=T3, sub_type=None))], dimensions=[], name=Triple, sub_type=None))",
+      "line": 59,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=BinaryOperation(operandl=BinaryOperation(operandl=This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[MemberReference(member=a, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None)]), operandr=MemberReference(member=a, postfix_operators=[], prefix_operators=[], qualifier=other, selectors=[]), operator===), operandr=BinaryOperation(operandl=BinaryOperation(operandl=This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[MemberReference(member=a, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None)]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator=!=), operandr=This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[]), operator=&&), operator=||), name=aEquals)], modifiers=set(), type=BasicType(dimensions=[], name=boolean))",
+      "line": 60,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=BinaryOperation(operandl=BinaryOperation(operandl=This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[MemberReference(member=b, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None)]), operandr=MemberReference(member=b, postfix_operators=[], prefix_operators=[], qualifier=other, selectors=[]), operator===), operandr=BinaryOperation(operandl=BinaryOperation(operandl=This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[MemberReference(member=b, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None)]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator=!=), operandr=This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[]), operator=&&), operator=||), name=bEquals)], modifiers=set(), type=BasicType(dimensions=[], name=boolean))",
+      "line": 61,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=BinaryOperation(operandl=BinaryOperation(operandl=This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[MemberReference(member=c, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None)]), operandr=MemberReference(member=c, postfix_operators=[], prefix_operators=[], qualifier=other, selectors=[]), operator===), operandr=BinaryOperation(operandl=BinaryOperation(operandl=This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[MemberReference(member=c, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None)]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator=!=), operandr=This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[]), operator=&&), operator=||), name=cEquals)], modifiers=set(), type=BasicType(dimensions=[], name=boolean))",
+      "line": 62,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "Return(BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=aEquals, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=bEquals, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=&&), operandr=MemberReference(member=cEquals, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=&&))",
+      "line": 63,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "Return(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=false))",
+      "line": 65,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 8
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 7,
+      "variable": "aEquals"
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "variable": "bEquals"
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "cEquals"
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 8
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 4,
+      "target": 7,
+      "variable": "aEquals"
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "variable": "bEquals"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "cEquals"
+    }
+  ]
+}

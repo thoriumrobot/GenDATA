@@ -1,0 +1,62 @@
+{
+  "method_name": "entrySet",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=entrySet, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), name=es)], modifiers=set(), type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=Map, sub_type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=K, sub_type=None)), TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=V, sub_type=None))], dimensions=None, name=Entry, sub_type=None)))], dimensions=[], name=Set, sub_type=None))",
+      "line": 1031,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Return(TernaryExpression(condition=BinaryOperation(operandl=MemberReference(member=es, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator=!=), if_false=Assignment(expressionl=MemberReference(member=entrySet, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=ClassCreator(arguments=[], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=EntrySet, sub_type=None))), if_true=MemberReference(member=es, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])))",
+      "line": 1032,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "es"
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "es"
+    }
+  ]
+}

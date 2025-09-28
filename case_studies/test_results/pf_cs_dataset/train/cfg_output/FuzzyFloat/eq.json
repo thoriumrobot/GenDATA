@@ -1,0 +1,236 @@
+{
+  "method_name": "eq",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(BinaryOperation(operandl=MethodInvocation(arguments=[MemberReference(member=d1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=isNaN, postfix_operators=[], prefix_operators=[], qualifier=Double, selectors=[], type_arguments=None), operandr=MethodInvocation(arguments=[MemberReference(member=d2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=isNaN, postfix_operators=[], prefix_operators=[], qualifier=Double, selectors=[], type_arguments=None), operator=&&))",
+      "line": 88,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Return(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=false))",
+      "line": 89,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "If(MemberReference(member=off, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 94,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Return(BinaryOperation(operandl=MemberReference(member=d1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=d2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator===))",
+      "line": 95,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=d1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=d2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator===))",
+      "line": 100,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "Return(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=true))",
+      "line": 101,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "If(BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=d1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0.0), operator===), operandr=BinaryOperation(operandl=MemberReference(member=d2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0.0), operator===), operator=||))",
+      "line": 108,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[BinaryOperation(operandl=MemberReference(member=max_ratio, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator=-), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=2)], member=pow, postfix_operators=[], prefix_operators=[], qualifier=Math, selectors=[], type_arguments=None), name=zero_tolerance)], modifiers=set(), type=BasicType(dimensions=[], name=double))",
+      "line": 110,
+      "node_type": "control"
+    },
+    {
+      "id": 10,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=d1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0.0), operator===))",
+      "line": 112,
+      "node_type": "control"
+    },
+    {
+      "id": 11,
+      "label": "Return(BinaryOperation(operandl=MethodInvocation(arguments=[MemberReference(member=d2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=abs, postfix_operators=[], prefix_operators=[], qualifier=Math, selectors=[], type_arguments=None), operandr=MemberReference(member=zero_tolerance, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=<))",
+      "line": 114,
+      "node_type": "control"
+    },
+    {
+      "id": 12,
+      "label": "Return(BinaryOperation(operandl=MethodInvocation(arguments=[MemberReference(member=d1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=abs, postfix_operators=[], prefix_operators=[], qualifier=Math, selectors=[], type_arguments=None), operandr=MemberReference(member=zero_tolerance, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=<))",
+      "line": 118,
+      "node_type": "control"
+    },
+    {
+      "id": 13,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=BinaryOperation(operandl=MemberReference(member=d1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=d2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=/), name=ratio)], modifiers=set(), type=BasicType(dimensions=[], name=double))",
+      "line": 122,
+      "node_type": "control"
+    },
+    {
+      "id": 14,
+      "label": "Return(BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=ratio, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=min_ratio, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=>=), operandr=BinaryOperation(operandl=MemberReference(member=ratio, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=max_ratio, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=<=), operator=&&))",
+      "line": 123,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 13
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 9,
+      "target": 11,
+      "variable": "zero_tolerance"
+    },
+    {
+      "source": 9,
+      "target": 12,
+      "variable": "zero_tolerance"
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 10,
+      "target": 12
+    },
+    {
+      "source": 13,
+      "target": 14
+    },
+    {
+      "source": 13,
+      "target": 14,
+      "variable": "ratio"
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 13
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 10,
+      "target": 12
+    },
+    {
+      "source": 13,
+      "target": 14
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 9,
+      "target": 11,
+      "variable": "zero_tolerance"
+    },
+    {
+      "source": 9,
+      "target": 12,
+      "variable": "zero_tolerance"
+    },
+    {
+      "source": 13,
+      "target": 14,
+      "variable": "ratio"
+    }
+  ]
+}

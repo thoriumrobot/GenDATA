@@ -1,0 +1,59 @@
+{
+  "method_name": "set_entry_start_stop",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "Assignment(expressionl=This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[MemberReference(member=entry_start_re, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None)]), type==, value=MemberReference(member=entry_start_re, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 795,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Assignment(expressionl=This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[MemberReference(member=entry_stop_re, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None)]), type==, value=MemberReference(member=entry_stop_re, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 796,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": []
+}

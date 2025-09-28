@@ -1,0 +1,616 @@
+{
+  "method_name": "next",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=next1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator===))",
+      "line": 113,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=next2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator===))",
+      "line": 120,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Throw(ClassCreator(arguments=[], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=NoSuchElementException, sub_type=None)))",
+      "line": 115,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Return(MethodInvocation(arguments=[], member=return2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None))",
+      "line": 148,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "Return(MethodInvocation(arguments=[], member=return1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None))",
+      "line": 146,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=None, name=comparison)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 123,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "Try",
+      "line": 125,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=comparator, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator===))",
+      "line": 126,
+      "node_type": "control"
+    },
+    {
+      "id": 10,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"unchecked\"), name=SuppressWarnings)], declarators=[VariableDeclarator(dimensions=[], initializer=Cast(expression=MemberReference(member=next1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=T, sub_type=None))], dimensions=[], name=Comparable, sub_type=None)), name=cble1)], modifiers=set(), type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=T, sub_type=None))], dimensions=[], name=Comparable, sub_type=None))",
+      "line": 128,
+      "node_type": "control"
+    },
+    {
+      "id": 11,
+      "label": "Assignment(expressionl=MemberReference(member=comparison, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=MethodInvocation(arguments=[MemberReference(member=next2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=compareTo, postfix_operators=[], prefix_operators=[], qualifier=cble1, selectors=[], type_arguments=None))",
+      "line": 129,
+      "node_type": "control"
+    },
+    {
+      "id": 12,
+      "label": "Assignment(expressionl=MemberReference(member=comparison, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=MethodInvocation(arguments=[MemberReference(member=next1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MemberReference(member=next2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=compare, postfix_operators=[], prefix_operators=[], qualifier=comparator, selectors=[], type_arguments=None))",
+      "line": 131,
+      "node_type": "control"
+    },
+    {
+      "id": 13,
+      "label": "Catch(npe)",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 14,
+      "label": "If(BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=next1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator===), operandr=BinaryOperation(operandl=MemberReference(member=next2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator===), operator=&&))",
+      "line": 135,
+      "node_type": "control"
+    },
+    {
+      "id": 15,
+      "label": "Assignment(expressionl=MemberReference(member=comparison, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0))",
+      "line": 136,
+      "node_type": "control"
+    },
+    {
+      "id": 16,
+      "label": "If(BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=next1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator===), operandr=BinaryOperation(operandl=MemberReference(member=next2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator=!=), operator=&&))",
+      "line": 137,
+      "node_type": "control"
+    },
+    {
+      "id": 17,
+      "label": "Assignment(expressionl=MemberReference(member=comparison, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=Literal(postfix_operators=[], prefix_operators=['-'], qualifier=None, selectors=[], value=1))",
+      "line": 138,
+      "node_type": "control"
+    },
+    {
+      "id": 18,
+      "label": "If(BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=next1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator=!=), operandr=BinaryOperation(operandl=MemberReference(member=next2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator===), operator=&&))",
+      "line": 139,
+      "node_type": "control"
+    },
+    {
+      "id": 19,
+      "label": "Assignment(expressionl=MemberReference(member=comparison, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1))",
+      "line": 140,
+      "node_type": "control"
+    },
+    {
+      "id": 20,
+      "label": "Throw(ClassCreator(arguments=[BinaryOperation(operandl=BinaryOperation(operandl=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"this can't happen \"), operandr=MemberReference(member=next1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=+), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\" \"), operator=+), operandr=MemberReference(member=next2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=+)], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=RuntimeException, sub_type=None)))",
+      "line": 142,
+      "node_type": "control"
+    },
+    {
+      "id": 21,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=comparison, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0), operator=<))",
+      "line": 145,
+      "node_type": "control"
+    },
+    {
+      "id": 22,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=comparison, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0), operator=>))",
+      "line": 147,
+      "node_type": "control"
+    },
+    {
+      "id": 23,
+      "label": "Return(MethodInvocation(arguments=[], member=returnboth, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None))",
+      "line": 150,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 3,
+      "target": 6
+    },
+    {
+      "source": 3,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 13
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 9,
+      "target": 12
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 11,
+      "target": 21
+    },
+    {
+      "source": 12,
+      "target": 21
+    },
+    {
+      "source": 13,
+      "target": 14
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 16
+    },
+    {
+      "source": 15,
+      "target": 21
+    },
+    {
+      "source": 16,
+      "target": 17
+    },
+    {
+      "source": 16,
+      "target": 18
+    },
+    {
+      "source": 17,
+      "target": 21
+    },
+    {
+      "source": 18,
+      "target": 19
+    },
+    {
+      "source": 18,
+      "target": 20
+    },
+    {
+      "source": 19,
+      "target": 21
+    },
+    {
+      "source": 19,
+      "target": 21,
+      "variable": "comparison"
+    },
+    {
+      "source": 19,
+      "target": 21,
+      "variable": "comparison"
+    },
+    {
+      "source": 19,
+      "target": 21,
+      "variable": "comparison"
+    },
+    {
+      "source": 19,
+      "target": 21,
+      "variable": "comparison"
+    },
+    {
+      "source": 19,
+      "target": 21,
+      "variable": "comparison"
+    },
+    {
+      "source": 19,
+      "target": 22,
+      "variable": "comparison"
+    },
+    {
+      "source": 19,
+      "target": 22,
+      "variable": "comparison"
+    },
+    {
+      "source": 19,
+      "target": 22,
+      "variable": "comparison"
+    },
+    {
+      "source": 19,
+      "target": 22,
+      "variable": "comparison"
+    },
+    {
+      "source": 19,
+      "target": 22,
+      "variable": "comparison"
+    },
+    {
+      "source": 21,
+      "target": 6
+    },
+    {
+      "source": 21,
+      "target": 6
+    },
+    {
+      "source": 21,
+      "target": 6
+    },
+    {
+      "source": 21,
+      "target": 6
+    },
+    {
+      "source": 21,
+      "target": 6
+    },
+    {
+      "source": 21,
+      "target": 22
+    },
+    {
+      "source": 21,
+      "target": 22
+    },
+    {
+      "source": 21,
+      "target": 22
+    },
+    {
+      "source": 21,
+      "target": 22
+    },
+    {
+      "source": 21,
+      "target": 22
+    },
+    {
+      "source": 22,
+      "target": 5
+    },
+    {
+      "source": 22,
+      "target": 5
+    },
+    {
+      "source": 22,
+      "target": 5
+    },
+    {
+      "source": 22,
+      "target": 5
+    },
+    {
+      "source": 22,
+      "target": 5
+    },
+    {
+      "source": 22,
+      "target": 23
+    },
+    {
+      "source": 22,
+      "target": 23
+    },
+    {
+      "source": 22,
+      "target": 23
+    },
+    {
+      "source": 22,
+      "target": 23
+    },
+    {
+      "source": 22,
+      "target": 23
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 3,
+      "target": 6
+    },
+    {
+      "source": 3,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 13
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 9,
+      "target": 12
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 11,
+      "target": 21
+    },
+    {
+      "source": 12,
+      "target": 21
+    },
+    {
+      "source": 13,
+      "target": 14
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 16
+    },
+    {
+      "source": 15,
+      "target": 21
+    },
+    {
+      "source": 16,
+      "target": 17
+    },
+    {
+      "source": 16,
+      "target": 18
+    },
+    {
+      "source": 17,
+      "target": 21
+    },
+    {
+      "source": 18,
+      "target": 19
+    },
+    {
+      "source": 18,
+      "target": 20
+    },
+    {
+      "source": 19,
+      "target": 21
+    },
+    {
+      "source": 21,
+      "target": 6
+    },
+    {
+      "source": 21,
+      "target": 6
+    },
+    {
+      "source": 21,
+      "target": 6
+    },
+    {
+      "source": 21,
+      "target": 6
+    },
+    {
+      "source": 21,
+      "target": 6
+    },
+    {
+      "source": 21,
+      "target": 22
+    },
+    {
+      "source": 21,
+      "target": 22
+    },
+    {
+      "source": 21,
+      "target": 22
+    },
+    {
+      "source": 21,
+      "target": 22
+    },
+    {
+      "source": 21,
+      "target": 22
+    },
+    {
+      "source": 22,
+      "target": 5
+    },
+    {
+      "source": 22,
+      "target": 5
+    },
+    {
+      "source": 22,
+      "target": 5
+    },
+    {
+      "source": 22,
+      "target": 5
+    },
+    {
+      "source": 22,
+      "target": 5
+    },
+    {
+      "source": 22,
+      "target": 23
+    },
+    {
+      "source": 22,
+      "target": 23
+    },
+    {
+      "source": 22,
+      "target": 23
+    },
+    {
+      "source": 22,
+      "target": 23
+    },
+    {
+      "source": 22,
+      "target": 23
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 19,
+      "target": 21,
+      "variable": "comparison"
+    },
+    {
+      "source": 19,
+      "target": 21,
+      "variable": "comparison"
+    },
+    {
+      "source": 19,
+      "target": 21,
+      "variable": "comparison"
+    },
+    {
+      "source": 19,
+      "target": 21,
+      "variable": "comparison"
+    },
+    {
+      "source": 19,
+      "target": 21,
+      "variable": "comparison"
+    },
+    {
+      "source": 19,
+      "target": 22,
+      "variable": "comparison"
+    },
+    {
+      "source": 19,
+      "target": 22,
+      "variable": "comparison"
+    },
+    {
+      "source": 19,
+      "target": 22,
+      "variable": "comparison"
+    },
+    {
+      "source": 19,
+      "target": 22,
+      "variable": "comparison"
+    },
+    {
+      "source": 19,
+      "target": 22,
+      "variable": "comparison"
+    }
+  ]
+}

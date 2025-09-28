@@ -1,0 +1,156 @@
+{
+  "method_name": "log",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(MemberReference(member=enabled, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 125,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "MethodInvocation(arguments=[], member=setLogfile, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 126,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Assignment(expressionl=MemberReference(member=format, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=MethodInvocation(arguments=[MemberReference(member=format, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=add_newline, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None))",
+      "line": 127,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "MethodInvocation(arguments=[MemberReference(member=indent_str, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=print, postfix_operators=[], prefix_operators=[], qualifier=logfile, selectors=[], type_arguments=None)",
+      "line": 128,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "MethodInvocation(arguments=[MemberReference(member=format, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MemberReference(member=args, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=printf, postfix_operators=[], prefix_operators=[], qualifier=logfile, selectors=[], type_arguments=None)",
+      "line": 129,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "If(MemberReference(member=always_traceback, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 130,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "MethodInvocation(arguments=[], member=tb, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 131,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "variable": "format"
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 8,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 8,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 4,
+      "target": 6,
+      "variable": "format"
+    }
+  ]
+}

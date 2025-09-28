@@ -1,0 +1,87 @@
+{
+  "method_name": "toArray",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ClassCreator(arguments=[MethodInvocation(arguments=[], member=size, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=Map, sub_type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=K, sub_type=None)), TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=V, sub_type=None))], dimensions=None, name=Entry, sub_type=None)))], dimensions=None, name=ArrayList, sub_type=None)), name=c)], modifiers=set(), type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=Map, sub_type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=K, sub_type=None)), TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=V, sub_type=None))], dimensions=None, name=Entry, sub_type=None)))], dimensions=[], name=Collection, sub_type=None))",
+      "line": 1078,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "For(MethodInvocation(arguments=[], member=hasNext, postfix_operators=[], prefix_operators=[], qualifier=i, selectors=[], type_arguments=None))",
+      "line": 1079,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "MethodInvocation(arguments=[ClassCreator(arguments=[MethodInvocation(arguments=[], member=next, postfix_operators=[], prefix_operators=[], qualifier=i, selectors=[], type_arguments=None)], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=K, sub_type=None)), TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=V, sub_type=None))], dimensions=None, name=OurSimpleEntry, sub_type=None))], member=add, postfix_operators=[], prefix_operators=[], qualifier=c, selectors=[], type_arguments=None)",
+      "line": 1080,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Return(MethodInvocation(arguments=[MemberReference(member=a, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=toArray, postfix_operators=[], prefix_operators=[], qualifier=c, selectors=[], type_arguments=None))",
+      "line": 1081,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 3
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 3
+    }
+  ],
+  "dataflow_edges": []
+}

@@ -1,0 +1,76 @@
+{
+  "method_name": "return1",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=next1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), Cast(expression=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), type=ReferenceType(arguments=None, dimensions=[], name=T, sub_type=None))], member=Pair, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=T, sub_type=None)), TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=T, sub_type=None))]), name=result)], modifiers=set(), type=ReferenceType(arguments=[TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=T, sub_type=None)), TypeArgument(pattern_type=None, type=ReferenceType(arguments=None, dimensions=[], name=T, sub_type=None))], dimensions=[], name=Pair, sub_type=None))",
+      "line": 87,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "MethodInvocation(arguments=[], member=setnext1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 89,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Return(MemberReference(member=result, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 90,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "variable": "result"
+    },
+    {
+      "source": 3,
+      "target": 4
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 2,
+      "target": 4,
+      "variable": "result"
+    }
+  ]
+}

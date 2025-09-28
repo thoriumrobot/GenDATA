@@ -1,0 +1,62 @@
+{
+  "method_name": "containsKey",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"unchecked\"), name=SuppressWarnings)], declarators=[VariableDeclarator(dimensions=[], initializer=Cast(expression=MemberReference(member=key, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type=ReferenceType(arguments=None, dimensions=[], name=K, sub_type=None)), name=kkey)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=K, sub_type=None))",
+      "line": 317,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Return(MethodInvocation(arguments=[MethodInvocation(arguments=[MemberReference(member=kkey, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=WeakKeyCreate, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)], member=containsKey, postfix_operators=[], prefix_operators=[], qualifier=hash, selectors=[], type_arguments=None))",
+      "line": 318,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "kkey"
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "kkey"
+    }
+  ]
+}

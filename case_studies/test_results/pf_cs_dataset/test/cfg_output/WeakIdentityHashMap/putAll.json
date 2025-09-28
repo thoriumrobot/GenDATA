@@ -1,0 +1,546 @@
+{
+  "method_name": "putAll",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[], member=size, postfix_operators=[], prefix_operators=[], qualifier=m, selectors=[], type_arguments=None), name=numKeysToBeAdded)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 555,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=numKeysToBeAdded, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0), operator===))",
+      "line": 556,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Return(None)",
+      "line": 557,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=numKeysToBeAdded, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=threshold, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=>))",
+      "line": 568,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Cast(expression=BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=numKeysToBeAdded, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=loadFactor, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=/), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator=+), type=BasicType(dimensions=[], name=int)), name=targetCapacity)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 569,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=targetCapacity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=MAXIMUM_CAPACITY, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=>))",
+      "line": 570,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "Assignment(expressionl=MemberReference(member=targetCapacity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=MemberReference(member=MAXIMUM_CAPACITY, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 571,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=table, selectors=[]), name=newCapacity)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 572,
+      "node_type": "control"
+    },
+    {
+      "id": 10,
+      "label": "While(BinaryOperation(operandl=MemberReference(member=newCapacity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=targetCapacity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=<))",
+      "line": 573,
+      "node_type": "control"
+    },
+    {
+      "id": 11,
+      "label": "Assignment(expressionl=MemberReference(member=newCapacity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type=<<=, value=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1))",
+      "line": 574,
+      "node_type": "control"
+    },
+    {
+      "id": 12,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=newCapacity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=table, selectors=[]), operator=>))",
+      "line": 575,
+      "node_type": "control"
+    },
+    {
+      "id": 13,
+      "label": "MethodInvocation(arguments=[MemberReference(member=newCapacity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=resize, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 576,
+      "node_type": "control"
+    },
+    {
+      "id": 14,
+      "label": "For(MethodInvocation(arguments=[], member=hasNext, postfix_operators=[], prefix_operators=[], qualifier=i, selectors=[], type_arguments=None))",
+      "line": 579,
+      "node_type": "control"
+    },
+    {
+      "id": 15,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[], member=next, postfix_operators=[], prefix_operators=[], qualifier=i, selectors=[], type_arguments=None), name=e)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=Map, sub_type=ReferenceType(arguments=[TypeArgument(pattern_type=extends, type=ReferenceType(arguments=None, dimensions=[], name=K, sub_type=None)), TypeArgument(pattern_type=extends, type=ReferenceType(arguments=None, dimensions=[], name=V, sub_type=None))], dimensions=None, name=Entry, sub_type=None)))",
+      "line": 580,
+      "node_type": "control"
+    },
+    {
+      "id": 16,
+      "label": "MethodInvocation(arguments=[MethodInvocation(arguments=[], member=getKey, postfix_operators=[], prefix_operators=[], qualifier=e, selectors=[], type_arguments=None), MethodInvocation(arguments=[], member=getValue, postfix_operators=[], prefix_operators=[], qualifier=e, selectors=[], type_arguments=None)], member=put, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 581,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "numKeysToBeAdded"
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "variable": "numKeysToBeAdded"
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 14
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 10,
+      "variable": "targetCapacity"
+    },
+    {
+      "source": 8,
+      "target": 10,
+      "variable": "targetCapacity"
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 10,
+      "target": 12
+    },
+    {
+      "source": 10,
+      "target": 12
+    },
+    {
+      "source": 11,
+      "target": 10
+    },
+    {
+      "source": 11,
+      "target": 10
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "newCapacity"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "newCapacity"
+    },
+    {
+      "source": 11,
+      "target": 13,
+      "variable": "newCapacity"
+    },
+    {
+      "source": 11,
+      "target": 13,
+      "variable": "newCapacity"
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 14
+    },
+    {
+      "source": 12,
+      "target": 14
+    },
+    {
+      "source": 13,
+      "target": 14
+    },
+    {
+      "source": 13,
+      "target": 14
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 1
+    },
+    {
+      "source": 14,
+      "target": 1
+    },
+    {
+      "source": 14,
+      "target": 1
+    },
+    {
+      "source": 14,
+      "target": 1
+    },
+    {
+      "source": 14,
+      "target": 1
+    },
+    {
+      "source": 15,
+      "target": 16
+    },
+    {
+      "source": 15,
+      "target": 16
+    },
+    {
+      "source": 15,
+      "target": 16
+    },
+    {
+      "source": 15,
+      "target": 16
+    },
+    {
+      "source": 15,
+      "target": 16
+    },
+    {
+      "source": 16,
+      "target": 14
+    },
+    {
+      "source": 16,
+      "target": 14
+    },
+    {
+      "source": 16,
+      "target": 14
+    },
+    {
+      "source": 16,
+      "target": 14
+    },
+    {
+      "source": 16,
+      "target": 14
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 14
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 10,
+      "target": 12
+    },
+    {
+      "source": 10,
+      "target": 12
+    },
+    {
+      "source": 11,
+      "target": 10
+    },
+    {
+      "source": 11,
+      "target": 10
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 14
+    },
+    {
+      "source": 12,
+      "target": 14
+    },
+    {
+      "source": 13,
+      "target": 14
+    },
+    {
+      "source": 13,
+      "target": 14
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 1
+    },
+    {
+      "source": 14,
+      "target": 1
+    },
+    {
+      "source": 14,
+      "target": 1
+    },
+    {
+      "source": 14,
+      "target": 1
+    },
+    {
+      "source": 14,
+      "target": 1
+    },
+    {
+      "source": 15,
+      "target": 16
+    },
+    {
+      "source": 15,
+      "target": 16
+    },
+    {
+      "source": 15,
+      "target": 16
+    },
+    {
+      "source": 15,
+      "target": 16
+    },
+    {
+      "source": 15,
+      "target": 16
+    },
+    {
+      "source": 16,
+      "target": 14
+    },
+    {
+      "source": 16,
+      "target": 14
+    },
+    {
+      "source": 16,
+      "target": 14
+    },
+    {
+      "source": 16,
+      "target": 14
+    },
+    {
+      "source": 16,
+      "target": 14
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "numKeysToBeAdded"
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "variable": "numKeysToBeAdded"
+    },
+    {
+      "source": 8,
+      "target": 10,
+      "variable": "targetCapacity"
+    },
+    {
+      "source": 8,
+      "target": 10,
+      "variable": "targetCapacity"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "newCapacity"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "newCapacity"
+    },
+    {
+      "source": 11,
+      "target": 13,
+      "variable": "newCapacity"
+    },
+    {
+      "source": 11,
+      "target": 13,
+      "variable": "newCapacity"
+    }
+  ]
+}
