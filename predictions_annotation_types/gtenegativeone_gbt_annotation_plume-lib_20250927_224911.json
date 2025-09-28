@@ -1,0 +1,66 @@
+{
+  "model_name": "gtenegativeone_gbt_annotation",
+  "project_name": "plume-lib",
+  "timestamp": "20250927_224911",
+  "metadata": {
+    "annotation_type": "@GTENegativeOne",
+    "base_model": "gbt",
+    "model_type": "GTENEGATIVEONE_GBT_ANNOTATION",
+    "project_path": "case_studies/plume-lib",
+    "hyperparameters": {
+      "episodes": 50,
+      "base_model": "gbt"
+    }
+  },
+  "predictions": [
+    {
+      "line": 12,
+      "node_type": "method",
+      "label": "public static void processFile(File f)",
+      "confidence": 0.6825000000000001,
+      "annotation_type": "@GTENegativeOne",
+      "base_model": "gbt",
+      "reasoning": "Method might return index-like values (predicted by GBT model)"
+    },
+    {
+      "line": 78,
+      "node_type": "variable",
+      "label": "private final List<String> lines",
+      "confidence": 0.7875000000000001,
+      "annotation_type": "@GTENegativeOne",
+      "base_model": "gbt",
+      "reasoning": "Variable might store index-like values (predicted by GBT model)"
+    },
+    {
+      "line": 145,
+      "node_type": "parameter",
+      "label": "String filename parameter",
+      "confidence": 0.9450000000000001,
+      "annotation_type": "@GTENegativeOne",
+      "base_model": "gbt",
+      "reasoning": "Parameter likely to be array index or similar (>= -1) (predicted by GBT model)"
+    }
+  ],
+  "summary": {
+    "total_predictions": 3,
+    "prediction_types": {
+      "total_count": 3,
+      "line_numbers": [
+        12,
+        78,
+        145
+      ],
+      "confidence_scores": [
+        0.6825000000000001,
+        0.7875000000000001,
+        0.9450000000000001
+      ],
+      "node_types": {
+        "method": 1,
+        "variable": 1,
+        "parameter": 1
+      },
+      "avg_confidence": 0.805
+    }
+  }
+}

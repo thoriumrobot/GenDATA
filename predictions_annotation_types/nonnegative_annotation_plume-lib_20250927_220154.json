@@ -1,0 +1,62 @@
+{
+  "model_name": "nonnegative_annotation",
+  "project_name": "plume-lib",
+  "timestamp": "20250927_220154",
+  "metadata": {
+    "annotation_type": "@NonNegative",
+    "model_type": "NONNEGATIVE_ANNOTATION",
+    "project_path": "case_studies/plume-lib",
+    "hyperparameters": {
+      "episodes": 50,
+      "base_model": "gcn"
+    }
+  },
+  "predictions": [
+    {
+      "line": 12,
+      "node_type": "method",
+      "label": "public static void processFile(File f)",
+      "confidence": 0.7,
+      "annotation_type": "@NonNegative",
+      "reasoning": "Method might return non-negative values"
+    },
+    {
+      "line": 78,
+      "node_type": "variable",
+      "label": "private final List<String> lines",
+      "confidence": 0.82,
+      "annotation_type": "@NonNegative",
+      "reasoning": "Variable/parameter should not be negative"
+    },
+    {
+      "line": 145,
+      "node_type": "parameter",
+      "label": "String filename parameter",
+      "confidence": 0.82,
+      "annotation_type": "@NonNegative",
+      "reasoning": "Variable/parameter should not be negative"
+    }
+  ],
+  "summary": {
+    "total_predictions": 3,
+    "prediction_types": {
+      "total_count": 3,
+      "line_numbers": [
+        12,
+        78,
+        145
+      ],
+      "confidence_scores": [
+        0.7,
+        0.82,
+        0.82
+      ],
+      "node_types": {
+        "method": 1,
+        "variable": 1,
+        "parameter": 1
+      },
+      "avg_confidence": 0.7799999999999999
+    }
+  }
+}

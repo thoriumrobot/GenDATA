@@ -1,0 +1,189 @@
+{
+  "project_name": "jfreechart_annotation_types",
+  "timestamp": "20250927_220154",
+  "models": {
+    "positive": {
+      "predictions": [
+        {
+          "line": 23,
+          "node_type": "method",
+          "label": "public void drawChart(Graphics2D g2d)",
+          "confidence": 0.85,
+          "annotation_type": "@Positive",
+          "reasoning": "Method/parameter likely to work with positive values"
+        },
+        {
+          "line": 156,
+          "node_type": "variable",
+          "label": "private ChartData dataset",
+          "confidence": 0.6,
+          "annotation_type": "@Positive",
+          "reasoning": "Variable might store positive values"
+        },
+        {
+          "line": 234,
+          "node_type": "parameter",
+          "label": "double value parameter",
+          "confidence": 0.85,
+          "annotation_type": "@Positive",
+          "reasoning": "Method/parameter likely to work with positive values"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            23,
+            156,
+            234
+          ],
+          "confidence_scores": [
+            0.85,
+            0.6,
+            0.85
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.7666666666666666
+        }
+      }
+    },
+    "nonnegative": {
+      "predictions": [
+        {
+          "line": 23,
+          "node_type": "method",
+          "label": "public void drawChart(Graphics2D g2d)",
+          "confidence": 0.7,
+          "annotation_type": "@NonNegative",
+          "reasoning": "Method might return non-negative values"
+        },
+        {
+          "line": 156,
+          "node_type": "variable",
+          "label": "private ChartData dataset",
+          "confidence": 0.82,
+          "annotation_type": "@NonNegative",
+          "reasoning": "Variable/parameter should not be negative"
+        },
+        {
+          "line": 234,
+          "node_type": "parameter",
+          "label": "double value parameter",
+          "confidence": 0.82,
+          "annotation_type": "@NonNegative",
+          "reasoning": "Variable/parameter should not be negative"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            23,
+            156,
+            234
+          ],
+          "confidence_scores": [
+            0.7,
+            0.82,
+            0.82
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.7799999999999999
+        }
+      }
+    },
+    "gtenegativeone": {
+      "predictions": [
+        {
+          "line": 23,
+          "node_type": "method",
+          "label": "public void drawChart(Graphics2D g2d)",
+          "confidence": 0.65,
+          "annotation_type": "@GTENegativeOne",
+          "reasoning": "Method might return index-like values"
+        },
+        {
+          "line": 156,
+          "node_type": "variable",
+          "label": "private ChartData dataset",
+          "confidence": 0.75,
+          "annotation_type": "@GTENegativeOne",
+          "reasoning": "Variable might store index-like values"
+        },
+        {
+          "line": 234,
+          "node_type": "parameter",
+          "label": "double value parameter",
+          "confidence": 0.9,
+          "annotation_type": "@GTENegativeOne",
+          "reasoning": "Parameter likely to be array index or similar (>= -1)"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            23,
+            156,
+            234
+          ],
+          "confidence_scores": [
+            0.65,
+            0.75,
+            0.9
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.7666666666666666
+        }
+      }
+    }
+  },
+  "comparison_summary": {
+    "model_counts": {
+      "positive": 3,
+      "nonnegative": 3,
+      "gtenegativeone": 3
+    },
+    "consensus_predictions": [
+      23,
+      156,
+      234
+    ],
+    "unique_predictions": {
+      "positive": [
+        234,
+        156,
+        23
+      ],
+      "nonnegative": [
+        234,
+        156,
+        23
+      ],
+      "gtenegativeone": [
+        234,
+        156,
+        23
+      ]
+    },
+    "overall_stats": {
+      "total_unique_lines": 3,
+      "avg_predictions_per_model": 3.0
+    }
+  }
+}

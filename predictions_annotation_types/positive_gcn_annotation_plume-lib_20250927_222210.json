@@ -1,0 +1,66 @@
+{
+  "model_name": "positive_gcn_annotation",
+  "project_name": "plume-lib",
+  "timestamp": "20250927_222210",
+  "metadata": {
+    "annotation_type": "@Positive",
+    "base_model": "gcn",
+    "model_type": "POSITIVE_GCN_ANNOTATION",
+    "project_path": "case_studies/plume-lib",
+    "hyperparameters": {
+      "episodes": 50,
+      "base_model": "gcn"
+    }
+  },
+  "predictions": [
+    {
+      "line": 12,
+      "node_type": "method",
+      "label": "public static void processFile(File f)",
+      "confidence": 0.8075,
+      "annotation_type": "@Positive",
+      "base_model": "gcn",
+      "reasoning": "Method/parameter likely to work with positive values (predicted by GCN model)"
+    },
+    {
+      "line": 78,
+      "node_type": "variable",
+      "label": "private final List<String> lines",
+      "confidence": 0.57,
+      "annotation_type": "@Positive",
+      "base_model": "gcn",
+      "reasoning": "Variable might store positive values (predicted by GCN model)"
+    },
+    {
+      "line": 145,
+      "node_type": "parameter",
+      "label": "String filename parameter",
+      "confidence": 0.8075,
+      "annotation_type": "@Positive",
+      "base_model": "gcn",
+      "reasoning": "Method/parameter likely to work with positive values (predicted by GCN model)"
+    }
+  ],
+  "summary": {
+    "total_predictions": 3,
+    "prediction_types": {
+      "total_count": 3,
+      "line_numbers": [
+        12,
+        78,
+        145
+      ],
+      "confidence_scores": [
+        0.8075,
+        0.57,
+        0.8075
+      ],
+      "node_types": {
+        "method": 1,
+        "variable": 1,
+        "parameter": 1
+      },
+      "avg_confidence": 0.7283333333333334
+    }
+  }
+}

@@ -1,0 +1,58 @@
+ANNOTATION TYPE CASE STUDY ANALYSIS SUMMARY
+==========================================
+
+ANNOTATION TYPE MODEL TRAINING RESULTS
+-------------------------------------
+
+POSITIVE ANNOTATION TYPE:
+  GCN: SUCCESS
+  GBT: SUCCESS
+  CAUSAL: SUCCESS
+  HGT: SUCCESS
+  GCSN: SUCCESS
+  DG2N: SUCCESS
+
+NONNEGATIVE ANNOTATION TYPE:
+  GCN: SUCCESS
+  GBT: SUCCESS
+  CAUSAL: SUCCESS
+  HGT: SUCCESS
+  GCSN: SUCCESS
+  DG2N: SUCCESS
+
+GTENEGATIVEONE ANNOTATION TYPE:
+  GCN: SUCCESS
+  GBT: SUCCESS
+  CAUSAL: SUCCESS
+  HGT: SUCCESS
+  GCSN: SUCCESS
+  DG2N: SUCCESS
+
+PROJECT ANALYSIS RESULTS
+------------------------
+guava:
+  Successful models: 18/18
+  Models: positive_gcn, positive_gbt, positive_causal, positive_hgt, positive_gcsn, positive_dg2n, nonnegative_gcn, nonnegative_gbt, nonnegative_causal, nonnegative_hgt, nonnegative_gcsn, nonnegative_dg2n, gtenegativeone_gcn, gtenegativeone_gbt, gtenegativeone_causal, gtenegativeone_hgt, gtenegativeone_gcsn, gtenegativeone_dg2n
+
+jfreechart:
+  Successful models: 18/18
+  Models: positive_gcn, positive_gbt, positive_causal, positive_hgt, positive_gcsn, positive_dg2n, nonnegative_gcn, nonnegative_gbt, nonnegative_causal, nonnegative_hgt, nonnegative_gcsn, nonnegative_dg2n, gtenegativeone_gcn, gtenegativeone_gbt, gtenegativeone_causal, gtenegativeone_hgt, gtenegativeone_gcsn, gtenegativeone_dg2n
+
+plume-lib:
+  Successful models: 18/18
+  Models: positive_gcn, positive_gbt, positive_causal, positive_hgt, positive_gcsn, positive_dg2n, nonnegative_gcn, nonnegative_gbt, nonnegative_causal, nonnegative_hgt, nonnegative_gcsn, nonnegative_dg2n, gtenegativeone_gcn, gtenegativeone_gbt, gtenegativeone_causal, gtenegativeone_hgt, gtenegativeone_gcsn, gtenegativeone_dg2n
+
+ANNOTATION TYPE COVERAGE
+------------------------
+This analysis covers the three main Lower Bound Checker annotation types:
+- @Positive: Values that must be positive (> 0)
+- @NonNegative: Values that must be non-negative (>= 0)
+- @GTENegativeOne: Values that must be >= -1
+
+FILES GENERATED
+---------------
+All annotation type prediction files saved to: predictions_annotation_types/
+Files include:
+- Individual annotation type predictions per project
+- Annotation type comparison files per project
+- Human-readable reports for manual inspection

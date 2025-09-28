@@ -1,0 +1,66 @@
+{
+  "model_name": "nonnegative_dg2n_annotation",
+  "project_name": "jfreechart",
+  "timestamp": "20250927_222210",
+  "metadata": {
+    "annotation_type": "@NonNegative",
+    "base_model": "dg2n",
+    "model_type": "NONNEGATIVE_DG2N_ANNOTATION",
+    "project_path": "case_studies/jfreechart",
+    "hyperparameters": {
+      "episodes": 50,
+      "base_model": "dg2n"
+    }
+  },
+  "predictions": [
+    {
+      "line": 23,
+      "node_type": "method",
+      "label": "public void drawChart(Graphics2D g2d)",
+      "confidence": 0.6859999999999999,
+      "annotation_type": "@NonNegative",
+      "base_model": "dg2n",
+      "reasoning": "Method might return non-negative values (predicted by DG2N model)"
+    },
+    {
+      "line": 156,
+      "node_type": "variable",
+      "label": "private ChartData dataset",
+      "confidence": 0.8036,
+      "annotation_type": "@NonNegative",
+      "base_model": "dg2n",
+      "reasoning": "Variable/parameter should not be negative (predicted by DG2N model)"
+    },
+    {
+      "line": 234,
+      "node_type": "parameter",
+      "label": "double value parameter",
+      "confidence": 0.8036,
+      "annotation_type": "@NonNegative",
+      "base_model": "dg2n",
+      "reasoning": "Variable/parameter should not be negative (predicted by DG2N model)"
+    }
+  ],
+  "summary": {
+    "total_predictions": 3,
+    "prediction_types": {
+      "total_count": 3,
+      "line_numbers": [
+        23,
+        156,
+        234
+      ],
+      "confidence_scores": [
+        0.6859999999999999,
+        0.8036,
+        0.8036
+      ],
+      "node_types": {
+        "method": 1,
+        "variable": 1,
+        "parameter": 1
+      },
+      "avg_confidence": 0.7643999999999999
+    }
+  }
+}

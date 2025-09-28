@@ -1,0 +1,66 @@
+{
+  "model_name": "gtenegativeone_hgt_annotation",
+  "project_name": "guava",
+  "timestamp": "20250927_224911",
+  "metadata": {
+    "annotation_type": "@GTENegativeOne",
+    "base_model": "hgt",
+    "model_type": "GTENEGATIVEONE_HGT_ANNOTATION",
+    "project_path": "case_studies/guava",
+    "hyperparameters": {
+      "episodes": 50,
+      "base_model": "hgt"
+    }
+  },
+  "predictions": [
+    {
+      "line": 45,
+      "node_type": "method",
+      "label": "public static List<String> getStrings()",
+      "confidence": 0.663,
+      "annotation_type": "@GTENegativeOne",
+      "base_model": "hgt",
+      "reasoning": "Method might return index-like values (predicted by HGT model)"
+    },
+    {
+      "line": 67,
+      "node_type": "variable",
+      "label": "private final Map<String, Object> cache",
+      "confidence": 0.765,
+      "annotation_type": "@GTENegativeOne",
+      "base_model": "hgt",
+      "reasoning": "Variable might store index-like values (predicted by HGT model)"
+    },
+    {
+      "line": 89,
+      "node_type": "parameter",
+      "label": "String input parameter",
+      "confidence": 0.918,
+      "annotation_type": "@GTENegativeOne",
+      "base_model": "hgt",
+      "reasoning": "Parameter likely to be array index or similar (>= -1) (predicted by HGT model)"
+    }
+  ],
+  "summary": {
+    "total_predictions": 3,
+    "prediction_types": {
+      "total_count": 3,
+      "line_numbers": [
+        45,
+        67,
+        89
+      ],
+      "confidence_scores": [
+        0.663,
+        0.765,
+        0.918
+      ],
+      "node_types": {
+        "method": 1,
+        "variable": 1,
+        "parameter": 1
+      },
+      "avg_confidence": 0.782
+    }
+  }
+}

@@ -1,0 +1,1272 @@
+AndExample.java:12:30: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @IndexFor(value = "iYearInfoCache") immediately before type, after modifiers [private, static, final]
+ArrayAssignmentSameLen.java:8:23: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @IndexFor(value = "i_array") immediately before type, after modifiers [private, final]
+ArrayAssignmentSameLen.java:19:13: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf("a") int
+required: @LTLengthOf(value={"array", "b"}, offset={"0", "-3"}) int
+ArrayAssignmentSameLen.java:26:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf("a") int
+required: @LTLengthOf({"c", "b"}) int
+ArrayAssignmentSameLen.java:36:13: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf("a") int
+required: @LTLengthOf(value={"c1", "c1"}, offset={"0", "x"}) int
+ArrayConstructionPositiveLength.java:9:34: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : String []
+required: String @ArrayLenRange(from=1) []
+ArrayConstructionPositiveLength.java:9:45: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+ArrayCreationChecks.java:7:36: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+ArrayCreationChecks.java:9:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+ArrayCreationChecks.java:9:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="newArray", offset="y - 1") int
+required: @LTLengthOf("newArray") int
+ArrayCreationChecks.java:11:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+ArrayCreationChecks.java:11:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="newArray", offset="x - 1") int
+required: @LTLengthOf("newArray") int
+ArrayCreationChecks.java:15:36: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+ArrayCreationChecks.java:17:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+ArrayCreationChecks.java:17:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="newArray", offset="y - 1") int
+required: @LTLengthOf("newArray") int
+ArrayCreationChecks.java:19:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+ArrayCreationChecks.java:19:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="newArray", offset="x - 1") int
+required: @LTEqLengthOf("newArray") int
+ArrayCreationChecks.java:23:36: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+ArrayCreationChecks.java:25:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+ArrayCreationChecks.java:25:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="newArray", offset="y - 1") int
+required: @LTEqLengthOf("newArray") int
+ArrayCreationChecks.java:27:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+ArrayCreationChecks.java:27:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="newArray", offset="x - 1") int
+required: @LTEqLengthOf("newArray") int
+ArrayCreationChecks.java:32:36: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+ArrayCreationChecks.java:34:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="newArray", offset="y - 1") int
+required: @LTEqLengthOf("newArray") int
+ArrayCreationChecks.java:37:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+ArrayCreationChecks.java:37:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="newArray", offset="x - 1") int
+required: @LTEqLengthOf("newArray") int
+ArrayCreationChecks.java:42:36: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+ArrayCreationChecks.java:45:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+ArrayCreationChecks.java:45:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="newArray", offset="y - 1") int
+required: @LTEqLengthOf("newArray") int
+ArrayCreationChecks.java:48:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+ArrayCreationChecks.java:48:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="newArray", offset="x - 1") int
+required: @LTEqLengthOf("newArray") int
+ArrayCreationChecks.java:53:36: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+ArrayCreationChecks.java:56:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+ArrayCreationChecks.java:56:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="newArray", offset="y - 1") int
+required: @LTLengthOf("newArray") int
+ArrayCreationChecks.java:59:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+ArrayCreationChecks.java:59:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="newArray", offset="x - 1") int
+required: @LTEqLengthOf("newArray") int
+ArrayIntro.java:14:34: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int @ArrayLen(3) []
+required: int @ArrayLenRange(from=4) []
+ArrayIntro.java:16:34: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int @ArrayLen(4) []
+required: int @ArrayLenRange(from=7) []
+ArrayIntro.java:18:35: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int @ArrayLen(12) []
+required: int @ArrayLenRange(from=16) []
+ArrayWrapper.java:26:16: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @LengthOf(value = "this") immediately before type, after modifiers [public]
+ArrayWrapper.java:52:19: compiler.err.proc.messager: [argument] incompatible argument for parameter index of ArrayWrapper.set.
+found   : int
+required: @NonNegative int
+ArraysSort.java:10:30: compiler.err.proc.messager: [argument] incompatible argument for parameter toIndex of Arrays.sort.
+found   : @UpperBoundLiteral(11) int
+required: @LTEqLengthOf("nums") int
+BasicSubsequence.java:6:5: compiler.err.proc.messager: [not.final] The Index Checker cannot prove that the expression this.x is effectively final, but it is used in a HasSubsequence expression.
+BasicSubsequence.java:6:5: compiler.err.proc.messager: [not.final] The Index Checker cannot prove that the expression this.y is effectively final, but it is used in a HasSubsequence expression.
+BasicSubsequence.java:16:13: compiler.err.proc.messager: [from.not.nonnegative] While attempting to validate a subsequence type, the Lower Bound Checker could not prove that this.x is non-negative.
+found   : @LowerBoundUnknown
+required: an integer >= 0 (@NonNegative or @Positive)
+BasicSubsequence.java:16:13: compiler.err.proc.messager: [to.not.ltel] While attempting to validate a subsequence type, the Upper Bound Checker could not prove that this.y is less than or equal to the length of this.
+found   : @UpperBoundUnknown
+required: @IndexOrHigh("this") or @LTEqLengthOf("this") -- an integer less than or equal to this's length
+BasicSubsequence.java:22:13: compiler.err.proc.messager: [from.not.nonnegative] While attempting to validate a subsequence type, the Lower Bound Checker could not prove that this.x is non-negative.
+found   : @LowerBoundUnknown
+required: an integer >= 0 (@NonNegative or @Positive)
+BasicSubsequence.java:22:13: compiler.err.proc.messager: [to.not.ltel] While attempting to validate a subsequence type, the Upper Bound Checker could not prove that this.y is less than or equal to the length of this.
+found   : @UpperBoundUnknown
+required: @IndexOrHigh("this") or @LTEqLengthOf("this") -- an integer less than or equal to this's length
+BasicSubsequence.java:28:13: compiler.err.proc.messager: [from.gt.to] While attempting to validate a subsequence type, the LessThan Checker could not prove that this.x is less than or equal to this.y.
+found   : @LessThanUnknown
+required: an integer <= this.y (@LessThan("this.y + 1"))
+BasicSubsequence.java:28:13: compiler.err.proc.messager: [from.not.nonnegative] While attempting to validate a subsequence type, the Lower Bound Checker could not prove that this.x is non-negative.
+found   : @LowerBoundUnknown
+required: an integer >= 0 (@NonNegative or @Positive)
+BasicSubsequence.java:28:13: compiler.err.proc.messager: [to.not.ltel] While attempting to validate a subsequence type, the Upper Bound Checker could not prove that this.y is less than or equal to the length of this.
+found   : @UpperBoundUnknown
+required: @IndexOrHigh("this") or @LTEqLengthOf("this") -- an integer less than or equal to this's length
+BasicSubsequence.java:34:13: compiler.err.proc.messager: [from.not.nonnegative] While attempting to validate a subsequence type, the Lower Bound Checker could not prove that this.x is non-negative.
+found   : @LowerBoundUnknown
+required: an integer >= 0 (@NonNegative or @Positive)
+BasicSubsequence.java:34:13: compiler.err.proc.messager: [to.not.ltel] While attempting to validate a subsequence type, the Upper Bound Checker could not prove that this.y is less than or equal to the length of this.
+found   : @UpperBoundUnknown
+required: @IndexOrHigh("this") or @LTEqLengthOf("this") -- an integer less than or equal to this's length
+BasicSubsequence.java:40:13: compiler.err.proc.messager: [from.gt.to] While attempting to validate a subsequence type, the LessThan Checker could not prove that this.x is less than or equal to this.y.
+found   : @LessThanUnknown
+required: an integer <= this.y (@LessThan("this.y + 1"))
+BasicSubsequence.java:40:13: compiler.err.proc.messager: [from.not.nonnegative] While attempting to validate a subsequence type, the Lower Bound Checker could not prove that this.x is non-negative.
+found   : @LowerBoundUnknown
+required: an integer >= 0 (@NonNegative or @Positive)
+BasicSubsequence.java:40:13: compiler.err.proc.messager: [to.not.ltel] While attempting to validate a subsequence type, the Upper Bound Checker could not prove that this.y is less than or equal to the length of this.
+found   : @UpperBoundUnknown
+required: @IndexOrHigh("this") or @LTEqLengthOf("this") -- an integer less than or equal to this's length
+BasicSubsequence.java:47:13: compiler.warn.proc.messager: [which.subsequence] The Index Checker cannot prove that this is a subsequence. The Index Checker did prove that this.x is non-negative, that this.x is less than or equal to this.y, and that this.y is less than or equal to the length of this. You should manually verify that this is actually the name of the subsequence that the Index Checker verified, and then suppress this warning.
+BasicSubsequence2.java:14:15: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @IndexFor(value = "array") immediately before type, after modifiers [final]
+BasicSubsequence2.java:17:15: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @IndexOrHigh(value = "array") immediately before type, after modifiers [final]
+BasicSubsequence3.java:16:15: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @IndexFor(value = "array") immediately before type, after modifiers [final]
+BasicSubsequence3.java:19:15: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @IndexOrHigh(value = "array") immediately before type, after modifiers [final]
+BinomialTest.java:9:27: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+BinomialTest.java:20:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf(value="BinomialTest.factorials", offset="2") int
+BinomialTest.java:36:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf(value="BinomialTest.factorials", offset="1") int
+BinomialTest.java:47:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf(value="BinomialTest.factorials", offset="0") int
+BinomialTest.java:58:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf(value="BinomialTest.factorials", offset="3") int
+BinomialTest.java:69:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf(value="BinomialTest.factorials", offset="4") int
+BitSetLowerBound.java:12:29: compiler.err.proc.messager: [argument] incompatible argument for parameter bitIndex of BitSet.clear.
+found   : @GTENegativeOne int
+required: @NonNegative int
+CharSequenceTest.java:18:27: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : StringBuilder
+required: @ArrayLenRange(from=10) CharSequence
+CharSequenceTest.java:27:28: compiler.err.proc.messager: [argument] incompatible argument for parameter endIndex of String.subSequence.
+found   : @UpperBoundLiteral(13) int
+required: @LTEqLengthOf("str") int
+CharSequenceTest.java:40:18: compiler.err.proc.messager: [argument] incompatible argument for parameter i of CharSequenceTest.sink.
+found   : @UpperBoundLiteral(8) int
+required: @LTEqLengthOf("sb") int
+CharSequenceTest.java:69:19: compiler.err.proc.messager: [argument] incompatible argument for parameter arg0 of CharSequence.charAt.
+found   : int
+required: @NonNegative int
+CharSequenceTest.java:69:19: compiler.err.proc.messager: [argument] incompatible argument for parameter arg0 of CharSequence.charAt.
+found   : int
+required: @LTLengthOf("cs") int
+CharSequenceTest.java:71:24: compiler.err.proc.messager: [argument] incompatible argument for parameter arg0 of CharSequence.subSequence.
+found   : int
+required: @NonNegative int
+CharSequenceTest.java:71:24: compiler.err.proc.messager: [argument] incompatible argument for parameter arg0 of CharSequence.subSequence.
+found   : int
+required: @LTEqLengthOf("cs") int
+CharSequenceTest.java:77:24: compiler.err.proc.messager: [argument] incompatible argument for parameter arg1 of Appendable.append.
+found   : @UpperBoundLiteral(1) int
+required: @LTEqLengthOf("cs") int
+CharSequenceTest.java:77:27: compiler.err.proc.messager: [argument] incompatible argument for parameter arg2 of Appendable.append.
+found   : @UpperBoundLiteral(2) int
+required: @LTEqLengthOf("cs") int
+CharSequenceTest.java:83:24: compiler.err.proc.messager: [argument] incompatible argument for parameter start of StringWriter.append.
+found   : @UpperBoundLiteral(1) int
+required: @LTEqLengthOf("cs") int
+CharSequenceTest.java:83:27: compiler.err.proc.messager: [argument] incompatible argument for parameter end of StringWriter.append.
+found   : @UpperBoundLiteral(2) int
+required: @LTEqLengthOf("cs") int
+CombineFacts.java:14:12: compiler.err.proc.messager: [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+found   : @LTLengthOf(value={"a1", "a2"}, offset={"0", "-1"}) int
+required: @IndexFor("a2") or @LTLengthOf("a2") -- an integer less than a2's length
+ConstantArrays.java:11:20: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int []
+required: @LTLengthOf("b") int []
+ConstantArrays.java:11:31: compiler.err.proc.messager: [array.initializer] incompatible types in array initializer.
+found   : @UpperBoundLiteral(4) int
+required: @LTLengthOf("b") int
+ConstantArrays.java:16:20: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int []
+required: @LTEqLengthOf("b") int []
+ConstantArrays.java:16:29: compiler.err.proc.messager: [array.initializer] incompatible types in array initializer.
+found   : @UpperBoundLiteral(5) int
+required: @LTEqLengthOf("b") int
+ConstantArrays.java:26:14: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int []
+required: @LTLengthOf(value={"b", "b2"}, offset={"-2", "5"}) int []
+ConstantArrays.java:26:22: compiler.err.proc.messager: [array.initializer] incompatible types in array initializer.
+found   : @UpperBoundLiteral(5) int
+required: @LTLengthOf(value={"b", "b2"}, offset={"-2", "5"}) int
+ConstantsIndex.java:9:21: compiler.err.proc.messager: [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 3 could be larger than the array's bound
+found   : int @ArrayLen(3) []
+required: @MinLen(4) -- an array guaranteed to have at least 4 elements
+CustomContractWithArgs.java:63:14: compiler.err.proc.messager: [contracts.postcondition] postcondition of minLenWrong is not satisfied.
+found   : a is @ArrayLenRange(from=9)
+required: a is @ArrayLenRange(from=10)
+CustomContractWithArgs.java:86:17: compiler.err.proc.messager: [flowexpr.parse.error] cannot parse the expression [error for expression: #3; error: 3]
+CustomContractWithArgs.java:104:21: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf(value="a", offset="c + 1") int
+CustomContractWithArgs.java:123:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value={"a", "a"}, offset={"d + 1", "-11"}) int
+required: @LTLengthOf(value={"a", "a"}, offset={"d + 1", "-10"}) int
+CustomContractWithArgs.java:134:17: compiler.err.proc.messager: [contracts.conditional.postcondition.true.override] Subclass postcondition with result=true is weaker for 'this.b' in ltlPost.
+  In superclass CustomContractWithArgs.Base: @LTLengthOf(value={"a", "a"}, offset={"c + 1", "10"})
+  In subclass CustomContractWithArgs.DerivedInvalid: @org.checkerframework.checker.index.qual.LTLengthOf(value={"a", "a"}, offset={"c + 1", "9"})
+CustomContractWithArgs.java:136:13: compiler.err.proc.messager: [contracts.conditional.postcondition] conditional postcondition is not satisfied when ltlPost returns true.
+found   : no information about this.b
+required: this.b is @LTLengthOf(value={"a", "a"}, offset={"c + 1", "9"})
+CustomContractWithArgs.java:142:14: compiler.err.proc.messager: [contracts.precondition.override] Subclass precondition is stronger for 'this.b' in ltlPre.
+  In superclass CustomContractWithArgs.Base: @org.checkerframework.checker.index.qual.LTLengthOf(value={"a", "a"}, offset={"d + 1", "-10"})
+  In subclass CustomContractWithArgs.DerivedInvalid: @LTLengthOf(value={"a", "a"}, offset={"d + 1", "-9"})
+Dimension.java:7:15: compiler.err.proc.messager: [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+found   : @LTEqLengthOf("array") int
+required: @IndexFor("array") or @LTLengthOf("array") -- an integer less than array's length
+Dimension.java:16:25: compiler.err.proc.messager: [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+found   : @LTEqLengthOf("this.arrayField") int
+required: @IndexFor("this.arrayField") or @LTLengthOf("this.arrayField") -- an integer less than this.arrayField's length
+EnumValues.java:18:27: compiler.err.proc.messager: [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 4 could be larger than the array's bound
+found   : Direction @ArrayLen(4) []
+required: @MinLen(5) -- an array guaranteed to have at least 5 elements
+EqualToTransfer.java:17:35: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int @ArrayLen(1) []
+required: int @ArrayLenRange(from=2) []
+ErrorMessageCheck.java:7:27: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+ErrorMessageCheck.java:11:34: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+ErrorMessageCheck.java:13:17: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+ErrorMessageCheck.java:13:17: compiler.err.proc.messager: [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+found   : int
+required: @IndexFor("this.vDown") or @LTLengthOf("this.vDown") -- an integer less than this.vDown's length
+Errors.java:17:21: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : @GTENegativeOne int
+required: an integer >= 0 (@NonNegative or @Positive)
+Errors.java:19:21: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+ExampleUsage.java:30:21: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : @GTENegativeOne int
+required: an integer >= 0 (@NonNegative or @Positive)
+GreaterThanOrEqualTransfer.java:14:35: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int @ArrayLenRange(from=1) []
+required: int @ArrayLenRange(from=2) []
+GreaterThanTransfer.java:14:35: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int @ArrayLenRange(from=1) []
+required: int @ArrayLenRange(from=2) []
+GuavaPrimitives.java:25:15: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @IndexFor(value = "array") immediately before type, after modifiers [final]
+GuavaPrimitives.java:28:15: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @LTEqLengthOf(value = "array") immediately before type, after modifiers [final]
+GuavaPrimitives.java:31:23: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @IndexOrLow(value = "#1") immediately before type, after modifiers [public, static]
+GuavaPrimitives.java:37:24: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @IndexOrLow(value = "#1") immediately before type, after modifiers [private, static]
+GuavaPrimitives.java:48:24: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @IndexOrLow(value = "#1") immediately before type, after modifiers [private, static]
+GuavaPrimitives.java:72:12: compiler.err.proc.messager: [override.return] Incompatible return type.
+found   : int
+required: @NonNegative int
+Consequence: method in GuavaPrimitives
+  int size(GuavaPrimitives this)
+cannot override method in AbstractCollection<Short>
+  @NonNegative int size(AbstractCollection<Short> this)
+GuavaPrimitives.java:72:16: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @LTLengthOf(value = {"this", "array"}, offset = {"-1", "start - 1"}) immediately before type, after modifiers [public]
+GuavaPrimitives.java:132:58: compiler.err.proc.messager: [argument] incompatible argument for parameter capacity of StringBuilder constructor.
+found   : int
+required: @NonNegative int
+Index118.java:16:37: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+Index166.java:10:33: compiler.err.proc.messager: [argument] incompatible argument for parameter index of Index166.requiresIndex.
+found   : @UpperBoundLiteral(6) int
+required: @LTLengthOf(""012345"") int
+Index167.java:12:22: compiler.err.proc.messager: [argument] incompatible argument for parameter i of Index167.fn2.
+found   : @LTLengthOf("arr") int
+required: @LTOMLengthOf("arr") int
+Index167.java:16:22: compiler.err.proc.messager: [argument] incompatible argument for parameter i of Index167.fn2.
+found   : @LTLengthOf("arr") int
+required: @LTOMLengthOf("arr") int
+Index167.java:20:22: compiler.err.proc.messager: [argument] incompatible argument for parameter i of Index167.fn2.
+found   : @LTLengthOf("arr") int
+required: @LTOMLengthOf("arr") int
+Index167.java:25:23: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+Index176.java:14:41: compiler.err.proc.messager: [argument] incompatible argument for parameter endIndex of String.substring.
+found   : @LTLengthOf(value="arglist", offset="-2") int
+required: @LTEqLengthOf("arglist") int
+IndexForAverage.java:16:31: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf("a") int
+IndexForTest.java:15:15: compiler.err.proc.messager: [argument] incompatible argument for parameter i of IndexForTest.test1.
+found   : @UpperBoundLiteral(1) int
+required: @LTLengthOf("this.array") int
+IndexForTest.java:17:15: compiler.err.proc.messager: [argument] incompatible argument for parameter i of IndexForTest.test1.
+found   : @UpperBoundLiteral(2) int
+required: @LTLengthOf("this.array") int
+IndexForTest.java:19:20: compiler.err.proc.messager: [argument] incompatible argument for parameter i of IndexForTest.test1.
+found   : @LTEqLengthOf("this.array") int
+required: @LTLengthOf("this.array") int
+IndexForTest.java:25:25: compiler.err.proc.messager: [argument] incompatible argument for parameter i of IndexForTest.test1.
+found   : @LTEqLengthOf("this.array") int
+required: @LTLengthOf("this.array") int
+IndexForTest.java:35:19: compiler.err.proc.messager: [argument] incompatible argument for parameter i of IndexForTest.test1.
+found   : @LTEqLengthOf("this.array") int
+required: @LTLengthOf("this.array") int
+IndexForTest.java:46:15: compiler.err.proc.messager: [argument] incompatible argument for parameter i of IndexForTest.test2.
+found   : @UpperBoundLiteral(1) int
+required: @LTLengthOf("this.array") int
+IndexForTest.java:48:15: compiler.err.proc.messager: [argument] incompatible argument for parameter i of IndexForTest.test2.
+found   : @UpperBoundLiteral(2) int
+required: @LTLengthOf("this.array") int
+IndexForTest.java:50:20: compiler.err.proc.messager: [argument] incompatible argument for parameter i of IndexForTest.test2.
+found   : @LTEqLengthOf("this.array") int
+required: @LTLengthOf("this.array") int
+IndexForTest.java:56:25: compiler.err.proc.messager: [argument] incompatible argument for parameter i of IndexForTest.test2.
+found   : @LTEqLengthOf("this.array") int
+required: @LTLengthOf("this.array") int
+IndexForTest.java:63:19: compiler.err.proc.messager: [argument] incompatible argument for parameter i of IndexForTest.test2.
+found   : @LTEqLengthOf("this.array") int
+required: @LTLengthOf("this.array") int
+IndexForTestLBC.java:20:28: compiler.err.proc.messager: [argument] incompatible argument for parameter i of IndexForTestLBC.test1.
+found   : @GTENegativeOne int
+required: @NonNegative int
+IndexForTestLBC.java:23:19: compiler.err.proc.messager: [argument] incompatible argument for parameter i of IndexForTestLBC.test1.
+found   : int
+required: @NonNegative int
+IndexForVarargs.java:14:13: compiler.err.proc.messager: [argument] incompatible argument for parameter i of IndexForVarargs.get.
+found   : @UpperBoundLiteral(1) int
+required: @LTLengthOf("new java.lang.String[]") int
+IndexForVarargs.java:17:13: compiler.err.proc.messager: [argument] incompatible argument for parameter i of IndexForVarargs.get.
+found   : @UpperBoundLiteral(2) int
+required: @LTLengthOf("new java.lang.String[] {"abc"}") int
+IndexForVarargs.java:23:16: compiler.err.proc.messager: [argument] incompatible argument for parameter i of IndexForVarargs.method.
+found   : @UpperBoundLiteral(2) int
+required: @LTLengthOf("new java.lang.String[][] {stringArg3}") int
+IndexForVarargs.java:26:13: compiler.err.proc.messager: [argument] incompatible argument for parameter i of IndexForVarargs.get.
+found   : @UpperBoundLiteral(3) int
+required: @LTLengthOf("stringArg2") int
+IndexIssue6046.java:22:35: compiler.err.proc.messager: [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+found   : Result<V extends Record> []
+required: @MinLen(1) -- an array guaranteed to have at least 1 elements
+IndexOrLowTests.java:20:15: compiler.err.proc.messager: [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+found   : @LTEqLengthOf("this.array") int
+required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
+IndexOrLowTests.java:25:22: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf("this.array") int
+required: @LTLengthOf("this.array") int
+IndexOrLowTests.java:32:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @GTENegativeOne int
+IntroAdd.java:9:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(3) int
+required: @LTLengthOf("arr") int
+IntroAdd.java:15:19: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf("arr") int
+required: @LTLengthOf("arr") int
+IntroAdd.java:24:19: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="arr", offset="-7") int
+required: @LTLengthOf("arr") int
+IntroAnd.java:18:21: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+IntroAnd.java:18:21: compiler.err.proc.messager: [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+found   : int
+required: @IndexFor("a") or @LTLengthOf("a") -- an integer less than a's length
+IntroAnd.java:23:21: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+IntroAnd.java:23:21: compiler.err.proc.messager: [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+found   : int
+required: @IndexFor("a") or @LTLengthOf("a") -- an integer less than a's length
+IntroAnd.java:25:25: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+IntroAnd.java:25:25: compiler.err.proc.messager: [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+found   : int
+required: @IndexFor("a") or @LTLengthOf("a") -- an integer less than a's length
+IntroSub.java:9:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(3) int
+required: @LTLengthOf("arr") int
+IntroSub.java:15:19: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf("arr") int
+required: @LTLengthOf("arr") int
+IntroSub.java:24:19: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="arr", offset="-7") int
+required: @LTLengthOf("arr") int
+IntroSub.java:27:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(7) int
+required: @LTEqLengthOf("arr") int
+InvalidSubsequence.java:9:5: compiler.err.proc.messager: [flowexpr.parse.error] cannot parse the expression Invalid 'banana' because identifier not found
+InvalidSubsequence.java:9:5: compiler.err.proc.messager: [not.final] The Index Checker cannot prove that the expression this.from is effectively final, but it is used in a HasSubsequence expression.
+InvalidSubsequence.java:9:5: compiler.err.proc.messager: [not.final] The Index Checker cannot prove that the expression this.to is effectively final, but it is used in a HasSubsequence expression.
+InvalidSubsequence.java:13:5: compiler.err.proc.messager: [flowexpr.parse.error] cannot parse the expression Invalid 'banana' because identifier not found
+InvalidSubsequence.java:13:5: compiler.err.proc.messager: [not.final] The Index Checker cannot prove that the expression this.to is effectively final, but it is used in a HasSubsequence expression.
+InvalidSubsequence.java:17:5: compiler.err.proc.messager: [flowexpr.parse.error] cannot parse the expression Invalid 'banana' because identifier not found
+InvalidSubsequence.java:17:5: compiler.err.proc.messager: [not.final] The Index Checker cannot prove that the expression this.from is effectively final, but it is used in a HasSubsequence expression.
+InvalidSubsequence.java:21:5: compiler.err.proc.messager: [not.final] The Index Checker cannot prove that the expression this.from is effectively final, but it is used in a HasSubsequence expression.
+InvalidSubsequence.java:33:13: compiler.err.proc.messager: [to.not.ltel] While attempting to validate a subsequence type, the Upper Bound Checker could not prove that this.to is less than or equal to the length of banana.
+found   : @LTEqLengthOf("this.a")
+required: @IndexOrHigh("banana") or @LTEqLengthOf("banana") -- an integer less than or equal to banana's length
+InvalidSubsequence.java:38:13: compiler.err.proc.messager: [from.gt.to] While attempting to validate a subsequence type, the LessThan Checker could not prove that banana is less than or equal to this.to.
+found   : @LessThanUnknown
+required: an integer <= this.to (@LessThan("this.to + 1"))
+InvalidSubsequence.java:38:13: compiler.err.proc.messager: [from.not.nonnegative] While attempting to validate a subsequence type, the Lower Bound Checker could not prove that banana is non-negative.
+found   : @LowerBoundUnknown
+required: an integer >= 0 (@NonNegative or @Positive)
+InvalidSubsequence.java:38:13: compiler.err.proc.messager: [to.not.ltel] While attempting to validate a subsequence type, the Upper Bound Checker could not prove that this.to is less than or equal to the length of this.
+found   : @LTEqLengthOf("this.a")
+required: @IndexOrHigh("this") or @LTEqLengthOf("this") -- an integer less than or equal to this's length
+InvalidSubsequence.java:43:13: compiler.err.proc.messager: [from.gt.to] While attempting to validate a subsequence type, the LessThan Checker could not prove that this.from is less than or equal to banana.
+found   : @LessThan("this.to")
+required: an integer <= banana (@LessThan("banana + 1"))
+InvalidSubsequence.java:43:13: compiler.err.proc.messager: [to.not.ltel] While attempting to validate a subsequence type, the Upper Bound Checker could not prove that banana is less than or equal to the length of this.
+found   : @UpperBoundUnknown
+required: @IndexOrHigh("this") or @LTEqLengthOf("this") -- an integer less than or equal to this's length
+InvalidSubsequence.java:48:13: compiler.err.proc.messager: [from.gt.to] While attempting to validate a subsequence type, the LessThan Checker could not prove that this.from is less than or equal to 10.
+found   : @LessThan("this.to")
+required: an integer <= 10 (@LessThan("10 + 1"))
+InvalidSubsequence.java:48:13: compiler.err.proc.messager: [to.not.ltel] While attempting to validate a subsequence type, the Upper Bound Checker could not prove that 10 is less than or equal to the length of this.
+found   : @UpperBoundUnknown
+required: @IndexOrHigh("this") or @LTEqLengthOf("this") -- an integer less than or equal to this's length
+Issue194.java:12:20: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @LengthOf(value = "this") immediately before type, after modifiers [public]
+Issue1984.java:9:18: compiler.err.proc.messager: [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
+index type found: @IntRange(from=0, to=12) int
+array type found: int []
+required        : index of type @IndexFor("a") or @LTLengthOf("a"), or array of type @MinLen(13)
+Issue2029.java:8:31: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+Issue2029.java:9:13: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+Issue2029.java:13:17: compiler.err.proc.messager: [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+found   : @LTLengthOf(value="array", offset="k") int
+required: @IndexFor("array") or @LTLengthOf("array") -- an integer less than array's length
+Issue2029.java:18:29: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+Issue2029.java:20:45: compiler.err.proc.messager: [unary.increment] increment result incompatible with variable declared type.
+found   : int
+required: @LessThan("size + 1") int
+Issue2029.java:21:17: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+Issue2420.java:14:47: compiler.err.proc.messager: [argument] incompatible argument for parameter index of String.charAt.
+found   : @LTLengthOf(value="argStr", offset="0") int
+required: @LTLengthOf(""abc"") int
+Issue2420.java:16:45: compiler.err.proc.messager: [argument] incompatible argument for parameter index of String.charAt.
+found   : @LTEqLengthOf("argStr") int
+required: @LTLengthOf(""abc"") int
+Issue2452.java:39:22: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf("s") int
+required: @LTLengthOf("s") int
+Issue2494.java:14:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+Issue3224.java:34:61: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : String @ArrayLenRange []
+required: String @ArrayLenRange(from=1) []
+Issue3224.java:39:51: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : String []
+required: String @ArrayLenRange(from=1) []
+LTLDivide.java:22:21: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf("array") int
+required: @LTLengthOf("array") int
+LTLDivide.java:29:23: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="array", offset="-2") int
+required: @LTLengthOf("array") int
+LTLengthOfPostcondition.java:19:15: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="this.array", offset="x - 1") int
+required: @LTEqLengthOf("this.array") int
+LTLengthOfPostcondition.java:24:28: compiler.err.proc.messager: [argument] incompatible argument for parameter fromIndex of Arrays.fill.
+found   : int
+required: @NonNegative int
+LTLengthOfPostcondition.java:24:37: compiler.err.proc.messager: [argument] incompatible argument for parameter toIndex of Arrays.fill.
+found   : int
+required: @NonNegative int
+LTLengthOfPostcondition.java:24:37: compiler.err.proc.messager: [argument] incompatible argument for parameter toIndex of Arrays.fill.
+found   : @LTLengthOf(value="this.array", offset="-x - 1") int
+required: @LTEqLengthOf("this.array") int
+LTLengthOfPostcondition.java:26:28: compiler.err.proc.messager: [argument] incompatible argument for parameter fromIndex of Arrays.fill.
+found   : int
+required: @NonNegative int
+LTLengthOfPostcondition.java:26:37: compiler.err.proc.messager: [argument] incompatible argument for parameter toIndex of Arrays.fill.
+found   : int
+required: @NonNegative int
+LTLengthOfPostcondition.java:35:15: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="this.array", offset="x - 1") int
+required: @LTEqLengthOf("this.array") int
+LTLengthOfPostcondition.java:41:32: compiler.err.proc.messager: [argument] incompatible argument for parameter fromIndex of Arrays.fill.
+found   : int
+required: @NonNegative int
+LTLengthOfPostcondition.java:41:41: compiler.err.proc.messager: [argument] incompatible argument for parameter toIndex of Arrays.fill.
+found   : int
+required: @NonNegative int
+LengthOfArrayMinusOne.java:5:32: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : @GTENegativeOne int
+required: an integer >= 0 (@NonNegative or @Positive)
+LengthOfTest.java:10:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf("a") int
+required: @LTLengthOf("a") int
+LessThanBug.java:14:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LessThan("1") int
+LessThanCustomCollection.java:22:23: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @IndexOrHigh(value = "array") immediately before type, after modifiers [private, final]
+LessThanCustomCollection.java:25:23: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @LTLengthOf(value = {"array", "this"}, offset = {" - 1", "- start"}) immediately before type, after modifiers [private, final]
+LessThanCustomCollection.java:35:20: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf("array") int
+required: @LTLengthOf(value={"this.array", "this"}, offset={"-1", "-this.start"}) int
+LessThanCustomCollection.java:38:22: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LessThan("end + 1") int
+required: @LessThan("this.end + 1") int
+LessThanCustomCollection.java:50:27: compiler.err.proc.messager: [argument] incompatible argument for parameter index of LessThanCustomCollection.checkElementIndex.
+found   : int
+required: @LessThan("this.length()") int
+LessThanCustomCollection.java:54:28: compiler.err.proc.messager: [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+found   : @LTLengthOf(value={"this", "this.array"}, offset={"-this.start", "-index - 1"}) int
+required: @IndexFor("this.array") or @LTLengthOf("this.array") -- an integer less than this.array's length
+LessThanCustomCollection.java:65:16: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @IndexOrLow(value = "this") immediately before type, after modifiers [public]
+LessThanCustomCollection.java:70:26: compiler.err.proc.messager: [return] incompatible types in return.
+type of expression: int
+method return type: @GTENegativeOne int
+LessThanDec.java:9:24: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @IndexOrLow(value = "#1") immediately before type, after modifiers [private, static]
+LessThanFloat.java:21:5: compiler.err.proc.messager: [anno.on.irrelevant] Annotation [@LessThan(value = "bigger")] is not applicable to @org.checkerframework.checker.index.qual.LessThan({"bigger"}) float; only applicable to [java.lang.Long, java.lang.Character, java.lang.Integer, short, long, char, byte, java.lang.Short, java.lang.Byte, int]
+LessThanFloat.java:25:5: compiler.err.proc.messager: [anno.on.irrelevant] Annotation [@LessThan(value = "bigger")] is not applicable to @org.checkerframework.checker.index.qual.LessThan({"bigger"}) double; only applicable to [java.lang.Long, java.lang.Character, java.lang.Integer, short, long, char, byte, java.lang.Short, java.lang.Byte, int]
+LessThanFloat.java:29:5: compiler.err.proc.messager: [anno.on.irrelevant] Annotation [@LessThan(value = "bigger")] is not applicable to @org.checkerframework.checker.index.qual.LessThan({"bigger"}) boolean; only applicable to [java.lang.Long, java.lang.Character, java.lang.Integer, short, long, char, byte, java.lang.Short, java.lang.Byte, int]
+LessThanFloat.java:48:5: compiler.err.proc.messager: [anno.on.irrelevant] Annotation [@LessThan(value = "bigger")] is not applicable to @org.checkerframework.checker.index.qual.LessThan({"bigger"}) java.lang.Float; only applicable to [java.lang.Long, java.lang.Character, java.lang.Integer, short, long, char, byte, java.lang.Short, java.lang.Byte, int]
+LessThanFloat.java:52:5: compiler.err.proc.messager: [anno.on.irrelevant] Annotation [@LessThan(value = "bigger")] is not applicable to @org.checkerframework.checker.index.qual.LessThan({"bigger"}) java.lang.Double; only applicable to [java.lang.Long, java.lang.Character, java.lang.Integer, short, long, char, byte, java.lang.Short, java.lang.Byte, int]
+LessThanFloat.java:56:5: compiler.err.proc.messager: [anno.on.irrelevant] Annotation [@LessThan(value = "bigger")] is not applicable to @org.checkerframework.checker.index.qual.LessThan({"bigger"}) java.lang.Boolean; only applicable to [java.lang.Long, java.lang.Character, java.lang.Integer, short, long, char, byte, java.lang.Short, java.lang.Byte, int]
+LessThanFloat.java:70:15: compiler.err.proc.messager: [anno.on.irrelevant] Annotation [@LessThan(value = "bigger")] is not applicable to java.lang.Float; only applicable to [java.lang.Long, java.lang.Character, java.lang.Integer, short, long, char, byte, java.lang.Short, java.lang.Byte, int]
+LessThanFloat.java:73:15: compiler.err.proc.messager: [anno.on.irrelevant] Annotation [@LessThan(value = "bigger")] is not applicable to java.lang.Double; only applicable to [java.lang.Long, java.lang.Character, java.lang.Integer, short, long, char, byte, java.lang.Short, java.lang.Byte, int]
+LessThanFloat.java:76:15: compiler.err.proc.messager: [anno.on.irrelevant] Annotation [@LessThan(value = "bigger")] is not applicable to java.lang.Boolean; only applicable to [java.lang.Long, java.lang.Character, java.lang.Integer, short, long, char, byte, java.lang.Short, java.lang.Byte, int]
+LessThanFloatLiteral.java:11:21: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LessThan("1") int
+LessThanLen.java:32:24: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf({"longer", "shorter"}) int
+required: @LTLengthOf("longer") int
+LessThanLen.java:39:47: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+LessThanLen.java:42:24: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf("shorter") int
+required: @LTLengthOf("longer") int
+LessThanLen.java:45:24: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf("shorter") int
+required: @LTEqLengthOf("longer") int
+LessThanLenBug.java:10:24: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf("shorter") int
+required: @LTLengthOf("longer") int
+LessThanOrEqualTransfer.java:14:35: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int @ArrayLenRange(from=1) []
+required: int @ArrayLenRange(from=2) []
+LessThanTransferTest.java:14:35: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int @ArrayLenRange(from=1) []
+required: int @ArrayLenRange(from=2) []
+LessThanValue.java:17:13: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LessThan("x") int
+required: @LessThan({"x", "y"}) int
+LessThanValue.java:27:24: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LessThan("x") int
+required: @LessThan({"x", "y"}) int
+LessThanValue.java:35:25: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LessThan("b") int
+required: @LessThan("c") int
+LessThanValue.java:70:45: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+LessThanValue.java:74:22: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+LessThanValue.java:90:31: compiler.err.proc.messager: [argument] incompatible argument for parameter start of LessThanValue.isLessThanOrEqual.
+found   : int
+required: @LessThan("deleteIndex + 1") int
+LessThanValue.java:101:47: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @IntRange(from=-1, to=1073741822) int
+required: @IntRange(from=0, to=2147483647) int
+LessThanValue.java:105:28: compiler.err.proc.messager: [argument] incompatible argument for parameter start of LessThanValue.isLessThan.
+found   : int
+required: @LessThan("countDivMinus") int
+LessThanValue.java:112:16: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @LessThan(value = "#2 + 1") immediately before type, after modifiers [static]
+LessThanValue.java:127:16: compiler.err.proc.messager: [return] incompatible types in return.
+type of expression: int
+method return type: @LessThan("minCapacity + 1") int
+Loops.java:10:19: compiler.err.proc.messager: [unary.increment] increment result incompatible with variable declared type.
+found   : @LTEqLengthOf("a") int
+required: @LTLengthOf("a") int
+Loops.java:17:20: compiler.err.proc.messager: [compound.assignment] expression type incompatible with left-hand side in compound assignment.
+found   : @LTEqLengthOf("a") int
+required: @LTLengthOf("a") int
+Loops.java:24:21: compiler.err.proc.messager: [compound.assignment] expression type incompatible with left-hand side in compound assignment.
+found   : @LTLengthOf(value={"a", "a"}, offset={"-offset", "-offset2"}) int
+required: @LTLengthOf("a") int
+Loops.java:37:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf("array") int
+Loops.java:40:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf("array") int
+Loops.java:47:21: compiler.err.proc.messager: [compound.assignment] expression type incompatible with left-hand side in compound assignment.
+found   : @LTLengthOf(value="a", offset="offset") int
+required: @LTLengthOf("a") int
+Loops.java:54:19: compiler.err.proc.messager: [unary.increment] increment result incompatible with variable declared type.
+found   : @LTEqLengthOf("a") int
+required: @LTLengthOf("a") int
+Loops.java:56:20: compiler.err.proc.messager: [compound.assignment] expression type incompatible with left-hand side in compound assignment.
+found   : @LTLengthOf(value="a", offset="-2") int
+required: @LTLengthOf("a") int
+Loops.java:58:21: compiler.err.proc.messager: [compound.assignment] expression type incompatible with left-hand side in compound assignment.
+found   : @LTLengthOf(value={"a", "a"}, offset={"-offset", "-offset2 - 2"}) int
+required: @LTLengthOf("a") int
+Loops.java:74:19: compiler.err.proc.messager: [unary.increment] increment result incompatible with variable declared type.
+found   : @LTLengthOf(value="a", offset="-1001") int
+required: @LTLengthOf(value="a", offset="-1000") int
+Loops.java:76:20: compiler.err.proc.messager: [compound.assignment] expression type incompatible with left-hand side in compound assignment.
+found   : @LTLengthOf(value="a", offset="-1002") int
+required: @LTLengthOf(value="a", offset="-1000") int
+Loops.java:78:21: compiler.err.proc.messager: [compound.assignment] expression type incompatible with left-hand side in compound assignment.
+found   : @LTLengthOf(value={"a", "a"}, offset={"-offset", "-offset2 - 1002"}) int
+required: @LTLengthOf("a") int
+Loops.java:82:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf(value="a", offset="-1000") int
+LubIndex.java:14:34: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int @ArrayLenRange(from=4) []
+required: int @ArrayLenRange(from=10) []
+LubIndex.java:17:34: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int @ArrayLenRange(from=4) []
+required: int []
+LubIndex.java:28:34: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int @ArrayLenRange(from=4) []
+required: int @ArrayLenRange(from=10) []
+LubIndex.java:31:34: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int @ArrayLenRange(from=4) []
+required: int []
+MinLenFieldInvar.java:20:5: compiler.err.proc.messager: [field.invariant.not.subtype] the qualifier for field minlen2 is not a subtype of the declared type
+found: @ArrayLenRange(from=1)
+declared type: @ArrayLenRange(from=2)
+MinLenFieldInvar.java:40:5: compiler.err.proc.messager: [field.invariant.not.found.superclass] the field invariant annotation is missing fields that are listed in the superclass field invariant.
+fields not found: minlen2
+MinLenFieldInvar.java:49:5: compiler.err.proc.messager: [field.invariant.not.subtype.superclass] the qualifier for field minlen2 is not a subtype of the qualifier in the superclass field invariant
+found: @ArrayLenRange(from=3)
+superclass type: @ArrayLenRange(from=4)
+MinLenFromPositive.java:7:31: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int []
+required: int @ArrayLenRange(from=1) []
+MinLenFromPositive.java:7:39: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+MinLenFromPositive.java:9:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @IntRange(from=1, to=2147483647) int
+MinLenFromPositive.java:32:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @IntRange(from=1, to=2147483647) int
+MinLenFromPositive.java:45:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @IntRange(from=-1, to=2147483647) int
+MinLenFromPositive.java:55:19: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @IntRange(from=1, to=2147483647) int
+MinLenFromPositive.java:56:31: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int []
+required: int @ArrayLenRange(from=1) []
+MinLenFromPositive.java:56:41: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+MinLenFromPositive.java:58:32: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int []
+required: int @ArrayLenRange(from=10) []
+MinLenFromPositive.java:58:42: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+MinLenFromPositive.java:61:35: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int @ArrayLenRange []
+required: int @ArrayLenRange(from=1) []
+MinLenFromPositive.java:61:43: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+MinLenIndexFor.java:18:14: compiler.err.proc.messager: [argument] incompatible argument for parameter i of MinLenIndexFor.test.
+found   : @UpperBoundLiteral(2) int
+required: @LTLengthOf("this.arrayLen2") int
+MinLenIndexFor.java:20:14: compiler.err.proc.messager: [argument] incompatible argument for parameter i of MinLenIndexFor.test.
+found   : @UpperBoundLiteral(3) int
+required: @LTLengthOf("this.arrayLen2") int
+MinLenIndexFor.java:39:15: compiler.err.proc.messager: [argument] incompatible argument for parameter i of MinLenIndexFor.test2.
+found   : @UpperBoundLiteral(5) int
+required: @LTEqLengthOf("this.arrayLen4") int
+MinLenOneAndLength.java:11:26: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf("b") int
+required: @LTLengthOf("b") int
+MinMaxIndex.java:26:28: compiler.err.proc.messager: [argument] incompatible argument for parameter index of String.charAt.
+found   : @LTEqLengthOf("str") int
+required: @LTLengthOf("str") int
+MinMaxIndex.java:33:29: compiler.err.proc.messager: [argument] incompatible argument for parameter index of String.charAt.
+found   : int
+required: @LTLengthOf("str1") int
+Modulo.java:13:19: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+Modulo.java:18:19: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+Modulo.java:18:19: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf("a") int
+NegativeArray.java:7:29: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+NotEnoughOffsets.java:12:5: compiler.err.proc.messager: [different.length.sequences.offsets] If offsets are provided, the annotation must contain the same number of sequences and offsets, but this annotation has 2 sequence(s) and 1 offset(s).
+NotEnoughOffsets.java:16:5: compiler.err.proc.messager: [different.length.sequences.offsets] If offsets are provided, the annotation must contain the same number of sequences and offsets, but this annotation has 1 sequence(s) and 2 offset(s).
+NotEqualTransfer.java:20:35: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int @ArrayLen(1) []
+required: int @ArrayLenRange(from=2) []
+OffsetAnnotations.java:9:40: compiler.err.proc.messager: [argument] incompatible argument for parameter len of BufferedReader.read.
+found   : @UpperBoundLiteral(7) int
+required: @LTLengthOf(value="buffer", offset="5 - 1") int
+OffsetAnnotations.java:16:41: compiler.err.proc.messager: [argument] incompatible argument for parameter len of BufferedWriter.write.
+found   : @UpperBoundLiteral(7) int
+required: @LTLengthOf(value="buffer", offset="5 - 1") int
+OffsetExample.java:29:21: compiler.err.proc.messager: [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+found   : @LTLengthOf(value={"a", "a", "a"}, offset={"-2", "-j", "j - 4"}) int
+required: @IndexFor("a") or @LTLengthOf("a") -- an integer less than a's length
+OffsetExample.java:58:19: compiler.err.proc.messager: [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+found   : @LTLengthOf(value={"a", "a"}, offset={"-1", "start - 1"}) int
+required: @IndexFor("a") or @LTLengthOf("a") -- an integer less than a's length
+OffsetsAndConstants.java:20:20: compiler.err.proc.messager: [argument] incompatible argument for parameter len of OffsetsAndConstants.read.
+found   : @UpperBoundLiteral(6) int
+required: @LTLengthOf(value="a", offset="5 - 1") int
+OffsetsAndConstants.java:22:20: compiler.err.proc.messager: [argument] incompatible argument for parameter len of OffsetsAndConstants.read.
+found   : @UpperBoundLiteral(7) int
+required: @LTLengthOf(value="a", offset="5 - 1") int
+OneOrTwo.java:13:42: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : @LowerBoundBottom Integer
+required: an integer >= 0 (@NonNegative or @Positive)
+OnlyCheckSubsequenceWhenAssigningToArray.java:11:15: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @IndexFor(value = "array") immediately before type, after modifiers [final]
+OnlyCheckSubsequenceWhenAssigningToArray.java:14:15: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @IndexOrHigh(value = "array") immediately before type, after modifiers [final]
+OnlyCheckSubsequenceWhenAssigningToArray.java:27:17: compiler.err.proc.messager: [from.gt.to] While attempting to validate a subsequence type, the LessThan Checker could not prove that this.start is less than or equal to this.end.
+found   : @LessThanUnknown
+required: an integer <= this.end (@LessThan("this.end + 1"))
+OnlyCheckSubsequenceWhenAssigningToArray.java:27:17: compiler.err.proc.messager: [to.not.ltel] While attempting to validate a subsequence type, the Upper Bound Checker could not prove that this.end is less than or equal to the length of this.
+found   : @LTEqLengthOf("this.array")
+required: @IndexOrHigh("this") or @LTEqLengthOf("this") -- an integer less than or equal to this's length
+ParserOffsetTest.java:56:23: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf("a") int
+ParserOffsetTest.java:59:21: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf("a") int
+required: @LTLengthOf(value="a", offset="1") int
+ParserOffsetTest.java:68:21: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf("a") int
+ParserOffsetTest.java:79:22: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="a", offset="-j + 1") int
+required: @LTLengthOf("a") int
+ParserOffsetTest.java:87:21: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+ParserOffsetTest.java:87:21: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf("a") int
+ParserOffsetTest.java:90:22: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+ParserOffsetTest.java:90:22: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf("a") int
+ParserOffsetTest.java:100:22: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf(value="a", offset="20") int
+ParserOffsetTest.java:103:22: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf("a") int
+PlusPlusBug.java:9:10: compiler.err.proc.messager: [unary.increment] increment result incompatible with variable declared type.
+found   : @LTEqLengthOf("this.array") int
+required: @LTLengthOf("this.array") int
+PlusPlusBug.java:11:9: compiler.err.proc.messager: [unary.increment] increment result incompatible with variable declared type.
+found   : @LTLengthOf(value="this.array", offset="-2") int
+required: @LTLengthOf("this.array") int
+PlusPlusBug.java:13:15: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="this.array", offset="-3") int
+required: @LTLengthOf("this.array") int
+Polymorphic.java:33:55: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int @SameLen({"a2", "b", "this.samelen_identity(a)", "this.samelen_identity(b)"}) []
+required: int @SameLen("banana") []
+Polymorphic.java:43:31: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf("a") int
+required: @LTLengthOf("b") int
+Polymorphic.java:48:31: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf("a") int
+required: @LTLengthOf("a") int
+Polymorphic.java:53:32: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf({"a", "b"}) int
+required: @LTLengthOf({"a", "b", "c"}) int
+Polymorphic.java:58:32: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf({"a", "b"}) int
+required: @LTEqLengthOf({"a", "b", "c"}) int
+Polymorphic2.java:25:51: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int @SameLen("this.mergeSameLen(a, b)") []
+required: int @SameLen("this.array1") []
+Polymorphic2.java:38:33: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf("this.array1") int
+Polymorphic2.java:46:33: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf("this.array1") int
+required: @LTLengthOf("this.array1") int
+Polymorphic3.java:18:27: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf("a") int
+required: @LTLengthOf("b") int
+Polymorphic3.java:23:27: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf("a") int
+required: @LTLengthOf("a") int
+Polymorphic3.java:28:28: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf({"a", "b"}) int
+required: @LTLengthOf({"a", "b", "c"}) int
+Polymorphic3.java:33:28: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf({"a", "b"}) int
+required: @LTEqLengthOf({"a", "b", "c"}) int
+PreAndPostDec.java:7:26: compiler.err.proc.messager: [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+found   : @LTEqLengthOf("args") int
+required: @IndexFor("args") or @LTLengthOf("args") -- an integer less than args's length
+PreAndPostDec.java:16:26: compiler.err.proc.messager: [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+found   : @LTEqLengthOf("args") int
+required: @IndexFor("args") or @LTLengthOf("args") -- an integer less than args's length
+PrimitiveWrappers.java:13:27: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+PrimitiveWrappers.java:14:27: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : Integer
+required: an integer >= 0 (@NonNegative or @Positive)
+RandomTest.java:11:9: compiler.err.proc.messager: [anno.on.irrelevant] Annotation [@LTLengthOf(value = "a")] is not applicable to @org.checkerframework.checker.index.qual.LTLengthOf({"a"}) double; only applicable to [java.lang.Long, java.lang.Character, java.lang.Integer, short, long, char, byte, java.lang.Short, java.lang.Byte, int]
+RangeIndex.java:7:19: compiler.err.proc.messager: [array.access.unsafe.high.range] Potentially unsafe array access: the index could be larger than the array's bound
+index type found: @IntRange(from=0, to=11) int
+array type found: int @ArrayLenRange(from=10) []
+required        : index of type @IndexFor("a") or @LTLengthOf("a"), or array of type @MinLen(12)
+RefineEq.java:11:33: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf("this.arr") int
+RefineEq.java:19:21: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(1) int
+required: @LTLengthOf("this.arr") int
+RefineEq.java:23:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf("this.arr") int
+RefineEq.java:29:33: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTEqLengthOf("this.arr") int
+RefineEq.java:39:21: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(1) int
+required: @LTEqLengthOf("this.arr") int
+RefineEq.java:43:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTEqLengthOf("this.arr") int
+RefineGT.java:13:33: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf("this.arr") int
+RefineGT.java:16:34: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf("this.arr") int
+RefineGT.java:24:18: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(2) int
+required: @LTLengthOf("this.arr") int
+RefineGT.java:30:21: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(2) int
+required: @LTLengthOf("this.arr") int
+RefineGT.java:37:33: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTEqLengthOf("this.arr") int
+RefineGT.java:40:34: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTEqLengthOf("this.arr") int
+RefineGT.java:48:18: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(2) int
+required: @LTLengthOf("this.arr") int
+RefineGT.java:54:21: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(2) int
+required: @LTLengthOf("this.arr") int
+RefineGTE.java:13:33: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf("this.arr") int
+RefineGTE.java:16:34: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf("this.arr") int
+RefineGTE.java:24:18: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(2) int
+required: @LTLengthOf("this.arr") int
+RefineGTE.java:30:21: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(2) int
+required: @LTLengthOf("this.arr") int
+RefineGTE.java:37:33: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTEqLengthOf("this.arr") int
+RefineGTE.java:40:34: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTEqLengthOf("this.arr") int
+RefineGTE.java:48:18: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(2) int
+required: @LTEqLengthOf("this.arr") int
+RefineGTE.java:54:21: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(2) int
+required: @LTEqLengthOf("this.arr") int
+RefineLT.java:16:18: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(2) int
+required: @LTLengthOf("this.arr") int
+RefineLT.java:22:21: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(2) int
+required: @LTLengthOf("this.arr") int
+RefineLT.java:29:33: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTEqLengthOf("this.arr") int
+RefineLT.java:32:34: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTEqLengthOf("this.arr") int
+RefineLT.java:40:18: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(2) int
+required: @LTEqLengthOf("this.arr") int
+RefineLT.java:46:21: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(2) int
+required: @LTEqLengthOf("this.arr") int
+RefineLTE.java:13:33: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf("this.arr") int
+RefineLTE.java:16:34: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf("this.arr") int
+RefineLTE.java:24:18: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(2) int
+required: @LTLengthOf("this.arr") int
+RefineLTE.java:30:21: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(2) int
+required: @LTLengthOf("this.arr") int
+RefineLTE.java:37:33: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTEqLengthOf("this.arr") int
+RefineLTE.java:40:34: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTEqLengthOf("this.arr") int
+RefineLTE.java:48:18: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(2) int
+required: @LTLengthOf("this.arr") int
+RefineLTE.java:54:21: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(2) int
+required: @LTLengthOf("this.arr") int
+RefineLTE2.java:18:23: compiler.err.proc.messager: [unary.increment] increment result incompatible with variable declared type.
+found   : @LTLengthOf(value="this.values", offset="-2") int
+required: @LTEqLengthOf("this.values") int
+RefineNeq.java:11:33: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf("this.arr") int
+RefineNeq.java:16:21: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(1) int
+required: @LTLengthOf("this.arr") int
+RefineNeq.java:23:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(1) int
+required: @LTLengthOf("this.arr") int
+RefineNeq.java:29:33: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTEqLengthOf("this.arr") int
+RefineNeq.java:34:21: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(1) int
+required: @LTEqLengthOf("this.arr") int
+RefineNeq.java:43:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(1) int
+required: @LTEqLengthOf("this.arr") int
+RefineNeqLength.java:20:40: compiler.err.proc.messager: [argument] incompatible argument for parameter i of RefineNeqLength.refineNeqLengthMOne.
+found   : @LTEqLengthOf("array") int
+required: @LTLengthOf("array") int
+RefineNeqLength.java:29:42: compiler.err.proc.messager: [argument] incompatible argument for parameter i of RefineNeqLength.refineNeqLengthMThree.
+found   : @LTOMLengthOf("array") int
+required: @LTLengthOf(value="array", offset="2") int
+RefineNeqLength.java:41:42: compiler.err.proc.messager: [argument] incompatible argument for parameter i of RefineNeqLength.refineNeqLengthMThree.
+found   : @LTOMLengthOf("array") int
+required: @LTLengthOf(value="array", offset="2") int
+RefineNeqLength.java:53:42: compiler.err.proc.messager: [argument] incompatible argument for parameter i of RefineNeqLength.refineNeqLengthMThree.
+found   : @LTOMLengthOf("array") int
+required: @LTLengthOf(value="array", offset="2") int
+RefineNeqLength.java:64:16: compiler.err.proc.messager: [return] incompatible types in return.
+type of expression: @LTLengthOf(value="array", offset="2") int
+method return type: @LTLengthOf(value="array", offset="3") int
+RefineNeqLength.java:75:16: compiler.err.proc.messager: [return] incompatible types in return.
+type of expression: @LTLengthOf(value="str", offset="2") int
+method return type: @LTLengthOf(value="str", offset="3") int
+RefineSubtrahend.java:9:25: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+RefineSubtrahend.java:12:25: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+RefineSubtrahend.java:16:25: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+RefineSubtrahend.java:16:25: compiler.err.proc.messager: [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+found   : @LTEqLengthOf("a") int
+required: @IndexFor("a") or @LTLengthOf("a") -- an integer less than a's length
+RefineSubtrahend.java:17:26: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+RefineSubtrahend.java:24:29: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+RefineSubtrahend.java:29:29: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+RefineSubtrahend.java:35:29: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+RefineSubtrahend.java:35:29: compiler.err.proc.messager: [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+found   : @LTLengthOf(value={"a", "a"}, offset={"-1", "j - k - 1"}) int
+required: @IndexFor("a") or @LTLengthOf("a") -- an integer less than a's length
+RefineSubtrahend.java:37:34: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+RefineSubtrahend.java:45:27: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+RefineSubtrahend.java:48:29: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+ReflectArray.java:8:41: compiler.err.proc.messager: [argument] incompatible argument for parameter length of Array.newInstance.
+found   : int
+required: @NonNegative int
+ReflectArray.java:23:22: compiler.err.proc.messager: [argument] incompatible argument for parameter arg1 of Array.get.
+found   : @UpperBoundLiteral(1) int
+required: @LTLengthOf("a") int
+RepeatLTLengthOfWithError.java:61:10: compiler.err.proc.messager: [contracts.postcondition] postcondition of withpostconditionsfunc1 is not satisfied.
+found   : this.v1 is @LTLengthOf(value="this.value1", offset="2")
+required: this.v1 is @LTLengthOf(value="this.value1", offset="3")
+RepeatLTLengthOfWithError.java:77:9: compiler.err.proc.messager: [contracts.conditional.postcondition] conditional postcondition is not satisfied when withcondpostconditionsfunc2 returns true.
+found   : this.v1 is @LTLengthOf(value="this.value1", offset="2")
+required: this.v1 is @LTLengthOf(value="this.value1", offset="3")
+RepeatLTLengthOfWithError.java:83:10: compiler.err.proc.messager: [contracts.postcondition] postcondition of withpostconditionfunc1 is not satisfied.
+found   : this.v1 is @LTLengthOf(value="this.value1", offset="2")
+required: this.v1 is @LTLengthOf(value="this.value1", offset="3")
+RepeatLTLengthOfWithError.java:98:9: compiler.err.proc.messager: [contracts.conditional.postcondition] conditional postcondition is not satisfied when withcondpostconditionfunc2 returns true.
+found   : this.v1 is @LTLengthOf(value="this.value1", offset="2")
+required: this.v1 is @LTLengthOf(value="this.value1", offset="3")
+SLSubtyping.java:11:34: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int []
+required: int @SameLen("c") []
+SLSubtyping.java:14:34: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int @SameLen({"a", "b", "c"}) []
+required: int @SameLen("this.f") []
+SameLenFormalParameter2.java:10:13: compiler.err.proc.messager: [argument] incompatible argument for parameter valsArg of SameLenFormalParameter2.lib.
+found   : Object @SameLen("myvals") []
+required: Object @SameLen({"myvals", "mymods"}) []
+SameLenFormalParameter2.java:10:21: compiler.err.proc.messager: [argument] incompatible argument for parameter modsArg of SameLenFormalParameter2.lib.
+found   : int @SameLen("mymods") []
+required: int @SameLen({"myvals", "mymods"}) []
+SameLenLUBStrangeness.java:11:43: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int @SameLen("a") []
+required: int @SameLen({"a", "b"}) []
+SearchIndexTests.java:12:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @SearchIndexFor("a") int
+SearchIndexTests.java:12:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(7) int
+required: @LTLengthOf("a") int
+SearchIndexTests.java:60:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @NegativeIndexFor("a") int
+required: @SearchIndexFor({"a", "b"}) int
+SearchIndexTests.java:60:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf("a") int
+required: @LTLengthOf({"a", "b"}) int
+SearchIndexTests.java:67:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @SearchIndexFor({"a", "b"}) int
+required: @NegativeIndexFor({"a", "b"}) int
+ShiftRight.java:24:19: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf("a") int
+required: @LTLengthOf("a") int
+ShiftRight.java:31:19: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @LTLengthOf(value="a", offset="100") int
+ShiftRightAverage.java:16:31: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value={"a", "a"}, offset={"-i + 1", "-j - 1"}) int
+required: @LTLengthOf("a") int
+SizeVsLength.java:7:32: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+SkipBufferedReader.java:10:29: compiler.err.proc.messager: [argument] incompatible argument for parameter n of BufferedReader.skip.
+found   : @GTENegativeOne int
+required: @NonNegative long
+SpecialTransfersForEquality.java:12:29: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+StringBuilderOffset.java:7:40: compiler.err.proc.messager: [argument] incompatible argument for parameter len of StringBuilder.append.
+found   : @UpperBoundLiteral(7) int
+required: @LTLengthOf(value="chars", offset="5 - 1") int
+StringIndexOf.java:15:31: compiler.err.proc.messager: [argument] incompatible argument for parameter endIndex of String.substring.
+found   : @GTENegativeOne int
+required: @NonNegative int
+StringIndexOf.java:15:50: compiler.err.proc.messager: [argument] incompatible argument for parameter beginIndex of String.substring.
+found   : @GTENegativeOne int
+required: @NonNegative int
+StringIndexOf.java:15:50: compiler.err.proc.messager: [argument] incompatible argument for parameter beginIndex of String.substring.
+found   : @LTLengthOf(value={"l", "s"}, offset={"-s.length() - 1", "-i - 1"}) int
+required: @LTEqLengthOf("l") int
+StringIndexOf.java:32:31: compiler.err.proc.messager: [argument] incompatible argument for parameter endIndex of String.substring.
+found   : @GTENegativeOne int
+required: @NonNegative int
+StringIndexOf.java:32:50: compiler.err.proc.messager: [argument] incompatible argument for parameter beginIndex of String.substring.
+found   : @LTLengthOf(value={""constant"", ""constant""}, offset={"-i - 1", "0"}) int
+required: @LTEqLengthOf("l") int
+StringIndexOf.java:41:25: compiler.err.proc.messager: [argument] incompatible argument for parameter index of String.charAt.
+found   : @GTENegativeOne int
+required: @NonNegative int
+StringLength.java:23:39: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int []
+required: int @SameLen("s") []
+StringLength.java:31:21: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @SameLen("r") String
+required: @SameLen("s") String
+StringLength.java:53:20: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="s", offset="t.length() - k") int
+required: @LTLengthOf("s") int
+StringLength.java:79:22: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf("s") int
+required: @LTLengthOf("s") int
+StringMethods.java:6:18: compiler.err.proc.messager: [argument] incompatible argument for parameter index of String.charAt.
+found   : int
+required: @NonNegative int
+StringMethods.java:6:18: compiler.err.proc.messager: [argument] incompatible argument for parameter index of String.charAt.
+found   : int
+required: @LTLengthOf("s") int
+StringMethods.java:8:23: compiler.err.proc.messager: [argument] incompatible argument for parameter index of String.codePointAt.
+found   : int
+required: @NonNegative int
+StringMethods.java:8:23: compiler.err.proc.messager: [argument] incompatible argument for parameter index of String.codePointAt.
+found   : int
+required: @LTLengthOf("s") int
+StringMethods.java:17:27: compiler.err.proc.messager: [argument] incompatible argument for parameter index of String.codePointBefore.
+found   : @NonNegative int
+required: @Positive int
+StringMethods.java:30:21: compiler.err.proc.messager: [argument] incompatible argument for parameter beginIndex of String.substring.
+found   : @UpperBoundLiteral(1) int
+required: @LTEqLengthOf("s") int
+StringMethods.java:32:24: compiler.err.proc.messager: [argument] incompatible argument for parameter endIndex of String.substring.
+found   : @UpperBoundLiteral(1) int
+required: @LTEqLengthOf("s") int
+StringOffsetTest.java:6:47: compiler.err.proc.messager: [argument] incompatible argument for parameter count of String constructor.
+found   : @UpperBoundLiteral(7) int
+required: @LTLengthOf(value="chars", offset="5 - 1") int
+SubtractingNonNegatives.java:23:19: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="a", offset="y") int
+required: @LTLengthOf(value={"a", "a"}, offset={"0", "y"}) int
+UBLiteralFlow.java:8:24: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @IndexOrLow(value = "#1") immediately before type, after modifiers [private, static]
+UBLiteralFlow.java:15:16: compiler.err.proc.messager: [return] incompatible types in return.
+type of expression: int
+method return type: @GTENegativeOne int
+UBLiteralFlow.java:19:24: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @LTLengthOf(value = "#1") immediately before type, after modifiers [private, static]
+UBLiteralFlow.java:30:24: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @LTLengthOf(value = "#1", offset = "1") immediately before type, after modifiers [private, static]
+UBLiteralFlow.java:38:16: compiler.err.proc.messager: [return] incompatible types in return.
+type of expression: @LTLengthOf(value="s", offset="0") int
+method return type: @LTLengthOf(value="s", offset="1") int
+UBLiteralFlow.java:42:24: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @LTLengthOf(value = "#1", offset = "-1") immediately before type, after modifiers [private, static]
+UBLiteralFlow.java:60:24: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @IndexOrLow(value = "#1") immediately before type, after modifiers [private, static]
+UBLiteralFlow.java:94:24: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @LTLengthOf(value = "#1") immediately before type, after modifiers [private, static]
+UBLiteralFlow.java:128:24: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @LTLengthOf(value = "#1", offset = "1") immediately before type, after modifiers [private, static]
+UBLiteralFlow.java:131:20: compiler.err.proc.messager: [return] incompatible types in return.
+type of expression: @UpperBoundLiteral(-1) int
+method return type: @LTLengthOf(value="s", offset="1") int
+UBLiteralFlow.java:136:20: compiler.err.proc.messager: [return] incompatible types in return.
+type of expression: @UpperBoundLiteral(0) int
+method return type: @LTLengthOf(value="s", offset="1") int
+UBLiteralFlow.java:153:20: compiler.err.proc.messager: [return] incompatible types in return.
+type of expression: @LTLengthOf(value="s", offset="0") int
+method return type: @LTLengthOf(value="s", offset="1") int
+UBLiteralFlow.java:165:24: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @LTLengthOf(value = "#1", offset = "-1") immediately before type, after modifiers [private, static]
+UBPoly.java:15:19: compiler.err.proc.messager: [argument] incompatible argument for parameter j of UBPoly.access.
+found   : @PolyUpperBound int
+required: @LTLengthOf("a") int
+UBPoly.java:19:20: compiler.err.proc.messager: [array.access.unsafe.low] Potentially unsafe array access: the index could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+UBSubtyping.java:16:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(1) int
+required: @LTEqLengthOf("this.arr") int
+UBSubtyping.java:19:18: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(1) int
+required: @LTLengthOf("this.arr") int
+UBSubtyping.java:22:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf("this.arr") int
+required: @LTLengthOf("this.arr") int
+UBSubtyping.java:27:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf("this.arr") int
+required: @LTLengthOf("this.arr2") int
+UBSubtyping.java:30:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(2) int
+required: @LTEqLengthOf({"this.arr", "this.arr2", "this.arr3"}) int
+UncheckedMinLen.java:11:36: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : Object @ArrayLenRange []
+required: Object @ArrayLenRange(from=100) []
+UncheckedMinLen.java:11:49: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+UncheckedMinLen.java:17:36: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : Object @ArrayLenRange []
+required: Object @ArrayLenRange(from=100) []
+UncheckedMinLen.java:17:49: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+UncheckedMinLen.java:23:36: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : Object @ArrayLenRange []
+required: Object @ArrayLenRange(from=100) []
+UncheckedMinLen.java:29:35: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+UncheckedMinLen.java:31:11: compiler.err.proc.messager: [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 99 could be larger than the array's bound
+found   : Object []
+required: @MinLen(100) -- an array guaranteed to have at least 100 elements
+UncheckedMinLen.java:36:36: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : Object @ArrayLen({1, 2}) []
+required: Object @ArrayLenRange(from=100) []
+UncheckedMinLen.java:42:36: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : Object @ArrayLenRange []
+required: Object @ArrayLenRange(from=100) []
+UncheckedMinLen.java:42:49: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+ZeroMinLen.java:19:26: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @UpperBoundLiteral(0) int
+required: @LTLengthOf("this.nums2") int
+427 errors
+30 warnings

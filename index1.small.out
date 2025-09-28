@@ -1,0 +1,60 @@
+AndExample.java:12:30: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @IndexFor(value = "iYearInfoCache") immediately before type, after modifiers [private, static, final]
+ArrayAssignmentSameLen.java:8:23: compiler.warn.proc.messager: [type.anno.before.modifier] write type annotation @IndexFor(value = "i_array") immediately before type, after modifiers [private, final]
+ArrayAssignmentSameLen.java:19:13: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTEqLengthOf("a") int
+required: @LTLengthOf(value={"array", "b"}, offset={"0", "-3"}) int
+ArrayAssignmentSameLen.java:26:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf("a") int
+required: @LTLengthOf({"c", "b"}) int
+ArrayAssignmentSameLen.java:36:13: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf("a") int
+required: @LTLengthOf(value={"c1", "c1"}, offset={"0", "x"}) int
+ArrayConstructionPositiveLength.java:9:34: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : String []
+required: String @ArrayLenRange(from=1) []
+ArrayConstructionPositiveLength.java:9:45: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+ArrayCreationChecks.java:7:36: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+ArrayCreationChecks.java:9:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+ArrayCreationChecks.java:9:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="newArray", offset="y - 1") int
+required: @LTLengthOf("newArray") int
+ArrayCreationChecks.java:11:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+ArrayCreationChecks.java:11:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="newArray", offset="x - 1") int
+required: @LTLengthOf("newArray") int
+ArrayCreationChecks.java:15:36: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+ArrayCreationChecks.java:17:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+ArrayCreationChecks.java:17:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="newArray", offset="y - 1") int
+required: @LTLengthOf("newArray") int
+ArrayCreationChecks.java:19:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+ArrayCreationChecks.java:19:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="newArray", offset="x - 1") int
+required: @LTEqLengthOf("newArray") int
+ArrayCreationChecks.java:23:36: compiler.err.proc.messager: [array.length.negative] Variable used in array creation could be negative.
+found   : int
+required: an integer >= 0 (@NonNegative or @Positive)
+ArrayCreationChecks.java:25:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+ArrayCreationChecks.java:25:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : @LTLengthOf(value="newArray", offset="y - 1") int
+required: @LTEqLengthOf("newArray") int
+ArrayCreationChecks.java:27:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.
+found   : int
+required: @NonNegative int
+ArrayCreationChecks.java:27:17: compiler.err.proc.messager: [assignment] incompatible types in assignment.

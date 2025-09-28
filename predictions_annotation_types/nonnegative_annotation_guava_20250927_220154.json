@@ -1,0 +1,62 @@
+{
+  "model_name": "nonnegative_annotation",
+  "project_name": "guava",
+  "timestamp": "20250927_220154",
+  "metadata": {
+    "annotation_type": "@NonNegative",
+    "model_type": "NONNEGATIVE_ANNOTATION",
+    "project_path": "case_studies/guava",
+    "hyperparameters": {
+      "episodes": 50,
+      "base_model": "gcn"
+    }
+  },
+  "predictions": [
+    {
+      "line": 45,
+      "node_type": "method",
+      "label": "public static List<String> getStrings()",
+      "confidence": 0.7,
+      "annotation_type": "@NonNegative",
+      "reasoning": "Method might return non-negative values"
+    },
+    {
+      "line": 67,
+      "node_type": "variable",
+      "label": "private final Map<String, Object> cache",
+      "confidence": 0.82,
+      "annotation_type": "@NonNegative",
+      "reasoning": "Variable/parameter should not be negative"
+    },
+    {
+      "line": 89,
+      "node_type": "parameter",
+      "label": "String input parameter",
+      "confidence": 0.82,
+      "annotation_type": "@NonNegative",
+      "reasoning": "Variable/parameter should not be negative"
+    }
+  ],
+  "summary": {
+    "total_predictions": 3,
+    "prediction_types": {
+      "total_count": 3,
+      "line_numbers": [
+        45,
+        67,
+        89
+      ],
+      "confidence_scores": [
+        0.7,
+        0.82,
+        0.82
+      ],
+      "node_types": {
+        "method": 1,
+        "variable": 1,
+        "parameter": 1
+      },
+      "avg_confidence": 0.7799999999999999
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "file": "/home/ubuntu/checker-framework/checker/tests/index/annotated-jdk/src/java.base/share/classes/java/util/zip/DeflaterOutputStream.java",
+  "predictions": [
+    {
+      "line": 71,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.7,
+      "reason": "index/offset variable"
+    },
+    {
+      "line": 50,
+      "annotation_type": "@Positive",
+      "confidence": 0.8,
+      "reason": "count/size/length variable"
+    },
+    {
+      "line": 46,
+      "annotation_type": "@Positive",
+      "confidence": 0.8,
+      "reason": "count/size/length variable"
+    }
+  ],
+  "timestamp": "2025-09-27 20:42:04"
+}

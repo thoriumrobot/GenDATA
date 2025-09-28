@@ -1,0 +1,66 @@
+{
+  "model_name": "gtenegativeone_hgt_annotation",
+  "project_name": "jfreechart",
+  "timestamp": "20250927_224911",
+  "metadata": {
+    "annotation_type": "@GTENegativeOne",
+    "base_model": "hgt",
+    "model_type": "GTENEGATIVEONE_HGT_ANNOTATION",
+    "project_path": "case_studies/jfreechart",
+    "hyperparameters": {
+      "episodes": 50,
+      "base_model": "hgt"
+    }
+  },
+  "predictions": [
+    {
+      "line": 23,
+      "node_type": "method",
+      "label": "public void drawChart(Graphics2D g2d)",
+      "confidence": 0.663,
+      "annotation_type": "@GTENegativeOne",
+      "base_model": "hgt",
+      "reasoning": "Method might return index-like values (predicted by HGT model)"
+    },
+    {
+      "line": 156,
+      "node_type": "variable",
+      "label": "private ChartData dataset",
+      "confidence": 0.765,
+      "annotation_type": "@GTENegativeOne",
+      "base_model": "hgt",
+      "reasoning": "Variable might store index-like values (predicted by HGT model)"
+    },
+    {
+      "line": 234,
+      "node_type": "parameter",
+      "label": "double value parameter",
+      "confidence": 0.918,
+      "annotation_type": "@GTENegativeOne",
+      "base_model": "hgt",
+      "reasoning": "Parameter likely to be array index or similar (>= -1) (predicted by HGT model)"
+    }
+  ],
+  "summary": {
+    "total_predictions": 3,
+    "prediction_types": {
+      "total_count": 3,
+      "line_numbers": [
+        23,
+        156,
+        234
+      ],
+      "confidence_scores": [
+        0.663,
+        0.765,
+        0.918
+      ],
+      "node_types": {
+        "method": 1,
+        "variable": 1,
+        "parameter": 1
+      },
+      "avg_confidence": 0.782
+    }
+  }
+}

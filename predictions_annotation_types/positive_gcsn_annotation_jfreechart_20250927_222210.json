@@ -1,0 +1,66 @@
+{
+  "model_name": "positive_gcsn_annotation",
+  "project_name": "jfreechart",
+  "timestamp": "20250927_222210",
+  "metadata": {
+    "annotation_type": "@Positive",
+    "base_model": "gcsn",
+    "model_type": "POSITIVE_GCSN_ANNOTATION",
+    "project_path": "case_studies/jfreechart",
+    "hyperparameters": {
+      "episodes": 50,
+      "base_model": "gcsn"
+    }
+  },
+  "predictions": [
+    {
+      "line": 23,
+      "node_type": "method",
+      "label": "public void drawChart(Graphics2D g2d)",
+      "confidence": 0.8755,
+      "annotation_type": "@Positive",
+      "base_model": "gcsn",
+      "reasoning": "Method/parameter likely to work with positive values (predicted by GCSN model)"
+    },
+    {
+      "line": 156,
+      "node_type": "variable",
+      "label": "private ChartData dataset",
+      "confidence": 0.618,
+      "annotation_type": "@Positive",
+      "base_model": "gcsn",
+      "reasoning": "Variable might store positive values (predicted by GCSN model)"
+    },
+    {
+      "line": 234,
+      "node_type": "parameter",
+      "label": "double value parameter",
+      "confidence": 0.8755,
+      "annotation_type": "@Positive",
+      "base_model": "gcsn",
+      "reasoning": "Method/parameter likely to work with positive values (predicted by GCSN model)"
+    }
+  ],
+  "summary": {
+    "total_predictions": 3,
+    "prediction_types": {
+      "total_count": 3,
+      "line_numbers": [
+        23,
+        156,
+        234
+      ],
+      "confidence_scores": [
+        0.8755,
+        0.618,
+        0.8755
+      ],
+      "node_types": {
+        "method": 1,
+        "variable": 1,
+        "parameter": 1
+      },
+      "avg_confidence": 0.7896666666666666
+    }
+  }
+}

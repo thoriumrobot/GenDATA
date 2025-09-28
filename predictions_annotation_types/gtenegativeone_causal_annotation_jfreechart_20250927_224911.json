@@ -1,0 +1,66 @@
+{
+  "model_name": "gtenegativeone_causal_annotation",
+  "project_name": "jfreechart",
+  "timestamp": "20250927_224911",
+  "metadata": {
+    "annotation_type": "@GTENegativeOne",
+    "base_model": "causal",
+    "model_type": "GTENEGATIVEONE_CAUSAL_ANNOTATION",
+    "project_path": "case_studies/jfreechart",
+    "hyperparameters": {
+      "episodes": 50,
+      "base_model": "causal"
+    }
+  },
+  "predictions": [
+    {
+      "line": 23,
+      "node_type": "method",
+      "label": "public void drawChart(Graphics2D g2d)",
+      "confidence": 0.5850000000000001,
+      "annotation_type": "@GTENegativeOne",
+      "base_model": "causal",
+      "reasoning": "Method might return index-like values (predicted by CAUSAL model)"
+    },
+    {
+      "line": 156,
+      "node_type": "variable",
+      "label": "private ChartData dataset",
+      "confidence": 0.675,
+      "annotation_type": "@GTENegativeOne",
+      "base_model": "causal",
+      "reasoning": "Variable might store index-like values (predicted by CAUSAL model)"
+    },
+    {
+      "line": 234,
+      "node_type": "parameter",
+      "label": "double value parameter",
+      "confidence": 0.81,
+      "annotation_type": "@GTENegativeOne",
+      "base_model": "causal",
+      "reasoning": "Parameter likely to be array index or similar (>= -1) (predicted by CAUSAL model)"
+    }
+  ],
+  "summary": {
+    "total_predictions": 3,
+    "prediction_types": {
+      "total_count": 3,
+      "line_numbers": [
+        23,
+        156,
+        234
+      ],
+      "confidence_scores": [
+        0.5850000000000001,
+        0.675,
+        0.81
+      ],
+      "node_types": {
+        "method": 1,
+        "variable": 1,
+        "parameter": 1
+      },
+      "avg_confidence": 0.6900000000000001
+    }
+  }
+}

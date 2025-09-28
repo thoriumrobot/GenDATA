@@ -1,0 +1,542 @@
+{
+  "positive": {
+    "gcn": {
+      "best_episodes": null,
+      "best_score": 0.0,
+      "best_reward": null,
+      "best_predictions": null,
+      "all_results": [
+        {
+          "episodes": 10,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "failed",
+          "error": "Traceback (most recent call last):\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 584, in <module>\n    main()\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 465, in main\n    trainer = AnnotationTypeTrainer(\n              ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 45, in __init__\n    self.model = self._init_annotation_model()\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 69, in _init_annotation_model\n    return AnnotationTypeGCNModel(input_dim=14, hidden_dim=self.hidden_dim, out_dim=2, dropout=self.dropout_rate)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: AnnotationTypeGCNModel.__init__() got an unexpected keyword argument 'dropout'\n"
+        },
+        {
+          "episodes": 25,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "failed",
+          "error": "Traceback (most recent call last):\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 584, in <module>\n    main()\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 465, in main\n    trainer = AnnotationTypeTrainer(\n              ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 45, in __init__\n    self.model = self._init_annotation_model()\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 69, in _init_annotation_model\n    return AnnotationTypeGCNModel(input_dim=14, hidden_dim=self.hidden_dim, out_dim=2, dropout=self.dropout_rate)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: AnnotationTypeGCNModel.__init__() got an unexpected keyword argument 'dropout'\n"
+        },
+        {
+          "episodes": 50,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "failed",
+          "error": "Traceback (most recent call last):\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 584, in <module>\n    main()\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 465, in main\n    trainer = AnnotationTypeTrainer(\n              ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 45, in __init__\n    self.model = self._init_annotation_model()\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 69, in _init_annotation_model\n    return AnnotationTypeGCNModel(input_dim=14, hidden_dim=self.hidden_dim, out_dim=2, dropout=self.dropout_rate)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: AnnotationTypeGCNModel.__init__() got an unexpected keyword argument 'dropout'\n"
+        }
+      ]
+    },
+    "gbt": {
+      "best_episodes": null,
+      "best_score": 0.0,
+      "best_reward": null,
+      "best_predictions": null,
+      "all_results": [
+        {
+          "episodes": 10,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 25,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 50,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        }
+      ]
+    },
+    "causal": {
+      "best_episodes": null,
+      "best_score": 0.0,
+      "best_reward": null,
+      "best_predictions": null,
+      "all_results": [
+        {
+          "episodes": 10,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "failed",
+          "error": "Traceback (most recent call last):\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 584, in <module>\n    main()\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 465, in main\n    trainer = AnnotationTypeTrainer(\n              ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 45, in __init__\n    self.model = self._init_annotation_model()\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 73, in _init_annotation_model\n    return AnnotationTypeCausalModel(input_dim=14, hidden_dim=self.hidden_dim, out_dim=2, dropout_rate=self.dropout_rate)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: AnnotationTypeCausalModel.__init__() got an unexpected keyword argument 'dropout_rate'\n"
+        },
+        {
+          "episodes": 25,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "failed",
+          "error": "Traceback (most recent call last):\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 584, in <module>\n    main()\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 465, in main\n    trainer = AnnotationTypeTrainer(\n              ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 45, in __init__\n    self.model = self._init_annotation_model()\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 73, in _init_annotation_model\n    return AnnotationTypeCausalModel(input_dim=14, hidden_dim=self.hidden_dim, out_dim=2, dropout_rate=self.dropout_rate)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: AnnotationTypeCausalModel.__init__() got an unexpected keyword argument 'dropout_rate'\n"
+        },
+        {
+          "episodes": 50,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "failed",
+          "error": "Traceback (most recent call last):\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 584, in <module>\n    main()\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 465, in main\n    trainer = AnnotationTypeTrainer(\n              ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 45, in __init__\n    self.model = self._init_annotation_model()\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 73, in _init_annotation_model\n    return AnnotationTypeCausalModel(input_dim=14, hidden_dim=self.hidden_dim, out_dim=2, dropout_rate=self.dropout_rate)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: AnnotationTypeCausalModel.__init__() got an unexpected keyword argument 'dropout_rate'\n"
+        }
+      ]
+    },
+    "hgt": {
+      "best_episodes": null,
+      "best_score": 0.0,
+      "best_reward": null,
+      "best_predictions": null,
+      "all_results": [
+        {
+          "episodes": 10,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 25,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 50,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        }
+      ]
+    },
+    "gcsn": {
+      "best_episodes": null,
+      "best_score": 0.0,
+      "best_reward": null,
+      "best_predictions": null,
+      "all_results": [
+        {
+          "episodes": 10,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "failed",
+          "error": "Traceback (most recent call last):\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 584, in <module>\n    main()\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 465, in main\n    trainer = AnnotationTypeTrainer(\n              ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 45, in __init__\n    self.model = self._init_annotation_model()\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 77, in _init_annotation_model\n    return AnnotationTypeGCSNModel(input_dim=14, hidden_dim=self.hidden_dim, out_dim=2, dropout=self.dropout_rate)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: AnnotationTypeGCSNModel.__init__() got an unexpected keyword argument 'dropout'\n"
+        },
+        {
+          "episodes": 25,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "failed",
+          "error": "Traceback (most recent call last):\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 584, in <module>\n    main()\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 465, in main\n    trainer = AnnotationTypeTrainer(\n              ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 45, in __init__\n    self.model = self._init_annotation_model()\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 77, in _init_annotation_model\n    return AnnotationTypeGCSNModel(input_dim=14, hidden_dim=self.hidden_dim, out_dim=2, dropout=self.dropout_rate)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: AnnotationTypeGCSNModel.__init__() got an unexpected keyword argument 'dropout'\n"
+        },
+        {
+          "episodes": 50,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "failed",
+          "error": "Traceback (most recent call last):\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 584, in <module>\n    main()\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 465, in main\n    trainer = AnnotationTypeTrainer(\n              ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 45, in __init__\n    self.model = self._init_annotation_model()\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 77, in _init_annotation_model\n    return AnnotationTypeGCSNModel(input_dim=14, hidden_dim=self.hidden_dim, out_dim=2, dropout=self.dropout_rate)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: AnnotationTypeGCSNModel.__init__() got an unexpected keyword argument 'dropout'\n"
+        }
+      ]
+    },
+    "dg2n": {
+      "best_episodes": null,
+      "best_score": 0.0,
+      "best_reward": null,
+      "best_predictions": null,
+      "all_results": [
+        {
+          "episodes": 10,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "failed",
+          "error": "Traceback (most recent call last):\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 584, in <module>\n    main()\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 465, in main\n    trainer = AnnotationTypeTrainer(\n              ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 45, in __init__\n    self.model = self._init_annotation_model()\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 79, in _init_annotation_model\n    return AnnotationTypeDG2NModel(input_dim=14, hidden_dim=self.hidden_dim, out_dim=2, dropout=self.dropout_rate)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: AnnotationTypeDG2NModel.__init__() got an unexpected keyword argument 'dropout'\n"
+        },
+        {
+          "episodes": 25,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "failed",
+          "error": "Traceback (most recent call last):\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 584, in <module>\n    main()\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 465, in main\n    trainer = AnnotationTypeTrainer(\n              ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 45, in __init__\n    self.model = self._init_annotation_model()\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 79, in _init_annotation_model\n    return AnnotationTypeDG2NModel(input_dim=14, hidden_dim=self.hidden_dim, out_dim=2, dropout=self.dropout_rate)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: AnnotationTypeDG2NModel.__init__() got an unexpected keyword argument 'dropout'\n"
+        },
+        {
+          "episodes": 50,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "failed",
+          "error": "Traceback (most recent call last):\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 584, in <module>\n    main()\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 465, in main\n    trainer = AnnotationTypeTrainer(\n              ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 45, in __init__\n    self.model = self._init_annotation_model()\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/CFWR/annotation_type_rl_positive.py\", line 79, in _init_annotation_model\n    return AnnotationTypeDG2NModel(input_dim=14, hidden_dim=self.hidden_dim, out_dim=2, dropout=self.dropout_rate)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: AnnotationTypeDG2NModel.__init__() got an unexpected keyword argument 'dropout'\n"
+        }
+      ]
+    }
+  },
+  "nonnegative": {
+    "gcn": {
+      "best_episodes": null,
+      "best_score": 0.0,
+      "best_reward": null,
+      "best_predictions": null,
+      "all_results": [
+        {
+          "episodes": 10,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 25,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 50,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        }
+      ]
+    },
+    "gbt": {
+      "best_episodes": null,
+      "best_score": 0.0,
+      "best_reward": null,
+      "best_predictions": null,
+      "all_results": [
+        {
+          "episodes": 10,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 25,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 50,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        }
+      ]
+    },
+    "causal": {
+      "best_episodes": null,
+      "best_score": 0.0,
+      "best_reward": null,
+      "best_predictions": null,
+      "all_results": [
+        {
+          "episodes": 10,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 25,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 50,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        }
+      ]
+    },
+    "hgt": {
+      "best_episodes": null,
+      "best_score": 0.0,
+      "best_reward": null,
+      "best_predictions": null,
+      "all_results": [
+        {
+          "episodes": 10,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 25,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 50,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        }
+      ]
+    },
+    "gcsn": {
+      "best_episodes": null,
+      "best_score": 0.0,
+      "best_reward": null,
+      "best_predictions": null,
+      "all_results": [
+        {
+          "episodes": 10,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 25,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 50,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        }
+      ]
+    },
+    "dg2n": {
+      "best_episodes": null,
+      "best_score": 0.0,
+      "best_reward": null,
+      "best_predictions": null,
+      "all_results": [
+        {
+          "episodes": 10,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 25,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 50,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        }
+      ]
+    }
+  },
+  "gtenegativeone": {
+    "gcn": {
+      "best_episodes": null,
+      "best_score": 0.0,
+      "best_reward": null,
+      "best_predictions": null,
+      "all_results": [
+        {
+          "episodes": 10,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 25,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 50,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        }
+      ]
+    },
+    "gbt": {
+      "best_episodes": null,
+      "best_score": 0.0,
+      "best_reward": null,
+      "best_predictions": null,
+      "all_results": [
+        {
+          "episodes": 10,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 25,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 50,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        }
+      ]
+    },
+    "causal": {
+      "best_episodes": null,
+      "best_score": 0.0,
+      "best_reward": null,
+      "best_predictions": null,
+      "all_results": [
+        {
+          "episodes": 10,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 25,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 50,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        }
+      ]
+    },
+    "hgt": {
+      "best_episodes": null,
+      "best_score": 0.0,
+      "best_reward": null,
+      "best_predictions": null,
+      "all_results": [
+        {
+          "episodes": 10,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 25,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 50,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        }
+      ]
+    },
+    "gcsn": {
+      "best_episodes": null,
+      "best_score": 0.0,
+      "best_reward": null,
+      "best_predictions": null,
+      "all_results": [
+        {
+          "episodes": 10,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 25,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 50,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        }
+      ]
+    },
+    "dg2n": {
+      "best_episodes": null,
+      "best_score": 0.0,
+      "best_reward": null,
+      "best_predictions": null,
+      "all_results": [
+        {
+          "episodes": 10,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 25,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        },
+        {
+          "episodes": 50,
+          "final_reward": null,
+          "total_predictions": null,
+          "score": 0.0,
+          "status": "success"
+        }
+      ]
+    }
+  }
+}

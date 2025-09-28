@@ -1,0 +1,1083 @@
+{
+  "project_name": "guava_annotation_types",
+  "timestamp": "20250927_224911",
+  "models": {
+    "positive_gcn": {
+      "predictions": [
+        {
+          "line": 45,
+          "node_type": "method",
+          "label": "public static List<String> getStrings()",
+          "confidence": 0.8075,
+          "annotation_type": "@Positive",
+          "base_model": "gcn",
+          "reasoning": "Method/parameter likely to work with positive values (predicted by GCN model)"
+        },
+        {
+          "line": 67,
+          "node_type": "variable",
+          "label": "private final Map<String, Object> cache",
+          "confidence": 0.57,
+          "annotation_type": "@Positive",
+          "base_model": "gcn",
+          "reasoning": "Variable might store positive values (predicted by GCN model)"
+        },
+        {
+          "line": 89,
+          "node_type": "parameter",
+          "label": "String input parameter",
+          "confidence": 0.8075,
+          "annotation_type": "@Positive",
+          "base_model": "gcn",
+          "reasoning": "Method/parameter likely to work with positive values (predicted by GCN model)"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            45,
+            67,
+            89
+          ],
+          "confidence_scores": [
+            0.8075,
+            0.57,
+            0.8075
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.7283333333333334
+        }
+      }
+    },
+    "positive_gbt": {
+      "predictions": [
+        {
+          "line": 45,
+          "node_type": "method",
+          "label": "public static List<String> getStrings()",
+          "confidence": 0.8925,
+          "annotation_type": "@Positive",
+          "base_model": "gbt",
+          "reasoning": "Method/parameter likely to work with positive values (predicted by GBT model)"
+        },
+        {
+          "line": 67,
+          "node_type": "variable",
+          "label": "private final Map<String, Object> cache",
+          "confidence": 0.63,
+          "annotation_type": "@Positive",
+          "base_model": "gbt",
+          "reasoning": "Variable might store positive values (predicted by GBT model)"
+        },
+        {
+          "line": 89,
+          "node_type": "parameter",
+          "label": "String input parameter",
+          "confidence": 0.8925,
+          "annotation_type": "@Positive",
+          "base_model": "gbt",
+          "reasoning": "Method/parameter likely to work with positive values (predicted by GBT model)"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            45,
+            67,
+            89
+          ],
+          "confidence_scores": [
+            0.8925,
+            0.63,
+            0.8925
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.805
+        }
+      }
+    },
+    "positive_causal": {
+      "predictions": [
+        {
+          "line": 45,
+          "node_type": "method",
+          "label": "public static List<String> getStrings()",
+          "confidence": 0.765,
+          "annotation_type": "@Positive",
+          "base_model": "causal",
+          "reasoning": "Method/parameter likely to work with positive values (predicted by CAUSAL model)"
+        },
+        {
+          "line": 67,
+          "node_type": "variable",
+          "label": "private final Map<String, Object> cache",
+          "confidence": 0.54,
+          "annotation_type": "@Positive",
+          "base_model": "causal",
+          "reasoning": "Variable might store positive values (predicted by CAUSAL model)"
+        },
+        {
+          "line": 89,
+          "node_type": "parameter",
+          "label": "String input parameter",
+          "confidence": 0.765,
+          "annotation_type": "@Positive",
+          "base_model": "causal",
+          "reasoning": "Method/parameter likely to work with positive values (predicted by CAUSAL model)"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            45,
+            67,
+            89
+          ],
+          "confidence_scores": [
+            0.765,
+            0.54,
+            0.765
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.6900000000000001
+        }
+      }
+    },
+    "positive_hgt": {
+      "predictions": [
+        {
+          "line": 45,
+          "node_type": "method",
+          "label": "public static List<String> getStrings()",
+          "confidence": 0.867,
+          "annotation_type": "@Positive",
+          "base_model": "hgt",
+          "reasoning": "Method/parameter likely to work with positive values (predicted by HGT model)"
+        },
+        {
+          "line": 67,
+          "node_type": "variable",
+          "label": "private final Map<String, Object> cache",
+          "confidence": 0.612,
+          "annotation_type": "@Positive",
+          "base_model": "hgt",
+          "reasoning": "Variable might store positive values (predicted by HGT model)"
+        },
+        {
+          "line": 89,
+          "node_type": "parameter",
+          "label": "String input parameter",
+          "confidence": 0.867,
+          "annotation_type": "@Positive",
+          "base_model": "hgt",
+          "reasoning": "Method/parameter likely to work with positive values (predicted by HGT model)"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            45,
+            67,
+            89
+          ],
+          "confidence_scores": [
+            0.867,
+            0.612,
+            0.867
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.782
+        }
+      }
+    },
+    "positive_gcsn": {
+      "predictions": [
+        {
+          "line": 45,
+          "node_type": "method",
+          "label": "public static List<String> getStrings()",
+          "confidence": 0.8755,
+          "annotation_type": "@Positive",
+          "base_model": "gcsn",
+          "reasoning": "Method/parameter likely to work with positive values (predicted by GCSN model)"
+        },
+        {
+          "line": 67,
+          "node_type": "variable",
+          "label": "private final Map<String, Object> cache",
+          "confidence": 0.618,
+          "annotation_type": "@Positive",
+          "base_model": "gcsn",
+          "reasoning": "Variable might store positive values (predicted by GCSN model)"
+        },
+        {
+          "line": 89,
+          "node_type": "parameter",
+          "label": "String input parameter",
+          "confidence": 0.8755,
+          "annotation_type": "@Positive",
+          "base_model": "gcsn",
+          "reasoning": "Method/parameter likely to work with positive values (predicted by GCSN model)"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            45,
+            67,
+            89
+          ],
+          "confidence_scores": [
+            0.8755,
+            0.618,
+            0.8755
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.7896666666666666
+        }
+      }
+    },
+    "positive_dg2n": {
+      "predictions": [
+        {
+          "line": 45,
+          "node_type": "method",
+          "label": "public static List<String> getStrings()",
+          "confidence": 0.833,
+          "annotation_type": "@Positive",
+          "base_model": "dg2n",
+          "reasoning": "Method/parameter likely to work with positive values (predicted by DG2N model)"
+        },
+        {
+          "line": 67,
+          "node_type": "variable",
+          "label": "private final Map<String, Object> cache",
+          "confidence": 0.588,
+          "annotation_type": "@Positive",
+          "base_model": "dg2n",
+          "reasoning": "Variable might store positive values (predicted by DG2N model)"
+        },
+        {
+          "line": 89,
+          "node_type": "parameter",
+          "label": "String input parameter",
+          "confidence": 0.833,
+          "annotation_type": "@Positive",
+          "base_model": "dg2n",
+          "reasoning": "Method/parameter likely to work with positive values (predicted by DG2N model)"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            45,
+            67,
+            89
+          ],
+          "confidence_scores": [
+            0.833,
+            0.588,
+            0.833
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.7513333333333333
+        }
+      }
+    },
+    "nonnegative_gcn": {
+      "predictions": [
+        {
+          "line": 45,
+          "node_type": "method",
+          "label": "public static List<String> getStrings()",
+          "confidence": 0.6649999999999999,
+          "annotation_type": "@NonNegative",
+          "base_model": "gcn",
+          "reasoning": "Method might return non-negative values (predicted by GCN model)"
+        },
+        {
+          "line": 67,
+          "node_type": "variable",
+          "label": "private final Map<String, Object> cache",
+          "confidence": 0.7789999999999999,
+          "annotation_type": "@NonNegative",
+          "base_model": "gcn",
+          "reasoning": "Variable/parameter should not be negative (predicted by GCN model)"
+        },
+        {
+          "line": 89,
+          "node_type": "parameter",
+          "label": "String input parameter",
+          "confidence": 0.7789999999999999,
+          "annotation_type": "@NonNegative",
+          "base_model": "gcn",
+          "reasoning": "Variable/parameter should not be negative (predicted by GCN model)"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            45,
+            67,
+            89
+          ],
+          "confidence_scores": [
+            0.6649999999999999,
+            0.7789999999999999,
+            0.7789999999999999
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.741
+        }
+      }
+    },
+    "nonnegative_gbt": {
+      "predictions": [
+        {
+          "line": 45,
+          "node_type": "method",
+          "label": "public static List<String> getStrings()",
+          "confidence": 0.735,
+          "annotation_type": "@NonNegative",
+          "base_model": "gbt",
+          "reasoning": "Method might return non-negative values (predicted by GBT model)"
+        },
+        {
+          "line": 67,
+          "node_type": "variable",
+          "label": "private final Map<String, Object> cache",
+          "confidence": 0.861,
+          "annotation_type": "@NonNegative",
+          "base_model": "gbt",
+          "reasoning": "Variable/parameter should not be negative (predicted by GBT model)"
+        },
+        {
+          "line": 89,
+          "node_type": "parameter",
+          "label": "String input parameter",
+          "confidence": 0.861,
+          "annotation_type": "@NonNegative",
+          "base_model": "gbt",
+          "reasoning": "Variable/parameter should not be negative (predicted by GBT model)"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            45,
+            67,
+            89
+          ],
+          "confidence_scores": [
+            0.735,
+            0.861,
+            0.861
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.819
+        }
+      }
+    },
+    "nonnegative_causal": {
+      "predictions": [
+        {
+          "line": 45,
+          "node_type": "method",
+          "label": "public static List<String> getStrings()",
+          "confidence": 0.63,
+          "annotation_type": "@NonNegative",
+          "base_model": "causal",
+          "reasoning": "Method might return non-negative values (predicted by CAUSAL model)"
+        },
+        {
+          "line": 67,
+          "node_type": "variable",
+          "label": "private final Map<String, Object> cache",
+          "confidence": 0.738,
+          "annotation_type": "@NonNegative",
+          "base_model": "causal",
+          "reasoning": "Variable/parameter should not be negative (predicted by CAUSAL model)"
+        },
+        {
+          "line": 89,
+          "node_type": "parameter",
+          "label": "String input parameter",
+          "confidence": 0.738,
+          "annotation_type": "@NonNegative",
+          "base_model": "causal",
+          "reasoning": "Variable/parameter should not be negative (predicted by CAUSAL model)"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            45,
+            67,
+            89
+          ],
+          "confidence_scores": [
+            0.63,
+            0.738,
+            0.738
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.702
+        }
+      }
+    },
+    "nonnegative_hgt": {
+      "predictions": [
+        {
+          "line": 45,
+          "node_type": "method",
+          "label": "public static List<String> getStrings()",
+          "confidence": 0.714,
+          "annotation_type": "@NonNegative",
+          "base_model": "hgt",
+          "reasoning": "Method might return non-negative values (predicted by HGT model)"
+        },
+        {
+          "line": 67,
+          "node_type": "variable",
+          "label": "private final Map<String, Object> cache",
+          "confidence": 0.8363999999999999,
+          "annotation_type": "@NonNegative",
+          "base_model": "hgt",
+          "reasoning": "Variable/parameter should not be negative (predicted by HGT model)"
+        },
+        {
+          "line": 89,
+          "node_type": "parameter",
+          "label": "String input parameter",
+          "confidence": 0.8363999999999999,
+          "annotation_type": "@NonNegative",
+          "base_model": "hgt",
+          "reasoning": "Variable/parameter should not be negative (predicted by HGT model)"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            45,
+            67,
+            89
+          ],
+          "confidence_scores": [
+            0.714,
+            0.8363999999999999,
+            0.8363999999999999
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.7956
+        }
+      }
+    },
+    "nonnegative_gcsn": {
+      "predictions": [
+        {
+          "line": 45,
+          "node_type": "method",
+          "label": "public static List<String> getStrings()",
+          "confidence": 0.721,
+          "annotation_type": "@NonNegative",
+          "base_model": "gcsn",
+          "reasoning": "Method might return non-negative values (predicted by GCSN model)"
+        },
+        {
+          "line": 67,
+          "node_type": "variable",
+          "label": "private final Map<String, Object> cache",
+          "confidence": 0.8446,
+          "annotation_type": "@NonNegative",
+          "base_model": "gcsn",
+          "reasoning": "Variable/parameter should not be negative (predicted by GCSN model)"
+        },
+        {
+          "line": 89,
+          "node_type": "parameter",
+          "label": "String input parameter",
+          "confidence": 0.8446,
+          "annotation_type": "@NonNegative",
+          "base_model": "gcsn",
+          "reasoning": "Variable/parameter should not be negative (predicted by GCSN model)"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            45,
+            67,
+            89
+          ],
+          "confidence_scores": [
+            0.721,
+            0.8446,
+            0.8446
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.8034
+        }
+      }
+    },
+    "nonnegative_dg2n": {
+      "predictions": [
+        {
+          "line": 45,
+          "node_type": "method",
+          "label": "public static List<String> getStrings()",
+          "confidence": 0.6859999999999999,
+          "annotation_type": "@NonNegative",
+          "base_model": "dg2n",
+          "reasoning": "Method might return non-negative values (predicted by DG2N model)"
+        },
+        {
+          "line": 67,
+          "node_type": "variable",
+          "label": "private final Map<String, Object> cache",
+          "confidence": 0.8036,
+          "annotation_type": "@NonNegative",
+          "base_model": "dg2n",
+          "reasoning": "Variable/parameter should not be negative (predicted by DG2N model)"
+        },
+        {
+          "line": 89,
+          "node_type": "parameter",
+          "label": "String input parameter",
+          "confidence": 0.8036,
+          "annotation_type": "@NonNegative",
+          "base_model": "dg2n",
+          "reasoning": "Variable/parameter should not be negative (predicted by DG2N model)"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            45,
+            67,
+            89
+          ],
+          "confidence_scores": [
+            0.6859999999999999,
+            0.8036,
+            0.8036
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.7643999999999999
+        }
+      }
+    },
+    "gtenegativeone_gcn": {
+      "predictions": [
+        {
+          "line": 45,
+          "node_type": "method",
+          "label": "public static List<String> getStrings()",
+          "confidence": 0.6174999999999999,
+          "annotation_type": "@GTENegativeOne",
+          "base_model": "gcn",
+          "reasoning": "Method might return index-like values (predicted by GCN model)"
+        },
+        {
+          "line": 67,
+          "node_type": "variable",
+          "label": "private final Map<String, Object> cache",
+          "confidence": 0.7124999999999999,
+          "annotation_type": "@GTENegativeOne",
+          "base_model": "gcn",
+          "reasoning": "Variable might store index-like values (predicted by GCN model)"
+        },
+        {
+          "line": 89,
+          "node_type": "parameter",
+          "label": "String input parameter",
+          "confidence": 0.855,
+          "annotation_type": "@GTENegativeOne",
+          "base_model": "gcn",
+          "reasoning": "Parameter likely to be array index or similar (>= -1) (predicted by GCN model)"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            45,
+            67,
+            89
+          ],
+          "confidence_scores": [
+            0.6174999999999999,
+            0.7124999999999999,
+            0.855
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.7283333333333332
+        }
+      }
+    },
+    "gtenegativeone_gbt": {
+      "predictions": [
+        {
+          "line": 45,
+          "node_type": "method",
+          "label": "public static List<String> getStrings()",
+          "confidence": 0.6825000000000001,
+          "annotation_type": "@GTENegativeOne",
+          "base_model": "gbt",
+          "reasoning": "Method might return index-like values (predicted by GBT model)"
+        },
+        {
+          "line": 67,
+          "node_type": "variable",
+          "label": "private final Map<String, Object> cache",
+          "confidence": 0.7875000000000001,
+          "annotation_type": "@GTENegativeOne",
+          "base_model": "gbt",
+          "reasoning": "Variable might store index-like values (predicted by GBT model)"
+        },
+        {
+          "line": 89,
+          "node_type": "parameter",
+          "label": "String input parameter",
+          "confidence": 0.9450000000000001,
+          "annotation_type": "@GTENegativeOne",
+          "base_model": "gbt",
+          "reasoning": "Parameter likely to be array index or similar (>= -1) (predicted by GBT model)"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            45,
+            67,
+            89
+          ],
+          "confidence_scores": [
+            0.6825000000000001,
+            0.7875000000000001,
+            0.9450000000000001
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.805
+        }
+      }
+    },
+    "gtenegativeone_causal": {
+      "predictions": [
+        {
+          "line": 45,
+          "node_type": "method",
+          "label": "public static List<String> getStrings()",
+          "confidence": 0.5850000000000001,
+          "annotation_type": "@GTENegativeOne",
+          "base_model": "causal",
+          "reasoning": "Method might return index-like values (predicted by CAUSAL model)"
+        },
+        {
+          "line": 67,
+          "node_type": "variable",
+          "label": "private final Map<String, Object> cache",
+          "confidence": 0.675,
+          "annotation_type": "@GTENegativeOne",
+          "base_model": "causal",
+          "reasoning": "Variable might store index-like values (predicted by CAUSAL model)"
+        },
+        {
+          "line": 89,
+          "node_type": "parameter",
+          "label": "String input parameter",
+          "confidence": 0.81,
+          "annotation_type": "@GTENegativeOne",
+          "base_model": "causal",
+          "reasoning": "Parameter likely to be array index or similar (>= -1) (predicted by CAUSAL model)"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            45,
+            67,
+            89
+          ],
+          "confidence_scores": [
+            0.5850000000000001,
+            0.675,
+            0.81
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.6900000000000001
+        }
+      }
+    },
+    "gtenegativeone_hgt": {
+      "predictions": [
+        {
+          "line": 45,
+          "node_type": "method",
+          "label": "public static List<String> getStrings()",
+          "confidence": 0.663,
+          "annotation_type": "@GTENegativeOne",
+          "base_model": "hgt",
+          "reasoning": "Method might return index-like values (predicted by HGT model)"
+        },
+        {
+          "line": 67,
+          "node_type": "variable",
+          "label": "private final Map<String, Object> cache",
+          "confidence": 0.765,
+          "annotation_type": "@GTENegativeOne",
+          "base_model": "hgt",
+          "reasoning": "Variable might store index-like values (predicted by HGT model)"
+        },
+        {
+          "line": 89,
+          "node_type": "parameter",
+          "label": "String input parameter",
+          "confidence": 0.918,
+          "annotation_type": "@GTENegativeOne",
+          "base_model": "hgt",
+          "reasoning": "Parameter likely to be array index or similar (>= -1) (predicted by HGT model)"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            45,
+            67,
+            89
+          ],
+          "confidence_scores": [
+            0.663,
+            0.765,
+            0.918
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.782
+        }
+      }
+    },
+    "gtenegativeone_gcsn": {
+      "predictions": [
+        {
+          "line": 45,
+          "node_type": "method",
+          "label": "public static List<String> getStrings()",
+          "confidence": 0.6695000000000001,
+          "annotation_type": "@GTENegativeOne",
+          "base_model": "gcsn",
+          "reasoning": "Method might return index-like values (predicted by GCSN model)"
+        },
+        {
+          "line": 67,
+          "node_type": "variable",
+          "label": "private final Map<String, Object> cache",
+          "confidence": 0.7725,
+          "annotation_type": "@GTENegativeOne",
+          "base_model": "gcsn",
+          "reasoning": "Variable might store index-like values (predicted by GCSN model)"
+        },
+        {
+          "line": 89,
+          "node_type": "parameter",
+          "label": "String input parameter",
+          "confidence": 0.927,
+          "annotation_type": "@GTENegativeOne",
+          "base_model": "gcsn",
+          "reasoning": "Parameter likely to be array index or similar (>= -1) (predicted by GCSN model)"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            45,
+            67,
+            89
+          ],
+          "confidence_scores": [
+            0.6695000000000001,
+            0.7725,
+            0.927
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.7896666666666667
+        }
+      }
+    },
+    "gtenegativeone_dg2n": {
+      "predictions": [
+        {
+          "line": 45,
+          "node_type": "method",
+          "label": "public static List<String> getStrings()",
+          "confidence": 0.637,
+          "annotation_type": "@GTENegativeOne",
+          "base_model": "dg2n",
+          "reasoning": "Method might return index-like values (predicted by DG2N model)"
+        },
+        {
+          "line": 67,
+          "node_type": "variable",
+          "label": "private final Map<String, Object> cache",
+          "confidence": 0.735,
+          "annotation_type": "@GTENegativeOne",
+          "base_model": "dg2n",
+          "reasoning": "Variable might store index-like values (predicted by DG2N model)"
+        },
+        {
+          "line": 89,
+          "node_type": "parameter",
+          "label": "String input parameter",
+          "confidence": 0.882,
+          "annotation_type": "@GTENegativeOne",
+          "base_model": "dg2n",
+          "reasoning": "Parameter likely to be array index or similar (>= -1) (predicted by DG2N model)"
+        }
+      ],
+      "summary": {
+        "total_predictions": 3,
+        "prediction_types": {
+          "total_count": 3,
+          "line_numbers": [
+            45,
+            67,
+            89
+          ],
+          "confidence_scores": [
+            0.637,
+            0.735,
+            0.882
+          ],
+          "node_types": {
+            "method": 1,
+            "variable": 1,
+            "parameter": 1
+          },
+          "avg_confidence": 0.7513333333333333
+        }
+      }
+    }
+  },
+  "comparison_summary": {
+    "model_counts": {
+      "positive_gcn": 3,
+      "positive_gbt": 3,
+      "positive_causal": 3,
+      "positive_hgt": 3,
+      "positive_gcsn": 3,
+      "positive_dg2n": 3,
+      "nonnegative_gcn": 3,
+      "nonnegative_gbt": 3,
+      "nonnegative_causal": 3,
+      "nonnegative_hgt": 3,
+      "nonnegative_gcsn": 3,
+      "nonnegative_dg2n": 3,
+      "gtenegativeone_gcn": 3,
+      "gtenegativeone_gbt": 3,
+      "gtenegativeone_causal": 3,
+      "gtenegativeone_hgt": 3,
+      "gtenegativeone_gcsn": 3,
+      "gtenegativeone_dg2n": 3
+    },
+    "consensus_predictions": [
+      45,
+      67,
+      89
+    ],
+    "unique_predictions": {
+      "positive_gcn": [
+        89,
+        67,
+        45
+      ],
+      "positive_gbt": [
+        89,
+        67,
+        45
+      ],
+      "positive_causal": [
+        89,
+        67,
+        45
+      ],
+      "positive_hgt": [
+        89,
+        67,
+        45
+      ],
+      "positive_gcsn": [
+        89,
+        67,
+        45
+      ],
+      "positive_dg2n": [
+        89,
+        67,
+        45
+      ],
+      "nonnegative_gcn": [
+        89,
+        67,
+        45
+      ],
+      "nonnegative_gbt": [
+        89,
+        67,
+        45
+      ],
+      "nonnegative_causal": [
+        89,
+        67,
+        45
+      ],
+      "nonnegative_hgt": [
+        89,
+        67,
+        45
+      ],
+      "nonnegative_gcsn": [
+        89,
+        67,
+        45
+      ],
+      "nonnegative_dg2n": [
+        89,
+        67,
+        45
+      ],
+      "gtenegativeone_gcn": [
+        89,
+        67,
+        45
+      ],
+      "gtenegativeone_gbt": [
+        89,
+        67,
+        45
+      ],
+      "gtenegativeone_causal": [
+        89,
+        67,
+        45
+      ],
+      "gtenegativeone_hgt": [
+        89,
+        67,
+        45
+      ],
+      "gtenegativeone_gcsn": [
+        89,
+        67,
+        45
+      ],
+      "gtenegativeone_dg2n": [
+        89,
+        67,
+        45
+      ]
+    },
+    "overall_stats": {
+      "total_unique_lines": 3,
+      "avg_predictions_per_model": 3.0
+    }
+  }
+}
