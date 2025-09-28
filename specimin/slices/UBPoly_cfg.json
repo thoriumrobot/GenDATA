@@ -1,0 +1,31 @@
+{
+  "method_name": "access",
+  "nodes": [
+    {"id": 13, "label": "  public static void poly(char[] a, @NonNegative @PolyUpperBound int i) {", "line": 13, "node_type": "stmt"},
+    {"id": 14, "label": "    // :: error: (argument)", "line": 14, "node_type": "stmt"},
+    {"id": 15, "label": "    access(a, i);", "line": 15, "node_type": "stmt"},
+    {"id": 16, "label": "  }", "line": 16, "node_type": "stmt"},
+    {"id": 17, "label": "", "line": 17, "node_type": "stmt"},
+    {"id": 18, "label": "  public static void access(char[] a, @NonNegative @LTLengthOf(\"#1\") int j) {", "line": 18, "node_type": "stmt"},
+    {"id": 19, "label": "    char c = a[j];", "line": 19, "node_type": "stmt"},
+    {"id": 20, "label": "  }", "line": 20, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 13, "target": 14, "type": "control"},
+    {"source": 14, "target": 15, "type": "control"},
+    {"source": 15, "target": 16, "type": "control"},
+    {"source": 16, "target": 17, "type": "control"},
+    {"source": 17, "target": 18, "type": "control"},
+    {"source": 18, "target": 19, "type": "control"},
+    {"source": 19, "target": 20, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 13, "target": 15, "type": "dataflow", "var": "a"},
+    {"source": 13, "target": 15, "type": "dataflow", "var": "i"},
+    {"source": 15, "target": 18, "type": "dataflow", "var": "access"},
+    {"source": 15, "target": 18, "type": "dataflow", "var": "a"},
+    {"source": 13, "target": 18, "type": "dataflow", "var": "NonNegative"},
+    {"source": 18, "target": 19, "type": "dataflow", "var": "a"},
+    {"source": 18, "target": 19, "type": "dataflow", "var": "j"}
+  ]
+}

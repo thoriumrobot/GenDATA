@@ -1,0 +1,15 @@
+{
+  "method_name": "length",
+  "nodes": [
+    {"id": 10, "label": "    public @LengthOf(\"this\") int length() {", "line": 10, "node_type": "stmt"},
+    {"id": 11, "label": "      throw new RuntimeException();", "line": 11, "node_type": "stmt"},
+    {"id": 12, "label": "    }", "line": 12, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 10, "target": 11, "type": "control"},
+    {"source": 11, "target": 12, "type": "control"}
+  ],
+  "dataflow_edges": [
+
+  ]
+}

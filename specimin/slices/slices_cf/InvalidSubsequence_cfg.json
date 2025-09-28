@@ -1,0 +1,53 @@
+{
+  "method_name": "assignE",
+  "nodes": [
+    {"id": 32, "label": "  void assignB(int[] d) {", "line": 32, "node_type": "stmt"},
+    {"id": 33, "label": "    // :: error: (from.gt.to) :: error: (from.not.nonnegative) :: error: (to.not.ltel)", "line": 33, "node_type": "stmt"},
+    {"id": 34, "label": "    b = d;", "line": 34, "node_type": "stmt"},
+    {"id": 35, "label": "  }", "line": 35, "node_type": "stmt"},
+    {"id": 36, "label": "", "line": 36, "node_type": "stmt"},
+    {"id": 37, "label": "  void assignC(int[] d) {", "line": 37, "node_type": "stmt"},
+    {"id": 38, "label": "    // :: error: (from.gt.to) :: error: (to.not.ltel)", "line": 38, "node_type": "stmt"},
+    {"id": 39, "label": "    c = d;", "line": 39, "node_type": "stmt"},
+    {"id": 40, "label": "  }", "line": 40, "node_type": "stmt"},
+    {"id": 41, "label": "", "line": 41, "node_type": "stmt"},
+    {"id": 42, "label": "  void assignE(int[] d) {", "line": 42, "node_type": "stmt"},
+    {"id": 43, "label": "    // :: error: (from.gt.to) :: error: (to.not.ltel)", "line": 43, "node_type": "stmt"},
+    {"id": 44, "label": "    e = d;", "line": 44, "node_type": "stmt"},
+    {"id": 45, "label": "  }", "line": 45, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 32, "target": 33, "type": "control"},
+    {"source": 33, "target": 34, "type": "control"},
+    {"source": 34, "target": 35, "type": "control"},
+    {"source": 35, "target": 36, "type": "control"},
+    {"source": 36, "target": 37, "type": "control"},
+    {"source": 37, "target": 38, "type": "control"},
+    {"source": 38, "target": 39, "type": "control"},
+    {"source": 39, "target": 40, "type": "control"},
+    {"source": 40, "target": 41, "type": "control"},
+    {"source": 41, "target": 42, "type": "control"},
+    {"source": 42, "target": 43, "type": "control"},
+    {"source": 43, "target": 44, "type": "control"},
+    {"source": 44, "target": 45, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 32, "target": 34, "type": "dataflow", "var": "d"},
+    {"source": 34, "target": 37, "type": "dataflow", "var": "d"},
+    {"source": 33, "target": 38, "type": "dataflow", "var": "error"},
+    {"source": 33, "target": 38, "type": "dataflow", "var": "from"},
+    {"source": 33, "target": 38, "type": "dataflow", "var": "gt"},
+    {"source": 33, "target": 38, "type": "dataflow", "var": "to"},
+    {"source": 33, "target": 38, "type": "dataflow", "var": "not"},
+    {"source": 33, "target": 38, "type": "dataflow", "var": "ltel"},
+    {"source": 37, "target": 39, "type": "dataflow", "var": "d"},
+    {"source": 39, "target": 42, "type": "dataflow", "var": "d"},
+    {"source": 38, "target": 43, "type": "dataflow", "var": "error"},
+    {"source": 38, "target": 43, "type": "dataflow", "var": "from"},
+    {"source": 38, "target": 43, "type": "dataflow", "var": "gt"},
+    {"source": 38, "target": 43, "type": "dataflow", "var": "to"},
+    {"source": 38, "target": 43, "type": "dataflow", "var": "not"},
+    {"source": 38, "target": 43, "type": "dataflow", "var": "ltel"},
+    {"source": 42, "target": 44, "type": "dataflow", "var": "d"}
+  ]
+}

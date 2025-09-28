@@ -1,0 +1,18 @@
+{
+  "method_name": "<init>",
+  "nodes": [
+    {"id": 18, "label": "  private BasicSubsequence3(@IndexFor(\"array\") int s, @IndexOrHigh(\"array\") int e) {", "line": 18, "node_type": "stmt"},
+    {"id": 19, "label": "    start = s;", "line": 19, "node_type": "stmt"},
+    {"id": 20, "label": "    end = e;", "line": 20, "node_type": "stmt"},
+    {"id": 21, "label": "  }", "line": 21, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 18, "target": 19, "type": "control"},
+    {"source": 19, "target": 20, "type": "control"},
+    {"source": 20, "target": 21, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 18, "target": 19, "type": "dataflow", "var": "s"},
+    {"source": 18, "target": 20, "type": "dataflow", "var": "e"}
+  ]
+}

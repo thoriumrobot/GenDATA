@@ -1,0 +1,30 @@
+{
+  "method_name": "slice",
+  "nodes": [
+    {"id": 9, "label": "  private static final @IndexFor(\"iYearInfoCache\") int CACHE_MASK = CACHE_SIZE - 1;", "line": 9, "node_type": "stmt"},
+    {"id": 10, "label": "", "line": 10, "node_type": "stmt"},
+    {"id": 11, "label": "  private static final String[] iYearInfoCache = new String[CACHE_SIZE];", "line": 11, "node_type": "stmt"},
+    {"id": 12, "label": "", "line": 12, "node_type": "stmt"},
+    {"id": 13, "label": "  private String getYearInfo(int year) {", "line": 13, "node_type": "stmt"},
+    {"id": 14, "label": "    return iYearInfoCache[year & CACHE_MASK];", "line": 14, "node_type": "stmt"},
+    {"id": 15, "label": "  }", "line": 15, "node_type": "stmt"},
+    {"id": 16, "label": "}", "line": 16, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 9, "target": 10, "type": "control"},
+    {"source": 10, "target": 11, "type": "control"},
+    {"source": 11, "target": 12, "type": "control"},
+    {"source": 12, "target": 13, "type": "control"},
+    {"source": 13, "target": 14, "type": "control"},
+    {"source": 14, "target": 15, "type": "control"},
+    {"source": 15, "target": 16, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 9, "target": 11, "type": "dataflow", "var": "iYearInfoCache"},
+    {"source": 9, "target": 11, "type": "dataflow", "var": "CACHE_SIZE"},
+    {"source": 11, "target": 13, "type": "dataflow", "var": "String"},
+    {"source": 11, "target": 14, "type": "dataflow", "var": "iYearInfoCache"},
+    {"source": 13, "target": 14, "type": "dataflow", "var": "year"},
+    {"source": 9, "target": 14, "type": "dataflow", "var": "CACHE_MASK"}
+  ]
+}

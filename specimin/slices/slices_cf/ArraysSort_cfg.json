@@ -1,0 +1,24 @@
+{
+  "method_name": "sortInt",
+  "nodes": [
+    {"id": 6, "label": "  void sortInt(int @MinLen(10) [] nums) {", "line": 6, "node_type": "stmt"},
+    {"id": 7, "label": "    // Checks the correct handling of the toIndex parameter", "line": 7, "node_type": "stmt"},
+    {"id": 8, "label": "    Arrays.sort(nums, 0, 10);", "line": 8, "node_type": "stmt"},
+    {"id": 9, "label": "    // :: error: (argument)", "line": 9, "node_type": "stmt"},
+    {"id": 10, "label": "    Arrays.sort(nums, 0, 11);", "line": 10, "node_type": "stmt"},
+    {"id": 11, "label": "  }", "line": 11, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 6, "target": 7, "type": "control"},
+    {"source": 7, "target": 8, "type": "control"},
+    {"source": 8, "target": 9, "type": "control"},
+    {"source": 9, "target": 10, "type": "control"},
+    {"source": 10, "target": 11, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 6, "target": 8, "type": "dataflow", "var": "nums"},
+    {"source": 8, "target": 10, "type": "dataflow", "var": "Arrays"},
+    {"source": 8, "target": 10, "type": "dataflow", "var": "sort"},
+    {"source": 8, "target": 10, "type": "dataflow", "var": "nums"}
+  ]
+}

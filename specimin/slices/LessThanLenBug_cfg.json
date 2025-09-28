@@ -1,0 +1,26 @@
+{
+  "method_name": "m1",
+  "nodes": [
+    {"id": 5, "label": "  public static void m1(int[] shorter) {", "line": 5, "node_type": "stmt"},
+    {"id": 6, "label": "    int[] longer = new int[4 * shorter.length];", "line": 6, "node_type": "stmt"},
+    {"id": 7, "label": "    // :: error: (assignment)", "line": 7, "node_type": "stmt"},
+    {"id": 8, "label": "    @LTLengthOf(\"longer\") int x = shorter.length;", "line": 8, "node_type": "stmt"},
+    {"id": 9, "label": "    int i = longer[x];", "line": 9, "node_type": "stmt"},
+    {"id": 10, "label": "  }", "line": 10, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 5, "target": 6, "type": "control"},
+    {"source": 6, "target": 7, "type": "control"},
+    {"source": 7, "target": 8, "type": "control"},
+    {"source": 8, "target": 9, "type": "control"},
+    {"source": 9, "target": 10, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 5, "target": 6, "type": "dataflow", "var": "shorter"},
+    {"source": 6, "target": 8, "type": "dataflow", "var": "longer"},
+    {"source": 6, "target": 8, "type": "dataflow", "var": "shorter"},
+    {"source": 6, "target": 8, "type": "dataflow", "var": "length"},
+    {"source": 8, "target": 9, "type": "dataflow", "var": "longer"},
+    {"source": 8, "target": 9, "type": "dataflow", "var": "x"}
+  ]
+}

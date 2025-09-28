@@ -1,0 +1,17 @@
+{
+  "method_name": "negativeArray",
+  "nodes": [
+    {"id": 5, "label": "  public static void negativeArray(@GTENegativeOne int len) {", "line": 5, "node_type": "stmt"},
+    {"id": 6, "label": "    // :: error: (array.length.negative)", "line": 6, "node_type": "stmt"},
+    {"id": 7, "label": "    int[] arr = new int[len];", "line": 7, "node_type": "stmt"},
+    {"id": 8, "label": "  }", "line": 8, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 5, "target": 6, "type": "control"},
+    {"source": 6, "target": 7, "type": "control"},
+    {"source": 7, "target": 8, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 5, "target": 7, "type": "dataflow", "var": "len"}
+  ]
+}

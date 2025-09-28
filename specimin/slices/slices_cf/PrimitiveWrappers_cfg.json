@@ -1,0 +1,18 @@
+{
+  "method_name": "array_creation",
+  "nodes": [
+    {"id": 14, "label": "  void array_creation(@NonNegative Integer i, @NonNegative int j) {", "line": 14, "node_type": "stmt"},
+    {"id": 15, "label": "    int[] a = new int[j];", "line": 15, "node_type": "stmt"},
+    {"id": 16, "label": "    int[] b = new int[i];", "line": 16, "node_type": "stmt"},
+    {"id": 17, "label": "  }", "line": 17, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 14, "target": 15, "type": "control"},
+    {"source": 15, "target": 16, "type": "control"},
+    {"source": 16, "target": 17, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 14, "target": 15, "type": "dataflow", "var": "j"},
+    {"source": 14, "target": 16, "type": "dataflow", "var": "i"}
+  ]
+}

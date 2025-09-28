@@ -1,0 +1,27 @@
+{
+  "method_name": "test",
+  "nodes": [
+    {"id": 4, "label": "  void test(int x) {", "line": 4, "node_type": "stmt"},
+    {"id": 5, "label": "    if (1.0 > x) {", "line": 5, "node_type": "stmt"},
+    {"id": 6, "label": "      // TODO: It might be nice to handle comparisons against floats,", "line": 6, "node_type": "stmt"},
+    {"id": 7, "label": "      // but an array index is not generally compared to a float.", "line": 7, "node_type": "stmt"},
+    {"id": 8, "label": "      // :: error: (assignment)", "line": 8, "node_type": "stmt"},
+    {"id": 9, "label": "      @LessThan(\"1\") int y = x;", "line": 9, "node_type": "stmt"},
+    {"id": 10, "label": "    }", "line": 10, "node_type": "stmt"},
+    {"id": 11, "label": "  }", "line": 11, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 4, "target": 5, "type": "control"},
+    {"source": 5, "target": 6, "type": "control"},
+    {"source": 6, "target": 7, "type": "control"},
+    {"source": 7, "target": 8, "type": "control"},
+    {"source": 8, "target": 9, "type": "control"},
+    {"source": 9, "target": 10, "type": "control"},
+    {"source": 10, "target": 11, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 4, "target": 5, "type": "dataflow", "var": "x"},
+    {"source": 6, "target": 7, "type": "dataflow", "var": "to"},
+    {"source": 5, "target": 9, "type": "dataflow", "var": "x"}
+  ]
+}

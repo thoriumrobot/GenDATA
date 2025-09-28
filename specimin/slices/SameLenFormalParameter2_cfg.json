@@ -1,0 +1,18 @@
+{
+  "method_name": "client",
+  "nodes": [
+    {"id": 7, "label": "  void client(Object[] myvals, int[] mymods) {", "line": 7, "node_type": "stmt"},
+    {"id": 8, "label": "    // :: error: (argument)", "line": 8, "node_type": "stmt"},
+    {"id": 9, "label": "    lib(myvals, mymods);", "line": 9, "node_type": "stmt"},
+    {"id": 10, "label": "  }", "line": 10, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 7, "target": 8, "type": "control"},
+    {"source": 8, "target": 9, "type": "control"},
+    {"source": 9, "target": 10, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 7, "target": 9, "type": "dataflow", "var": "myvals"},
+    {"source": 7, "target": 9, "type": "dataflow", "var": "mymods"}
+  ]
+}

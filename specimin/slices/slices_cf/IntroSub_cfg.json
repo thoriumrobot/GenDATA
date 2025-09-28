@@ -1,0 +1,52 @@
+{
+  "method_name": "test",
+  "nodes": [
+    {"id": 10, "label": "  void test(int[] arr, @LTLengthOf({\"#1\"}) int a) {", "line": 10, "node_type": "stmt"},
+    {"id": 11, "label": "    // :: error: (assignment)", "line": 11, "node_type": "stmt"},
+    {"id": 12, "label": "    @LTLengthOf({\"arr\"}) int c = a - (-1);", "line": 12, "node_type": "stmt"},
+    {"id": 13, "label": "    @LTEqLengthOf({\"arr\"}) int c1 = a - (-1);", "line": 13, "node_type": "stmt"},
+    {"id": 14, "label": "    @LTLengthOf({\"arr\"}) int d = a - 0;", "line": 14, "node_type": "stmt"},
+    {"id": 15, "label": "    @LTLengthOf({\"arr\"}) int e = a - 7;", "line": 15, "node_type": "stmt"},
+    {"id": 16, "label": "    // :: error: (assignment)", "line": 16, "node_type": "stmt"},
+    {"id": 17, "label": "    @LTLengthOf({\"arr\"}) int f = a - (-7);", "line": 17, "node_type": "stmt"},
+    {"id": 18, "label": "", "line": 18, "node_type": "stmt"},
+    {"id": 19, "label": "    // :: error: (assignment)", "line": 19, "node_type": "stmt"},
+    {"id": 20, "label": "    @LTEqLengthOf({\"arr\"}) int j = 7;", "line": 20, "node_type": "stmt"},
+    {"id": 21, "label": "  }", "line": 21, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 10, "target": 11, "type": "control"},
+    {"source": 11, "target": 12, "type": "control"},
+    {"source": 12, "target": 13, "type": "control"},
+    {"source": 13, "target": 14, "type": "control"},
+    {"source": 14, "target": 15, "type": "control"},
+    {"source": 15, "target": 16, "type": "control"},
+    {"source": 16, "target": 17, "type": "control"},
+    {"source": 17, "target": 18, "type": "control"},
+    {"source": 18, "target": 19, "type": "control"},
+    {"source": 19, "target": 20, "type": "control"},
+    {"source": 20, "target": 21, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 10, "target": 12, "type": "dataflow", "var": "LTLengthOf"},
+    {"source": 10, "target": 12, "type": "dataflow", "var": "arr"},
+    {"source": 10, "target": 12, "type": "dataflow", "var": "a"},
+    {"source": 12, "target": 13, "type": "dataflow", "var": "arr"},
+    {"source": 12, "target": 13, "type": "dataflow", "var": "a"},
+    {"source": 12, "target": 14, "type": "dataflow", "var": "LTLengthOf"},
+    {"source": 13, "target": 14, "type": "dataflow", "var": "arr"},
+    {"source": 13, "target": 14, "type": "dataflow", "var": "a"},
+    {"source": 14, "target": 15, "type": "dataflow", "var": "LTLengthOf"},
+    {"source": 14, "target": 15, "type": "dataflow", "var": "arr"},
+    {"source": 14, "target": 15, "type": "dataflow", "var": "a"},
+    {"source": 11, "target": 16, "type": "dataflow", "var": "error"},
+    {"source": 11, "target": 16, "type": "dataflow", "var": "assignment"},
+    {"source": 15, "target": 17, "type": "dataflow", "var": "LTLengthOf"},
+    {"source": 15, "target": 17, "type": "dataflow", "var": "arr"},
+    {"source": 15, "target": 17, "type": "dataflow", "var": "a"},
+    {"source": 16, "target": 19, "type": "dataflow", "var": "error"},
+    {"source": 16, "target": 19, "type": "dataflow", "var": "assignment"},
+    {"source": 13, "target": 20, "type": "dataflow", "var": "LTEqLengthOf"},
+    {"source": 17, "target": 20, "type": "dataflow", "var": "arr"}
+  ]
+}

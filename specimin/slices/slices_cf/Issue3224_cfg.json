@@ -1,0 +1,42 @@
+{
+  "method_name": "m6",
+  "nodes": [
+    {"id": 31, "label": "  public static void m5(String @MinLen(1) [] args, String[] otherArray) {", "line": 31, "node_type": "stmt"},
+    {"id": 32, "label": "    // :: error: (assignment)", "line": 32, "node_type": "stmt"},
+    {"id": 33, "label": "    String @MinLen(1) [] args2 = java.util.Arrays.copyOf(args, otherArray.length);", "line": 33, "node_type": "stmt"},
+    {"id": 34, "label": "  }", "line": 34, "node_type": "stmt"},
+    {"id": 35, "label": "", "line": 35, "node_type": "stmt"},
+    {"id": 36, "label": "  public static void m6(String @MinLen(1) [] args) {", "line": 36, "node_type": "stmt"},
+    {"id": 37, "label": "    // :: error: (assignment)", "line": 37, "node_type": "stmt"},
+    {"id": 38, "label": "    String @MinLen(1) [] args2 = Arrays.copyOf(args, args.length);", "line": 38, "node_type": "stmt"},
+    {"id": 39, "label": "  }", "line": 39, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 31, "target": 32, "type": "control"},
+    {"source": 32, "target": 33, "type": "control"},
+    {"source": 33, "target": 34, "type": "control"},
+    {"source": 34, "target": 35, "type": "control"},
+    {"source": 35, "target": 36, "type": "control"},
+    {"source": 36, "target": 37, "type": "control"},
+    {"source": 37, "target": 38, "type": "control"},
+    {"source": 38, "target": 39, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 31, "target": 33, "type": "dataflow", "var": "String"},
+    {"source": 31, "target": 33, "type": "dataflow", "var": "MinLen"},
+    {"source": 31, "target": 33, "type": "dataflow", "var": "args"},
+    {"source": 31, "target": 33, "type": "dataflow", "var": "otherArray"},
+    {"source": 33, "target": 36, "type": "dataflow", "var": "String"},
+    {"source": 33, "target": 36, "type": "dataflow", "var": "MinLen"},
+    {"source": 33, "target": 36, "type": "dataflow", "var": "args"},
+    {"source": 32, "target": 37, "type": "dataflow", "var": "error"},
+    {"source": 32, "target": 37, "type": "dataflow", "var": "assignment"},
+    {"source": 36, "target": 38, "type": "dataflow", "var": "String"},
+    {"source": 36, "target": 38, "type": "dataflow", "var": "MinLen"},
+    {"source": 33, "target": 38, "type": "dataflow", "var": "args2"},
+    {"source": 33, "target": 38, "type": "dataflow", "var": "Arrays"},
+    {"source": 33, "target": 38, "type": "dataflow", "var": "copyOf"},
+    {"source": 36, "target": 38, "type": "dataflow", "var": "args"},
+    {"source": 33, "target": 38, "type": "dataflow", "var": "length"}
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "method_name": "test",
+  "nodes": [
+    {"id": 5, "label": "  void test() {", "line": 5, "node_type": "stmt"},
+    {"id": 6, "label": "    int @MinLen(5) [] arr = new int[5];", "line": 6, "node_type": "stmt"},
+    {"id": 7, "label": "    int a = 9;", "line": 7, "node_type": "stmt"},
+    {"id": 8, "label": "    a += 5;", "line": 8, "node_type": "stmt"},
+    {"id": 9, "label": "    a -= 2;", "line": 9, "node_type": "stmt"},
+    {"id": 10, "label": "    int @MinLen(12) [] arr1 = new int[a];", "line": 10, "node_type": "stmt"},
+    {"id": 11, "label": "    int @MinLen(3) [] arr2 = {1, 2, 3};", "line": 11, "node_type": "stmt"},
+    {"id": 12, "label": "    // :: error: (assignment)", "line": 12, "node_type": "stmt"},
+    {"id": 13, "label": "    int @MinLen(4) [] arr3 = {4, 5, 6};", "line": 13, "node_type": "stmt"},
+    {"id": 14, "label": "    // :: error: (assignment)", "line": 14, "node_type": "stmt"},
+    {"id": 15, "label": "    int @MinLen(7) [] arr4 = new int[4];", "line": 15, "node_type": "stmt"},
+    {"id": 16, "label": "    // :: error: (assignment)", "line": 16, "node_type": "stmt"},
+    {"id": 17, "label": "    int @MinLen(16) [] arr5 = new int[a];", "line": 17, "node_type": "stmt"},
+    {"id": 18, "label": "  }", "line": 18, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 5, "target": 6, "type": "control"},
+    {"source": 6, "target": 7, "type": "control"},
+    {"source": 7, "target": 8, "type": "control"},
+    {"source": 8, "target": 9, "type": "control"},
+    {"source": 9, "target": 10, "type": "control"},
+    {"source": 10, "target": 11, "type": "control"},
+    {"source": 11, "target": 12, "type": "control"},
+    {"source": 12, "target": 13, "type": "control"},
+    {"source": 13, "target": 14, "type": "control"},
+    {"source": 14, "target": 15, "type": "control"},
+    {"source": 15, "target": 16, "type": "control"},
+    {"source": 16, "target": 17, "type": "control"},
+    {"source": 17, "target": 18, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 7, "target": 8, "type": "dataflow", "var": "a"},
+    {"source": 8, "target": 9, "type": "dataflow", "var": "a"},
+    {"source": 6, "target": 10, "type": "dataflow", "var": "MinLen"},
+    {"source": 9, "target": 10, "type": "dataflow", "var": "a"},
+    {"source": 10, "target": 11, "type": "dataflow", "var": "MinLen"},
+    {"source": 11, "target": 13, "type": "dataflow", "var": "MinLen"},
+    {"source": 12, "target": 14, "type": "dataflow", "var": "error"},
+    {"source": 12, "target": 14, "type": "dataflow", "var": "assignment"},
+    {"source": 13, "target": 15, "type": "dataflow", "var": "MinLen"},
+    {"source": 14, "target": 16, "type": "dataflow", "var": "error"},
+    {"source": 14, "target": 16, "type": "dataflow", "var": "assignment"},
+    {"source": 15, "target": 17, "type": "dataflow", "var": "MinLen"},
+    {"source": 10, "target": 17, "type": "dataflow", "var": "a"}
+  ]
+}

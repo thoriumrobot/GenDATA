@@ -1,0 +1,24 @@
+{
+  "method_name": "method3",
+  "nodes": [
+    {"id": 7, "label": "  void method3(@NonNegative int size, @NonNegative int value) {", "line": 7, "node_type": "stmt"},
+    {"id": 8, "label": "    this.size = size;", "line": 8, "node_type": "stmt"},
+    {"id": 9, "label": "    this.vDown = new int[this.size];", "line": 9, "node_type": "stmt"},
+    {"id": 10, "label": "    // :: error: (array.access.unsafe.high)", "line": 10, "node_type": "stmt"},
+    {"id": 11, "label": "    vDown[1 + value] = 10;", "line": 11, "node_type": "stmt"},
+    {"id": 12, "label": "  }", "line": 12, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 7, "target": 8, "type": "control"},
+    {"source": 8, "target": 9, "type": "control"},
+    {"source": 9, "target": 10, "type": "control"},
+    {"source": 10, "target": 11, "type": "control"},
+    {"source": 11, "target": 12, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 7, "target": 8, "type": "dataflow", "var": "size"},
+    {"source": 8, "target": 9, "type": "dataflow", "var": "size"},
+    {"source": 9, "target": 11, "type": "dataflow", "var": "vDown"},
+    {"source": 7, "target": 11, "type": "dataflow", "var": "value"}
+  ]
+}

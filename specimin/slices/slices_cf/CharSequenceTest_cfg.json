@@ -1,0 +1,52 @@
+{
+  "method_name": "testAppend",
+  "nodes": [
+    {"id": 70, "label": "  void testAppend(Appendable app, CharSequence cs, @IndexFor(\"#2\") int i) throws IOException {", "line": 70, "node_type": "stmt"},
+    {"id": 71, "label": "    app.append(cs, i, i);", "line": 71, "node_type": "stmt"},
+    {"id": 72, "label": "    // :: error: (argument)", "line": 72, "node_type": "stmt"},
+    {"id": 73, "label": "    app.append(cs, 1, 2);", "line": 73, "node_type": "stmt"},
+    {"id": 74, "label": "  }", "line": 74, "node_type": "stmt"},
+    {"id": 75, "label": "", "line": 75, "node_type": "stmt"},
+    {"id": 76, "label": "  void testAppend(StringWriter app, CharSequence cs, @IndexFor(\"#2\") int i) throws IOException {", "line": 76, "node_type": "stmt"},
+    {"id": 77, "label": "    app.append(cs, i, i);", "line": 77, "node_type": "stmt"},
+    {"id": 78, "label": "    // :: error: (argument)", "line": 78, "node_type": "stmt"},
+    {"id": 79, "label": "    app.append(cs, 1, 2);", "line": 79, "node_type": "stmt"},
+    {"id": 80, "label": "  }", "line": 80, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 70, "target": 71, "type": "control"},
+    {"source": 71, "target": 72, "type": "control"},
+    {"source": 72, "target": 73, "type": "control"},
+    {"source": 73, "target": 74, "type": "control"},
+    {"source": 74, "target": 75, "type": "control"},
+    {"source": 75, "target": 76, "type": "control"},
+    {"source": 76, "target": 77, "type": "control"},
+    {"source": 77, "target": 78, "type": "control"},
+    {"source": 78, "target": 79, "type": "control"},
+    {"source": 79, "target": 80, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 70, "target": 71, "type": "dataflow", "var": "app"},
+    {"source": 70, "target": 71, "type": "dataflow", "var": "cs"},
+    {"source": 70, "target": 71, "type": "dataflow", "var": "i"},
+    {"source": 71, "target": 73, "type": "dataflow", "var": "app"},
+    {"source": 71, "target": 73, "type": "dataflow", "var": "append"},
+    {"source": 71, "target": 73, "type": "dataflow", "var": "cs"},
+    {"source": 70, "target": 76, "type": "dataflow", "var": "testAppend"},
+    {"source": 73, "target": 76, "type": "dataflow", "var": "app"},
+    {"source": 70, "target": 76, "type": "dataflow", "var": "CharSequence"},
+    {"source": 73, "target": 76, "type": "dataflow", "var": "cs"},
+    {"source": 70, "target": 76, "type": "dataflow", "var": "IndexFor"},
+    {"source": 71, "target": 76, "type": "dataflow", "var": "i"},
+    {"source": 70, "target": 76, "type": "dataflow", "var": "IOException"},
+    {"source": 76, "target": 77, "type": "dataflow", "var": "app"},
+    {"source": 73, "target": 77, "type": "dataflow", "var": "append"},
+    {"source": 76, "target": 77, "type": "dataflow", "var": "cs"},
+    {"source": 76, "target": 77, "type": "dataflow", "var": "i"},
+    {"source": 72, "target": 78, "type": "dataflow", "var": "error"},
+    {"source": 72, "target": 78, "type": "dataflow", "var": "argument"},
+    {"source": 77, "target": 79, "type": "dataflow", "var": "app"},
+    {"source": 77, "target": 79, "type": "dataflow", "var": "append"},
+    {"source": 77, "target": 79, "type": "dataflow", "var": "cs"}
+  ]
+}

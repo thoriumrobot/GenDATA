@@ -1,0 +1,43 @@
+{
+  "method_name": "main",
+  "nodes": [
+    {"id": 17, "label": "  public static void main(String[] args) {", "line": 17, "node_type": "stmt"},
+    {"id": 18, "label": "    char[] a = new char[10];", "line": 18, "node_type": "stmt"},
+    {"id": 19, "label": "", "line": 19, "node_type": "stmt"},
+    {"id": 20, "label": "    read(a, 5, 4);", "line": 20, "node_type": "stmt"},
+    {"id": 21, "label": "", "line": 21, "node_type": "stmt"},
+    {"id": 22, "label": "    read(a, 5, 5);", "line": 22, "node_type": "stmt"},
+    {"id": 23, "label": "", "line": 23, "node_type": "stmt"},
+    {"id": 24, "label": "    // :: error: (argument)", "line": 24, "node_type": "stmt"},
+    {"id": 25, "label": "    read(a, 5, 6);", "line": 25, "node_type": "stmt"},
+    {"id": 26, "label": "", "line": 26, "node_type": "stmt"},
+    {"id": 27, "label": "    // :: error: (argument)", "line": 27, "node_type": "stmt"},
+    {"id": 28, "label": "    read(a, 5, 7);", "line": 28, "node_type": "stmt"},
+    {"id": 29, "label": "  }", "line": 29, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 17, "target": 18, "type": "control"},
+    {"source": 18, "target": 19, "type": "control"},
+    {"source": 19, "target": 20, "type": "control"},
+    {"source": 20, "target": 21, "type": "control"},
+    {"source": 21, "target": 22, "type": "control"},
+    {"source": 22, "target": 23, "type": "control"},
+    {"source": 23, "target": 24, "type": "control"},
+    {"source": 24, "target": 25, "type": "control"},
+    {"source": 25, "target": 26, "type": "control"},
+    {"source": 26, "target": 27, "type": "control"},
+    {"source": 27, "target": 28, "type": "control"},
+    {"source": 28, "target": 29, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 18, "target": 20, "type": "dataflow", "var": "a"},
+    {"source": 20, "target": 22, "type": "dataflow", "var": "read"},
+    {"source": 20, "target": 22, "type": "dataflow", "var": "a"},
+    {"source": 22, "target": 25, "type": "dataflow", "var": "read"},
+    {"source": 22, "target": 25, "type": "dataflow", "var": "a"},
+    {"source": 24, "target": 27, "type": "dataflow", "var": "error"},
+    {"source": 24, "target": 27, "type": "dataflow", "var": "argument"},
+    {"source": 25, "target": 28, "type": "dataflow", "var": "read"},
+    {"source": 25, "target": 28, "type": "dataflow", "var": "a"}
+  ]
+}

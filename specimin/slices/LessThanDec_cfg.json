@@ -1,0 +1,32 @@
+{
+  "method_name": "lastIndexOf",
+  "nodes": [
+    {"id": 6, "label": "  private static @IndexOrLow(\"#1\") @LessThan(\"#4\") int lastIndexOf(", "line": 6, "node_type": "stmt"},
+    {"id": 7, "label": "      short[] array, short target, @IndexOrHigh(\"#1\") int start, @IndexOrHigh(\"#1\") int end) {", "line": 7, "node_type": "stmt"},
+    {"id": 8, "label": "    for (int i = end - 1; i >= start; i--) {", "line": 8, "node_type": "stmt"},
+    {"id": 9, "label": "      if (array[i] == target) {", "line": 9, "node_type": "stmt"},
+    {"id": 10, "label": "        return i;", "line": 10, "node_type": "stmt"},
+    {"id": 11, "label": "      }", "line": 11, "node_type": "stmt"},
+    {"id": 12, "label": "    }", "line": 12, "node_type": "stmt"},
+    {"id": 13, "label": "    return -1;", "line": 13, "node_type": "stmt"},
+    {"id": 14, "label": "  }", "line": 14, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 6, "target": 7, "type": "control"},
+    {"source": 7, "target": 8, "type": "control"},
+    {"source": 8, "target": 9, "type": "control"},
+    {"source": 9, "target": 10, "type": "control"},
+    {"source": 10, "target": 11, "type": "control"},
+    {"source": 11, "target": 12, "type": "control"},
+    {"source": 12, "target": 13, "type": "control"},
+    {"source": 13, "target": 14, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 7, "target": 8, "type": "dataflow", "var": "end"},
+    {"source": 7, "target": 8, "type": "dataflow", "var": "start"},
+    {"source": 7, "target": 9, "type": "dataflow", "var": "array"},
+    {"source": 8, "target": 9, "type": "dataflow", "var": "i"},
+    {"source": 7, "target": 9, "type": "dataflow", "var": "target"},
+    {"source": 9, "target": 10, "type": "dataflow", "var": "i"}
+  ]
+}

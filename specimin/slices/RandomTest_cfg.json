@@ -1,0 +1,40 @@
+{
+  "method_name": "test",
+  "nodes": [
+    {"id": 5, "label": "  void test() {", "line": 5, "node_type": "stmt"},
+    {"id": 6, "label": "    Random rand = new Random();", "line": 6, "node_type": "stmt"},
+    {"id": 7, "label": "    int[] a = new int[8];", "line": 7, "node_type": "stmt"},
+    {"id": 8, "label": "    // :: error: (anno.on.irrelevant)", "line": 8, "node_type": "stmt"},
+    {"id": 9, "label": "    @LTLengthOf(\"a\") double d1 = Math.random() * a.length;", "line": 9, "node_type": "stmt"},
+    {"id": 10, "label": "    @LTLengthOf(\"a\") int deref = (int) (Math.random() * a.length);", "line": 10, "node_type": "stmt"},
+    {"id": 11, "label": "    @LTLengthOf(\"a\") int deref2 = (int) (rand.nextDouble() * a.length);", "line": 11, "node_type": "stmt"},
+    {"id": 12, "label": "    @LTLengthOf(\"a\") int deref3 = rand.nextInt(a.length);", "line": 12, "node_type": "stmt"},
+    {"id": 13, "label": "  }", "line": 13, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 5, "target": 6, "type": "control"},
+    {"source": 6, "target": 7, "type": "control"},
+    {"source": 7, "target": 8, "type": "control"},
+    {"source": 8, "target": 9, "type": "control"},
+    {"source": 9, "target": 10, "type": "control"},
+    {"source": 10, "target": 11, "type": "control"},
+    {"source": 11, "target": 12, "type": "control"},
+    {"source": 12, "target": 13, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 7, "target": 9, "type": "dataflow", "var": "a"},
+    {"source": 9, "target": 10, "type": "dataflow", "var": "LTLengthOf"},
+    {"source": 9, "target": 10, "type": "dataflow", "var": "a"},
+    {"source": 9, "target": 10, "type": "dataflow", "var": "Math"},
+    {"source": 9, "target": 10, "type": "dataflow", "var": "random"},
+    {"source": 9, "target": 10, "type": "dataflow", "var": "length"},
+    {"source": 10, "target": 11, "type": "dataflow", "var": "LTLengthOf"},
+    {"source": 10, "target": 11, "type": "dataflow", "var": "a"},
+    {"source": 6, "target": 11, "type": "dataflow", "var": "rand"},
+    {"source": 10, "target": 11, "type": "dataflow", "var": "length"},
+    {"source": 11, "target": 12, "type": "dataflow", "var": "LTLengthOf"},
+    {"source": 11, "target": 12, "type": "dataflow", "var": "a"},
+    {"source": 11, "target": 12, "type": "dataflow", "var": "rand"},
+    {"source": 11, "target": 12, "type": "dataflow", "var": "length"}
+  ]
+}

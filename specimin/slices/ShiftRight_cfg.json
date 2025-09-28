@@ -1,0 +1,24 @@
+{
+  "method_name": "negative",
+  "nodes": [
+    {"id": 22, "label": "  void negative(Object[] a, @LTLengthOf(value = \"#1\", offset = \"100\") int i) {", "line": 22, "node_type": "stmt"},
+    {"id": 23, "label": "    // Not true for some negative i", "line": 23, "node_type": "stmt"},
+    {"id": 24, "label": "    // :: error: (assignment)", "line": 24, "node_type": "stmt"},
+    {"id": 25, "label": "    @LTLengthOf(value = \"#1\", offset = \"100\") int q = i >> 2;", "line": 25, "node_type": "stmt"},
+    {"id": 26, "label": "  }", "line": 26, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 22, "target": 23, "type": "control"},
+    {"source": 23, "target": 24, "type": "control"},
+    {"source": 24, "target": 25, "type": "control"},
+    {"source": 25, "target": 26, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 22, "target": 23, "type": "dataflow", "var": "negative"},
+    {"source": 22, "target": 23, "type": "dataflow", "var": "i"},
+    {"source": 22, "target": 25, "type": "dataflow", "var": "LTLengthOf"},
+    {"source": 22, "target": 25, "type": "dataflow", "var": "value"},
+    {"source": 22, "target": 25, "type": "dataflow", "var": "offset"},
+    {"source": 23, "target": 25, "type": "dataflow", "var": "i"}
+  ]
+}

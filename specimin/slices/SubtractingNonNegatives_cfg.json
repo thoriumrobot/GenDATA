@@ -1,0 +1,35 @@
+{
+  "method_name": "test",
+  "nodes": [
+    {"id": 16, "label": "  @SuppressWarnings(\"lowerbound\")", "line": 16, "node_type": "stmt"},
+    {"id": 17, "label": "  void test(int[] a, @Positive int y) {", "line": 17, "node_type": "stmt"},
+    {"id": 18, "label": "    @LTLengthOf(\"a\") int x = a.length - 1;", "line": 18, "node_type": "stmt"},
+    {"id": 19, "label": "    @LTLengthOf(", "line": 19, "node_type": "stmt"},
+    {"id": 20, "label": "        value = {\"a\", \"a\"},", "line": 20, "node_type": "stmt"},
+    {"id": 21, "label": "        offset = {\"0\", \"y\"})", "line": 21, "node_type": "stmt"},
+    {"id": 22, "label": "    int z = x - y;", "line": 22, "node_type": "stmt"},
+    {"id": 23, "label": "    a[z + y] = 0;", "line": 23, "node_type": "stmt"},
+    {"id": 24, "label": "  }", "line": 24, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 16, "target": 17, "type": "control"},
+    {"source": 17, "target": 18, "type": "control"},
+    {"source": 18, "target": 19, "type": "control"},
+    {"source": 19, "target": 20, "type": "control"},
+    {"source": 20, "target": 21, "type": "control"},
+    {"source": 21, "target": 22, "type": "control"},
+    {"source": 22, "target": 23, "type": "control"},
+    {"source": 23, "target": 24, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 17, "target": 18, "type": "dataflow", "var": "a"},
+    {"source": 18, "target": 19, "type": "dataflow", "var": "LTLengthOf"},
+    {"source": 18, "target": 20, "type": "dataflow", "var": "a"},
+    {"source": 17, "target": 21, "type": "dataflow", "var": "y"},
+    {"source": 18, "target": 22, "type": "dataflow", "var": "x"},
+    {"source": 21, "target": 22, "type": "dataflow", "var": "y"},
+    {"source": 20, "target": 23, "type": "dataflow", "var": "a"},
+    {"source": 22, "target": 23, "type": "dataflow", "var": "z"},
+    {"source": 22, "target": 23, "type": "dataflow", "var": "y"}
+  ]
+}

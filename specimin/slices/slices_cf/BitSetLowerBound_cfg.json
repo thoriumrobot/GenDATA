@@ -1,0 +1,37 @@
+{
+  "method_name": "m",
+  "nodes": [
+    {"id": 9, "label": "  private void m(BitSet b) {", "line": 9, "node_type": "stmt"},
+    {"id": 10, "label": "    b.set(b.nextClearBit(0));", "line": 10, "node_type": "stmt"},
+    {"id": 11, "label": "    // next set bit does not have to exist", "line": 11, "node_type": "stmt"},
+    {"id": 12, "label": "    // :: error: (argument)", "line": 12, "node_type": "stmt"},
+    {"id": 13, "label": "    b.clear(b.nextSetBit(0));", "line": 13, "node_type": "stmt"},
+    {"id": 14, "label": "    @GTENegativeOne int i = b.nextSetBit(0);", "line": 14, "node_type": "stmt"},
+    {"id": 15, "label": "", "line": 15, "node_type": "stmt"},
+    {"id": 16, "label": "    @GTENegativeOne int j = b.previousClearBit(-1);", "line": 16, "node_type": "stmt"},
+    {"id": 17, "label": "    @GTENegativeOne int k = b.previousSetBit(-1);", "line": 17, "node_type": "stmt"},
+    {"id": 18, "label": "  }", "line": 18, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 9, "target": 10, "type": "control"},
+    {"source": 10, "target": 11, "type": "control"},
+    {"source": 11, "target": 12, "type": "control"},
+    {"source": 12, "target": 13, "type": "control"},
+    {"source": 13, "target": 14, "type": "control"},
+    {"source": 14, "target": 15, "type": "control"},
+    {"source": 15, "target": 16, "type": "control"},
+    {"source": 16, "target": 17, "type": "control"},
+    {"source": 17, "target": 18, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 9, "target": 10, "type": "dataflow", "var": "b"},
+    {"source": 10, "target": 11, "type": "dataflow", "var": "set"},
+    {"source": 10, "target": 13, "type": "dataflow", "var": "b"},
+    {"source": 13, "target": 14, "type": "dataflow", "var": "b"},
+    {"source": 13, "target": 14, "type": "dataflow", "var": "nextSetBit"},
+    {"source": 14, "target": 16, "type": "dataflow", "var": "GTENegativeOne"},
+    {"source": 14, "target": 16, "type": "dataflow", "var": "b"},
+    {"source": 16, "target": 17, "type": "dataflow", "var": "GTENegativeOne"},
+    {"source": 16, "target": 17, "type": "dataflow", "var": "b"}
+  ]
+}

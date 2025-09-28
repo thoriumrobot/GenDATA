@@ -1,0 +1,27 @@
+{
+  "method_name": "obviously_unsafe_loop",
+  "nodes": [
+    {"id": 24, "label": "  void obviously_unsafe_loop() {", "line": 24, "node_type": "stmt"},
+    {"id": 25, "label": "    int[] arr = new int[5];", "line": 25, "node_type": "stmt"},
+    {"id": 26, "label": "    int k;", "line": 26, "node_type": "stmt"},
+    {"id": 27, "label": "    for (int i = -1; i < 5; i++) {", "line": 27, "node_type": "stmt"},
+    {"id": 28, "label": "      // :: error: (array.access.unsafe.low)", "line": 28, "node_type": "stmt"},
+    {"id": 29, "label": "      k = arr[i];", "line": 29, "node_type": "stmt"},
+    {"id": 30, "label": "    }", "line": 30, "node_type": "stmt"},
+    {"id": 31, "label": "  }", "line": 31, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 24, "target": 25, "type": "control"},
+    {"source": 25, "target": 26, "type": "control"},
+    {"source": 26, "target": 27, "type": "control"},
+    {"source": 27, "target": 28, "type": "control"},
+    {"source": 28, "target": 29, "type": "control"},
+    {"source": 29, "target": 30, "type": "control"},
+    {"source": 30, "target": 31, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 26, "target": 29, "type": "dataflow", "var": "k"},
+    {"source": 25, "target": 29, "type": "dataflow", "var": "arr"},
+    {"source": 27, "target": 29, "type": "dataflow", "var": "i"}
+  ]
+}

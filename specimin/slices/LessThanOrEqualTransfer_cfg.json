@@ -1,0 +1,22 @@
+{
+  "method_name": "lte_bad_check",
+  "nodes": [
+    {"id": 10, "label": "  void lte_bad_check(int[] a) {", "line": 10, "node_type": "stmt"},
+    {"id": 11, "label": "    if (1 <= a.length) {", "line": 11, "node_type": "stmt"},
+    {"id": 12, "label": "      // :: error: (assignment)", "line": 12, "node_type": "stmt"},
+    {"id": 13, "label": "      int @MinLen(2) [] b = a;", "line": 13, "node_type": "stmt"},
+    {"id": 14, "label": "    }", "line": 14, "node_type": "stmt"},
+    {"id": 15, "label": "  }", "line": 15, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 10, "target": 11, "type": "control"},
+    {"source": 11, "target": 12, "type": "control"},
+    {"source": 12, "target": 13, "type": "control"},
+    {"source": 13, "target": 14, "type": "control"},
+    {"source": 14, "target": 15, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 10, "target": 11, "type": "dataflow", "var": "a"},
+    {"source": 11, "target": 13, "type": "dataflow", "var": "a"}
+  ]
+}

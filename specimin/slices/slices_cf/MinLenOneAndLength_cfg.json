@@ -1,0 +1,15 @@
+{
+  "method_name": "slice",
+  "nodes": [
+    {"id": 8, "label": "    @IndexFor(\"b\") int j = b.length / 2;", "line": 8, "node_type": "stmt"},
+    {"id": 9, "label": "  }", "line": 9, "node_type": "stmt"},
+    {"id": 10, "label": "}", "line": 10, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 8, "target": 9, "type": "control"},
+    {"source": 9, "target": 10, "type": "control"}
+  ],
+  "dataflow_edges": [
+
+  ]
+}

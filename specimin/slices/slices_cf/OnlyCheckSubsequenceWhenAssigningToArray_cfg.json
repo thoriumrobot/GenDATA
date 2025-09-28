@@ -1,0 +1,20 @@
+{
+  "method_name": "<init>",
+  "nodes": [
+    {"id": 13, "label": "  private OnlyCheckSubsequenceWhenAssigningToArray(", "line": 13, "node_type": "stmt"},
+    {"id": 14, "label": "      @IndexFor(\"array\") int s, @IndexOrHigh(\"array\") int e) {", "line": 14, "node_type": "stmt"},
+    {"id": 15, "label": "    start = s;", "line": 15, "node_type": "stmt"},
+    {"id": 16, "label": "    end = e;", "line": 16, "node_type": "stmt"},
+    {"id": 17, "label": "  }", "line": 17, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 13, "target": 14, "type": "control"},
+    {"source": 14, "target": 15, "type": "control"},
+    {"source": 15, "target": 16, "type": "control"},
+    {"source": 16, "target": 17, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 14, "target": 15, "type": "dataflow", "var": "s"},
+    {"source": 14, "target": 16, "type": "dataflow", "var": "e"}
+  ]
+}

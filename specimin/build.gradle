@@ -1,0 +1,149 @@
+
+plugins {
+    id 'application'
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+    id 'com.diffplug.spotless' version '6.25.0'
+    id 'org.checkerframework' version '0.6.37'
+    id("net.ltgt.errorprone") version "3.1.0"
+    id 'com.adarshr.test-logger' version '3.1.0'
+}
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+    mavenLocal()
+}
+
+application {
+    mainClass = 'org.checkerframework.specimin.SpeciminRunner'
+}
+
+dependencies {
+
+    implementation 'com.github.javaparser:javaparser-symbol-solver-core:3.25.10'
+
+    implementation 'net.sf.jopt-simple:jopt-simple:5.0.4'
+
+    implementation "org.vineflower:vineflower:1.10.0"
+
+    implementation 'commons-io:commons-io:2.6'
+
+    // Use JUnit test framework.
+    testImplementation 'junit:junit:4.13.2'
+
+    errorprone("com.google.errorprone:error_prone_core:2.24.0")
+}
+
+// Use require-javadoc. From https://github.com/plume-lib/require-javadoc.
+configurations {
+    requireJavadoc
+}
+dependencies {
+    requireJavadoc "org.plumelib:require-javadoc:1.0.2"
+}
+task requireJavadoc(type: JavaExec) {
+    group = 'Documentation'
+    description = 'Ensures that Javadoc documentation exists.'
+    mainClass = "org.plumelib.javadoc.RequireJavadoc"
+    classpath = configurations.requireJavadoc
+    args "src/main/java"
+}
+
+task expectedTestOutputsMustCompile(type: Exec) {
+    // TODO: should this task run in CI, or as part of the regular tests?
+    commandLine "sh", "typecheck_test_outputs.sh"
+}
+
+tasks.compileJava {
+    // uncomment for testing
+    // options.errorprone.enabled = false
+}
+
+checkerFramework {
+    // uncomment for testing
+    // skipCheckerFramework = true
+    checkers = [
+            'org.checkerframework.checker.nullness.NullnessChecker',
+            'org.checkerframework.checker.resourceleak.ResourceLeakChecker',
+            'org.checkerframework.checker.interning.InterningChecker',
+            'org.checkerframework.checker.signature.SignatureChecker'
+    ]
+    excludeTests = true
+
+    extraJavacArgs = [
+            "-Astubs=${projectDir}/JavaParser.astub"
+    ]
+}
+
+spotless {
+    // optional: limit format enforcement to just the files changed by this feature branch
+    ratchetFrom 'origin/main'
+
+    format 'misc', {
+        // define the files to apply `misc` to
+        target '*.gradle', '*.md', '.gitignore'
+
+        // define the steps to apply to those files
+        trimTrailingWhitespace()
+        indentWithSpaces()
+        endWithNewline()
+    }
+    java {
+        googleJavaFormat().reflowLongStrings()
+        formatAnnotations()
+    }
+}
+
+compileJava {
+    options.compilerArgs += ['-Werror']
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.checkerframework.specimin.SpeciminRunner'
+    }
+    duplicatesStrategy = 'exclude'
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+compileJava.dependsOn 'spotlessApply'
+check.dependsOn requireJavadoc
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+// Run `./gradlew publishToMavenLocal` to publish Specimin to your local Maven repository.
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'edu.njit.jerse'
+            artifactId = 'specimin'
+            version = '0.1'
+
+            from components.java
+        }
+    }
+}
+
+javadoc {
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
+
+tasks.withType(Test).configureEach {
+    // Creates half as many forks as there are CPU cores.
+    maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+}
+
+test {
+    testLogging {
+        showStandardStreams = true
+    }
+}

@@ -1,0 +1,17 @@
+{
+  "method_name": "slice",
+  "nodes": [
+    {"id": 13, "label": "    // :: error: (assignment)", "line": 13, "node_type": "stmt"},
+    {"id": 14, "label": "    @LTLengthOf(\"a\") int h = ((i + 1) + j) / 2;", "line": 14, "node_type": "stmt"},
+    {"id": 15, "label": "  }", "line": 15, "node_type": "stmt"},
+    {"id": 16, "label": "}", "line": 16, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 13, "target": 14, "type": "control"},
+    {"source": 14, "target": 15, "type": "control"},
+    {"source": 15, "target": 16, "type": "control"}
+  ],
+  "dataflow_edges": [
+
+  ]
+}

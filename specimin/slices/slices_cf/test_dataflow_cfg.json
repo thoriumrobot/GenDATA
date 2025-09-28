@@ -1,0 +1,13 @@
+{
+  "method_name": "testMethod",
+  "nodes": [
+    {"id": "Entry", "type": "entry", "line": 1},
+    {"id": "Exit", "type": "exit", "line": 10}
+  ],
+  "control_edges": [
+    {"from": "Entry", "to": "Exit", "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"from": "Entry", "to": "Exit", "type": "dataflow", "variable": "x"}
+  ]
+}

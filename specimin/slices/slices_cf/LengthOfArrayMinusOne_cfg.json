@@ -1,0 +1,29 @@
+{
+  "method_name": "test",
+  "nodes": [
+    {"id": 2, "label": "  void test(int[] arr) {", "line": 2, "node_type": "stmt"},
+    {"id": 3, "label": "    // :: error: (array.access.unsafe.low)", "line": 3, "node_type": "stmt"},
+    {"id": 4, "label": "    int i = arr[arr.length - 1];", "line": 4, "node_type": "stmt"},
+    {"id": 5, "label": "", "line": 5, "node_type": "stmt"},
+    {"id": 6, "label": "    if (arr.length > 0) {", "line": 6, "node_type": "stmt"},
+    {"id": 7, "label": "      int j = arr[arr.length - 1];", "line": 7, "node_type": "stmt"},
+    {"id": 8, "label": "    }", "line": 8, "node_type": "stmt"},
+    {"id": 9, "label": "  }", "line": 9, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 2, "target": 3, "type": "control"},
+    {"source": 3, "target": 4, "type": "control"},
+    {"source": 4, "target": 5, "type": "control"},
+    {"source": 5, "target": 6, "type": "control"},
+    {"source": 6, "target": 7, "type": "control"},
+    {"source": 7, "target": 8, "type": "control"},
+    {"source": 8, "target": 9, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 2, "target": 4, "type": "dataflow", "var": "arr"},
+    {"source": 4, "target": 6, "type": "dataflow", "var": "arr"},
+    {"source": 4, "target": 6, "type": "dataflow", "var": "length"},
+    {"source": 6, "target": 7, "type": "dataflow", "var": "arr"},
+    {"source": 6, "target": 7, "type": "dataflow", "var": "length"}
+  ]
+}
