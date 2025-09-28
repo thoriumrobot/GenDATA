@@ -71,6 +71,15 @@ application {
   mainClass = 'cfwr.CheckerFrameworkWarningResolver'
 }
 
+// Handle duplicate files in distributions
+tasks.withType(Tar) {
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.withType(Zip) {
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 /**
  * Build a fat JAR for the WALA slicer CLI with the correct Main-Class.
  * Output: build/libs/wala-slicer-all.jar

@@ -30,15 +30,15 @@ from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 
-# Import our existing modules
-from annotation_placement import (
-    AnnotationType, AnnotationPlacement, JavaCodeAnalyzer, 
-    AnnotationPlacementManager
-)
+# Import our existing modules - these classes are defined in this file
+# from annotation_placement import (
+#     AnnotationType, AnnotationPlacement, JavaCodeAnalyzer, 
+#     AnnotationPlacementManager
+# )
 from checker_framework_integration import CheckerFrameworkEvaluator, CheckerType
-from perfect_annotation_placement import (
-    PreciseJavaAnalyzer, PreciseAnnotationPlacer, PerfectAnnotationPlacementSystem
-)
+# from perfect_annotation_placement import (
+#     PreciseJavaAnalyzer, PreciseAnnotationPlacer, PerfectAnnotationPlacementSystem
+# )
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
