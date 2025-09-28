@@ -1,0 +1,39 @@
+import org.checkerframework.checker.signature.qual.*;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
+package com.github.javaparser.resolution.types;
+
+class ResolvedReferenceType {
+  @FullyQualifiedName String getQualifiedName();
+}
+
+package com.github.javaparser.ast.type;
+
+class ClassOrInterfaceType {
+  @ClassGetSimpleName SimpleName getName();
+}
+
+package com.github.javaparser.ast.expr;
+
+class SimpleName {
+  @ClassGetSimpleName String asString();
+}
+
+package com.github.javaparser.resolution.declarations;
+
+interface ResolvedMethodDeclaration {
+   @DotSeparatedIdentifiers String getClassName();
+}
+
+package com.github.javaparser.symbolsolver.resolution.typesolvers;
+
+class JarTypeSolver {
+   // this method lists all the names of classes solved by JarTypeSolver. All the names are in fully-qualified names.
+   Set<@FullyQualifiedName String> getKnownClasses();
+}
+
+package com.github.javaparser.ast.stmt;
+
+class IfStmt {
+   IfStmt setElseStmt(@Nullable Statement elseStmt);
+}
