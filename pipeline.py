@@ -186,8 +186,17 @@ def run_cfg_generation(slices_dir, cfg_output_dir):
     print(f"CFG generation completed!")
 
 
-def run_train(model):
+def run_train(model, project_root=None, warnings_file=None, episodes=50):
     print(f"[TRAIN] Starting training for model selection: {model}")
+    if model == 'annotation_types' or model == 'all':
+        # Train the three annotation-type models via the simplified pipeline (graph-based)
+        print("[TRAIN] Annotation Types -> simple_annotation_type_pipeline.py")
+        cmd = [sys.executable, 'simple_annotation_type_pipeline.py', '--mode', 'train', '--episodes', str(episodes)]
+        if project_root:
+            cmd += ['--project_root', project_root]
+        if warnings_file:
+            cmd += ['--warnings_file', warnings_file]
+        run(cmd)
     if model == 'hgt' or model == 'all':
         print("[TRAIN] HGT -> hgt.py")
         run([sys.executable, 'hgt.py'])
@@ -200,17 +209,24 @@ def run_train(model):
     if model == 'dg2n' or model == 'all':
         # Build DG2N dataset from CFGs, then train
         print("[TRAIN] DG2N -> dg2n_adapter.py + dg2n/train_dg2n.py")
-        dg2n_data_dir = os.path.join('dg2n_data')
-        os.makedirs(dg2n_data_dir, exist_ok=True)
-        run([sys.executable, 'dg2n_adapter.py', '--cfg_dir', CFG_OUTPUT_DIR_DEFAULT, '--out_dir', dg2n_data_dir])
-        run([sys.executable, os.path.join('dg2n', 'train_dg2n.py'), '--data_dir', dg2n_data_dir, '--out_dir', os.path.join(MODELS_DIR_DEFAULT, 'dg2n')])
+        dg2n_train_script = os.path.join('dg2n', 'train_dg2n.py')
+        if os.path.exists(dg2n_train_script):
+            dg2n_data_dir = os.path.join('dg2n_data')
+            os.makedirs(dg2n_data_dir, exist_ok=True)
+            run([sys.executable, 'dg2n_adapter.py', '--cfg_dir', CFG_OUTPUT_DIR_DEFAULT, '--out_dir', dg2n_data_dir])
+            run([sys.executable, dg2n_train_script, '--data_dir', dg2n_data_dir, '--out_dir', os.path.join(MODELS_DIR_DEFAULT, 'dg2n')])
+        else:
+            print("[TRAIN] Skipping DG2N (missing dg2n/train_dg2n.py)")
     if model == 'dgcrf' or model == 'all':
         # Train DG-CRF-lite on DG2N graphs
         print("[TRAIN] DGCRF -> dg2n_adapter.py + train_dgcrf.py")
-        dg2n_data_dir = os.path.join('dg2n_data')
-        os.makedirs(dg2n_data_dir, exist_ok=True)
-        run([sys.executable, 'dg2n_adapter.py', '--cfg_dir', CFG_OUTPUT_DIR_DEFAULT, '--out_dir', dg2n_data_dir])
-        run([sys.executable, 'train_dgcrf.py', '--data_dir', dg2n_data_dir, '--out_dir', os.path.join(MODELS_DIR_DEFAULT, 'dgcrf')])
+        if os.path.exists('train_dgcrf.py'):
+            dg2n_data_dir = os.path.join('dg2n_data')
+            os.makedirs(dg2n_data_dir, exist_ok=True)
+            run([sys.executable, 'dg2n_adapter.py', '--cfg_dir', CFG_OUTPUT_DIR_DEFAULT, '--out_dir', dg2n_data_dir])
+            run([sys.executable, 'train_dgcrf.py', '--data_dir', dg2n_data_dir, '--out_dir', os.path.join(MODELS_DIR_DEFAULT, 'dgcrf')])
+        else:
+            print("[TRAIN] Skipping DGCRF (missing train_dgcrf.py)")
     if model == 'gcn' or model == 'all':
         # Train simple GCN on existing CFGs
         print("[TRAIN] GCN -> gcn_train.py")
@@ -229,8 +245,17 @@ def run_train(model):
         run([sys.executable, os.path.join('gcsn','train_gcsn.py'), '--data_dir', gcsn_data_dir, '--out_dir', os.path.join(MODELS_DIR_DEFAULT, 'gcsn')])
 
 
-def run_predict(model, java_file, models_dir, out_dir):
+def run_predict(model, java_file, models_dir, out_dir, project_root=None, warnings_file=None):
     os.makedirs(out_dir, exist_ok=True)
+    if model == 'annotation_types' or model == 'all':
+        print("[PREDICT] Annotation Types -> simple_annotation_type_pipeline.py")
+        cmd = [sys.executable, 'simple_annotation_type_pipeline.py', '--mode', 'predict']
+        if project_root:
+            cmd += ['--project_root', project_root]
+        if warnings_file:
+            cmd += ['--warnings_file', warnings_file]
+        run(cmd)
+        return
     if model == 'hgt' or model == 'all':
         hgt_model = os.path.join(models_dir, 'best_model.pth')
         hgt_out = os.path.join(out_dir, 'hgt_pred.json')
@@ -359,7 +384,7 @@ def main():
             run_cfg_generation(augmented_dir, args.cfg_output_dir)
 
     if args.steps in ('train','all'):
-        run_train(args.model)
+        run_train(args.model, project_root=args.project_root, warnings_file=args.warnings_file, episodes=50)
 
     # Optional: PF evaluation
     if args.pf_eval:
@@ -369,7 +394,7 @@ def main():
         if not args.predict_java_file:
             print('Error: --predict_java_file is required when running predict step')
             sys.exit(2)
-        run_predict(args.model, args.predict_java_file, args.models_dir, args.predict_out_dir)
+        run_predict(args.model, args.predict_java_file, args.models_dir, args.predict_out_dir, project_root=args.project_root, warnings_file=args.warnings_file)
 
     if args.steps == 'predict-original':
         run_predict_over_original(args.model, args.original_root, args.models_dir, args.predict_out_dir)
