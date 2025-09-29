@@ -221,15 +221,24 @@ class AnnotationTypeTrainer:
         
         return accuracy + warning_reduction
     
-    def train(self, project_root, warnings_file, cfwr_root, num_episodes=50):
-        """Train the annotation type model"""
-        logger.info(f"Starting training for {self.annotation_type} annotation type")
-        logger.info(f"Base model: {self.base_model_type}")
-        logger.info(f"Project root: {project_root}")
-        logger.info(f"Episodes: {num_episodes}")
-        
-        # Create mock data for training
-        mock_cfg_data = {
+    def _load_cfg_data(self, cfg_dir):
+        """Load CFG data from files"""
+        cfg_data_list = []
+        try:
+            for root, dirs, files in os.walk(cfg_dir):
+                for file in files:
+                    if file.endswith('.json'):
+                        cfg_file = os.path.join(root, file)
+                        with open(cfg_file, 'r') as f:
+                            cfg_data = json.load(f)
+                            cfg_data_list.append(cfg_data)
+        except Exception as e:
+            logger.error(f"Error loading CFG data: {e}")
+        return cfg_data_list
+    
+    def _create_mock_cfg_data(self):
+        """Create mock CFG data for training"""
+        return {
             'nodes': [
                 {'id': 0, 'label': 'public void method()', 'node_type': 'method', 'line': 10},
                 {'id': 1, 'label': 'int capacity = 100;', 'node_type': 'variable', 'line': 11},
@@ -243,6 +252,27 @@ class AnnotationTypeTrainer:
             ],
             'dataflow_edges': []
         }
+    
+    def train(self, project_root, warnings_file, cfwr_root, num_episodes=50, slices_dir=None, cfg_dir=None, use_real_cfg_data=False):
+        """Train the annotation type model"""
+        logger.info(f"Starting training for {self.annotation_type} annotation type")
+        logger.info(f"Base model: {self.base_model_type}")
+        logger.info(f"Project root: {project_root}")
+        logger.info(f"Episodes: {num_episodes}")
+        logger.info(f"Use real CFG data: {use_real_cfg_data}")
+        
+        # Load real CFG data if available
+        if use_real_cfg_data and cfg_dir and os.path.exists(cfg_dir):
+            logger.info("Loading real CFG data for training")
+            cfg_data_list = self._load_cfg_data(cfg_dir)
+            if cfg_data_list:
+                logger.info(f"Loaded {len(cfg_data_list)} CFG files for training")
+            else:
+                logger.warning("No CFG data found, falling back to mock data")
+                cfg_data_list = [self._create_mock_cfg_data()]
+        else:
+            logger.info("Using mock CFG data for training")
+            cfg_data_list = [self._create_mock_cfg_data()]
         
         # Training loop
         episode_rewards = []
@@ -260,8 +290,11 @@ class AnnotationTypeTrainer:
             # Simulate original warnings
             original_warnings = [f"warning_{i}" for i in range(random.randint(5, 15))]
             
+            # Use real CFG data or mock data
+            cfg_data = cfg_data_list[episode % len(cfg_data_list)]
+            
             # Train episode
-            reward = self.train_episode(mock_cfg_data, binary_predictions, original_warnings)
+            reward = self.train_episode(cfg_data, binary_predictions, original_warnings)
             episode_rewards.append(reward)
             
             # Update training statistics
@@ -470,6 +503,9 @@ def main():
     parser.add_argument('--base_model', default='gcn', choices=['gcn', 'gbt', 'causal', 'enhanced_causal', 'hgt', 'gcsn', 'dg2n'],
                        help='Base model type to use')
     parser.add_argument('--device', default='cpu', help='Device to use (cpu/cuda)')
+    parser.add_argument('--slices_dir', help='Directory containing slice files')
+    parser.add_argument('--cfg_dir', help='Directory containing CFG files')
+    parser.add_argument('--use_real_cfg_data', action='store_true', help='Use real CFG data instead of mock data')
     
     args = parser.parse_args()
     
@@ -486,7 +522,10 @@ def main():
         project_root=args.project_root,
         warnings_file=args.warnings_file,
         cfwr_root=args.cfwr_root,
-        num_episodes=args.episodes
+        num_episodes=args.episodes,
+        slices_dir=args.slices_dir,
+        cfg_dir=args.cfg_dir,
+        use_real_cfg_data=args.use_real_cfg_data
     )
     
     logger.info("@GTENegativeOne annotation type training completed successfully")

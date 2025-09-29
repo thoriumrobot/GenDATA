@@ -46,7 +46,7 @@ def run_slicing(project_root, warnings_file, cfwr_root, base_slices_dir, slicer_
     
     if slicer_type == 'cf':
         # Use CheckerFrameworkSlicer
-        cf_slicer_jar = os.path.join(cfwr_root, 'build/libs/CFWR-all.jar')
+        cf_slicer_jar = os.path.join(cfwr_root, 'build/libs/GenDATA-all.jar')
         if not os.path.exists(cf_slicer_jar):
             print(f"Error: CheckerFrameworkSlicer JAR not found at {cf_slicer_jar}")
             sys.exit(1)

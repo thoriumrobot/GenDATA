@@ -375,6 +375,97 @@ class ModelBasedPredictor:
         
         return f"model prediction (predicted by {model_type.upper()} model)"
     
+    def predict_annotations_for_file_with_cfg(self, java_file, cfg_dir, threshold=0.3):
+        """Predict annotations for a Java file using real CFG data"""
+        try:
+            # Find CFG data for this Java file
+            java_basename = os.path.splitext(os.path.basename(java_file))[0]
+            cfg_file = os.path.join(cfg_dir, java_basename, 'cfg.json')
+            
+            if not os.path.exists(cfg_file):
+                logger.warning(f"No CFG file found for {java_file}, falling back to mock data")
+                return self.predict_annotations_for_file(java_file, threshold)
+            
+            # Load CFG data
+            with open(cfg_file, 'r') as f:
+                cfg_data = json.load(f)
+            
+            # Read the Java file
+            with open(java_file, 'r') as f:
+                java_content = f.read()
+            
+            predictions = []
+            for annotation_type in ['@Positive', '@NonNegative', '@GTENegativeOne']:
+                if annotation_type in self.loaded_models:
+                    model_info = self.loaded_models[annotation_type]
+                    trainer = model_info['trainer']
+                    base_model_type = model_info['base_model_type']
+                    
+                    # Extract features from real CFG data
+                    cfg_features = self._extract_cfg_features(cfg_data, java_content)
+                    
+                    if cfg_features is not None:
+                        # Get prediction from model using real CFG features
+                        prediction, confidence, reason = self._get_model_prediction(
+                            trainer, cfg_features, annotation_type, cfg_data
+                        )
+                        
+                        if prediction and confidence >= threshold:
+                            predictions.append({
+                                'line': cfg_data.get('line', 1),
+                                'annotation_type': annotation_type,
+                                'confidence': confidence,
+                                'reason': f"{reason} (using real CFG data)",
+                                'model_type': base_model_type
+                            })
+            
+            return predictions
+            
+        except Exception as e:
+            logger.error(f"Error predicting annotations for {java_file} with CFG: {e}")
+            return []
+    
+    def _extract_cfg_features(self, cfg_data, java_content):
+        """Extract features from real CFG data"""
+        try:
+            # Extract features from CFG nodes
+            nodes = cfg_data.get('nodes', [])
+            if not nodes:
+                return None
+            
+            # Use the first node as representative
+            node = nodes[0]
+            
+            # Extract features similar to mock data but from real CFG
+            features = [
+                float(len(node.get('label', ''))),  # label_length
+                float(node.get('line', 0)),  # line_number
+                float('method' in node.get('node_type', '').lower()),  # is_method
+                float('field' in node.get('node_type', '').lower()),  # is_field
+                float('parameter' in node.get('node_type', '').lower()),  # is_parameter
+                float('variable' in node.get('node_type', '').lower()),  # is_variable
+                float('positive' in node.get('label', '').lower()),  # contains_positive
+                float('negative' in node.get('label', '').lower()),  # contains_negative
+                float('count' in node.get('label', '').lower()),  # is_count_variable
+                float('size' in node.get('label', '').lower()),  # is_size_variable
+                float('length' in node.get('label', '').lower()),  # is_length_variable
+                float('index' in node.get('label', '').lower()),  # is_index_variable
+                float('offset' in node.get('label', '').lower()),  # is_offset_variable
+                float('capacity' in node.get('label', '').lower()),  # is_capacity_variable
+            ]
+            
+            # Pad to expected dimension if using enhanced causal
+            if ENHANCED_CAUSAL_AVAILABLE:
+                # Pad to 32 dimensions for enhanced causal model
+                while len(features) < 32:
+                    features.append(0.0)
+            
+            return features
+            
+        except Exception as e:
+            logger.error(f"Error extracting CFG features: {e}")
+            return None
+    
     def _deduplicate_predictions(self, predictions: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """Remove duplicate predictions for the same line, keeping the highest confidence"""
         line_predictions = {}
