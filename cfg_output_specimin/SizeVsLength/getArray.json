@@ -1,0 +1,226 @@
+{
+  "method_name": "getArray",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(BinaryOperation(operandl=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=712L), operator=&), operandr=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=90.10), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=346), operator=<<), operator=||))",
+      "line": 9,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "While(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=true))",
+      "line": 10,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), name=__cfwr_temp61)], modifiers=set(), type=BasicType(dimensions=[], name=short))",
+      "line": 12,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Return(Literal(postfix_operators=[], prefix_operators=['-'], qualifier=None, selectors=[], value=686L))",
+      "line": 13,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ArrayCreator(dimensions=[MemberReference(member=size, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], initializer=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=BasicType(dimensions=None, name=int)), name=values)], modifiers=set(), type=BasicType(dimensions=[None], name=int))",
+      "line": 18,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "For(BinaryOperation(operandl=MemberReference(member=i, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=size, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=<))",
+      "line": 19,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "Assignment(expressionl=MemberReference(member=values, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=MemberReference(member=i, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))]), type==, value=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=22))",
+      "line": 20,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "Update(MemberReference(member=i, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 19,
+      "node_type": "control"
+    },
+    {
+      "id": 10,
+      "label": "Return(MemberReference(member=values, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 22,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 6
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 6
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 10
+    },
+    {
+      "source": 7,
+      "target": 10
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 10,
+      "variable": "values"
+    },
+    {
+      "source": 8,
+      "target": 10,
+      "variable": "values"
+    },
+    {
+      "source": 9,
+      "target": 7
+    },
+    {
+      "source": 9,
+      "target": 7
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 6
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 6
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 10
+    },
+    {
+      "source": 7,
+      "target": 10
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 7
+    },
+    {
+      "source": 9,
+      "target": 7
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 8,
+      "target": 10,
+      "variable": "values"
+    },
+    {
+      "source": 8,
+      "target": 10,
+      "variable": "values"
+    }
+  ]
+}

@@ -1,0 +1,217 @@
+{
+  "method_name": "__cfwr_util222",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "Try",
+      "line": 61,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Return(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null))",
+      "line": 69,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Catch(__cfwr_e3)",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "While(BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=false), operandr=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=true), operator=+), operator=/))",
+      "line": 53,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "For(BinaryOperation(operandl=MemberReference(member=__cfwr_i11, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=2), operator=<))",
+      "line": 54,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "If(BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=false), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=true), operator=||))",
+      "line": 55,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "Update(MemberReference(member=__cfwr_i11, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 54,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "Break",
+      "line": 59,
+      "node_type": "control"
+    },
+    {
+      "id": 10,
+      "label": "While(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=true))",
+      "line": 62,
+      "node_type": "control"
+    },
+    {
+      "id": 11,
+      "label": "Return(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=555))",
+      "line": 63,
+      "node_type": "control"
+    },
+    {
+      "id": 12,
+      "label": "Catch(__cfwr_e35)",
+      "line": null,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 2,
+      "target": 10
+    },
+    {
+      "source": 2,
+      "target": 12
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 2
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 9
+    },
+    {
+      "source": 7,
+      "target": 3
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 6
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 10,
+      "target": 3
+    },
+    {
+      "source": 12,
+      "target": 3
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 2,
+      "target": 10
+    },
+    {
+      "source": 2,
+      "target": 12
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 2
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 9
+    },
+    {
+      "source": 7,
+      "target": 3
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 6
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 10,
+      "target": 3
+    },
+    {
+      "source": 12,
+      "target": 3
+    }
+  ],
+  "dataflow_edges": []
+}

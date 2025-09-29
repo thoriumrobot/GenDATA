@@ -1,0 +1,129 @@
+{
+  "method_name": "__cfwr_util522",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "For(BinaryOperation(operandl=MemberReference(member=__cfwr_i15, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=4), operator=<))",
+      "line": 38,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Return(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value='K'))",
+      "line": 39,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Update(MemberReference(member=__cfwr_i15, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 38,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "For(BinaryOperation(operandl=MemberReference(member=__cfwr_i8, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=2), operator=<))",
+      "line": 41,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=305L), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=85.27f), operator=*), name=__cfwr_obj23)], modifiers=set(), type=BasicType(dimensions=[], name=boolean))",
+      "line": 42,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "Update(MemberReference(member=__cfwr_i8, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 41,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "Return(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=85.29f))",
+      "line": 44,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 2
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 8
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 5
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 2
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 8
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 5
+    }
+  ],
+  "dataflow_edges": []
+}

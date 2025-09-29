@@ -1,0 +1,578 @@
+{
+  "method_name": "test",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=false), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=true), operator=&&))",
+      "line": 9,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "If(BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=false), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=false), operator=||))",
+      "line": 10,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), name=__cfwr_item48)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=Float, sub_type=None))",
+      "line": 12,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Try",
+      "line": 14,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "While(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=false))",
+      "line": 15,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=64.46f), name=__cfwr_obj55)], modifiers=set(), type=BasicType(dimensions=[], name=float))",
+      "line": 16,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "Break",
+      "line": 17,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "Catch(__cfwr_e14)",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 10,
+      "label": "Catch(__cfwr_e49)",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 11,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\";\")], member=indexOf, postfix_operators=[], prefix_operators=[], qualifier=arglist, selectors=[], type_arguments=None), name=semi_pos)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 28,
+      "node_type": "control"
+    },
+    {
+      "id": 12,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=semi_pos, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=['-'], qualifier=None, selectors=[], value=1), operator===))",
+      "line": 29,
+      "node_type": "control"
+    },
+    {
+      "id": 13,
+      "label": "Throw(ClassCreator(arguments=[BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"Malformed arglist: \"), operandr=MemberReference(member=arglist, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=+)], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=Error, sub_type=None)))",
+      "line": 30,
+      "node_type": "control"
+    },
+    {
+      "id": 14,
+      "label": "MethodInvocation(arguments=[MemberReference(member=pos, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), BinaryOperation(operandl=MemberReference(member=semi_pos, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator=+)], member=substring, postfix_operators=[], prefix_operators=[], qualifier=arglist, selectors=[], type_arguments=None)",
+      "line": 32,
+      "node_type": "control"
+    },
+    {
+      "id": 15,
+      "label": "MethodInvocation(arguments=[MemberReference(member=pos, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), BinaryOperation(operandl=MemberReference(member=semi_pos, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=2), operator=+)], member=substring, postfix_operators=[], prefix_operators=[], qualifier=arglist, selectors=[], type_arguments=None)",
+      "line": 33,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 11
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 11
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 9
+    },
+    {
+      "source": 5,
+      "target": 10
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 11
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 9,
+      "target": 11
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 11,
+      "target": 12
+    },
+    {
+      "source": 11,
+      "target": 12
+    },
+    {
+      "source": 11,
+      "target": 12
+    },
+    {
+      "source": 11,
+      "target": 12
+    },
+    {
+      "source": 11,
+      "target": 12
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 14,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 14,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 14,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 14,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 14,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 15,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 15,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 15,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 15,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 15,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 14
+    },
+    {
+      "source": 12,
+      "target": 14
+    },
+    {
+      "source": 12,
+      "target": 14
+    },
+    {
+      "source": 12,
+      "target": 14
+    },
+    {
+      "source": 12,
+      "target": 14
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 15,
+      "target": 1
+    },
+    {
+      "source": 15,
+      "target": 1
+    },
+    {
+      "source": 15,
+      "target": 1
+    },
+    {
+      "source": 15,
+      "target": 1
+    },
+    {
+      "source": 15,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 11
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 11
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 9
+    },
+    {
+      "source": 5,
+      "target": 10
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 11
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 9,
+      "target": 11
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 11,
+      "target": 12
+    },
+    {
+      "source": 11,
+      "target": 12
+    },
+    {
+      "source": 11,
+      "target": 12
+    },
+    {
+      "source": 11,
+      "target": 12
+    },
+    {
+      "source": 11,
+      "target": 12
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 14
+    },
+    {
+      "source": 12,
+      "target": 14
+    },
+    {
+      "source": 12,
+      "target": 14
+    },
+    {
+      "source": 12,
+      "target": 14
+    },
+    {
+      "source": 12,
+      "target": 14
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 15,
+      "target": 1
+    },
+    {
+      "source": 15,
+      "target": 1
+    },
+    {
+      "source": 15,
+      "target": 1
+    },
+    {
+      "source": 15,
+      "target": 1
+    },
+    {
+      "source": 15,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 14,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 14,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 14,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 14,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 14,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 15,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 15,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 15,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 15,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 11,
+      "target": 15,
+      "variable": "semi_pos"
+    }
+  ]
+}

@@ -1,0 +1,195 @@
+{
+  "method_name": "OffsetString",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "For(BinaryOperation(operandl=MemberReference(member=__cfwr_i85, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=9), operator=<))",
+      "line": 7,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "For(BinaryOperation(operandl=MemberReference(member=__cfwr_i42, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=8), operator=<))",
+      "line": 8,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Try",
+      "line": 9,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), name=__cfwr_var61)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=Double, sub_type=None))",
+      "line": 10,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "Catch(__cfwr_e45)",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "Update(MemberReference(member=__cfwr_i42, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 8,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "Update(MemberReference(member=__cfwr_i85, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 7,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ArrayCreator(dimensions=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=10)], initializer=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=BasicType(dimensions=None, name=char)), name=chars)], modifiers=set(), type=BasicType(dimensions=[None], name=char))",
+      "line": 17,
+      "node_type": "control"
+    },
+    {
+      "id": 10,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ClassCreator(arguments=[MemberReference(member=chars, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=5), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=7)], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=String, sub_type=None)), name=string2)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=String, sub_type=None))",
+      "line": 18,
+      "node_type": "control"
+    },
+    {
+      "id": 11,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ClassCreator(arguments=[MemberReference(member=chars, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=5), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=4)], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=String, sub_type=None)), name=string3)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=String, sub_type=None))",
+      "line": 19,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 9
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 8
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 3
+    },
+    {
+      "source": 8,
+      "target": 2
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 11,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 9
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 8
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 3
+    },
+    {
+      "source": 8,
+      "target": 2
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 11,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": []
+}

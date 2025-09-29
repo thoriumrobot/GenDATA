@@ -1,0 +1,271 @@
+{
+  "method_name": "refineNeqLengthMTwoNonLiteral",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), name=__cfwr_node54)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=Integer, sub_type=None))",
+      "line": 14,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "If(BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=true), operandr=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=19.95), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=154L), operator=%), operator=||))",
+      "line": 17,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Try",
+      "line": 18,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Return(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null))",
+      "line": 19,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "Catch(__cfwr_e34)",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=i, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=BinaryOperation(operandl=MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=array, selectors=[]), operandr=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=5), operandr=MemberReference(member=c3, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=-), operator=-), operator=!=))",
+      "line": 24,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "MethodInvocation(arguments=[MemberReference(member=array, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MemberReference(member=i, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=refineNeqLengthMThree, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 28,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=i, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=BinaryOperation(operandl=MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=array, selectors=[]), operandr=MemberReference(member=c23, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=-), operator=!=))",
+      "line": 27,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 7
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 9
+    },
+    {
+      "source": 7,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 1
+    },
+    {
+      "source": 8,
+      "target": 1
+    },
+    {
+      "source": 8,
+      "target": 1
+    },
+    {
+      "source": 8,
+      "target": 1
+    },
+    {
+      "source": 9,
+      "target": 8
+    },
+    {
+      "source": 9,
+      "target": 8
+    },
+    {
+      "source": 9,
+      "target": 8
+    },
+    {
+      "source": 9,
+      "target": 8
+    },
+    {
+      "source": 9,
+      "target": 1
+    },
+    {
+      "source": 9,
+      "target": 1
+    },
+    {
+      "source": 9,
+      "target": 1
+    },
+    {
+      "source": 9,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 7
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 9
+    },
+    {
+      "source": 7,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 1
+    },
+    {
+      "source": 8,
+      "target": 1
+    },
+    {
+      "source": 8,
+      "target": 1
+    },
+    {
+      "source": 8,
+      "target": 1
+    },
+    {
+      "source": 9,
+      "target": 8
+    },
+    {
+      "source": 9,
+      "target": 8
+    },
+    {
+      "source": 9,
+      "target": 8
+    },
+    {
+      "source": 9,
+      "target": 8
+    },
+    {
+      "source": 9,
+      "target": 1
+    },
+    {
+      "source": 9,
+      "target": 1
+    },
+    {
+      "source": 9,
+      "target": 1
+    },
+    {
+      "source": 9,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": []
+}

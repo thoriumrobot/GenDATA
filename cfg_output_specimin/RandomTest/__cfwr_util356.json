@@ -1,0 +1,51 @@
+{
+  "method_name": "__cfwr_util356",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), name=__cfwr_item61)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=Double, sub_type=None))",
+      "line": 89,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Return(BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=['-'], qualifier=None, selectors=[], value=769), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=384), operator=*))",
+      "line": 90,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    }
+  ],
+  "dataflow_edges": []
+}

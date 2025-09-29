@@ -1,0 +1,431 @@
+{
+  "method_name": "__cfwr_helper847",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "While(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=true))",
+      "line": 91,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "If(BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=true), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=true), operator=&&))",
+      "line": 89,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "For(BinaryOperation(operandl=MemberReference(member=__cfwr_i3, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=5), operator=<))",
+      "line": 90,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "While(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=false))",
+      "line": 96,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "For(BinaryOperation(operandl=MemberReference(member=__cfwr_i86, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator=<))",
+      "line": 93,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "Try",
+      "line": 97,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "For(BinaryOperation(operandl=MemberReference(member=__cfwr_i72, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=10), operator=<))",
+      "line": 95,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "If(BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=true), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=false), operator=&&))",
+      "line": 123,
+      "node_type": "control"
+    },
+    {
+      "id": 10,
+      "label": "While(BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=62.21), operator=+))",
+      "line": 99,
+      "node_type": "control"
+    },
+    {
+      "id": 11,
+      "label": "Return(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value='I'))",
+      "line": 100,
+      "node_type": "control"
+    },
+    {
+      "id": 12,
+      "label": "Catch(__cfwr_e99)",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 13,
+      "label": "Break",
+      "line": 120,
+      "node_type": "control"
+    },
+    {
+      "id": 14,
+      "label": "Update(MemberReference(member=__cfwr_i72, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 95,
+      "node_type": "control"
+    },
+    {
+      "id": 15,
+      "label": "Catch(__cfwr_e25)",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 16,
+      "label": "Update(MemberReference(member=__cfwr_i86, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 93,
+      "node_type": "control"
+    },
+    {
+      "id": 17,
+      "label": "Update(MemberReference(member=__cfwr_i3, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 90,
+      "node_type": "control"
+    },
+    {
+      "id": 18,
+      "label": "For(BinaryOperation(operandl=MemberReference(member=__cfwr_i7, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=5), operator=<))",
+      "line": 122,
+      "node_type": "control"
+    },
+    {
+      "id": 19,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=818), name=__cfwr_elem62)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 124,
+      "node_type": "control"
+    },
+    {
+      "id": 20,
+      "label": "Update(MemberReference(member=__cfwr_i7, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 122,
+      "node_type": "control"
+    },
+    {
+      "id": 21,
+      "label": "Return(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"result50\"))",
+      "line": 127,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 5
+    },
+    {
+      "source": 2,
+      "target": 17
+    },
+    {
+      "source": 2,
+      "target": 18
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 13
+    },
+    {
+      "source": 4,
+      "target": 2
+    },
+    {
+      "source": 4,
+      "target": 13
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 7
+    },
+    {
+      "source": 5,
+      "target": 14
+    },
+    {
+      "source": 5,
+      "target": 13
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 13
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 9
+    },
+    {
+      "source": 7,
+      "target": 12
+    },
+    {
+      "source": 7,
+      "target": 15
+    },
+    {
+      "source": 8,
+      "target": 5
+    },
+    {
+      "source": 8,
+      "target": 16
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 9,
+      "target": 13
+    },
+    {
+      "source": 9,
+      "target": 19
+    },
+    {
+      "source": 9,
+      "target": 20
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 10,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 14,
+      "target": 8
+    },
+    {
+      "source": 15,
+      "target": 16
+    },
+    {
+      "source": 16,
+      "target": 6
+    },
+    {
+      "source": 17,
+      "target": 4
+    },
+    {
+      "source": 18,
+      "target": 9
+    },
+    {
+      "source": 18,
+      "target": 21
+    },
+    {
+      "source": 19,
+      "target": 20
+    },
+    {
+      "source": 20,
+      "target": 18
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 5
+    },
+    {
+      "source": 2,
+      "target": 17
+    },
+    {
+      "source": 2,
+      "target": 18
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 13
+    },
+    {
+      "source": 4,
+      "target": 2
+    },
+    {
+      "source": 4,
+      "target": 13
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 7
+    },
+    {
+      "source": 5,
+      "target": 14
+    },
+    {
+      "source": 5,
+      "target": 13
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 13
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 9
+    },
+    {
+      "source": 7,
+      "target": 12
+    },
+    {
+      "source": 7,
+      "target": 15
+    },
+    {
+      "source": 8,
+      "target": 5
+    },
+    {
+      "source": 8,
+      "target": 16
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 9,
+      "target": 13
+    },
+    {
+      "source": 9,
+      "target": 19
+    },
+    {
+      "source": 9,
+      "target": 20
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 10,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 14,
+      "target": 8
+    },
+    {
+      "source": 15,
+      "target": 16
+    },
+    {
+      "source": 16,
+      "target": 6
+    },
+    {
+      "source": 17,
+      "target": 4
+    },
+    {
+      "source": 18,
+      "target": 9
+    },
+    {
+      "source": 18,
+      "target": 21
+    },
+    {
+      "source": 19,
+      "target": 20
+    },
+    {
+      "source": 20,
+      "target": 18
+    }
+  ],
+  "dataflow_edges": []
+}

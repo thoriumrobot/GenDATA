@@ -1,0 +1,522 @@
+{
+  "method_name": "ReflectArray",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "/*",
+      "line": 1,
+      "node_type": "stmt"
+    },
+    {
+      "id": 1,
+      "label": "* CFWR augmentation: inserted irrelevant code for data augmentation.",
+      "line": 2,
+      "node_type": "stmt"
+    },
+    {
+      "id": 2,
+      "label": "*/",
+      "line": 3,
+      "node_type": "stmt"
+    },
+    {
+      "id": 3,
+      "label": "import java.lang.reflect.Array;",
+      "line": 4,
+      "node_type": "stmt"
+    },
+    {
+      "id": 4,
+      "label": "import org.checkerframework.common.value.qual.MinLen;",
+      "line": 5,
+      "node_type": "stmt"
+    },
+    {
+      "id": 5,
+      "label": "",
+      "line": 6,
+      "node_type": "stmt"
+    },
+    {
+      "id": 6,
+      "label": "public class ReflectArray {",
+      "line": 7,
+      "node_type": "stmt"
+    },
+    {
+      "id": 7,
+      "label": "",
+      "line": 8,
+      "node_type": "stmt"
+    },
+    {
+      "id": 8,
+      "label": "void testMinLen(Object @MinLen(1) [] a) {",
+      "line": 9,
+      "node_type": "stmt"
+    },
+    {
+      "id": 9,
+      "label": "double __cfwr_elem66 = -64.06;",
+      "line": 10,
+      "node_type": "stmt"
+    },
+    {
+      "id": 10,
+      "label": "",
+      "line": 11,
+      "node_type": "stmt"
+    },
+    {
+      "id": 11,
+      "label": "Array.get(a, 0);",
+      "line": 12,
+      "node_type": "stmt"
+    },
+    {
+      "id": 12,
+      "label": "Array.get(a, 1);",
+      "line": 13,
+      "node_type": "stmt"
+    },
+    {
+      "id": 13,
+      "label": "}",
+      "line": 14,
+      "node_type": "stmt"
+    },
+    {
+      "id": 14,
+      "label": "long __cfwr_temp633(Boolean __cfwr_p0, long __cfwr_p1, Integer __cfwr_p2) {",
+      "line": 15,
+      "node_type": "stmt"
+    },
+    {
+      "id": 15,
+      "label": "if (true && true) {",
+      "line": 16,
+      "node_type": "stmt"
+    },
+    {
+      "id": 16,
+      "label": "for (int __cfwr_i51 = 0; __cfwr_i51 < 5; __cfwr_i51++) {",
+      "line": 17,
+      "node_type": "stmt"
+    },
+    {
+      "id": 17,
+      "label": "for (int __cfwr_i51 = 0; __cfwr_i51 < 1; __cfwr_i51++) {",
+      "line": 18,
+      "node_type": "stmt"
+    },
+    {
+      "id": 18,
+      "label": "for (int __cfwr_i69 = 0; __cfwr_i69 < 6; __cfwr_i69++) {",
+      "line": 19,
+      "node_type": "stmt"
+    },
+    {
+      "id": 19,
+      "label": "double __cfwr_entry76 = ('l' | null);",
+      "line": 20,
+      "node_type": "stmt"
+    },
+    {
+      "id": 20,
+      "label": "}",
+      "line": 21,
+      "node_type": "stmt"
+    },
+    {
+      "id": 21,
+      "label": "}",
+      "line": 22,
+      "node_type": "stmt"
+    },
+    {
+      "id": 22,
+      "label": "}",
+      "line": 23,
+      "node_type": "stmt"
+    },
+    {
+      "id": 23,
+      "label": "}",
+      "line": 24,
+      "node_type": "stmt"
+    },
+    {
+      "id": 24,
+      "label": "return -7L;",
+      "line": 25,
+      "node_type": "stmt"
+    },
+    {
+      "id": 25,
+      "label": "}",
+      "line": 26,
+      "node_type": "stmt"
+    },
+    {
+      "id": 26,
+      "label": "}",
+      "line": 27,
+      "node_type": "stmt"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1
+    },
+    {
+      "source": 1,
+      "target": 2
+    },
+    {
+      "source": 1,
+      "target": 16,
+      "variable": "for"
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "import"
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "variable": "Array"
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "variable": "MinLen"
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 11,
+      "variable": "a"
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 9,
+      "target": 19,
+      "variable": "double"
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 11,
+      "target": 12
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "Array"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "get"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "a"
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 13,
+      "target": 14
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 15,
+      "target": 16
+    },
+    {
+      "source": 16,
+      "target": 17
+    },
+    {
+      "source": 16,
+      "target": 17,
+      "variable": "for"
+    },
+    {
+      "source": 16,
+      "target": 17,
+      "variable": "int"
+    },
+    {
+      "source": 16,
+      "target": 17,
+      "variable": "__cfwr_i51"
+    },
+    {
+      "source": 17,
+      "target": 18
+    },
+    {
+      "source": 17,
+      "target": 18,
+      "variable": "for"
+    },
+    {
+      "source": 17,
+      "target": 18,
+      "variable": "int"
+    },
+    {
+      "source": 18,
+      "target": 19
+    },
+    {
+      "source": 19,
+      "target": 20
+    },
+    {
+      "source": 20,
+      "target": 21
+    },
+    {
+      "source": 21,
+      "target": 22
+    },
+    {
+      "source": 22,
+      "target": 23
+    },
+    {
+      "source": 23,
+      "target": 24
+    },
+    {
+      "source": 24,
+      "target": 25
+    },
+    {
+      "source": 25,
+      "target": 26
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 1
+    },
+    {
+      "source": 1,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 11,
+      "target": 12
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 13,
+      "target": 14
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 15,
+      "target": 16
+    },
+    {
+      "source": 16,
+      "target": 17
+    },
+    {
+      "source": 17,
+      "target": 18
+    },
+    {
+      "source": 18,
+      "target": 19
+    },
+    {
+      "source": 19,
+      "target": 20
+    },
+    {
+      "source": 20,
+      "target": 21
+    },
+    {
+      "source": 21,
+      "target": 22
+    },
+    {
+      "source": 22,
+      "target": 23
+    },
+    {
+      "source": 23,
+      "target": 24
+    },
+    {
+      "source": 24,
+      "target": 25
+    },
+    {
+      "source": 25,
+      "target": 26
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 1,
+      "target": 16,
+      "variable": "for"
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "import"
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "variable": "Array"
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "variable": "MinLen"
+    },
+    {
+      "source": 8,
+      "target": 11,
+      "variable": "a"
+    },
+    {
+      "source": 9,
+      "target": 19,
+      "variable": "double"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "Array"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "get"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "a"
+    },
+    {
+      "source": 16,
+      "target": 17,
+      "variable": "for"
+    },
+    {
+      "source": 16,
+      "target": 17,
+      "variable": "int"
+    },
+    {
+      "source": 16,
+      "target": 17,
+      "variable": "__cfwr_i51"
+    },
+    {
+      "source": 17,
+      "target": 18,
+      "variable": "for"
+    },
+    {
+      "source": 17,
+      "target": 18,
+      "variable": "int"
+    }
+  ]
+}
