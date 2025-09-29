@@ -262,38 +262,56 @@ class SimpleAnnotationTypePipeline:
         try:
             # For prediction, we use Soot for bytecode slicing and Vineflower for decompilation
             logger.info("Generating slices for prediction using Soot and Vineflower")
-            
+
             # Create prediction slices directory
             pred_slices_dir = os.path.join(self.cfwr_root, 'prediction_slices')
             os.makedirs(pred_slices_dir, exist_ok=True)
-            
+
+            # Determine target files: if not provided, scan case_studies for .java files
+            if target_file:
+                target_files = [target_file]
+            else:
+                case_studies_root = os.path.join(self.cfwr_root, 'case_studies')
+                if os.path.isdir(case_studies_root):
+                    target_files = glob.glob(os.path.join(case_studies_root, '**/*.java'), recursive=True)
+                else:
+                    # Fallback to project_root
+                    target_files = glob.glob(os.path.join(self.project_root, '**/*.java'), recursive=True)
+
+            if not target_files:
+                logger.warning("No target files found for Soot prediction slicing")
+                return True
+
             # Use SootSlicer for bytecode slicing with Vineflower decompilation
             soot_slicer_jar = os.path.join(self.cfwr_root, 'build/libs/GenDATA-all.jar')
             vineflower_jar = os.path.join(self.cfwr_root, 'tools/vineflower.jar')
-            
+
             if os.path.exists(soot_slicer_jar) and os.path.exists(vineflower_jar):
-                # Run SootSlicer with Vineflower decompilation
-                cmd = [
-                    'java', '-cp', soot_slicer_jar,
-                    'cfwr.SootSlicer',
-                    '--projectRoot', self.project_root,
-                    '--targetFile', target_file,
-                    '--line', '1',  # Default line, will be overridden per warning
-                    '--output', pred_slices_dir,
-                    '--member', 'main',  # Default member
-                    '--decompiler', vineflower_jar,
-                    '--prediction-mode'
-                ]
-                
-                result = subprocess.run(cmd, capture_output=True, text=True)
-                if result.returncode == 0:
-                    logger.info("Soot slicing with Vineflower decompilation completed successfully")
+                successes = 0
+                for tf in target_files:
+                    cmd = [
+                        'java', '-cp', soot_slicer_jar,
+                        'cfwr.SootSlicer',
+                        '--projectRoot', os.path.dirname(tf),
+                        '--targetFile', tf,
+                        '--output', pred_slices_dir,
+                        '--decompiler', vineflower_jar,
+                        '--prediction-mode'
+                    ]
+                    result = subprocess.run(cmd, capture_output=True, text=True)
+                    if result.returncode == 0:
+                        successes += 1
+                    else:
+                        logger.debug(f"Soot slicing failed for {tf}: {result.stderr}")
+
+                if successes > 0:
+                    logger.info(f"Soot slicing with Vineflower completed for {successes}/{len(target_files)} files")
                     return True
                 else:
-                    logger.warning(f"Soot slicing failed: {result.stderr}")
+                    logger.warning("Soot slicing produced no slices; proceeding with existing slices if any")
             else:
-                logger.warning(f"SootSlicer JAR or Vineflower JAR not found, using existing slices")
-            
+                logger.warning("SootSlicer or Vineflower jar not found; proceeding with existing slices if any")
+
             # Fallback to existing slices if Soot slicing fails
             if os.path.exists(self.slices_dir):
                 import shutil
@@ -301,9 +319,9 @@ class SimpleAnnotationTypePipeline:
                 logger.info("Using existing slices for prediction")
                 return True
             else:
-                logger.warning("No existing slices found, using mock data for prediction")
+                logger.warning("No existing slices found, skipping slice generation for prediction")
                 return True
-                
+
         except Exception as e:
             logger.error(f"Error generating slices for prediction: {e}")
             return False
@@ -423,8 +441,9 @@ class SimpleAnnotationTypePipeline:
                 logger.error("❌ Failed to load or train any models - this should not happen with auto-training enabled")
                 raise Exception("No models available and auto-training failed")
             
-            # Use trained models for prediction with real CFG data
-            predictions = predictor.predict_annotations_for_file_with_cfg(java_file, self.cfg_dir, threshold=0.3)
+            # Use trained models for prediction with real CFG data from prediction CFGs
+            prediction_cfg_dir = os.path.join(self.cfwr_root, 'prediction_cfg_output')
+            predictions = predictor.predict_annotations_for_file_with_cfg(java_file, prediction_cfg_dir, threshold=0.3)
             
             if predictions:
                 logger.info(f"Generated {len(predictions)} predictions using trained models with real CFG data")
