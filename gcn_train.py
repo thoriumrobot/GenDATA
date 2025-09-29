@@ -16,6 +16,8 @@ from torch_geometric.data import Data
 from torch_geometric.loader import DataLoader
 from torch_geometric.nn import GCNConv
 
+from cfg_graph import load_cfg_as_pyg
+
 
 def is_annotation_target(node: Dict) -> bool:
     label = (node.get('label') or '').lower()
@@ -31,41 +33,30 @@ def is_annotation_target(node: Dict) -> bool:
     return False
 
 
-def extract_features(node: Dict, cfg_data: Dict) -> List[float]:
-    label = node.get('label', '')
-    node_id = node.get('id', 0)
-    control_edges = cfg_data.get('control_edges', [])
-    dataflow_edges = cfg_data.get('dataflow_edges', [])
-    in_degree = sum(1 for e in control_edges if e.get('target') == node_id)
-    out_degree = sum(1 for e in control_edges if e.get('source') == node_id)
-    df_in = sum(1 for e in dataflow_edges if e.get('target') == node_id)
-    df_out = sum(1 for e in dataflow_edges if e.get('source') == node_id)
-    is_control = 1.0 if (node.get('node_type', 'control') == 'control') else 0.0
-    return [
-        float(len(label)),
-        1.0 if is_annotation_target(node) else 0.0,
-        float(node.get('line', 0) or 0),
-        float(in_degree), float(out_degree), float(df_in), float(df_out), is_control
-    ]
-
-
-def cfg_to_homograph(cfg_data: Dict) -> Data:
+def build_labels_from_cfg(cfg_data: Dict) -> torch.Tensor:
     nodes = cfg_data.get('nodes', [])
-    control_edges = cfg_data.get('control_edges', [])
-    dataflow_edges = cfg_data.get('dataflow_edges', [])
-
-    x = torch.tensor([extract_features(n, cfg_data) for n in nodes], dtype=torch.float)
     y = torch.tensor([1 if is_annotation_target(n) else 0 for n in nodes], dtype=torch.long)
+    return y
 
-    edges = control_edges + dataflow_edges
-    if edges:
-        src = torch.tensor([e['source'] for e in edges], dtype=torch.long)
-        dst = torch.tensor([e['target'] for e in edges], dtype=torch.long)
-        edge_index = torch.stack([src, dst], dim=0)
-    else:
-        edge_index = torch.zeros((2, 0), dtype=torch.long)
 
-    data = Data(x=x, edge_index=edge_index, y=y)
+def cfg_to_graph(cfg_path: str) -> Data:
+    # Use rich graph features from cfg_graph
+    data = load_cfg_as_pyg(cfg_path)
+    # Attach node labels using the raw JSON
+    with open(cfg_path, 'r') as fp:
+        cfg = json.load(fp)
+    y = build_labels_from_cfg(cfg)
+    if data.x is None or data.x.size(0) == 0:
+        return Data()
+    # Ensure y matches num_nodes
+    if y.numel() != data.x.size(0):
+        # pad/truncate as needed
+        if y.numel() < data.x.size(0):
+            pad = torch.zeros((data.x.size(0) - y.numel(),), dtype=torch.long)
+            y = torch.cat([y, pad], dim=0)
+        else:
+            y = y[:data.x.size(0)]
+    data.y = y
     return data
 
 
@@ -93,9 +84,7 @@ def load_cfg_dataset(cfg_dir: str) -> List[Data]:
         for f in files:
             if not f.endswith('.json'):
                 continue
-            with open(os.path.join(root, f), 'r') as fp:
-                cfg = json.load(fp)
-            g = cfg_to_homograph(cfg)
+            g = cfg_to_graph(os.path.join(root, f))
             if g.x.numel() == 0:
                 continue
             dataset.append(g)

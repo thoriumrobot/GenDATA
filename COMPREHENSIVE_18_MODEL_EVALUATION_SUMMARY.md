@@ -1,5 +1,11 @@
 # Comprehensive 18-Model Evaluation Summary
 
+Note (update): All models now consume full CFG graphs directly. Graph models (HGT/GCN/GCSN/DG2N)
+are trained and inferred on PyTorch Geometric graphs with rich node/edge features (node-type one-hots,
+degree, normalized line number, Laplacian positional encodings, RWSE, edge-type one-hot). Non-graph models
+(GBT, causal, enhanced_causal) are wrapped with a Graph Transformer encoder (edge-aware) to produce a fixed-length
+graph embedding before classification. This ensures a consistent, theoretically grounded graph representation across all 21 models.
+
 ## 🎯 **Overview**
 
 This document summarizes the comprehensive evaluation of all 18 models (6 base models × 3 annotation types) in the GenDATA pipeline, ensuring that all requirements are met for scientific soundness and proper implementation.

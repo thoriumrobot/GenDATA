@@ -11,6 +11,14 @@ import logging
 from typing import Dict, List, Any, Optional
 from pathlib import Path
 
+# Graph imports
+try:
+    from cfg_graph import load_cfg_as_pyg
+    from graph_encoder import build_graph_encoder
+    PYG_AVAILABLE = True
+except Exception:
+    PYG_AVAILABLE = False
+
 # Import the annotation type trainers
 from annotation_type_rl_positive import AnnotationTypeTrainer as PositiveTrainer
 from annotation_type_rl_nonnegative import AnnotationTypeTrainer as NonNegativeTrainer
@@ -34,6 +42,7 @@ class ModelBasedPredictor:
         self.auto_train = auto_train
         self.loaded_models = {}
         self.model_stats = {}
+        self._encoder_cache: Dict[str, Any] = {}
         
     def load_trained_models(self, base_model_type: str = 'enhanced_causal') -> bool:
         """Load all trained annotation type models"""
@@ -300,7 +309,7 @@ class ModelBasedPredictor:
         return f"model prediction (predicted by {model_type.upper()} model)"
     
     def predict_annotations_for_file_with_cfg(self, java_file, cfg_dir, threshold=0.3):
-        """Predict annotations for a Java file using real CFG data"""
+        """Predict annotations for a Java file using real CFG graphs (PyG)."""
         try:
             # Find CFG data for this Java file
             java_basename = os.path.splitext(os.path.basename(java_file))[0]
@@ -310,13 +319,15 @@ class ModelBasedPredictor:
                 logger.warning(f"No CFG file found for {java_file}; skipping (mock disabled)")
                 return []
             
-            # Load CFG data
-            with open(cfg_file, 'r') as f:
-                cfg_data = json.load(f)
+            if not PYG_AVAILABLE:
+                logger.error("PyTorch Geometric not available; cannot process CFG graphs")
+                return []
             
-            # Read the Java file
-            with open(java_file, 'r') as f:
-                java_content = f.read()
+            # Load CFG as PyG graph with rich features
+            graph_data = load_cfg_as_pyg(cfg_file)
+            if graph_data.x is None or graph_data.x.numel() == 0:
+                logger.warning("Empty graph features; skipping")
+                return []
             
             predictions = []
             for annotation_type in ['@Positive', '@NonNegative', '@GTENegativeOne']:
@@ -324,30 +335,103 @@ class ModelBasedPredictor:
                     # loaded_models maps to the trainer instance directly
                     trainer = self.loaded_models[annotation_type]
                     base_model_type = getattr(trainer, 'base_model_type', 'unknown')
-                    
-                    # Extract features from real CFG data
-                    cfg_features = self._extract_cfg_features(cfg_data, java_content)
-                    
-                    if cfg_features is not None:
-                        # Get prediction from model using real CFG features
-                        prediction, confidence, reason = self._get_model_prediction(
-                            trainer, cfg_features, annotation_type, cfg_data
-                        )
-                        
-                        if prediction and confidence >= threshold:
+                    graph_models = {'hgt', 'gcn', 'gcsn', 'dg2n'}
+
+                    try:
+                        if base_model_type in graph_models and hasattr(trainer.model, 'forward'):
+                            # Try passing the full graph directly to graph models
+                            trainer.model.eval() if hasattr(trainer.model, 'eval') else None
+                            with torch.no_grad():
+                                out = trainer.model(graph_data)
+                                if isinstance(out, torch.Tensor) and out.dim() == 2 and out.size(1) >= 2:
+                                    probs = torch.softmax(out, dim=1)
+                                    pred = int(torch.argmax(out, dim=1).item())
+                                    conf = float(probs[0, pred].item()) if probs.size(0) > 0 else 0.0
+                                else:
+                                    # If model returns a single embedding or score, fall back to thresholding
+                                    score = float(out.squeeze().item()) if isinstance(out, torch.Tensor) else 0.0
+                                    pred = 1 if score > 0.0 else 0
+                                    conf = float(torch.sigmoid(torch.tensor(score)).item())
+                            is_positive = (pred == 1 and conf >= threshold)
+                            reason = self._generate_model_reason(annotation_type, graph_data.to_dict() if hasattr(graph_data, 'to_dict') else {}, conf, base_model_type)
+                        else:
+                            # Non-graph models: build/apply a graph encoder to get a fixed-length embedding
+                            emb = self._encode_graph(graph_data, base_model_type)
+                            prediction, conf, reason = self._predict_with_embedding(trainer, emb, annotation_type, base_model_type)
+                            is_positive = prediction and conf >= threshold
+
+                        if is_positive:
+                            # Best-effort line: choose min line among nodes
+                            try:
+                                line = int(graph_data.x[:, - (graph_data.x.size(1) - 1)].argmin().item())  # fallback heuristic
+                            except Exception:
+                                line = 1
                             predictions.append({
-                                'line': cfg_data.get('line', 1),
+                                'line': line,
                                 'annotation_type': annotation_type,
-                                'confidence': confidence,
-                                'reason': f"{reason} (using real CFG data)",
+                                'confidence': conf,
+                                'reason': f"{reason} (using CFG graph)",
                                 'model_type': base_model_type
                             })
+                    except Exception as e:
+                        logger.debug(f"Prediction error for {annotation_type} ({base_model_type}): {e}")
             
             return predictions
             
         except Exception as e:
             logger.error(f"Error predicting annotations for {java_file} with CFG: {e}")
             return []
+
+    def _encode_graph(self, data, base_model_type: str) -> torch.Tensor:
+        """Encode a PyG graph into a fixed-length embedding using the configured encoder."""
+        key = f"encoder:{base_model_type}:{int(data.x.size(1))}"
+        if key not in self._encoder_cache:
+            encoder = build_graph_encoder(in_dim=int(data.x.size(1)), edge_dim=int(data.edge_attr.size(1)) if getattr(data, 'edge_attr', None) is not None else 0, out_dim=256, variant='transformer')
+            encoder = encoder.to(self.device) if hasattr(encoder, 'to') else encoder
+            self._encoder_cache[key] = encoder
+        encoder = self._encoder_cache[key]
+        encoder.eval() if hasattr(encoder, 'eval') else None
+        with torch.no_grad():
+            emb = encoder(data)
+        # emb shape: [batch_size(=1), D] or [D]; ensure 1D numpy for scikit models
+        if isinstance(emb, torch.Tensor):
+            if emb.dim() == 2 and emb.size(0) == 1:
+                emb = emb.squeeze(0)
+        return emb
+
+    def _predict_with_embedding(self, trainer, emb: torch.Tensor, annotation_type: str, base_model_type: str):
+        """Run classification using an embedding with either torch or sklearn model."""
+        if hasattr(trainer.model, 'forward'):
+            with torch.no_grad():
+                logits = trainer.model(emb.unsqueeze(0) if emb.dim() == 1 else emb)
+                probs = torch.softmax(logits, dim=1)
+                pred = int(torch.argmax(logits, dim=1).item())
+                conf = float(probs[0, pred].item())
+            if pred == 1:
+                reason = self._generate_model_reason(annotation_type, {}, conf, base_model_type)
+                return True, conf, reason
+            return False, conf, "Model predicted no annotation needed"
+        else:
+            # scikit-learn like (e.g., GBT)
+            import numpy as np
+            vec = emb.detach().cpu().numpy().reshape(1, -1)
+            try:
+                proba = trainer.model.predict_proba(vec)[0]
+                pred = int(np.argmax(proba))
+                conf = float(proba[pred]) if len(proba) > pred else 0.5
+            except Exception:
+                # fallback to decision_function or predict
+                if hasattr(trainer.model, 'decision_function'):
+                    score = float(trainer.model.decision_function(vec).squeeze())
+                    pred = 1 if score > 0 else 0
+                    conf = float(1 / (1 + np.exp(-score)))
+                else:
+                    pred = int(trainer.model.predict(vec).squeeze())
+                    conf = 0.5
+            if pred == 1:
+                reason = self._generate_model_reason(annotation_type, {}, conf, base_model_type)
+                return True, conf, reason
+            return False, conf, "Model predicted no annotation needed"
     
     def _extract_cfg_features(self, cfg_data, java_content):
         """Extract features from real CFG data"""

@@ -28,6 +28,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from cfg import generate_control_flow_graphs, save_cfgs
+from cfg_graph import load_cfg_as_pyg
 
 def ensure_cfg(java_file):
     base = os.path.splitext(os.path.basename(java_file))[0]
@@ -102,7 +103,7 @@ def load_data():
         for cfg_entry in method_cfgs:
             cfg_data = cfg_entry.get('data', cfg_entry)
             # Create HeteroData object
-            data = create_heterodata(cfg_data)
+            data = create_heterodata_from_cfg_path(cfg_entry['file'])
             if data is None:
                 continue
             # Label nodes based on warnings
@@ -176,85 +177,16 @@ def parse_warnings(warnings):
             })
     return annotations
 
-def create_heterodata(cfg_data):
-    """
-    Convert CFG data into a HeteroData object for PyTorch Geometric.
-    Now handles both control flow and dataflow edges as different edge types.
-    """
+def create_heterodata_from_cfg_path(cfg_path: str):
+    pyg = load_cfg_as_pyg(cfg_path)
+    if pyg.x is None or pyg.x.numel() == 0:
+        return None
+    if pyg.edge_index is None or pyg.edge_index.numel() == 0:
+        return None
     data = HeteroData()
-    nodes = cfg_data['nodes']
-    
-    # Get both control and dataflow edges
-    control_edges = cfg_data.get('control_edges', [])
-    dataflow_edges = cfg_data.get('dataflow_edges', [])
-    
-    # Fallback to general edges if specific edge types not available
-    if not control_edges and not dataflow_edges:
-        edges = cfg_data.get('edges', [])
-        control_edges = edges  # Treat all as control edges for backward compatibility
-
-    # Create node features (e.g., label encoding, node type)
-    node_features = []
-    node_labels = []
-    node_indices = {}
-    for node in nodes:
-        node_id = node['id']
-        label = node['label']
-        node_type = node.get('node_type', 'control')
-        
-        # Enhanced features: label length, node type encoding
-        feature = [len(label)]
-        # Add node type encoding (0 for control, 1 for dataflow if we had such nodes)
-        feature.append(0 if node_type == 'control' else 1)
-        
-        node_features.append(feature)
-        node_indices[node_id] = len(node_indices)
-        # Initialize labels to 0 (no annotation)
-        node_labels.append(0)
-
-    if not node_features:
-        return None  # Skip if no nodes
-
-    data['node'].x = torch.tensor(node_features, dtype=torch.float)
-    data['node'].y = torch.tensor(node_labels, dtype=torch.long)
-
-    # Create control flow edge index
-    control_edge_index = [[], []]
-    for edge in control_edges:
-        source = node_indices.get(edge.get('source', edge.get('from')))
-        target = node_indices.get(edge.get('target', edge.get('to')))
-        if source is not None and target is not None:
-            control_edge_index[0].append(source)
-            control_edge_index[1].append(target)
-
-    # Create dataflow edge index
-    dataflow_edge_index = [[], []]
-    for edge in dataflow_edges:
-        source = node_indices.get(edge.get('source', edge.get('from')))
-        target = node_indices.get(edge.get('target', edge.get('to')))
-        if source is not None and target is not None:
-            dataflow_edge_index[0].append(source)
-            dataflow_edge_index[1].append(target)
-
-    # Combine all edges into a single edge type for HGT compatibility
-    # This treats both control flow and dataflow edges as the same type
-    all_edges = control_edges + dataflow_edges
-    combined_edge_index = [[], []]
-    for edge in all_edges:
-        source = node_indices.get(edge.get('source', edge.get('from')))
-        target = node_indices.get(edge.get('target', edge.get('to')))
-        if source is not None and target is not None:
-            combined_edge_index[0].append(source)
-            combined_edge_index[1].append(target)
-    
-    # Use the standard edge type that HGT expects
-    if combined_edge_index[0]:
-        data['node', 'to', 'node'].edge_index = torch.tensor(combined_edge_index, dtype=torch.long)
-
-    # Check if we have any edges at all
-    if not combined_edge_index[0]:
-        return None  # Skip if no edges
-
+    data['node'].x = pyg.x
+    data['node', 'to', 'node'].edge_index = pyg.edge_index
+    data['node'].y = torch.zeros((pyg.num_nodes,), dtype=torch.long)
     return data
 
 def label_nodes(data, cfg_data, annotations):
