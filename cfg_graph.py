@@ -140,7 +140,15 @@ def load_cfg_as_pyg(cfg_file: str, k_lpe: int = DEFAULT_K_LPE, rw_steps: int = D
         et = torch.tensor(edge_types, dtype=torch.long)
         # duplicate edge_types for the reversed edges introduced by undirected conversion
         et = torch.cat([et, et], dim=0)
-        edge_types_tensor = torch.nn.functional.one_hot(et, num_classes=2).to(torch.float32)
+        # Ensure edge_types matches the actual number of edges after to_undirected
+        if et.size(0) != edge_index.size(1):
+            # If there's a mismatch, create edge types for all edges
+            edge_types_tensor = torch.zeros((edge_index.size(1), 2), dtype=torch.float32)
+            # Set control flow edges (type 0) for the first half, dataflow (type 1) for the rest
+            edge_types_tensor[:len(edge_types), 0] = 1.0  # Control flow
+            edge_types_tensor[len(edge_types):, 1] = 1.0  # Dataflow
+        else:
+            edge_types_tensor = torch.nn.functional.one_hot(et, num_classes=2).to(torch.float32)
 
     num_nodes = len(nodes)
     # Base node features

@@ -96,7 +96,7 @@ def main():
 
     for base in base_models:
         print(f"== Base model: {base} ==")
-        if not predictor.load_or_train_models(base_model_type=base, episodes=10, project_root='/home/ubuntu/checker-framework/checker/tests/index'):
+        if not predictor.load_or_train_models(base_model_type=base, epochs=10):
             print(f"[WARN] Skipping {base}: load/train failed")
             continue
 

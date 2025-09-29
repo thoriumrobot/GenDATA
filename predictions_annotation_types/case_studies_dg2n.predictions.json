@@ -2,97 +2,301 @@
   "/home/ubuntu/GenDATA/case_studies/guava/futures/failureaccess/src/module-info.java": [
     {
       "line": 1,
-      "annotation_type": "@NonNegative",
-      "confidence": 0.5030463337898254,
-      "reason": "@NonNegative expected (predicted by AnnotationTypeDG2NModel with 0.503 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeDG2NModel"
+      "annotation_type": "@Positive",
+      "confidence": 0.5738581418991089,
+      "features": [
+        1.0,
+        1.0,
+        0.0555555485188961,
+        0.10898251831531525,
+        0.14248138666152954,
+        -0.37029749155044556,
+        0.059668976813554764,
+        -0.32571467757225037,
+        0.25047194957733154,
+        -0.1901763379573822,
+        0.332133948802948,
+        0.0,
+        0.3333333432674408,
+        0.0,
+        0.20370370149612427
+      ],
+      "reason": "@Positive expected (predicted by enhanced EnhancedGCNModel with 0.574 confidence) (using large CFG support)",
+      "model_type": "enhanced_EnhancedGCNModel"
     },
     {
       "line": 1,
-      "annotation_type": "@GTENegativeOne",
-      "confidence": 0.5146989226341248,
-      "reason": "@GTENegativeOne expected (predicted by AnnotationTypeDG2NModel with 0.515 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeDG2NModel"
+      "annotation_type": "@NonNegative",
+      "confidence": 0.7048096060752869,
+      "features": [
+        1.0,
+        1.0,
+        0.0555555485188961,
+        0.10898251831531525,
+        0.14248138666152954,
+        -0.37029749155044556,
+        0.059668976813554764,
+        -0.32571467757225037,
+        0.25047194957733154,
+        -0.1901763379573822,
+        0.332133948802948,
+        0.0,
+        0.3333333432674408,
+        0.0,
+        0.20370370149612427
+      ],
+      "reason": "@NonNegative expected (predicted by enhanced EnhancedGCNModel with 0.705 confidence) (using large CFG support)",
+      "model_type": "enhanced_EnhancedGCNModel"
     }
   ],
   "/home/ubuntu/GenDATA/case_studies/guava/futures/failureaccess/src/com/google/common/util/concurrent/internal/InternalFutures.java": [
     {
       "line": 1,
-      "annotation_type": "@NonNegative",
-      "confidence": 0.514154314994812,
-      "reason": "@NonNegative expected (predicted by AnnotationTypeDG2NModel with 0.514 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeDG2NModel"
+      "annotation_type": "@Positive",
+      "confidence": 0.5732953548431396,
+      "features": [
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        -0.7071067690849304,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "reason": "@Positive expected (predicted by enhanced EnhancedGCNModel with 0.573 confidence) (using large CFG support)",
+      "model_type": "enhanced_EnhancedGCNModel"
     },
     {
       "line": 1,
-      "annotation_type": "@GTENegativeOne",
-      "confidence": 0.517211377620697,
-      "reason": "@GTENegativeOne expected (predicted by AnnotationTypeDG2NModel with 0.517 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeDG2NModel"
+      "annotation_type": "@NonNegative",
+      "confidence": 0.7053993940353394,
+      "features": [
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        -0.7071067690849304,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "reason": "@NonNegative expected (predicted by enhanced EnhancedGCNModel with 0.705 confidence) (using large CFG support)",
+      "model_type": "enhanced_EnhancedGCNModel"
     }
   ],
   "/home/ubuntu/GenDATA/case_studies/guava/futures/failureaccess/src/com/google/common/util/concurrent/internal/InternalFutureFailureAccess.java": [
     {
       "line": 1,
-      "annotation_type": "@NonNegative",
-      "confidence": 0.5097433924674988,
-      "reason": "@NonNegative expected (predicted by AnnotationTypeDG2NModel with 0.510 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeDG2NModel"
+      "annotation_type": "@Positive",
+      "confidence": 0.5733019709587097,
+      "features": [
+        1.0,
+        1.0,
+        0.0,
+        -0.7071067690849304,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "reason": "@Positive expected (predicted by enhanced EnhancedGCNModel with 0.573 confidence) (using large CFG support)",
+      "model_type": "enhanced_EnhancedGCNModel"
     },
     {
       "line": 1,
-      "annotation_type": "@GTENegativeOne",
-      "confidence": 0.5151577591896057,
-      "reason": "@GTENegativeOne expected (predicted by AnnotationTypeDG2NModel with 0.515 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeDG2NModel"
+      "annotation_type": "@NonNegative",
+      "confidence": 0.7054761052131653,
+      "features": [
+        1.0,
+        1.0,
+        0.0,
+        -0.7071067690849304,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "reason": "@NonNegative expected (predicted by enhanced EnhancedGCNModel with 0.705 confidence) (using large CFG support)",
+      "model_type": "enhanced_EnhancedGCNModel"
     }
   ],
   "/home/ubuntu/GenDATA/case_studies/guava/guava/src/module-info.java": [
     {
       "line": 1,
-      "annotation_type": "@NonNegative",
-      "confidence": 0.5030463337898254,
-      "reason": "@NonNegative expected (predicted by AnnotationTypeDG2NModel with 0.503 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeDG2NModel"
+      "annotation_type": "@Positive",
+      "confidence": 0.5738581418991089,
+      "features": [
+        1.0,
+        1.0,
+        0.0555555485188961,
+        0.10898251831531525,
+        0.14248138666152954,
+        -0.37029749155044556,
+        0.059668976813554764,
+        -0.32571467757225037,
+        0.25047194957733154,
+        -0.1901763379573822,
+        0.332133948802948,
+        0.0,
+        0.3333333432674408,
+        0.0,
+        0.20370370149612427
+      ],
+      "reason": "@Positive expected (predicted by enhanced EnhancedGCNModel with 0.574 confidence) (using large CFG support)",
+      "model_type": "enhanced_EnhancedGCNModel"
     },
     {
       "line": 1,
-      "annotation_type": "@GTENegativeOne",
-      "confidence": 0.5146989226341248,
-      "reason": "@GTENegativeOne expected (predicted by AnnotationTypeDG2NModel with 0.515 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeDG2NModel"
+      "annotation_type": "@NonNegative",
+      "confidence": 0.7048096060752869,
+      "features": [
+        1.0,
+        1.0,
+        0.0555555485188961,
+        0.10898251831531525,
+        0.14248138666152954,
+        -0.37029749155044556,
+        0.059668976813554764,
+        -0.32571467757225037,
+        0.25047194957733154,
+        -0.1901763379573822,
+        0.332133948802948,
+        0.0,
+        0.3333333432674408,
+        0.0,
+        0.20370370149612427
+      ],
+      "reason": "@NonNegative expected (predicted by enhanced EnhancedGCNModel with 0.705 confidence) (using large CFG support)",
+      "model_type": "enhanced_EnhancedGCNModel"
     }
   ],
   "/home/ubuntu/GenDATA/case_studies/guava/guava-testlib/src/module-info.java": [
     {
       "line": 1,
-      "annotation_type": "@NonNegative",
-      "confidence": 0.5030463337898254,
-      "reason": "@NonNegative expected (predicted by AnnotationTypeDG2NModel with 0.503 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeDG2NModel"
+      "annotation_type": "@Positive",
+      "confidence": 0.5738581418991089,
+      "features": [
+        1.0,
+        1.0,
+        0.0555555485188961,
+        0.10898251831531525,
+        0.14248138666152954,
+        -0.37029749155044556,
+        0.059668976813554764,
+        -0.32571467757225037,
+        0.25047194957733154,
+        -0.1901763379573822,
+        0.332133948802948,
+        0.0,
+        0.3333333432674408,
+        0.0,
+        0.20370370149612427
+      ],
+      "reason": "@Positive expected (predicted by enhanced EnhancedGCNModel with 0.574 confidence) (using large CFG support)",
+      "model_type": "enhanced_EnhancedGCNModel"
     },
     {
       "line": 1,
-      "annotation_type": "@GTENegativeOne",
-      "confidence": 0.5146989226341248,
-      "reason": "@GTENegativeOne expected (predicted by AnnotationTypeDG2NModel with 0.515 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeDG2NModel"
+      "annotation_type": "@NonNegative",
+      "confidence": 0.7048096060752869,
+      "features": [
+        1.0,
+        1.0,
+        0.0555555485188961,
+        0.10898251831531525,
+        0.14248138666152954,
+        -0.37029749155044556,
+        0.059668976813554764,
+        -0.32571467757225037,
+        0.25047194957733154,
+        -0.1901763379573822,
+        0.332133948802948,
+        0.0,
+        0.3333333432674408,
+        0.0,
+        0.20370370149612427
+      ],
+      "reason": "@NonNegative expected (predicted by enhanced EnhancedGCNModel with 0.705 confidence) (using large CFG support)",
+      "model_type": "enhanced_EnhancedGCNModel"
     }
   ],
   "/home/ubuntu/GenDATA/case_studies/jfreechart/src/main/java/module-info.java": [
     {
       "line": 1,
-      "annotation_type": "@NonNegative",
-      "confidence": 0.5030463337898254,
-      "reason": "@NonNegative expected (predicted by AnnotationTypeDG2NModel with 0.503 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeDG2NModel"
+      "annotation_type": "@Positive",
+      "confidence": 0.5738581418991089,
+      "features": [
+        1.0,
+        1.0,
+        0.0555555485188961,
+        0.10898251831531525,
+        0.14248138666152954,
+        -0.37029749155044556,
+        0.059668976813554764,
+        -0.32571467757225037,
+        0.25047194957733154,
+        -0.1901763379573822,
+        0.332133948802948,
+        0.0,
+        0.3333333432674408,
+        0.0,
+        0.20370370149612427
+      ],
+      "reason": "@Positive expected (predicted by enhanced EnhancedGCNModel with 0.574 confidence) (using large CFG support)",
+      "model_type": "enhanced_EnhancedGCNModel"
     },
     {
       "line": 1,
-      "annotation_type": "@GTENegativeOne",
-      "confidence": 0.5146989226341248,
-      "reason": "@GTENegativeOne expected (predicted by AnnotationTypeDG2NModel with 0.515 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeDG2NModel"
+      "annotation_type": "@NonNegative",
+      "confidence": 0.7048096060752869,
+      "features": [
+        1.0,
+        1.0,
+        0.0555555485188961,
+        0.10898251831531525,
+        0.14248138666152954,
+        -0.37029749155044556,
+        0.059668976813554764,
+        -0.32571467757225037,
+        0.25047194957733154,
+        -0.1901763379573822,
+        0.332133948802948,
+        0.0,
+        0.3333333432674408,
+        0.0,
+        0.20370370149612427
+      ],
+      "reason": "@NonNegative expected (predicted by enhanced EnhancedGCNModel with 0.705 confidence) (using large CFG support)",
+      "model_type": "enhanced_EnhancedGCNModel"
     }
   ]
 }

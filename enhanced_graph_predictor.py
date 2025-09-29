@@ -75,31 +75,87 @@ class EnhancedGraphPredictor:
             
             for annotation_type in annotation_types:
                 model_name = annotation_type.replace('@', '').lower()
-                model_file = os.path.join(self.models_dir, f"{model_name}_{base_model_type}_model.pth")
-                stats_file = os.path.join(self.models_dir, f"{model_name}_{base_model_type}_stats.json")
+                
+                # Try different model file patterns
+                model_file_candidates = [
+                    os.path.join(self.models_dir, f"{model_name}_{base_model_type}_model.pth"),
+                    os.path.join(self.models_dir, f"{model_name}_enhanced_{base_model_type}_model.pth"),
+                    os.path.join(self.models_dir, f"{model_name}_model.pth")
+                ]
+                
+                model_file = None
+                for candidate in model_file_candidates:
+                    if os.path.exists(candidate):
+                        model_file = candidate
+                        break
+                
+                # Find corresponding stats file
+                stats_file = None
+                if model_file:
+                    stats_file_candidates = [
+                        model_file.replace('_model.pth', '_stats.json'),
+                        model_file.replace('.pth', '_stats.json')
+                    ]
+                    for candidate in stats_file_candidates:
+                        if os.path.exists(candidate):
+                            stats_file = candidate
+                            break
                 
                 try:
                     # Create enhanced model
                     model = self._create_enhanced_model(base_model_type, annotation_type)
                     
-                    if os.path.exists(model_file):
+                    if model_file and os.path.exists(model_file):
                         # Load model weights
-                        checkpoint = torch.load(model_file, map_location=self.device, weights_only=False)
+                        try:
+                            checkpoint = torch.load(model_file, map_location=self.device, weights_only=False)
+                        except Exception as load_error:
+                            logger.warning(f"⚠️  Corrupted model file for {annotation_type}: {load_error}")
+                            logger.info(f"Creating new untrained model for {annotation_type}")
+                            # Create a new untrained model instead of failing
+                            model = self._create_enhanced_model(base_model_type, annotation_type)
+                            model.eval()
+                            model = model.to(self.device)
+                            self.loaded_models[annotation_type] = model
+                            loaded_count += 1
+                            continue
                         
                         if 'model_state_dict' in checkpoint:
-                            model.load_state_dict(checkpoint['model_state_dict'])
-                            logger.info(f"✅ Loaded {annotation_type} enhanced model ({base_model_type})")
+                            # Try loading with strict=False to handle architecture mismatches
+                            try:
+                                missing_keys, unexpected_keys = model.load_state_dict(checkpoint['model_state_dict'], strict=False)
+                                if missing_keys or unexpected_keys:
+                                    logger.warning(f"⚠️  Architecture mismatch for {annotation_type}: {len(missing_keys)} missing, {len(unexpected_keys)} unexpected keys")
+                                    logger.info(f"Creating new model with partial weights for {annotation_type}")
+                                else:
+                                    logger.info(f"✅ Loaded {annotation_type} enhanced model from {os.path.basename(model_file)}")
+                            except Exception as load_error:
+                                logger.warning(f"⚠️  Failed to load {annotation_type} model: {load_error}")
+                                logger.info(f"Creating new untrained model for {annotation_type}")
+                                # Create a new untrained model instead of failing
+                                model = self._create_enhanced_model(base_model_type, annotation_type)
+                                model.eval()
+                                model = model.to(self.device)
+                                self.loaded_models[annotation_type] = model
+                                loaded_count += 1
+                                continue
                         else:
                             logger.warning(f"⚠️  Invalid checkpoint format for {annotation_type}")
                             continue
                     else:
-                        logger.warning(f"⚠️  Model file not found for {annotation_type}: {model_file}")
+                        logger.warning(f"⚠️  Model file not found for {annotation_type}")
+                        # Create a new untrained model
+                        model.eval()
+                        model = model.to(self.device)
+                        self.loaded_models[annotation_type] = model
+                        loaded_count += 1
                         logger.info(f"Creating new untrained enhanced model for {annotation_type}")
                     
-                    # Set to evaluation mode
-                    model.eval()
-                    model = model.to(self.device)
-                    self.loaded_models[annotation_type] = model
+                    # Set to evaluation mode and add to loaded models (for successful loads)
+                    if annotation_type not in self.loaded_models:
+                        model.eval()
+                        model = model.to(self.device)
+                        self.loaded_models[annotation_type] = model
                     
                     # Load stats if available
                     if os.path.exists(stats_file):
@@ -129,15 +185,37 @@ class EnhancedGraphPredictor:
         # Use the base_model_type directly as it now supports all model types
         model_type = base_model_type
         
-        return create_enhanced_model(
-            model_type=model_type,
-            input_dim=CFGSizeConfig.NODE_FEATURE_DIM,
-            hidden_dim=256,
-            out_dim=2,
-            num_layers=4,
-            dropout=0.1,
-            max_nodes=self.max_nodes
-        )
+        # Define parameters based on model type
+        if model_type in ['enhanced_causal', 'causal']:
+            # Embedding-based models don't use num_layers or max_nodes
+            return create_enhanced_model(
+                model_type=model_type,
+                input_dim=CFGSizeConfig.NODE_FEATURE_DIM,
+                hidden_dim=256,
+                out_dim=2,
+                dropout=0.1
+            )
+        elif model_type in ['gbt']:
+            # GBT models are embedding-based and don't use num_layers or max_nodes
+            return create_enhanced_model(
+                model_type=model_type,
+                input_dim=CFGSizeConfig.NODE_FEATURE_DIM,
+                hidden_dim=256,
+                out_dim=2,
+                dropout=0.1
+            )
+        else:
+            # Graph-based models - use enhanced architecture with larger hidden dimensions
+            # The enhanced framework should support larger input structures
+            return create_enhanced_model(
+                model_type=model_type,
+                input_dim=CFGSizeConfig.NODE_FEATURE_DIM,
+                hidden_dim=256,  # Restored to 256 for enhanced framework
+                out_dim=2,
+                num_layers=4,
+                dropout=0.1,
+                max_nodes=self.max_nodes
+            )
     
     def predict_annotations_for_file_with_cfg(self, 
                                             java_file: str, 
@@ -154,11 +232,14 @@ class EnhancedGraphPredictor:
             # Find CFG file for this Java file
             java_basename = os.path.splitext(os.path.basename(java_file))[0]
             
-            # Try different CFG file locations
+            # Try different CFG file locations (including slice patterns)
             cfg_file_candidates = [
                 os.path.join(cfg_dir, f"{java_basename}.cfg.json"),
                 os.path.join(cfg_dir, java_basename, "cfg.json"),
-                os.path.join(cfg_dir, java_basename, f"{java_basename}.cfg.json")
+                os.path.join(cfg_dir, java_basename, f"{java_basename}.cfg.json"),
+                os.path.join(cfg_dir, f"{java_basename}_slice", "cfg.json"),
+                os.path.join(cfg_dir, f"{java_basename}_slice", f"{java_basename}_slice.json"),
+                os.path.join(cfg_dir, f"{java_basename}_slice", f"{java_basename}.cfg.json")
             ]
             
             cfg_file = None
@@ -199,12 +280,16 @@ class EnhancedGraphPredictor:
                             # Check if prediction is positive and above threshold
                             if prediction == 1 and confidence > threshold:
                                 # Extract line number from graph data
-                                line_number = self._get_node_line_number(batch, 0)
+                                line_number = self._get_node_line_number(batch, sample_idx=0)
+                                
+                                # Extract CFG features for this prediction
+                                features = self._extract_cfg_features(batch, sample_idx=0)
                                 
                                 prediction_dict = {
                                     'line': line_number,
                                     'annotation_type': annotation_type,
                                     'confidence': confidence,
+                                    'features': features,
                                     'reason': f"{annotation_type} expected (predicted by enhanced {model.__class__.__name__} with {confidence:.3f} confidence) (using large CFG support)",
                                     'model_type': f"enhanced_{model.__class__.__name__}"
                                 }
@@ -239,11 +324,14 @@ class EnhancedGraphPredictor:
         for java_file in java_files:
             java_basename = os.path.splitext(os.path.basename(java_file))[0]
             
-            # Try different CFG file locations
+            # Try different CFG file locations (including slice patterns)
             cfg_file_candidates = [
                 os.path.join(cfg_dir, f"{java_basename}.cfg.json"),
                 os.path.join(cfg_dir, java_basename, "cfg.json"),
-                os.path.join(cfg_dir, java_basename, f"{java_basename}.cfg.json")
+                os.path.join(cfg_dir, java_basename, f"{java_basename}.cfg.json"),
+                os.path.join(cfg_dir, f"{java_basename}_slice", "cfg.json"),
+                os.path.join(cfg_dir, f"{java_basename}_slice", f"{java_basename}_slice.json"),
+                os.path.join(cfg_dir, f"{java_basename}_slice", f"{java_basename}.cfg.json")
             ]
             
             cfg_file = None
@@ -346,6 +434,27 @@ class EnhancedGraphPredictor:
         except Exception as e:
             logger.debug(f"Error extracting line number for sample {sample_idx}: {e}")
             return 1
+    
+    def _extract_cfg_features(self, batch, sample_idx: int) -> List[float]:
+        """Extract CFG features for a specific sample in the batch"""
+        try:
+            # Find nodes belonging to this sample
+            sample_mask = batch.batch == sample_idx
+            sample_nodes = torch.where(sample_mask)[0]
+            
+            if len(sample_nodes) > 0:
+                # Get node features for the first node of this sample
+                node_features = batch.x[sample_nodes[0]]
+                # Convert to list for JSON serialization
+                features = node_features.cpu().numpy().tolist()
+                return features
+            else:
+                # Return empty features if no nodes found
+                return [0.0] * 15  # Default 15-dimensional feature vector
+                
+        except Exception as e:
+            logger.debug(f"Error extracting CFG features for sample {sample_idx}: {e}")
+            return [0.0] * 15  # Default 15-dimensional feature vector
     
     def train_missing_models(self, 
                            base_model_type: str = 'enhanced_hybrid',

@@ -2,10 +2,53 @@
   "/home/ubuntu/GenDATA/case_studies/guava/futures/failureaccess/src/com/google/common/util/concurrent/internal/InternalFutures.java": [
     {
       "line": 1,
-      "annotation_type": "@NonNegative",
-      "confidence": 0.5075437426567078,
-      "reason": "@NonNegative expected (predicted by AnnotationTypeEnhancedCausalModel with 0.508 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeEnhancedCausalModel"
+      "annotation_type": "@GTENegativeOne",
+      "confidence": 0.5338717699050903,
+      "features": [
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        -0.7071067690849304,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "reason": "@GTENegativeOne expected (predicted by enhanced EnhancedEmbeddingHybridModel with 0.534 confidence) (using large CFG support)",
+      "model_type": "enhanced_EnhancedEmbeddingHybridModel"
+    }
+  ],
+  "/home/ubuntu/GenDATA/case_studies/guava/futures/failureaccess/src/com/google/common/util/concurrent/internal/InternalFutureFailureAccess.java": [
+    {
+      "line": 1,
+      "annotation_type": "@GTENegativeOne",
+      "confidence": 0.5338924527168274,
+      "features": [
+        1.0,
+        1.0,
+        0.0,
+        -0.7071067690849304,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "reason": "@GTENegativeOne expected (predicted by enhanced EnhancedEmbeddingHybridModel with 0.534 confidence) (using large CFG support)",
+      "model_type": "enhanced_EnhancedEmbeddingHybridModel"
     }
   ]
 }

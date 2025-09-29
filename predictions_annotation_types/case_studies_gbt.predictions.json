@@ -1,84 +1,54 @@
 {
-  "/home/ubuntu/GenDATA/case_studies/guava/futures/failureaccess/src/module-info.java": [
-    {
-      "line": 1,
-      "annotation_type": "@Positive",
-      "confidence": 0.5191014409065247,
-      "reason": "@Positive expected (predicted by AnnotationTypeGCNModel with 0.519 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeGCNModel"
-    },
-    {
-      "line": 1,
-      "annotation_type": "@GTENegativeOne",
-      "confidence": 0.5755813717842102,
-      "reason": "@GTENegativeOne expected (predicted by AnnotationTypeGCNModel with 0.576 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeGCNModel"
-    }
-  ],
   "/home/ubuntu/GenDATA/case_studies/guava/futures/failureaccess/src/com/google/common/util/concurrent/internal/InternalFutures.java": [
     {
       "line": 1,
       "annotation_type": "@GTENegativeOne",
-      "confidence": 0.5212422609329224,
-      "reason": "@GTENegativeOne expected (predicted by AnnotationTypeGCNModel with 0.521 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeGCNModel"
+      "confidence": 0.5702683925628662,
+      "features": [
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        -0.7071067690849304,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "reason": "@GTENegativeOne expected (predicted by enhanced EnhancedEmbeddingGBTModel with 0.570 confidence) (using large CFG support)",
+      "model_type": "enhanced_EnhancedEmbeddingGBTModel"
     }
   ],
   "/home/ubuntu/GenDATA/case_studies/guava/futures/failureaccess/src/com/google/common/util/concurrent/internal/InternalFutureFailureAccess.java": [
     {
       "line": 1,
       "annotation_type": "@GTENegativeOne",
-      "confidence": 0.5208409428596497,
-      "reason": "@GTENegativeOne expected (predicted by AnnotationTypeGCNModel with 0.521 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeGCNModel"
-    }
-  ],
-  "/home/ubuntu/GenDATA/case_studies/guava/guava/src/module-info.java": [
-    {
-      "line": 1,
-      "annotation_type": "@Positive",
-      "confidence": 0.5191014409065247,
-      "reason": "@Positive expected (predicted by AnnotationTypeGCNModel with 0.519 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeGCNModel"
-    },
-    {
-      "line": 1,
-      "annotation_type": "@GTENegativeOne",
-      "confidence": 0.5755813717842102,
-      "reason": "@GTENegativeOne expected (predicted by AnnotationTypeGCNModel with 0.576 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeGCNModel"
-    }
-  ],
-  "/home/ubuntu/GenDATA/case_studies/guava/guava-testlib/src/module-info.java": [
-    {
-      "line": 1,
-      "annotation_type": "@Positive",
-      "confidence": 0.5191014409065247,
-      "reason": "@Positive expected (predicted by AnnotationTypeGCNModel with 0.519 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeGCNModel"
-    },
-    {
-      "line": 1,
-      "annotation_type": "@GTENegativeOne",
-      "confidence": 0.5755813717842102,
-      "reason": "@GTENegativeOne expected (predicted by AnnotationTypeGCNModel with 0.576 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeGCNModel"
-    }
-  ],
-  "/home/ubuntu/GenDATA/case_studies/jfreechart/src/main/java/module-info.java": [
-    {
-      "line": 1,
-      "annotation_type": "@Positive",
-      "confidence": 0.5191014409065247,
-      "reason": "@Positive expected (predicted by AnnotationTypeGCNModel with 0.519 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeGCNModel"
-    },
-    {
-      "line": 1,
-      "annotation_type": "@GTENegativeOne",
-      "confidence": 0.5755813717842102,
-      "reason": "@GTENegativeOne expected (predicted by AnnotationTypeGCNModel with 0.576 confidence) (using CFG graph)",
-      "model_type": "AnnotationTypeGCNModel"
+      "confidence": 0.5702547430992126,
+      "features": [
+        1.0,
+        1.0,
+        0.0,
+        -0.7071067690849304,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "reason": "@GTENegativeOne expected (predicted by enhanced EnhancedEmbeddingGBTModel with 0.570 confidence) (using large CFG support)",
+      "model_type": "enhanced_EnhancedEmbeddingGBTModel"
     }
   ]
 }
