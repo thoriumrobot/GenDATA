@@ -1,0 +1,73 @@
+{
+  "method_name": "test6",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ArrayCreator(dimensions=[BinaryOperation(operandl=MemberReference(member=x, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=y, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=+)], initializer=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=BasicType(dimensions=None, name=int)), name=newArray)], modifiers=set(), type=BasicType(dimensions=[None], name=int))",
+      "line": 6,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"newArray\"), name=IndexFor)], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=x, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), name=i)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 8,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"newArray\"), name=IndexOrHigh)], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=y, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), name=j)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 10,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": []
+}

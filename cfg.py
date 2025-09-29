@@ -630,4 +630,21 @@ if __name__ == '__main__':
     print(f"Saving CFGs to: {out_dir}")
     
     save_cfgs(cfgs, out_dir)
+    # Ensure a canonical cfg.json exists for downstream consumers
+    try:
+        json_files = [f for f in os.listdir(out_dir) if f.endswith('.json')]
+        if json_files:
+            # Prefer a method named 'cfg' if exists; otherwise first json
+            preferred = 'cfg.json'
+            if 'cfg.json' not in json_files:
+                src = os.path.join(out_dir, json_files[0])
+                dst = os.path.join(out_dir, 'cfg.json')
+                # Copy contents into cfg.json
+                import shutil
+                shutil.copy2(src, dst)
+                print(f"Created canonical CFG file: {dst} (from {src})")
+        else:
+            print(f"WARNING: No method-level JSONs found in {out_dir}")
+    except Exception as e:
+        print(f"WARNING: Failed to ensure cfg.json in {out_dir}: {e}")
     print(f"CFG generation completed successfully!")

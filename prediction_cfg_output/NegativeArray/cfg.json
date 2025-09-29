@@ -1,0 +1,45 @@
+{
+  "method_name": "negativeArray",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ArrayCreator(dimensions=[MemberReference(member=len, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], initializer=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=BasicType(dimensions=None, name=int)), name=arr)], modifiers=set(), type=BasicType(dimensions=[None], name=int))",
+      "line": 6,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": []
+}

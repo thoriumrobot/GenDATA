@@ -1,0 +1,142 @@
+{
+  "method_name": "main",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ArrayCreator(dimensions=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=10)], initializer=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=BasicType(dimensions=None, name=char)), name=a)], modifiers=set(), type=BasicType(dimensions=[None], name=char))",
+      "line": 8,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "MethodInvocation(arguments=[MemberReference(member=a, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=5), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=4)], member=read, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 9,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "MethodInvocation(arguments=[MemberReference(member=a, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=5), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=5)], member=read, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 10,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "MethodInvocation(arguments=[MemberReference(member=a, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=5), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=6)], member=read, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 11,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "MethodInvocation(arguments=[MemberReference(member=a, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=5), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=7)], member=read, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 12,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "a"
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "variable": "a"
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "variable": "a"
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "variable": "a"
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "a"
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "variable": "a"
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "variable": "a"
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "variable": "a"
+    }
+  ]
+}

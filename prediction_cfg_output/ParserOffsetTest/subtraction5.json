@@ -1,0 +1,67 @@
+{
+  "method_name": "subtraction5",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(BinaryOperation(operandl=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operandr=MemberReference(member=i, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=-), operandr=MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=a, selectors=[]), operator=<))",
+      "line": 7,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"a\"), name=IndexFor)], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=i, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), name=j)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 9,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": []
+}

@@ -1,0 +1,67 @@
+{
+  "method_name": "useTryShiftIndex",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(MethodInvocation(arguments=[MemberReference(member=x, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=tryShiftIndex, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None))",
+      "line": 10,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "MethodInvocation(arguments=[MemberReference(member=array, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MemberReference(member=end, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), BinaryOperation(operandl=MemberReference(member=end, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=x, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=+), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null)], member=fill, postfix_operators=[], prefix_operators=[], qualifier=Arrays, selectors=[], type_arguments=None)",
+      "line": 11,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": []
+}

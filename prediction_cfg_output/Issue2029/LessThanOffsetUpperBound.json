@@ -1,0 +1,109 @@
+{
+  "method_name": "LessThanOffsetUpperBound",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=None, name=NonNegative)], declarators=[VariableDeclarator(dimensions=[], initializer=BinaryOperation(operandl=MemberReference(member=n, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=k, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=-), name=m)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 9,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ArrayCreator(dimensions=[MemberReference(member=size, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], initializer=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=BasicType(dimensions=None, name=int)), name=arr)], modifiers=set(), type=BasicType(dimensions=[None], name=int))",
+      "line": 10,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "For(BinaryOperation(operandl=MemberReference(member=index, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=BinaryOperation(operandl=MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=arr, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator=-), operator=<))",
+      "line": 11,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Assignment(expressionl=MemberReference(member=arr, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=MemberReference(member=index, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))]), type==, value=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=10))",
+      "line": 12,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "Update(MemberReference(member=index, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 11,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 1
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 4
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 1
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 4
+    }
+  ],
+  "dataflow_edges": []
+}

@@ -1,0 +1,132 @@
+{
+  "method_name": "test",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\";\")], member=indexOf, postfix_operators=[], prefix_operators=[], qualifier=arglist, selectors=[], type_arguments=None), name=semi_pos)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 6,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=semi_pos, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=['-'], qualifier=None, selectors=[], value=1), operator===))",
+      "line": 7,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Throw(ClassCreator(arguments=[BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"Malformed arglist: \"), operandr=MemberReference(member=arglist, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=+)], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=Error, sub_type=None)))",
+      "line": 8,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "MethodInvocation(arguments=[MemberReference(member=pos, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), BinaryOperation(operandl=MemberReference(member=semi_pos, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator=+)], member=substring, postfix_operators=[], prefix_operators=[], qualifier=arglist, selectors=[], type_arguments=None)",
+      "line": 10,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "MethodInvocation(arguments=[MemberReference(member=pos, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), BinaryOperation(operandl=MemberReference(member=semi_pos, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=2), operator=+)], member=substring, postfix_operators=[], prefix_operators=[], qualifier=arglist, selectors=[], type_arguments=None)",
+      "line": 11,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "variable": "semi_pos"
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "variable": "semi_pos"
+    }
+  ]
+}

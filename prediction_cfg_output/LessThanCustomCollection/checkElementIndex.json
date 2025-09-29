@@ -1,0 +1,65 @@
+{
+  "method_name": "checkElementIndex",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=index, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0), operator=<), operandr=BinaryOperation(operandl=MemberReference(member=index, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=size, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=>=), operator=||))",
+      "line": 15,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Throw(ClassCreator(arguments=[], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=IndexOutOfBoundsException, sub_type=None)))",
+      "line": 16,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Return(MemberReference(member=index, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 18,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    }
+  ],
+  "dataflow_edges": []
+}

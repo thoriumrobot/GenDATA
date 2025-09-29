@@ -1,0 +1,238 @@
+{
+  "method_name": "Index118",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "import org.checkerframework.checker.index.qual.*;",
+      "line": 1,
+      "node_type": "stmt"
+    },
+    {
+      "id": 1,
+      "label": "import org.checkerframework.common.value.qual.*;",
+      "line": 2,
+      "node_type": "stmt"
+    },
+    {
+      "id": 2,
+      "label": "",
+      "line": 3,
+      "node_type": "stmt"
+    },
+    {
+      "id": 3,
+      "label": "public class Index118 {",
+      "line": 4,
+      "node_type": "stmt"
+    },
+    {
+      "id": 4,
+      "label": "",
+      "line": 5,
+      "node_type": "stmt"
+    },
+    {
+      "id": 5,
+      "label": "public static void bar(@NonNegative int i, String @ArrayLen(4) [] args) {",
+      "line": 6,
+      "node_type": "stmt"
+    },
+    {
+      "id": 6,
+      "label": "if (i <= 3) {",
+      "line": 7,
+      "node_type": "stmt"
+    },
+    {
+      "id": 7,
+      "label": "System.out.println(args[i]);",
+      "line": 8,
+      "node_type": "stmt"
+    },
+    {
+      "id": 8,
+      "label": "}",
+      "line": 9,
+      "node_type": "stmt"
+    },
+    {
+      "id": 9,
+      "label": "}",
+      "line": 10,
+      "node_type": "stmt"
+    },
+    {
+      "id": 10,
+      "label": "}",
+      "line": 11,
+      "node_type": "stmt"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "import"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "org"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "qual"
+    },
+    {
+      "source": 1,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "variable": "public"
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "i"
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "variable": "args"
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "i"
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 10
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 1
+    },
+    {
+      "source": 1,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 10
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "import"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "org"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "qual"
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "variable": "public"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "i"
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "variable": "args"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "i"
+    }
+  ]
+}

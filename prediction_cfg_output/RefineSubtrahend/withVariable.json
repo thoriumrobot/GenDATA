@@ -1,0 +1,659 @@
+{
+  "method_name": "withVariable",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=a, selectors=[]), operandr=MemberReference(member=l, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=-), operandr=MemberReference(member=j, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=>))",
+      "line": 6,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=k, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=j, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=<=))",
+      "line": 17,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=a, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=BinaryOperation(operandl=MemberReference(member=l, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=k, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=+))]), name=x)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 18,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "If(BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=a, selectors=[]), operandr=MemberReference(member=j, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=-), operandr=MemberReference(member=l, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=>))",
+      "line": 11,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "If(BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=a, selectors=[]), operandr=MemberReference(member=j, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=-), operandr=MemberReference(member=l, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=>=))",
+      "line": 16,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=a, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=l, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=k, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=+), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator=-))]), name=x1)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 19,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 5
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 3,
+      "target": 6
+    },
+    {
+      "source": 3,
+      "target": 6
+    },
+    {
+      "source": 3,
+      "target": 6
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 6
+    },
+    {
+      "source": 4,
+      "target": 6
+    },
+    {
+      "source": 4,
+      "target": 6
+    },
+    {
+      "source": 4,
+      "target": 7
+    },
+    {
+      "source": 4,
+      "target": 7
+    },
+    {
+      "source": 4,
+      "target": 7
+    },
+    {
+      "source": 4,
+      "target": 7
+    },
+    {
+      "source": 4,
+      "target": 7
+    },
+    {
+      "source": 4,
+      "target": 7
+    },
+    {
+      "source": 4,
+      "target": 7
+    },
+    {
+      "source": 4,
+      "target": 7
+    },
+    {
+      "source": 4,
+      "target": 7
+    },
+    {
+      "source": 5,
+      "target": 3
+    },
+    {
+      "source": 5,
+      "target": 3
+    },
+    {
+      "source": 5,
+      "target": 3
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 3
+    },
+    {
+      "source": 6,
+      "target": 3
+    },
+    {
+      "source": 6,
+      "target": 3
+    },
+    {
+      "source": 6,
+      "target": 3
+    },
+    {
+      "source": 6,
+      "target": 3
+    },
+    {
+      "source": 6,
+      "target": 3
+    },
+    {
+      "source": 6,
+      "target": 3
+    },
+    {
+      "source": 6,
+      "target": 3
+    },
+    {
+      "source": 6,
+      "target": 3
+    },
+    {
+      "source": 6,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 5
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 3,
+      "target": 6
+    },
+    {
+      "source": 3,
+      "target": 6
+    },
+    {
+      "source": 3,
+      "target": 6
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 6
+    },
+    {
+      "source": 4,
+      "target": 6
+    },
+    {
+      "source": 4,
+      "target": 6
+    },
+    {
+      "source": 4,
+      "target": 7
+    },
+    {
+      "source": 4,
+      "target": 7
+    },
+    {
+      "source": 4,
+      "target": 7
+    },
+    {
+      "source": 4,
+      "target": 7
+    },
+    {
+      "source": 4,
+      "target": 7
+    },
+    {
+      "source": 4,
+      "target": 7
+    },
+    {
+      "source": 4,
+      "target": 7
+    },
+    {
+      "source": 4,
+      "target": 7
+    },
+    {
+      "source": 4,
+      "target": 7
+    },
+    {
+      "source": 5,
+      "target": 3
+    },
+    {
+      "source": 5,
+      "target": 3
+    },
+    {
+      "source": 5,
+      "target": 3
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 3
+    },
+    {
+      "source": 6,
+      "target": 3
+    },
+    {
+      "source": 6,
+      "target": 3
+    },
+    {
+      "source": 6,
+      "target": 3
+    },
+    {
+      "source": 6,
+      "target": 3
+    },
+    {
+      "source": 6,
+      "target": 3
+    },
+    {
+      "source": 6,
+      "target": 3
+    },
+    {
+      "source": 6,
+      "target": 3
+    },
+    {
+      "source": 6,
+      "target": 3
+    },
+    {
+      "source": 6,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": []
+}

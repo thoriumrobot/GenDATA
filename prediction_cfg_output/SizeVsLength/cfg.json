@@ -1,0 +1,112 @@
+{
+  "method_name": "getArray",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ArrayCreator(dimensions=[MemberReference(member=size, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], initializer=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=BasicType(dimensions=None, name=int)), name=values)], modifiers=set(), type=BasicType(dimensions=[None], name=int))",
+      "line": 6,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "For(BinaryOperation(operandl=MemberReference(member=i, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=size, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=<))",
+      "line": 7,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Assignment(expressionl=MemberReference(member=values, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=MemberReference(member=i, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))]), type==, value=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=22))",
+      "line": 8,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Update(MemberReference(member=i, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 7,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "Return(MemberReference(member=values, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 10,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 6
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "variable": "values"
+    },
+    {
+      "source": 5,
+      "target": 3
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 6
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 3
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 4,
+      "target": 6,
+      "variable": "values"
+    }
+  ]
+}

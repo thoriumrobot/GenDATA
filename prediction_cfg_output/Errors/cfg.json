@@ -1,0 +1,198 @@
+{
+  "method_name": "test",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ArrayCreator(dimensions=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=5)], initializer=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=BasicType(dimensions=None, name=int)), name=arr)], modifiers=set(), type=BasicType(dimensions=[None], name=int))",
+      "line": 9,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=None, name=GTENegativeOne)], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=['-'], qualifier=None, selectors=[], value=1), name=n1p)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 11,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=None, name=LowerBoundUnknown)], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=['-'], qualifier=None, selectors=[], value=10), name=u)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 13,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=None, name=NonNegative)], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0), name=nn)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 15,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=None, name=Positive)], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), name=p)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 17,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=arr, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=MemberReference(member=n1p, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))]), name=a)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 18,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=arr, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=MemberReference(member=u, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))]), name=b)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 19,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=arr, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=MemberReference(member=nn, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))]), name=c)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 20,
+      "node_type": "control"
+    },
+    {
+      "id": 10,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=arr, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=MemberReference(member=p, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))]), name=d)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 21,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 7,
+      "variable": "arr"
+    },
+    {
+      "source": 2,
+      "target": 8,
+      "variable": "arr"
+    },
+    {
+      "source": 2,
+      "target": 9,
+      "variable": "arr"
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "variable": "arr"
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 2,
+      "target": 7,
+      "variable": "arr"
+    },
+    {
+      "source": 2,
+      "target": 8,
+      "variable": "arr"
+    },
+    {
+      "source": 2,
+      "target": 9,
+      "variable": "arr"
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "variable": "arr"
+    }
+  ]
+}

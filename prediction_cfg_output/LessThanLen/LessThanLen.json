@@ -1,28 +1,28 @@
 {
-  "method_name": "UncheckedMinLen",
+  "method_name": "LessThanLen",
   "java_file": null,
   "nodes": [
     {
       "id": 0,
-      "label": "import org.checkerframework.checker.index.qual.NonNegative;",
+      "label": "import org.checkerframework.checker.index.qual.*;",
       "line": 1,
       "node_type": "stmt"
     },
     {
       "id": 1,
-      "label": "import org.checkerframework.checker.index.qual.Positive;",
+      "label": "import org.checkerframework.common.value.qual.MinLen;",
       "line": 2,
       "node_type": "stmt"
     },
     {
       "id": 2,
-      "label": "import org.checkerframework.common.value.qual.IntRange;",
+      "label": "",
       "line": 3,
       "node_type": "stmt"
     },
     {
       "id": 3,
-      "label": "import org.checkerframework.common.value.qual.MinLen;",
+      "label": "public class LessThanLen {",
       "line": 4,
       "node_type": "stmt"
     },
@@ -34,37 +34,37 @@
     },
     {
       "id": 5,
-      "label": "public class UncheckedMinLen {",
+      "label": "public static void m4(int @MinLen(1) [] shorter) {",
       "line": 6,
       "node_type": "stmt"
     },
     {
       "id": 6,
-      "label": "",
+      "label": "int[] longer = new int[shorter.length * 1];",
       "line": 7,
       "node_type": "stmt"
     },
     {
       "id": 7,
-      "label": "void addToBoundedIntRangeOK(@IntRange(from = 0, to = 1) int l, Object v) {",
+      "label": "@LTLengthOf(\"longer\")",
       "line": 8,
       "node_type": "stmt"
     },
     {
       "id": 8,
-      "label": "Object @MinLen(100) [] o = new Object[l + 1];",
+      "label": "int x = shorter.length;",
       "line": 9,
       "node_type": "stmt"
     },
     {
       "id": 9,
-      "label": "o[99] = v;",
+      "label": "@LTEqLengthOf(\"longer\")",
       "line": 10,
       "node_type": "stmt"
     },
     {
       "id": 10,
-      "label": "}",
+      "label": "int y = shorter.length;",
       "line": 11,
       "node_type": "stmt"
     },
@@ -72,6 +72,12 @@
       "id": 11,
       "label": "}",
       "line": 12,
+      "node_type": "stmt"
+    },
+    {
+      "id": 12,
+      "label": "}",
+      "line": 13,
       "node_type": "stmt"
     }
   ],
@@ -98,16 +104,6 @@
     {
       "source": 0,
       "target": 1,
-      "variable": "checker"
-    },
-    {
-      "source": 0,
-      "target": 1,
-      "variable": "index"
-    },
-    {
-      "source": 0,
-      "target": 1,
       "variable": "qual"
     },
     {
@@ -116,62 +112,12 @@
     },
     {
       "source": 1,
-      "target": 2,
-      "variable": "import"
-    },
-    {
-      "source": 1,
-      "target": 2,
-      "variable": "org"
-    },
-    {
-      "source": 1,
-      "target": 2,
-      "variable": "checkerframework"
-    },
-    {
-      "source": 1,
-      "target": 2,
-      "variable": "qual"
+      "target": 5,
+      "variable": "MinLen"
     },
     {
       "source": 2,
       "target": 3
-    },
-    {
-      "source": 2,
-      "target": 3,
-      "variable": "import"
-    },
-    {
-      "source": 2,
-      "target": 3,
-      "variable": "org"
-    },
-    {
-      "source": 2,
-      "target": 3,
-      "variable": "checkerframework"
-    },
-    {
-      "source": 2,
-      "target": 3,
-      "variable": "common"
-    },
-    {
-      "source": 2,
-      "target": 3,
-      "variable": "value"
-    },
-    {
-      "source": 2,
-      "target": 3,
-      "variable": "qual"
-    },
-    {
-      "source": 2,
-      "target": 7,
-      "variable": "IntRange"
     },
     {
       "source": 3,
@@ -179,8 +125,8 @@
     },
     {
       "source": 3,
-      "target": 8,
-      "variable": "MinLen"
+      "target": 5,
+      "variable": "public"
     },
     {
       "source": 4,
@@ -191,8 +137,38 @@
       "target": 6
     },
     {
+      "source": 5,
+      "target": 6,
+      "variable": "int"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "shorter"
+    },
+    {
       "source": 6,
       "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "longer"
+    },
+    {
+      "source": 6,
+      "target": 8,
+      "variable": "int"
+    },
+    {
+      "source": 6,
+      "target": 8,
+      "variable": "shorter"
+    },
+    {
+      "source": 6,
+      "target": 8,
+      "variable": "length"
     },
     {
       "source": 7,
@@ -200,18 +176,8 @@
     },
     {
       "source": 7,
-      "target": 8,
-      "variable": "Object"
-    },
-    {
-      "source": 7,
-      "target": 8,
-      "variable": "l"
-    },
-    {
-      "source": 7,
       "target": 9,
-      "variable": "v"
+      "variable": "longer"
     },
     {
       "source": 8,
@@ -219,8 +185,18 @@
     },
     {
       "source": 8,
-      "target": 9,
-      "variable": "o"
+      "target": 10,
+      "variable": "int"
+    },
+    {
+      "source": 8,
+      "target": 10,
+      "variable": "shorter"
+    },
+    {
+      "source": 8,
+      "target": 10,
+      "variable": "length"
     },
     {
       "source": 9,
@@ -229,6 +205,10 @@
     {
       "source": 10,
       "target": 11
+    },
+    {
+      "source": 11,
+      "target": 12
     }
   ],
   "control_edges": [
@@ -275,6 +255,10 @@
     {
       "source": 10,
       "target": 11
+    },
+    {
+      "source": 11,
+      "target": 12
     }
   ],
   "dataflow_edges": [
@@ -296,97 +280,67 @@
     {
       "source": 0,
       "target": 1,
-      "variable": "checker"
-    },
-    {
-      "source": 0,
-      "target": 1,
-      "variable": "index"
-    },
-    {
-      "source": 0,
-      "target": 1,
       "variable": "qual"
     },
     {
       "source": 1,
-      "target": 2,
-      "variable": "import"
-    },
-    {
-      "source": 1,
-      "target": 2,
-      "variable": "org"
-    },
-    {
-      "source": 1,
-      "target": 2,
-      "variable": "checkerframework"
-    },
-    {
-      "source": 1,
-      "target": 2,
-      "variable": "qual"
-    },
-    {
-      "source": 2,
-      "target": 3,
-      "variable": "import"
-    },
-    {
-      "source": 2,
-      "target": 3,
-      "variable": "org"
-    },
-    {
-      "source": 2,
-      "target": 3,
-      "variable": "checkerframework"
-    },
-    {
-      "source": 2,
-      "target": 3,
-      "variable": "common"
-    },
-    {
-      "source": 2,
-      "target": 3,
-      "variable": "value"
-    },
-    {
-      "source": 2,
-      "target": 3,
-      "variable": "qual"
-    },
-    {
-      "source": 2,
-      "target": 7,
-      "variable": "IntRange"
-    },
-    {
-      "source": 3,
-      "target": 8,
+      "target": 5,
       "variable": "MinLen"
     },
     {
-      "source": 7,
-      "target": 8,
-      "variable": "Object"
+      "source": 3,
+      "target": 5,
+      "variable": "public"
     },
     {
-      "source": 7,
+      "source": 5,
+      "target": 6,
+      "variable": "int"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "shorter"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "longer"
+    },
+    {
+      "source": 6,
       "target": 8,
-      "variable": "l"
+      "variable": "int"
+    },
+    {
+      "source": 6,
+      "target": 8,
+      "variable": "shorter"
+    },
+    {
+      "source": 6,
+      "target": 8,
+      "variable": "length"
     },
     {
       "source": 7,
       "target": 9,
-      "variable": "v"
+      "variable": "longer"
     },
     {
       "source": 8,
-      "target": 9,
-      "variable": "o"
+      "target": 10,
+      "variable": "int"
+    },
+    {
+      "source": 8,
+      "target": 10,
+      "variable": "shorter"
+    },
+    {
+      "source": 8,
+      "target": 10,
+      "variable": "length"
     }
   ]
 }

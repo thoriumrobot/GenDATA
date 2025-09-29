@@ -1,0 +1,45 @@
+{
+  "method_name": "binomial_1Error",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=[ElementValuePair(name=value, value=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"factorials\")), ElementValuePair(name=offset, value=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"3\"))], name=LTLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=k, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), name=i)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 8,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": []
+}

@@ -1,0 +1,184 @@
+{
+  "method_name": "LessThanTransferTest",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "import org.checkerframework.common.value.qual.MinLen;",
+      "line": 1,
+      "node_type": "stmt"
+    },
+    {
+      "id": 1,
+      "label": "",
+      "line": 2,
+      "node_type": "stmt"
+    },
+    {
+      "id": 2,
+      "label": "public class LessThanTransferTest {",
+      "line": 3,
+      "node_type": "stmt"
+    },
+    {
+      "id": 3,
+      "label": "",
+      "line": 4,
+      "node_type": "stmt"
+    },
+    {
+      "id": 4,
+      "label": "void lt_bad_check(int[] a) {",
+      "line": 5,
+      "node_type": "stmt"
+    },
+    {
+      "id": 5,
+      "label": "if (0 < a.length) {",
+      "line": 6,
+      "node_type": "stmt"
+    },
+    {
+      "id": 6,
+      "label": "int @MinLen(2) [] b = a;",
+      "line": 7,
+      "node_type": "stmt"
+    },
+    {
+      "id": 7,
+      "label": "}",
+      "line": 8,
+      "node_type": "stmt"
+    },
+    {
+      "id": 8,
+      "label": "}",
+      "line": 9,
+      "node_type": "stmt"
+    },
+    {
+      "id": 9,
+      "label": "}",
+      "line": 10,
+      "node_type": "stmt"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "variable": "MinLen"
+    },
+    {
+      "source": 1,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "a"
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "variable": "int"
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "a"
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 1
+    },
+    {
+      "source": 1,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 0,
+      "target": 6,
+      "variable": "MinLen"
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "a"
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "variable": "int"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "a"
+    }
+  ]
+}

@@ -1,0 +1,330 @@
+{
+  "method_name": "EnumValues",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "import org.checkerframework.common.value.qual.*;",
+      "line": 1,
+      "node_type": "stmt"
+    },
+    {
+      "id": 1,
+      "label": "",
+      "line": 2,
+      "node_type": "stmt"
+    },
+    {
+      "id": 2,
+      "label": "public class EnumValues {",
+      "line": 3,
+      "node_type": "stmt"
+    },
+    {
+      "id": 3,
+      "label": "",
+      "line": 4,
+      "node_type": "stmt"
+    },
+    {
+      "id": 4,
+      "label": "public static void enumValues() {",
+      "line": 5,
+      "node_type": "stmt"
+    },
+    {
+      "id": 5,
+      "label": "Direction @ArrayLen(4) [] arr4 = Direction.values();",
+      "line": 6,
+      "node_type": "stmt"
+    },
+    {
+      "id": 6,
+      "label": "Direction[] arr = Direction.values();",
+      "line": 7,
+      "node_type": "stmt"
+    },
+    {
+      "id": 7,
+      "label": "Direction a = arr[0];",
+      "line": 8,
+      "node_type": "stmt"
+    },
+    {
+      "id": 8,
+      "label": "Direction b = arr[1];",
+      "line": 9,
+      "node_type": "stmt"
+    },
+    {
+      "id": 9,
+      "label": "Direction c = arr[2];",
+      "line": 10,
+      "node_type": "stmt"
+    },
+    {
+      "id": 10,
+      "label": "Direction d = arr[3];",
+      "line": 11,
+      "node_type": "stmt"
+    },
+    {
+      "id": 11,
+      "label": "Direction e = arr[4];",
+      "line": 12,
+      "node_type": "stmt"
+    },
+    {
+      "id": 12,
+      "label": "}",
+      "line": 13,
+      "node_type": "stmt"
+    },
+    {
+      "id": 13,
+      "label": "}",
+      "line": 14,
+      "node_type": "stmt"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1
+    },
+    {
+      "source": 1,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "variable": "public"
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "Direction"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "values"
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "Direction"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "arr"
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "variable": "Direction"
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "variable": "arr"
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "variable": "Direction"
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "variable": "arr"
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 9,
+      "target": 10,
+      "variable": "Direction"
+    },
+    {
+      "source": 9,
+      "target": 10,
+      "variable": "arr"
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 10,
+      "target": 11,
+      "variable": "Direction"
+    },
+    {
+      "source": 10,
+      "target": 11,
+      "variable": "arr"
+    },
+    {
+      "source": 11,
+      "target": 12
+    },
+    {
+      "source": 12,
+      "target": 13
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 1
+    },
+    {
+      "source": 1,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 11,
+      "target": 12
+    },
+    {
+      "source": 12,
+      "target": 13
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 2,
+      "target": 4,
+      "variable": "public"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "Direction"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "values"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "Direction"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "arr"
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "variable": "Direction"
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "variable": "arr"
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "variable": "Direction"
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "variable": "arr"
+    },
+    {
+      "source": 9,
+      "target": 10,
+      "variable": "Direction"
+    },
+    {
+      "source": 9,
+      "target": 10,
+      "variable": "arr"
+    },
+    {
+      "source": 10,
+      "target": 11,
+      "variable": "Direction"
+    },
+    {
+      "source": 10,
+      "target": 11,
+      "variable": "arr"
+    }
+  ]
+}

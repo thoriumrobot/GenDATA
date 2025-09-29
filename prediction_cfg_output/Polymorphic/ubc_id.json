@@ -1,0 +1,157 @@
+{
+  "method_name": "ubc_id",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=None, name=c)], modifiers=set(), type=BasicType(dimensions=[None], name=int))",
+      "line": 14,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"a\"), name=LTLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=ai, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=ubc_identity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), name=ai1)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 16,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"b\"), name=LTLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=ai, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=ubc_identity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), name=ai2)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 18,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"a\"), name=LTEqLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=al, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=ubc_identity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), name=al1)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 20,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"a\"), name=LTLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=al, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=ubc_identity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), name=al2)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 22,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=ElementArrayValue(values=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"a\"), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"b\")]), name=LTLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=abi, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=ubc_identity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), name=abi1)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 24,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=ElementArrayValue(values=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"a\"), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"b\"), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"c\")]), name=LTLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=abi, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=ubc_identity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), name=abi2)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 26,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=ElementArrayValue(values=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"a\"), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"b\")]), name=LTEqLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=abl, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=ubc_identity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), name=abl1)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 28,
+      "node_type": "control"
+    },
+    {
+      "id": 10,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=ElementArrayValue(values=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"a\"), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"b\"), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"c\")]), name=LTEqLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=abl, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=ubc_identity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), name=abl2)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 30,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": []
+}

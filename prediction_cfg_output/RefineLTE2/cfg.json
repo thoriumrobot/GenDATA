@@ -1,0 +1,109 @@
+{
+  "method_name": "add",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=num_values, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=values, selectors=[]), operator===))",
+      "line": 7,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Assignment(expressionl=MemberReference(member=values, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null))",
+      "line": 8,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "MemberReference(member=num_values, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[])",
+      "line": 13,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Return(None)",
+      "line": 10,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "Assignment(expressionl=MemberReference(member=values, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=MemberReference(member=num_values, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))]), type==, value=MemberReference(member=elt, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 12,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 6
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 4
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 6
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 4
+    }
+  ],
+  "dataflow_edges": []
+}

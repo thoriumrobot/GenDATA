@@ -1,0 +1,846 @@
+{
+  "method_name": "Polymorphic",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "import org.checkerframework.checker.index.qual.GTENegativeOne;",
+      "line": 1,
+      "node_type": "stmt"
+    },
+    {
+      "id": 1,
+      "label": "import org.checkerframework.checker.index.qual.LTEqLengthOf;",
+      "line": 2,
+      "node_type": "stmt"
+    },
+    {
+      "id": 2,
+      "label": "import org.checkerframework.checker.index.qual.LTLengthOf;",
+      "line": 3,
+      "node_type": "stmt"
+    },
+    {
+      "id": 3,
+      "label": "import org.checkerframework.checker.index.qual.NonNegative;",
+      "line": 4,
+      "node_type": "stmt"
+    },
+    {
+      "id": 4,
+      "label": "import org.checkerframework.checker.index.qual.PolyLowerBound;",
+      "line": 5,
+      "node_type": "stmt"
+    },
+    {
+      "id": 5,
+      "label": "import org.checkerframework.checker.index.qual.PolySameLen;",
+      "line": 6,
+      "node_type": "stmt"
+    },
+    {
+      "id": 6,
+      "label": "import org.checkerframework.checker.index.qual.PolyUpperBound;",
+      "line": 7,
+      "node_type": "stmt"
+    },
+    {
+      "id": 7,
+      "label": "import org.checkerframework.checker.index.qual.Positive;",
+      "line": 8,
+      "node_type": "stmt"
+    },
+    {
+      "id": 8,
+      "label": "import org.checkerframework.checker.index.qual.SameLen;",
+      "line": 9,
+      "node_type": "stmt"
+    },
+    {
+      "id": 9,
+      "label": "",
+      "line": 10,
+      "node_type": "stmt"
+    },
+    {
+      "id": 10,
+      "label": "public class Polymorphic {",
+      "line": 11,
+      "node_type": "stmt"
+    },
+    {
+      "id": 11,
+      "label": "",
+      "line": 12,
+      "node_type": "stmt"
+    },
+    {
+      "id": 12,
+      "label": "void samelen_id(int @SameLen(\"#2\") [] a, int[] a2) {",
+      "line": 13,
+      "node_type": "stmt"
+    },
+    {
+      "id": 13,
+      "label": "int[] banana;",
+      "line": 14,
+      "node_type": "stmt"
+    },
+    {
+      "id": 14,
+      "label": "int @SameLen(\"a2\") [] b = samelen_identity(a);",
+      "line": 15,
+      "node_type": "stmt"
+    },
+    {
+      "id": 15,
+      "label": "int @SameLen(\"banana\") [] c = samelen_identity(b);",
+      "line": 16,
+      "node_type": "stmt"
+    },
+    {
+      "id": 16,
+      "label": "}",
+      "line": 17,
+      "node_type": "stmt"
+    },
+    {
+      "id": 17,
+      "label": "}",
+      "line": 18,
+      "node_type": "stmt"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "import"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "org"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "checker"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "index"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "qual"
+    },
+    {
+      "source": 1,
+      "target": 2
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "variable": "import"
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "variable": "org"
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "variable": "checker"
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "variable": "index"
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "variable": "qual"
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "import"
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "org"
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "checker"
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "index"
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "qual"
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "import"
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "org"
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "checker"
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "index"
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "qual"
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "import"
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "org"
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "checker"
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "index"
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "qual"
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "import"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "org"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "checker"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "index"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "qual"
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "import"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "org"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "checker"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "index"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "qual"
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "variable": "import"
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "variable": "org"
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "variable": "checker"
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "variable": "index"
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "variable": "qual"
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "variable": "SameLen"
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 11,
+      "target": 12
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 13,
+      "variable": "int"
+    },
+    {
+      "source": 12,
+      "target": 14,
+      "variable": "SameLen"
+    },
+    {
+      "source": 12,
+      "target": 14,
+      "variable": "a2"
+    },
+    {
+      "source": 12,
+      "target": 14,
+      "variable": "a"
+    },
+    {
+      "source": 13,
+      "target": 14
+    },
+    {
+      "source": 13,
+      "target": 14,
+      "variable": "int"
+    },
+    {
+      "source": 13,
+      "target": 15,
+      "variable": "banana"
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 14,
+      "target": 15,
+      "variable": "int"
+    },
+    {
+      "source": 14,
+      "target": 15,
+      "variable": "SameLen"
+    },
+    {
+      "source": 14,
+      "target": 15,
+      "variable": "samelen_identity"
+    },
+    {
+      "source": 14,
+      "target": 15,
+      "variable": "b"
+    },
+    {
+      "source": 15,
+      "target": 16
+    },
+    {
+      "source": 16,
+      "target": 17
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 1
+    },
+    {
+      "source": 1,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 11,
+      "target": 12
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 13,
+      "target": 14
+    },
+    {
+      "source": 14,
+      "target": 15
+    },
+    {
+      "source": 15,
+      "target": 16
+    },
+    {
+      "source": 16,
+      "target": 17
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "import"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "org"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "checker"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "index"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "qual"
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "variable": "import"
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "variable": "org"
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "variable": "checker"
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "variable": "index"
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "variable": "qual"
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "import"
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "org"
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "checker"
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "index"
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "variable": "qual"
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "import"
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "org"
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "checker"
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "index"
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "qual"
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "import"
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "org"
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "checker"
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "index"
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "qual"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "import"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "org"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "checker"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "index"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "qual"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "import"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "org"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "checker"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "index"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "qual"
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "variable": "import"
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "variable": "org"
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "variable": "checker"
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "variable": "index"
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "variable": "qual"
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "variable": "SameLen"
+    },
+    {
+      "source": 12,
+      "target": 13,
+      "variable": "int"
+    },
+    {
+      "source": 12,
+      "target": 14,
+      "variable": "SameLen"
+    },
+    {
+      "source": 12,
+      "target": 14,
+      "variable": "a2"
+    },
+    {
+      "source": 12,
+      "target": 14,
+      "variable": "a"
+    },
+    {
+      "source": 13,
+      "target": 14,
+      "variable": "int"
+    },
+    {
+      "source": 13,
+      "target": 15,
+      "variable": "banana"
+    },
+    {
+      "source": 14,
+      "target": 15,
+      "variable": "int"
+    },
+    {
+      "source": 14,
+      "target": 15,
+      "variable": "SameLen"
+    },
+    {
+      "source": 14,
+      "target": 15,
+      "variable": "samelen_identity"
+    },
+    {
+      "source": 14,
+      "target": 15,
+      "variable": "b"
+    }
+  ]
+}

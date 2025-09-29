@@ -1,16 +1,16 @@
 {
-  "method_name": "LubIndex",
+  "method_name": "MinLenFromPositive",
   "java_file": null,
   "nodes": [
     {
       "id": 0,
-      "label": "import org.checkerframework.common.value.qual.BottomVal;",
+      "label": "import org.checkerframework.checker.index.qual.Positive;",
       "line": 1,
       "node_type": "stmt"
     },
     {
       "id": 1,
-      "label": "import org.checkerframework.common.value.qual.MinLen;",
+      "label": "import org.checkerframework.common.value.qual.*;",
       "line": 2,
       "node_type": "stmt"
     },
@@ -22,7 +22,7 @@
     },
     {
       "id": 3,
-      "label": "public class LubIndex {",
+      "label": "public class MinLenFromPositive {",
       "line": 4,
       "node_type": "stmt"
     },
@@ -34,37 +34,37 @@
     },
     {
       "id": 5,
-      "label": "public static void Bottom(int @BottomVal [] arg, int @MinLen(4) [] arg2) {",
+      "label": "void test(@Positive int x) {",
       "line": 6,
       "node_type": "stmt"
     },
     {
       "id": 6,
-      "label": "int[] arr;",
+      "label": "int @MinLen(1) [] y = new int[x];",
       "line": 7,
       "node_type": "stmt"
     },
     {
       "id": 7,
-      "label": "if (true) {",
+      "label": "@IntRange(from = 1)",
       "line": 8,
       "node_type": "stmt"
     },
     {
       "id": 8,
-      "label": "arr = arg;",
+      "label": "int z = x;",
       "line": 9,
       "node_type": "stmt"
     },
     {
       "id": 9,
-      "label": "} else {",
+      "label": "@Positive",
       "line": 10,
       "node_type": "stmt"
     },
     {
       "id": 10,
-      "label": "arr = arg2;",
+      "label": "int q = x;",
       "line": 11,
       "node_type": "stmt"
     },
@@ -76,32 +76,8 @@
     },
     {
       "id": 12,
-      "label": "int @MinLen(10) [] res = arr;",
+      "label": "}",
       "line": 13,
-      "node_type": "stmt"
-    },
-    {
-      "id": 13,
-      "label": "int @MinLen(4) [] res2 = arr;",
-      "line": 14,
-      "node_type": "stmt"
-    },
-    {
-      "id": 14,
-      "label": "int @BottomVal [] res3 = arr;",
-      "line": 15,
-      "node_type": "stmt"
-    },
-    {
-      "id": 15,
-      "label": "}",
-      "line": 16,
-      "node_type": "stmt"
-    },
-    {
-      "id": 16,
-      "label": "}",
-      "line": 17,
       "node_type": "stmt"
     }
   ],
@@ -128,31 +104,16 @@
     {
       "source": 0,
       "target": 1,
-      "variable": "common"
-    },
-    {
-      "source": 0,
-      "target": 1,
-      "variable": "value"
-    },
-    {
-      "source": 0,
-      "target": 1,
       "variable": "qual"
     },
     {
       "source": 0,
       "target": 5,
-      "variable": "BottomVal"
+      "variable": "Positive"
     },
     {
       "source": 1,
       "target": 2
-    },
-    {
-      "source": 1,
-      "target": 5,
-      "variable": "MinLen"
     },
     {
       "source": 2,
@@ -161,11 +122,6 @@
     {
       "source": 3,
       "target": 4
-    },
-    {
-      "source": 3,
-      "target": 5,
-      "variable": "public"
     },
     {
       "source": 4,
@@ -182,23 +138,13 @@
     },
     {
       "source": 5,
-      "target": 8,
-      "variable": "arg"
+      "target": 6,
+      "variable": "x"
     },
     {
       "source": 5,
-      "target": 10,
-      "variable": "arg2"
-    },
-    {
-      "source": 5,
-      "target": 12,
-      "variable": "MinLen"
-    },
-    {
-      "source": 5,
-      "target": 14,
-      "variable": "BottomVal"
+      "target": 9,
+      "variable": "Positive"
     },
     {
       "source": 6,
@@ -207,12 +153,12 @@
     {
       "source": 6,
       "target": 8,
-      "variable": "arr"
+      "variable": "int"
     },
     {
       "source": 6,
-      "target": 12,
-      "variable": "int"
+      "target": 8,
+      "variable": "x"
     },
     {
       "source": 7,
@@ -225,7 +171,12 @@
     {
       "source": 8,
       "target": 10,
-      "variable": "arr"
+      "variable": "int"
+    },
+    {
+      "source": 8,
+      "target": 10,
+      "variable": "x"
     },
     {
       "source": 9,
@@ -236,54 +187,8 @@
       "target": 11
     },
     {
-      "source": 10,
-      "target": 12,
-      "variable": "arr"
-    },
-    {
       "source": 11,
       "target": 12
-    },
-    {
-      "source": 12,
-      "target": 13
-    },
-    {
-      "source": 12,
-      "target": 13,
-      "variable": "int"
-    },
-    {
-      "source": 12,
-      "target": 13,
-      "variable": "MinLen"
-    },
-    {
-      "source": 12,
-      "target": 13,
-      "variable": "arr"
-    },
-    {
-      "source": 13,
-      "target": 14
-    },
-    {
-      "source": 13,
-      "target": 14,
-      "variable": "int"
-    },
-    {
-      "source": 13,
-      "target": 14,
-      "variable": "arr"
-    },
-    {
-      "source": 14,
-      "target": 15
-    },
-    {
-      "source": 15,
-      "target": 16
     }
   ],
   "control_edges": [
@@ -334,22 +239,6 @@
     {
       "source": 11,
       "target": 12
-    },
-    {
-      "source": 12,
-      "target": 13
-    },
-    {
-      "source": 13,
-      "target": 14
-    },
-    {
-      "source": 14,
-      "target": 15
-    },
-    {
-      "source": 15,
-      "target": 16
     }
   ],
   "dataflow_edges": [
@@ -371,32 +260,12 @@
     {
       "source": 0,
       "target": 1,
-      "variable": "common"
-    },
-    {
-      "source": 0,
-      "target": 1,
-      "variable": "value"
-    },
-    {
-      "source": 0,
-      "target": 1,
       "variable": "qual"
     },
     {
       "source": 0,
       "target": 5,
-      "variable": "BottomVal"
-    },
-    {
-      "source": 1,
-      "target": 5,
-      "variable": "MinLen"
-    },
-    {
-      "source": 3,
-      "target": 5,
-      "variable": "public"
+      "variable": "Positive"
     },
     {
       "source": 5,
@@ -405,68 +274,33 @@
     },
     {
       "source": 5,
-      "target": 8,
-      "variable": "arg"
+      "target": 6,
+      "variable": "x"
     },
     {
       "source": 5,
+      "target": 9,
+      "variable": "Positive"
+    },
+    {
+      "source": 6,
+      "target": 8,
+      "variable": "int"
+    },
+    {
+      "source": 6,
+      "target": 8,
+      "variable": "x"
+    },
+    {
+      "source": 8,
       "target": 10,
-      "variable": "arg2"
-    },
-    {
-      "source": 5,
-      "target": 12,
-      "variable": "MinLen"
-    },
-    {
-      "source": 5,
-      "target": 14,
-      "variable": "BottomVal"
-    },
-    {
-      "source": 6,
-      "target": 8,
-      "variable": "arr"
-    },
-    {
-      "source": 6,
-      "target": 12,
       "variable": "int"
     },
     {
       "source": 8,
       "target": 10,
-      "variable": "arr"
-    },
-    {
-      "source": 10,
-      "target": 12,
-      "variable": "arr"
-    },
-    {
-      "source": 12,
-      "target": 13,
-      "variable": "int"
-    },
-    {
-      "source": 12,
-      "target": 13,
-      "variable": "MinLen"
-    },
-    {
-      "source": 12,
-      "target": 13,
-      "variable": "arr"
-    },
-    {
-      "source": 13,
-      "target": 14,
-      "variable": "int"
-    },
-    {
-      "source": 13,
-      "target": 14,
-      "variable": "arr"
+      "variable": "x"
     }
   ]
 }

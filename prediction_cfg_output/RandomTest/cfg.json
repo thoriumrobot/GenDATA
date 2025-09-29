@@ -1,0 +1,101 @@
+{
+  "method_name": "test",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ClassCreator(arguments=[], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=Random, sub_type=None)), name=rand)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=Random, sub_type=None))",
+      "line": 7,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ArrayCreator(dimensions=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=8)], initializer=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=BasicType(dimensions=None, name=int)), name=a)], modifiers=set(), type=BasicType(dimensions=[None], name=int))",
+      "line": 8,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"a\"), name=LTLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=Cast(expression=BinaryOperation(operandl=MethodInvocation(arguments=[], member=random, postfix_operators=[], prefix_operators=[], qualifier=Math, selectors=[], type_arguments=None), operandr=MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=a, selectors=[]), operator=*), type=BasicType(dimensions=[], name=int)), name=deref)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 10,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"a\"), name=LTLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=Cast(expression=BinaryOperation(operandl=MethodInvocation(arguments=[], member=nextDouble, postfix_operators=[], prefix_operators=[], qualifier=rand, selectors=[], type_arguments=None), operandr=MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=a, selectors=[]), operator=*), type=BasicType(dimensions=[], name=int)), name=deref2)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 12,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"a\"), name=LTLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=a, selectors=[])], member=nextInt, postfix_operators=[], prefix_operators=[], qualifier=rand, selectors=[], type_arguments=None), name=deref3)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 14,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": []
+}

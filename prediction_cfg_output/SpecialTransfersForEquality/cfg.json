@@ -1,0 +1,138 @@
+{
+  "method_name": "gteN1Test",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ArrayCreator(dimensions=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=10)], initializer=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=BasicType(dimensions=None, name=int)), name=arr)], modifiers=set(), type=BasicType(dimensions=[None], name=int))",
+      "line": 8,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "If(BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=['-'], qualifier=None, selectors=[], value=1), operandr=MemberReference(member=y, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=!=))",
+      "line": 9,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=None, name=NonNegative)], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=y, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), name=z)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 11,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=z, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=10), operator=<))",
+      "line": 12,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=arr, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=MemberReference(member=z, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))]), name=k)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 13,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "variable": "arr"
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "z"
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 1
+    },
+    {
+      "source": 6,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 2,
+      "target": 6,
+      "variable": "arr"
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "variable": "z"
+    }
+  ]
+}

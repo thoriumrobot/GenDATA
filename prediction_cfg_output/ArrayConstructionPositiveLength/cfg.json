@@ -1,0 +1,190 @@
+{
+  "method_name": "ArrayConstructionPositiveLength",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "import org.checkerframework.checker.index.qual.*;",
+      "line": 1,
+      "node_type": "stmt"
+    },
+    {
+      "id": 1,
+      "label": "import org.checkerframework.common.value.qual.*;",
+      "line": 2,
+      "node_type": "stmt"
+    },
+    {
+      "id": 2,
+      "label": "",
+      "line": 3,
+      "node_type": "stmt"
+    },
+    {
+      "id": 3,
+      "label": "public class ArrayConstructionPositiveLength {",
+      "line": 4,
+      "node_type": "stmt"
+    },
+    {
+      "id": 4,
+      "label": "",
+      "line": 5,
+      "node_type": "stmt"
+    },
+    {
+      "id": 5,
+      "label": "public void makeArray(@Positive int max_values) {",
+      "line": 6,
+      "node_type": "stmt"
+    },
+    {
+      "id": 6,
+      "label": "String @MinLen(1) [] a = new String[max_values];",
+      "line": 7,
+      "node_type": "stmt"
+    },
+    {
+      "id": 7,
+      "label": "}",
+      "line": 8,
+      "node_type": "stmt"
+    },
+    {
+      "id": 8,
+      "label": "}",
+      "line": 9,
+      "node_type": "stmt"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "import"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "org"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "qual"
+    },
+    {
+      "source": 1,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "variable": "public"
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "max_values"
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 1
+    },
+    {
+      "source": 1,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "import"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "org"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "variable": "qual"
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "variable": "public"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "max_values"
+    }
+  ]
+}

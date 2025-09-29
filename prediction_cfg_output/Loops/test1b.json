@@ -1,0 +1,67 @@
+{
+  "method_name": "test1b",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "While(MemberReference(member=flag, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 6,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Assignment(expressionl=MemberReference(member=offset, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type=+=, value=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1))",
+      "line": 7,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 2
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 2
+    }
+  ],
+  "dataflow_edges": []
+}

@@ -1,0 +1,180 @@
+{
+  "method_name": "test_lub2",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=None, name=z)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 7,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "If(MemberReference(member=flag, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 8,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Assignment(expressionl=MemberReference(member=z, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=MemberReference(member=x, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 9,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Assignment(expressionl=MemberReference(member=z, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=MemberReference(member=y, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 11,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=None, name=Positive)], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=z, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), name=q)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 14,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=[ElementValuePair(name=from, value=Literal(postfix_operators=[], prefix_operators=['-'], qualifier=None, selectors=[], value=1))], name=IntRange)], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=z, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), name=w)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 16,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "z"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "z"
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "variable": "z"
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "variable": "z"
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 1
+    },
+    {
+      "source": 7,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "z"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "z"
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "variable": "z"
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "variable": "z"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "method_name": "addToPositiveOK",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ArrayCreator(dimensions=[BinaryOperation(operandl=MemberReference(member=l, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator=+)], initializer=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=Object, sub_type=None)), name=o)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[None], name=Object, sub_type=None))",
+      "line": 9,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Assignment(expressionl=MemberReference(member=o, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=99))]), type==, value=MemberReference(member=v, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 10,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": []
+}

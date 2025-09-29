@@ -1,0 +1,73 @@
+{
+  "method_name": "method",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ClassCreator(arguments=[ClassCreator(arguments=[MemberReference(member=in, postfix_operators=[], prefix_operators=[], qualifier=System, selectors=[])], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=InputStreamReader, sub_type=None))], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=BufferedReader, sub_type=None)), name=bufferedReader)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=BufferedReader, sub_type=None))",
+      "line": 8,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=['-'], qualifier=None, selectors=[], value=1)], member=skip, postfix_operators=[], prefix_operators=[], qualifier=bufferedReader, selectors=[], type_arguments=None)",
+      "line": 9,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1)], member=skip, postfix_operators=[], prefix_operators=[], qualifier=bufferedReader, selectors=[], type_arguments=None)",
+      "line": 10,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": []
+}

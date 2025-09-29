@@ -1,0 +1,152 @@
+{
+  "method_name": "count",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=count, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0), operator=>))",
+      "line": 20,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "If(BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=count, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=2), operator=%), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator===))",
+      "line": 21,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=count, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=2), operator=/), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator=-), name=countDivMinus)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 23,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Assignment(expressionl=MemberReference(member=countDivMinus, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=MemberReference(member=countDivMinus, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 24,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0), MemberReference(member=countDivMinus, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=isLessThan, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 25,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0), MemberReference(member=countDivMinus, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=isLessThanOrEqual, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 26,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "countDivMinus"
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "variable": "countDivMinus"
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 1
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 1
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "countDivMinus"
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "variable": "countDivMinus"
+    }
+  ]
+}

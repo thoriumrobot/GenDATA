@@ -1,0 +1,216 @@
+{
+  "method_name": "expandedCapacity",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=minCapacity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0), operator=<))",
+      "line": 13,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Throw(ClassCreator(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"cannot store more than MAX_VALUE elements\")], body=None, constructor_type_arguments=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=AssertionError, sub_type=None)))",
+      "line": 14,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=BinaryOperation(operandl=BinaryOperation(operandl=MemberReference(member=oldCapacity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=BinaryOperation(operandl=MemberReference(member=oldCapacity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator=>>), operator=+), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator=+), name=newCapacity)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 16,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=newCapacity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=minCapacity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=<))",
+      "line": 17,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "Assignment(expressionl=MemberReference(member=newCapacity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=BinaryOperation(operandl=MethodInvocation(arguments=[BinaryOperation(operandl=MemberReference(member=minCapacity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator=-)], member=highestOneBit, postfix_operators=[], prefix_operators=[], qualifier=Integer, selectors=[], type_arguments=None), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator=<<))",
+      "line": 18,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=newCapacity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0), operator=<))",
+      "line": 20,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "Assignment(expressionl=MemberReference(member=newCapacity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=MemberReference(member=MAX_VALUE, postfix_operators=[], prefix_operators=[], qualifier=Integer, selectors=[]))",
+      "line": 21,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "Return(MemberReference(member=newCapacity, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 23,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 9
+    },
+    {
+      "source": 7,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "variable": "newCapacity"
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "variable": "newCapacity"
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "variable": "newCapacity"
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "variable": "newCapacity"
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 9
+    },
+    {
+      "source": 7,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 9
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 8,
+      "target": 9,
+      "variable": "newCapacity"
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "variable": "newCapacity"
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "variable": "newCapacity"
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "variable": "newCapacity"
+    }
+  ]
+}

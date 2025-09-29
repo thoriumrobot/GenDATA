@@ -1,77 +1,65 @@
 {
-  "method_name": "UncheckedMinLen",
+  "method_name": "Issue2494",
   "java_file": null,
   "nodes": [
     {
       "id": 0,
-      "label": "import org.checkerframework.checker.index.qual.NonNegative;",
+      "label": "import org.checkerframework.checker.index.qual.IndexFor;",
       "line": 1,
       "node_type": "stmt"
     },
     {
       "id": 1,
-      "label": "import org.checkerframework.checker.index.qual.Positive;",
+      "label": "import org.checkerframework.checker.index.qual.LTLengthOf;",
       "line": 2,
       "node_type": "stmt"
     },
     {
       "id": 2,
-      "label": "import org.checkerframework.common.value.qual.IntRange;",
+      "label": "import org.checkerframework.checker.index.qual.LessThan;",
       "line": 3,
       "node_type": "stmt"
     },
     {
       "id": 3,
-      "label": "import org.checkerframework.common.value.qual.MinLen;",
+      "label": "import org.checkerframework.checker.index.qual.NonNegative;",
       "line": 4,
       "node_type": "stmt"
     },
     {
       "id": 4,
-      "label": "",
+      "label": "import org.checkerframework.common.value.qual.MinLen;",
       "line": 5,
       "node_type": "stmt"
     },
     {
       "id": 5,
-      "label": "public class UncheckedMinLen {",
+      "label": "",
       "line": 6,
       "node_type": "stmt"
     },
     {
       "id": 6,
-      "label": "",
+      "label": "public final class Issue2494 {",
       "line": 7,
       "node_type": "stmt"
     },
     {
       "id": 7,
-      "label": "void addToBoundedIntRangeOK(@IntRange(from = 0, to = 1) int l, Object v) {",
+      "label": "",
       "line": 8,
       "node_type": "stmt"
     },
     {
       "id": 8,
-      "label": "Object @MinLen(100) [] o = new Object[l + 1];",
+      "label": "static final long @MinLen(1) [] factorials = { 1L, 1L, 1L * 2, 1L * 2 * 3, 1L * 2 * 3 * 4, 1L * 2 * 3 * 4 * 5, 1L * 2 * 3 * 4 * 5 * 6, 1L * 2 * 3 * 4 * 5 * 6 * 7 };",
       "line": 9,
       "node_type": "stmt"
     },
     {
       "id": 9,
-      "label": "o[99] = v;",
+      "label": "}",
       "line": 10,
-      "node_type": "stmt"
-    },
-    {
-      "id": 10,
-      "label": "}",
-      "line": 11,
-      "node_type": "stmt"
-    },
-    {
-      "id": 11,
-      "label": "}",
-      "line": 12,
       "node_type": "stmt"
     }
   ],
@@ -132,6 +120,16 @@
     {
       "source": 1,
       "target": 2,
+      "variable": "checker"
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "variable": "index"
+    },
+    {
+      "source": 1,
+      "target": 2,
       "variable": "qual"
     },
     {
@@ -156,12 +154,12 @@
     {
       "source": 2,
       "target": 3,
-      "variable": "common"
+      "variable": "checker"
     },
     {
       "source": 2,
       "target": 3,
-      "variable": "value"
+      "variable": "index"
     },
     {
       "source": 2,
@@ -169,22 +167,37 @@
       "variable": "qual"
     },
     {
-      "source": 2,
-      "target": 7,
-      "variable": "IntRange"
-    },
-    {
       "source": 3,
       "target": 4
     },
     {
       "source": 3,
-      "target": 8,
-      "variable": "MinLen"
+      "target": 4,
+      "variable": "import"
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "org"
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "qual"
     },
     {
       "source": 4,
       "target": 5
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "variable": "MinLen"
     },
     {
       "source": 5,
@@ -195,40 +208,17 @@
       "target": 7
     },
     {
+      "source": 6,
+      "target": 8,
+      "variable": "final"
+    },
+    {
       "source": 7,
       "target": 8
     },
     {
-      "source": 7,
-      "target": 8,
-      "variable": "Object"
-    },
-    {
-      "source": 7,
-      "target": 8,
-      "variable": "l"
-    },
-    {
-      "source": 7,
-      "target": 9,
-      "variable": "v"
-    },
-    {
       "source": 8,
       "target": 9
-    },
-    {
-      "source": 8,
-      "target": 9,
-      "variable": "o"
-    },
-    {
-      "source": 9,
-      "target": 10
-    },
-    {
-      "source": 10,
-      "target": 11
     }
   ],
   "control_edges": [
@@ -267,14 +257,6 @@
     {
       "source": 8,
       "target": 9
-    },
-    {
-      "source": 9,
-      "target": 10
-    },
-    {
-      "source": 10,
-      "target": 11
     }
   ],
   "dataflow_edges": [
@@ -326,6 +308,16 @@
     {
       "source": 1,
       "target": 2,
+      "variable": "checker"
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "variable": "index"
+    },
+    {
+      "source": 1,
+      "target": 2,
       "variable": "qual"
     },
     {
@@ -346,12 +338,12 @@
     {
       "source": 2,
       "target": 3,
-      "variable": "common"
+      "variable": "checker"
     },
     {
       "source": 2,
       "target": 3,
-      "variable": "value"
+      "variable": "index"
     },
     {
       "source": 2,
@@ -359,34 +351,34 @@
       "variable": "qual"
     },
     {
-      "source": 2,
-      "target": 7,
-      "variable": "IntRange"
+      "source": 3,
+      "target": 4,
+      "variable": "import"
     },
     {
       "source": 3,
+      "target": 4,
+      "variable": "org"
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "checkerframework"
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "variable": "qual"
+    },
+    {
+      "source": 4,
       "target": 8,
       "variable": "MinLen"
     },
     {
-      "source": 7,
+      "source": 6,
       "target": 8,
-      "variable": "Object"
-    },
-    {
-      "source": 7,
-      "target": 8,
-      "variable": "l"
-    },
-    {
-      "source": 7,
-      "target": 9,
-      "variable": "v"
-    },
-    {
-      "source": 8,
-      "target": 9,
-      "variable": "o"
+      "variable": "final"
     }
   ]
 }

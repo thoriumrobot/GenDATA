@@ -1,0 +1,59 @@
+{
+  "method_name": "calls",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1)], member=isLessThan, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 11,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0)], member=isLessThanOrEqual, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 12,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": []
+}
