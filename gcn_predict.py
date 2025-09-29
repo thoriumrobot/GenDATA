@@ -9,7 +9,7 @@ import json
 import argparse
 import torch
 from cfg import generate_control_flow_graphs, save_cfgs
-from gcn_train import cfg_to_homograph
+from gcn_train import cfg_to_graph
 
 
 def ensure_cfgs(java_file: str, cfg_output_dir: str):
@@ -44,14 +44,16 @@ def main():
         if not name.endswith('.json'):
             continue
         cfg_path = os.path.join(cfg_dir, name)
-        with open(cfg_path, 'r') as fp:
-            cfg = json.load(fp)
-        data = cfg_to_homograph(cfg)
+        # Build graph with rich features and labels
+        data = cfg_to_graph(cfg_path)
         if data.x.numel() == 0:
             continue
         with torch.no_grad():
             logits = model(data.x, data.edge_index)
             probs = torch.softmax(logits, dim=-1)[:, 1]
+            # We need node lines from the JSON
+            with open(cfg_path, 'r') as fp:
+                cfg = json.load(fp)
             nodes = cfg.get('nodes', [])
             for i, p in enumerate(probs.tolist()):
                 if p >= args.threshold and i < len(nodes):
