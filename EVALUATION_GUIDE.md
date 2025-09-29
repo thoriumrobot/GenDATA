@@ -45,9 +45,8 @@ python simple_annotation_type_pipeline.py --target_file /path/to/MyClass.java
 
 ### **2. Large-Scale Evaluation (Production)**
 ```bash
-# Run evaluation on Checker Framework test suite (719 predictions generated)
-python simple_annotation_type_pipeline.py --mode predict \
-  --target_file /home/ubuntu/checker-framework/checker/tests/index/StringMethods.java
+# Run full prediction (Soot bytecode slicing + Vineflower decomp + CFG Builder + models only)
+python simple_annotation_type_pipeline.py --mode predict
 ```
 
 ### **3. Full Project Evaluation**
