@@ -24,12 +24,13 @@ logger = logging.getLogger(__name__)
 class SimpleAnnotationTypePipeline:
     """Simplified pipeline for training and testing annotation types"""
     
-    def __init__(self, project_root, warnings_file, cfwr_root, mode='train', no_auto_train=False):
+    def __init__(self, project_root, warnings_file, cfwr_root, mode='train', no_auto_train=False, device='auto'):
         self.project_root = project_root
         self.warnings_file = warnings_file
         self.cfwr_root = cfwr_root
         self.mode = mode
         self.no_auto_train = no_auto_train
+        self.device = device
         
         # Set up directories
         self.slices_dir = os.path.join(cfwr_root, 'slices_specimin')
@@ -444,7 +445,7 @@ class SimpleAnnotationTypePipeline:
             
             # Create predictor with auto-training enabled (unless disabled via command line)
             auto_train = not getattr(self, 'no_auto_train', False)
-            predictor = ModelBasedPredictor(models_dir=self.models_dir, auto_train=auto_train)
+            predictor = ModelBasedPredictor(models_dir=self.models_dir, device=self.device, auto_train=auto_train)
             
             # Iterate all base model types to produce predictions for all 21 combinations
             base_model_types = ['enhanced_hybrid', 'enhanced_gcn', 'enhanced_gat', 'enhanced_transformer', 'enhanced_causal', 'enhanced_graph_causal', 'graph_causal', 'graphite', 'causal', 'hgt', 'gcn', 'gbt', 'gcsn', 'dg2n']
@@ -543,7 +544,7 @@ class SimpleAnnotationTypePipeline:
             
             # Create predictor with auto-training enabled (unless disabled via command line)
             auto_train = not getattr(self, 'no_auto_train', False)
-            predictor = ModelBasedPredictor(models_dir=self.models_dir, auto_train=auto_train)
+            predictor = ModelBasedPredictor(models_dir=self.models_dir, device=self.device, auto_train=auto_train)
             
             # Try to load or train models with different base model types
             base_model_types = ['enhanced_hybrid', 'enhanced_gcn', 'enhanced_gat', 'enhanced_transformer', 'enhanced_causal', 'enhanced_graph_causal', 'graph_causal', 'graphite', 'causal', 'hgt', 'gcn', 'gbt', 'gcsn', 'dg2n']
@@ -732,6 +733,8 @@ def main():
                        help='Base model type (for training mode, default: enhanced_causal)')
     parser.add_argument('--no_auto_train', action='store_true',
                        help='Disable automatic training of missing models (default: auto-train enabled)')
+    parser.add_argument('--device', default='auto', choices=['auto', 'cpu', 'cuda'],
+                       help='Device to use for training/inference (default: auto)')
     
     args = parser.parse_args()
     
@@ -741,7 +744,8 @@ def main():
         warnings_file=args.warnings_file,
         cfwr_root=args.cfwr_root,
         mode=args.mode,
-        no_auto_train=args.no_auto_train
+        no_auto_train=args.no_auto_train,
+        device=args.device
     )
     
     # Run pipeline
