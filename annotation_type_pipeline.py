@@ -50,7 +50,7 @@ class AnnotationTypePipeline:
             '@GTENegativeOne': 'annotation_type_rl_gtenegativeone.py'
         }
     
-    def run_training_pipeline(self, episodes=50, base_model='gcn', augmentation_factor=10):
+    def run_training_pipeline(self, episodes=50, base_model='gcn', augmentation_factor=100):
         """Run the complete training pipeline"""
         logger.info("Starting annotation type training pipeline")
         logger.info(f"Project root: {self.project_root}")
@@ -460,7 +460,7 @@ def main():
                        help='Number of training episodes (for training mode)')
     parser.add_argument('--base_model', default='gcn', choices=['gcn', 'gbt', 'causal'],
                        help='Base model type (for training mode)')
-    parser.add_argument('--augmentation_factor', type=int, default=10,
+    parser.add_argument('--augmentation_factor', type=int, default=100,
                        help='Augmentation factor for slices (for training mode)')
     
     args = parser.parse_args()

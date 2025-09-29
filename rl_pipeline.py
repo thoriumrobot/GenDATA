@@ -167,8 +167,8 @@ class RLTrainingPipeline:
                     base_name = os.path.splitext(rel_path)[0]
                     os.makedirs(os.path.dirname(os.path.join(augmented_dir, rel_path)), exist_ok=True)
                     
-                    # Create 10 variants per file (factor of 10)
-                    for variant_idx in range(10):
+                    # Create 100 variants per file (factor of 100)
+                    for variant_idx in range(100):
                         variant_dir = os.path.join(augmented_dir, f"{base_name}__aug{variant_idx}")
                         os.makedirs(variant_dir, exist_ok=True)
                         output_path = os.path.join(variant_dir, os.path.basename(rel_path))

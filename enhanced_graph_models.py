@@ -139,10 +139,10 @@ class AttentionPooling(nn.Module):
 
 
 class EnhancedGCNModel(EnhancedGraphBasedModel):
-    """Enhanced GCN model with residual connections and better capacity"""
+    """Enhanced GCN model with residual connections and better capacity for GPU acceleration"""
     
-    def __init__(self, input_dim: int, hidden_dim: int = 256, out_dim: int = 2, 
-                 num_layers: int = 4, dropout: float = 0.1, **kwargs):
+    def __init__(self, input_dim: int, hidden_dim: int = 512, out_dim: int = 2, 
+                 num_layers: int = 6, dropout: float = 0.1, **kwargs):
         super().__init__(input_dim, hidden_dim, out_dim, num_layers, dropout, **kwargs)
         
         # GCN layers with residual connections
@@ -173,10 +173,10 @@ class EnhancedGCNModel(EnhancedGraphBasedModel):
 
 
 class EnhancedGATModel(EnhancedGraphBasedModel):
-    """Enhanced GAT model with multi-head attention and residual connections"""
+    """Enhanced GAT model with multi-head attention and residual connections - GPU optimized"""
     
-    def __init__(self, input_dim: int, hidden_dim: int = 256, out_dim: int = 2, 
-                 num_layers: int = 4, dropout: float = 0.1, heads: int = 8, **kwargs):
+    def __init__(self, input_dim: int, hidden_dim: int = 512, out_dim: int = 2, 
+                 num_layers: int = 6, dropout: float = 0.1, heads: int = 16, **kwargs):
         super().__init__(input_dim, hidden_dim, out_dim, num_layers, dropout, **kwargs)
         self.heads = heads
         
@@ -208,10 +208,10 @@ class EnhancedGATModel(EnhancedGraphBasedModel):
 
 
 class EnhancedTransformerModel(EnhancedGraphBasedModel):
-    """Enhanced Graph Transformer with edge encodings and residual connections"""
+    """Enhanced Graph Transformer with edge encodings and residual connections - GPU optimized"""
     
-    def __init__(self, input_dim: int, hidden_dim: int = 256, out_dim: int = 2, 
-                 num_layers: int = 4, dropout: float = 0.1, heads: int = 8, **kwargs):
+    def __init__(self, input_dim: int, hidden_dim: int = 512, out_dim: int = 2, 
+                 num_layers: int = 6, dropout: float = 0.1, heads: int = 16, **kwargs):
         super().__init__(input_dim, hidden_dim, out_dim, num_layers, dropout, **kwargs)
         self.heads = heads
         
@@ -256,10 +256,10 @@ class EnhancedTransformerModel(EnhancedGraphBasedModel):
 
 
 class EnhancedHybridModel(nn.Module):
-    """Enhanced hybrid model combining multiple architectures with better fusion"""
+    """Enhanced hybrid model combining multiple architectures with better fusion - GPU optimized"""
     
-    def __init__(self, input_dim: int, hidden_dim: int = 256, out_dim: int = 2, 
-                 num_layers: int = 4, dropout: float = 0.1, **kwargs):
+    def __init__(self, input_dim: int, hidden_dim: int = 512, out_dim: int = 2, 
+                 num_layers: int = 6, dropout: float = 0.1, **kwargs):
         super().__init__()
         self.input_dim = input_dim
         self.hidden_dim = hidden_dim
@@ -344,7 +344,7 @@ class EnhancedHybridModel(nn.Module):
 class EnhancedEmbeddingBaseModel(nn.Module):
     """Base class for enhanced embedding-based models"""
     
-    def __init__(self, embedding_dim: int = 256, hidden_dim: int = 256, out_dim: int = 2, 
+    def __init__(self, embedding_dim: int = 512, hidden_dim: int = 512, out_dim: int = 2, 
                  dropout: float = 0.1, use_attention: bool = True):
         super().__init__()
         self.embedding_dim = embedding_dim
@@ -833,9 +833,9 @@ def create_enhanced_model(model_type: str, input_dim: int, hidden_dim: int = 256
         'gat': EnhancedGATModel,
         'transformer': EnhancedTransformerModel,
         'hybrid': EnhancedHybridModel,
-        'hgt': EnhancedTransformerModel,  # HGT is a type of Transformer
-        'gcsn': EnhancedGCNModel,  # GCSN uses GCN architecture
-        'dg2n': EnhancedGCNModel,  # DG2N uses GCN architecture
+        'hgt': EnhancedGATModel,  # HGT uses GAT architecture (distinct from transformer)
+        'gcsn': EnhancedTransformerModel,  # GCSN uses Transformer architecture (distinct from GCN)
+        'dg2n': EnhancedGATModel,  # DG2N uses GAT architecture (distinct from GCN)
         # Enhanced variants that take graph inputs
         'enhanced_gcn': EnhancedGCNModel,
         'enhanced_gat': EnhancedGATModel,
@@ -843,7 +843,7 @@ def create_enhanced_model(model_type: str, input_dim: int, hidden_dim: int = 256
         'enhanced_hybrid': EnhancedHybridModel,
         # Native graph causal models
         'graph_causal': EnhancedGraphCausalModel,  # NEW: Native graph causal
-        'enhanced_graph_causal': EnhancedGraphCausalModel,  # NEW: Enhanced variant
+        'enhanced_graph_causal': EnhancedHybridModel,  # Enhanced variant uses Hybrid (distinct from GraphCausal)
         # GraphITE-inspired causal models
         'graphite': GraphITECausalModel,  # NEW: GraphITE treatment effect estimation
     }
