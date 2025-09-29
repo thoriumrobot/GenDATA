@@ -321,9 +321,9 @@ class ModelBasedPredictor:
             predictions = []
             for annotation_type in ['@Positive', '@NonNegative', '@GTENegativeOne']:
                 if annotation_type in self.loaded_models:
-                    model_info = self.loaded_models[annotation_type]
-                    trainer = model_info['trainer']
-                    base_model_type = model_info['base_model_type']
+                    # loaded_models maps to the trainer instance directly
+                    trainer = self.loaded_models[annotation_type]
+                    base_model_type = getattr(trainer, 'base_model_type', 'unknown')
                     
                     # Extract features from real CFG data
                     cfg_features = self._extract_cfg_features(cfg_data, java_content)
