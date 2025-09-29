@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/StringIndexOf.java__StringIndexOf_stringLiteral_String_/StringIndexOf.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.7424190640449524,
+      "features": [
+        1.0,
+        1.0,
+        0.44999992847442627,
+        -5.960464477539063e-08,
+        0.2500000596046448,
+        -0.0732232928276062,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.5,
+        0.0,
+        0.5,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.742 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

@@ -1,0 +1,44 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/ExampleUsage.java__ExampleUsage_obviously_unsafe_loop__/ExampleUsage.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5511409044265747,
+      "features": [
+        1.0,
+        2.2857143878936768,
+        0.5714284777641296,
+        0.01710861548781395,
+        -0.02422148920595646,
+        -0.04184188321232796,
+        -0.024041831493377686,
+        0.034968651831150055,
+        0.05747663974761963,
+        0.0,
+        0.0,
+        0.0,
+        0.3888889253139496,
+        0.0357142873108387,
+        0.2753527760505676,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced improved_balanced_causal model with 0.551 confidence (tabular inputs, real code training)",
+      "model_type": "enhanced_balanced_improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:58:13",
+  "model_type": "enhanced_balanced_graph_models",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 21,
+  "pipeline_version": "enhanced_balanced_pipeline",
+  "uses_batching": true,
+  "uses_graph_inputs": true,
+  "enhanced_framework": true
+}

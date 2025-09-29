@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/ReflectArray.java__ReflectArray_testNewInstance_int_/ReflectArray.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5444707274436951,
+      "features": [
+        1.0,
+        2.200000047683716,
+        0.5499999523162842,
+        -0.020992934703826904,
+        -0.025755351409316063,
+        -0.00803103856742382,
+        0.000329071277519688,
+        -0.019197935238480568,
+        -0.0006420522695407271,
+        -0.01053294725716114,
+        0.000815147184766829,
+        0.0,
+        0.4611111283302307,
+        0.0,
+        0.34274694323539734,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.544 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

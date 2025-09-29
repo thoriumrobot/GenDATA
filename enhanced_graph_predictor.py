@@ -213,32 +213,32 @@ class EnhancedGraphPredictor:
         
         # Define parameters based on model type
         if model_type in ['enhanced_causal', 'causal']:
-            # Embedding-based models don't use num_layers or max_nodes
+            # Embedding-based models - enhanced for GPU acceleration
             return create_enhanced_model(
                 model_type=model_type,
                 input_dim=CFGSizeConfig.NODE_FEATURE_DIM,
-                hidden_dim=256,
+                hidden_dim=512,  # Increased for GPU acceleration
                 out_dim=2,
                 dropout=0.1
             )
         elif model_type in ['gbt']:
-            # GBT models are embedding-based and don't use num_layers or max_nodes
+            # GBT models are embedding-based - enhanced for GPU acceleration
             return create_enhanced_model(
                 model_type=model_type,
                 input_dim=CFGSizeConfig.NODE_FEATURE_DIM,
-                hidden_dim=256,
+                hidden_dim=512,  # Increased for GPU acceleration
                 out_dim=2,
                 dropout=0.1
             )
         else:
-            # Graph-based models - use enhanced architecture with larger hidden dimensions
-            # The enhanced framework should support larger input structures
+            # Graph-based models - use GPU-optimized architecture with larger hidden dimensions
+            # Enhanced for RTX 4070 Ti SUPER with 16.7 GB memory
             return create_enhanced_model(
                 model_type=model_type,
                 input_dim=CFGSizeConfig.NODE_FEATURE_DIM,
-                hidden_dim=256,  # Restored to 256 for enhanced framework
+                hidden_dim=512,  # Increased for GPU acceleration
                 out_dim=2,
-                num_layers=4,
+                num_layers=6,    # Deeper architecture for better performance
                 dropout=0.1,
                 max_nodes=self.max_nodes
             )
@@ -286,6 +286,29 @@ class EnhancedGraphPredictor:
                             else:
                                 # Truncate
                                 adapted_tensor = old_tensor[:new_tensor.shape[0]]
+                        elif len(old_tensor.shape) == 1 and len(new_tensor.shape) == 1:
+                            # Handle 1D tensor adaptation (bias, weight, etc.)
+                            if old_tensor.shape[0] < new_tensor.shape[0]:
+                                # Pad with zeros
+                                padding = torch.zeros(new_tensor.shape[0] - old_tensor.shape[0], device=new_tensor.device)
+                                adapted_tensor = torch.cat([old_tensor, padding], dim=0)
+                            else:
+                                # Truncate
+                                adapted_tensor = old_tensor[:new_tensor.shape[0]]
+                        elif 'att_' in key and len(old_tensor.shape) == 3:
+                            # Handle attention weight adaptation (e.g., att_src, att_dst)
+                            if old_tensor.shape[1] != new_tensor.shape[1]:
+                                # Different number of heads - use Xavier initialization
+                                adapted_tensor = torch.nn.init.xavier_uniform_(torch.zeros_like(new_tensor))
+                            else:
+                                adapted_tensor = old_tensor
+                        elif 'lin_beta' in key and len(old_tensor.shape) == 2:
+                            # Handle lin_beta weight adaptation
+                            if old_tensor.shape[1] != new_tensor.shape[1]:
+                                # Different feature dimension - use Xavier initialization
+                                adapted_tensor = torch.nn.init.xavier_uniform_(torch.zeros_like(new_tensor))
+                            else:
+                                adapted_tensor = old_tensor
                         else:
                             # Use Xavier initialization for other mismatches
                             adapted_tensor = torch.nn.init.xavier_uniform_(torch.zeros_like(new_tensor))

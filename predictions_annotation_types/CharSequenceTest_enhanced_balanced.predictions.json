@@ -1,0 +1,44 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/CharSequenceTest.java__CharSequenceTest_testAppend_Appendable_CharSequence_int_/CharSequenceTest.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.6749467849731445,
+      "features": [
+        1.0,
+        1.5,
+        0.4791666269302368,
+        -6.705522537231445e-08,
+        0.08455102145671844,
+        1.4901161193847656e-08,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.625,
+        0.0,
+        0.53125,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced improved_balanced_causal model with 0.675 confidence (tabular inputs, real code training)",
+      "model_type": "enhanced_balanced_improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:58:13",
+  "model_type": "enhanced_balanced_graph_models",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 21,
+  "pipeline_version": "enhanced_balanced_pipeline",
+  "uses_batching": true,
+  "uses_graph_inputs": true,
+  "enhanced_framework": true
+}

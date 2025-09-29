@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/IndexOrLowTests.java__IndexOrLowTests_test__/IndexOrLowTests.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.6045198440551758,
+      "features": [
+        1.0,
+        2.5,
+        0.5624999403953552,
+        -0.006143856793642044,
+        0.05652456358075142,
+        -0.00014462368562817574,
+        1.776213309767627e-08,
+        -0.002825317904353142,
+        -0.050733283162117004,
+        0.013169661164283752,
+        0.0,
+        0.0,
+        0.3854166865348816,
+        0.079861119389534,
+        0.24927663803100586,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.605 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

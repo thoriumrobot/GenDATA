@@ -1,0 +1,44 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/SizeVsLength.java__SizeVsLength_getArray_int_/SizeVsLength.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5761504173278809,
+      "features": [
+        1.0,
+        2.0,
+        0.5428571105003357,
+        -0.042382121086120605,
+        0.1353108435869217,
+        0.04581639543175697,
+        0.04031450301408768,
+        -0.039930302649736404,
+        0.004514613188803196,
+        0.0,
+        0.0,
+        0.0,
+        0.3690476417541504,
+        0.0714285746216774,
+        0.2624008059501648,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced improved_balanced_causal model with 0.576 confidence (tabular inputs, real code training)",
+      "model_type": "enhanced_balanced_improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:58:13",
+  "model_type": "enhanced_balanced_graph_models",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 21,
+  "pipeline_version": "enhanced_balanced_pipeline",
+  "uses_batching": true,
+  "uses_graph_inputs": true,
+  "enhanced_framework": true
+}

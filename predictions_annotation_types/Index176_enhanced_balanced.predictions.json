@@ -1,0 +1,44 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/Index176.java__Index176_test_String_int_/Index176.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5444833040237427,
+      "features": [
+        1.0,
+        2.2857143878936768,
+        0.5454545021057129,
+        2.554484801464696e-08,
+        0.01507552806288004,
+        0.07394824922084808,
+        0.06516395509243011,
+        -2.9802322387695312e-08,
+        0.017640607431530952,
+        0.0,
+        0.0,
+        0.0,
+        0.39682537317276,
+        0.0476190485060215,
+        0.2548500895500183,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced improved_balanced_causal model with 0.544 confidence (tabular inputs, real code training)",
+      "model_type": "enhanced_balanced_improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:58:13",
+  "model_type": "enhanced_balanced_graph_models",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 21,
+  "pipeline_version": "enhanced_balanced_pipeline",
+  "uses_batching": true,
+  "uses_graph_inputs": true,
+  "enhanced_framework": true
+}

@@ -1,0 +1,44 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/IntroSub.java__IntroSub_test_int___int_/IntroSub.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5994587540626526,
+      "features": [
+        1.0,
+        1.75,
+        0.5416666269302368,
+        -5.960464477539063e-08,
+        -0.02767559513449669,
+        3.632158041000366e-08,
+        -0.027675848454236984,
+        7.450580596923828e-09,
+        -0.027675826102495193,
+        3.725290298461914e-08,
+        0.0,
+        0.0,
+        0.5625,
+        0.0,
+        0.453125,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced improved_balanced_causal model with 0.599 confidence (tabular inputs, real code training)",
+      "model_type": "enhanced_balanced_improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:58:13",
+  "model_type": "enhanced_balanced_graph_models",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 21,
+  "pipeline_version": "enhanced_balanced_pipeline",
+  "uses_batching": true,
+  "uses_graph_inputs": true,
+  "enhanced_framework": true
+}

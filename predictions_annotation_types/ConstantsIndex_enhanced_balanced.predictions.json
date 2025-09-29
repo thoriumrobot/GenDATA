@@ -1,0 +1,44 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/ConstantsIndex.java__ConstantsIndex_test__/ConstantsIndex.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5895918607711792,
+      "features": [
+        1.0,
+        2.0,
+        0.5499999523162842,
+        0.014760574325919151,
+        0.02097564935684204,
+        1.6396066726542813e-08,
+        0.004357233643531799,
+        -0.00435715913772583,
+        1.2447340047572197e-08,
+        0.020975597202777863,
+        -0.014760690741240978,
+        0.0,
+        0.5,
+        0.0,
+        0.3750000298023224,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced improved_balanced_causal model with 0.590 confidence (tabular inputs, real code training)",
+      "model_type": "enhanced_balanced_improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:58:13",
+  "model_type": "enhanced_balanced_graph_models",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 21,
+  "pipeline_version": "enhanced_balanced_pipeline",
+  "uses_batching": true,
+  "uses_graph_inputs": true,
+  "enhanced_framework": true
+}

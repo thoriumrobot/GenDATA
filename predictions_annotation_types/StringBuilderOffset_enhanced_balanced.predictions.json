@@ -1,0 +1,44 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/StringBuilderOffset.java__StringBuilderOffset_OffsetStringBuilder__/StringBuilderOffset.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5321460962295532,
+      "features": [
+        1.0,
+        2.0,
+        0.5238094329833984,
+        -0.027056822553277016,
+        -0.05453549697995186,
+        0.03328615054488182,
+        0.04514240100979805,
+        -0.02517988719046116,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.4814814627170563,
+        0.0555555634200573,
+        0.3436214029788971,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced improved_balanced_causal model with 0.532 confidence (tabular inputs, real code training)",
+      "model_type": "enhanced_balanced_improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:58:13",
+  "model_type": "enhanced_balanced_graph_models",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 21,
+  "pipeline_version": "enhanced_balanced_pipeline",
+  "uses_batching": true,
+  "uses_graph_inputs": true,
+  "enhanced_framework": true
+}

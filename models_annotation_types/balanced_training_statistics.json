@@ -1,0 +1,531 @@
+{
+  "annotation_types": [
+    "@Positive",
+    "@NonNegative",
+    "@GTENegativeOne"
+  ],
+  "training_history": {
+    "@Positive": {
+      "train_losses": [
+        0.8534856677055359,
+        0.732596619129181,
+        0.6236308240890502,
+        0.5529687583446503,
+        0.6350112557411194,
+        0.6265653601288795,
+        0.5838251960277557,
+        0.5061792796850204,
+        0.4782800233364105,
+        0.5449024450778961,
+        0.5276385161280632,
+        0.410909863114357,
+        0.38666376292705534,
+        0.3087995946407318,
+        0.4439882266521454,
+        0.324841542840004,
+        0.31572064220905305,
+        0.35091939479112627,
+        0.31666154220700266,
+        0.28263113379478455
+      ],
+      "val_losses": [
+        0.3907588720321655,
+        0.390404286129134,
+        0.36998240862573895,
+        0.3635760077408382,
+        0.32044051374707905,
+        0.30559502116271425,
+        0.30760100803204943,
+        0.3155206952776228,
+        0.28944654975618633,
+        0.2617757959025247,
+        0.25618442786591394,
+        0.21420195592301233,
+        0.1770581193268299,
+        0.16612106721316064,
+        0.2157414954687868,
+        0.14760291869086878,
+        0.13567094611270086,
+        0.11768478846975736,
+        0.09578769068632807,
+        0.08632233845336097
+      ],
+      "val_accuracies": [
+        83.0,
+        76.0,
+        82.0,
+        79.0,
+        85.0,
+        86.0,
+        87.0,
+        86.0,
+        85.0,
+        87.0,
+        87.0,
+        91.0,
+        93.0,
+        93.0,
+        91.0,
+        93.0,
+        95.0,
+        97.0,
+        98.0,
+        99.0
+      ],
+      "best_val_accuracy": 99.0,
+      "epochs_trained": 20
+    },
+    "@NonNegative": {
+      "train_losses": [
+        1.0436904561519622,
+        0.9035974109172821,
+        0.8537220430374145,
+        0.8323795199394226,
+        0.7914532029628754,
+        0.813245165348053,
+        0.817548177242279,
+        0.6875354814529419,
+        0.7700706076622009,
+        0.744467271566391,
+        0.7474638247489929,
+        0.6965465670824051,
+        0.6405343890190125,
+        0.6513566434383392,
+        0.6719516563415527,
+        0.6342740178108215,
+        0.6138774132728577,
+        0.6527502435445786,
+        0.6598304533958435,
+        0.6758270943164826
+      ],
+      "val_losses": [
+        0.508321327822549,
+        0.46989631227084566,
+        0.6016500294208527,
+        0.47371279341833933,
+        0.42367517948150635,
+        0.41866715465273174,
+        0.4249907689435141,
+        0.4169048156057085,
+        0.42521164246967863,
+        0.5138379633426666,
+        0.44070793901171,
+        0.4654591168676104,
+        0.44267201849392485,
+        0.4439753677163805,
+        0.47367919981479645,
+        0.46440321632793974,
+        0.43339571143899647,
+        0.4200024902820587,
+        0.46841189690998625,
+        0.4782502331904003
+      ],
+      "val_accuracies": [
+        78.0,
+        81.0,
+        72.0,
+        69.0,
+        81.0,
+        81.0,
+        80.0,
+        80.0,
+        77.0,
+        71.0,
+        79.0,
+        75.0,
+        75.0,
+        76.0,
+        70.0,
+        71.0,
+        76.0,
+        77.0,
+        72.0,
+        70.0
+      ],
+      "best_val_accuracy": 81.0,
+      "epochs_trained": 20
+    },
+    "@GTENegativeOne": {
+      "train_losses": [
+        0.7804859864711762,
+        0.6418553555011749,
+        0.48065194964408875,
+        0.48686118602752687,
+        0.4369578981399536,
+        0.39074344992637633,
+        0.455007860660553,
+        0.41904345631599427,
+        0.4197547334432602,
+        0.40508871763944626,
+        0.3815040788054466,
+        0.39783433347940445,
+        0.439718082845211,
+        0.39882704362273214,
+        0.4082877269387245,
+        0.3528387187421322,
+        0.3627270403504372,
+        0.4102586331963539,
+        0.40829298198223113,
+        0.389820371568203
+      ],
+      "val_losses": [
+        0.37317955068179537,
+        0.36068810309682575,
+        0.3304314272744315,
+        0.33975926467350553,
+        0.34216345633779255,
+        0.326083779335022,
+        0.32726724445819855,
+        0.31944056706769125,
+        0.3249063066073826,
+        0.2834517402308328,
+        0.2954387898956026,
+        0.3056521053825106,
+        0.3012712470122746,
+        0.2980011744158609,
+        0.30010741523333956,
+        0.2951198709862573,
+        0.2871798255613872,
+        0.27737563635621754,
+        0.2883754372596741,
+        0.2864597226892199
+      ],
+      "val_accuracies": [
+        80.0,
+        82.0,
+        85.0,
+        83.0,
+        82.0,
+        82.0,
+        82.0,
+        87.0,
+        86.0,
+        86.0,
+        86.0,
+        89.0,
+        87.0,
+        85.0,
+        85.0,
+        87.0,
+        88.0,
+        89.0,
+        91.0,
+        89.0
+      ],
+      "best_val_accuracy": 91.0,
+      "epochs_trained": 20
+    }
+  },
+  "best_accuracies": {
+    "@Positive": 99.0,
+    "@NonNegative": 81.0,
+    "@GTENegativeOne": 91.0
+  },
+  "final_metrics": {
+    "@Positive": {
+      "accuracy": 0.99,
+      "classification_report": {
+        "Negative": {
+          "precision": 0.9814814814814815,
+          "recall": 1.0,
+          "f1-score": 0.9906542056074766,
+          "support": 53.0
+        },
+        "Positive": {
+          "precision": 1.0,
+          "recall": 0.9787234042553191,
+          "f1-score": 0.989247311827957,
+          "support": 47.0
+        },
+        "accuracy": 0.99,
+        "macro avg": {
+          "precision": 0.9907407407407407,
+          "recall": 0.9893617021276595,
+          "f1-score": 0.9899507587177168,
+          "support": 100.0
+        },
+        "weighted avg": {
+          "precision": 0.9901851851851852,
+          "recall": 0.99,
+          "f1-score": 0.9899929655311024,
+          "support": 100.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          53,
+          0
+        ],
+        [
+          1,
+          46
+        ]
+      ],
+      "total_samples": 100,
+      "positive_samples": 47,
+      "negative_samples": 53,
+      "confidence_analysis": {
+        "positive_avg_confidence": 0.9135655164718628,
+        "negative_avg_confidence": 0.9316911697387695,
+        "overall_avg_confidence": 0.9231720566749573
+      }
+    },
+    "@NonNegative": {
+      "accuracy": 0.7,
+      "classification_report": {
+        "Negative": {
+          "precision": 0.5970149253731343,
+          "recall": 0.9302325581395349,
+          "f1-score": 0.7272727272727273,
+          "support": 43.0
+        },
+        "Positive": {
+          "precision": 0.9090909090909091,
+          "recall": 0.5263157894736842,
+          "f1-score": 0.6666666666666666,
+          "support": 57.0
+        },
+        "accuracy": 0.7,
+        "macro avg": {
+          "precision": 0.7530529172320217,
+          "recall": 0.7282741738066095,
+          "f1-score": 0.696969696969697,
+          "support": 100.0
+        },
+        "weighted avg": {
+          "precision": 0.7748982360922659,
+          "recall": 0.7,
+          "f1-score": 0.6927272727272729,
+          "support": 100.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          40,
+          3
+        ],
+        [
+          27,
+          30
+        ]
+      ],
+      "total_samples": 100,
+      "positive_samples": 57,
+      "negative_samples": 43,
+      "confidence_analysis": {
+        "positive_avg_confidence": 0.774568498134613,
+        "negative_avg_confidence": 0.7910887002944946,
+        "overall_avg_confidence": 0.7816722989082336
+      }
+    },
+    "@GTENegativeOne": {
+      "accuracy": 0.89,
+      "classification_report": {
+        "Negative": {
+          "precision": 0.8545454545454545,
+          "recall": 0.94,
+          "f1-score": 0.8952380952380953,
+          "support": 50.0
+        },
+        "Positive": {
+          "precision": 0.9333333333333333,
+          "recall": 0.84,
+          "f1-score": 0.8842105263157894,
+          "support": 50.0
+        },
+        "accuracy": 0.89,
+        "macro avg": {
+          "precision": 0.8939393939393939,
+          "recall": 0.8899999999999999,
+          "f1-score": 0.8897243107769424,
+          "support": 100.0
+        },
+        "weighted avg": {
+          "precision": 0.8939393939393939,
+          "recall": 0.89,
+          "f1-score": 0.8897243107769424,
+          "support": 100.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          47,
+          3
+        ],
+        [
+          8,
+          42
+        ]
+      ],
+      "total_samples": 100,
+      "positive_samples": 50,
+      "negative_samples": 50,
+      "confidence_analysis": {
+        "positive_avg_confidence": 0.8364408612251282,
+        "negative_avg_confidence": 0.8617461919784546,
+        "overall_avg_confidence": 0.849093496799469
+      }
+    }
+  },
+  "real_code_analysis": {
+    "@Positive": {
+      "positive_patterns": {
+        "labels": {
+          "import org.checkerframework.checker.index.qual.NonNegative;": 16,
+          "import org.checkerframework.checker.index.qual.IndexFor;": 14,
+          "import org.checkerframework.checker.index.qual.*;": 14,
+          "import org.checkerframework.checker.index.qual.IndexOrHigh;": 10,
+          "import org.checkerframework.checker.index.qual.Positive;": 8,
+          "import org.checkerframework.checker.index.qual.GTENegativeOne;": 8,
+          "import org.checkerframework.checker.index.qual.SameLen;": 6,
+          "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ArrayCreator(dimensions=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=5)], initializer=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=BasicType(dimensions=None, name=int)), name=arr)], modifiers=set(), type=BasicType(dimensions=[None], name=int))": 6,
+          "@IndexOrLow(\"#1\")": 4,
+          "import org.checkerframework.checker.index.qual.LessThan;": 4
+        },
+        "types": {
+          "": 250
+        }
+      },
+      "negative_patterns": {
+        "labels": {
+          "}": 61,
+          "Exit": 13,
+          "Entry": 13,
+          "": 13,
+          "return null;": 11,
+          "// ignore": 9,
+          "try {": 9,
+          "break; // Prevent infinite loops": 7,
+          "Return(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null))": 6,
+          "/*": 5
+        },
+        "types": {
+          "": 250
+        }
+      },
+      "pattern_differences": {
+        "positive_only": [
+          "import org.checkerframework.checker.index.qual.SameLen;",
+          "public class ConstantsIndex {",
+          "import org.checkerframework.checker.index.qual.IndexOrHigh;",
+          "public class Index167 {",
+          "int returnPos2 = s.indexOf(\"\\r\", start - 1);"
+        ],
+        "negative_only": [
+          "",
+          "private Character __cfwr_handle447() {",
+          "if (true || false) {",
+          "if (false || (null * -182)) {",
+          "while (false) {"
+        ],
+        "common": []
+      }
+    },
+    "@NonNegative": {
+      "positive_patterns": {
+        "labels": {
+          "}": 84,
+          "": 19,
+          "Entry": 19,
+          "try {": 14,
+          "return null;": 14,
+          "import org.checkerframework.checker.index.qual.LTLengthOf;": 6,
+          "/*": 6,
+          "*/": 6,
+          "Try": 3,
+          "import org.checkerframework.checker.index.qual.LTEqLengthOf;": 3
+        },
+        "types": {
+          "": 250
+        }
+      },
+      "negative_patterns": {
+        "labels": {
+          "Exit": 21,
+          "// ignore": 14,
+          "break; // Prevent infinite loops": 11,
+          "Return(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null))": 9,
+          "while (true) {": 6,
+          "* CFWR augmentation: inserted irrelevant code for data augmentation.": 6,
+          "Break": 5,
+          "While(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=false))": 3,
+          "While(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=true))": 3,
+          "Return(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=false))": 3
+        },
+        "types": {
+          "": 250
+        }
+      },
+      "pattern_differences": {
+        "positive_only": [
+          "",
+          "@LTEqLengthOf(\"a\")",
+          "LocalVariableDeclaration(annotations=[Annotation(element=ElementArrayValue(values=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"arr\")]), name=LTLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=BinaryOperation(operandl=MemberReference(member=a, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=7), operator=-), name=f)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+          "import org.checkerframework.checker.index.qual.EnsuresLTLengthOf;",
+          "LocalVariableDeclaration(annotations=[Annotation(element=ElementArrayValue(values=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"arr\")]), name=LTEqLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=BinaryOperation(operandl=MemberReference(member=a, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator=+), name=c1)], modifiers=set(), type=BasicType(dimensions=[], name=int))"
+        ],
+        "negative_only": [
+          "} catch (Exception __cfwr_e59) {",
+          "private Character __cfwr_handle447() {",
+          "if (true || false) {",
+          "While(Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=false))",
+          "if (false || (null * -182)) {"
+        ],
+        "common": []
+      }
+    },
+    "@GTENegativeOne": {
+      "positive_patterns": {
+        "labels": {
+          "break; // Prevent infinite loops": 6,
+          "// ignore": 5,
+          "while (true) {": 4,
+          "* CFWR augmentation: inserted irrelevant code for data augmentation.": 3,
+          "@GTENegativeOne": 3,
+          "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"arr\"), name=LTEqLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"1\")], member=parseInt, postfix_operators=[], prefix_operators=[], qualifier=Integer, selectors=[], type_arguments=None), name=a)], modifiers=set(), type=BasicType(dimensions=[], name=int))": 2,
+          "import org.checkerframework.checker.index.qual.PolyUpperBound;": 2,
+          "Exit": 2,
+          "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"arr\"), name=LTEqLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=b, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), name=c)], modifiers=set(), type=BasicType(dimensions=[], name=int))": 2,
+          "while (false) {": 2
+        },
+        "types": {
+          "": 250
+        }
+      },
+      "negative_patterns": {
+        "labels": {
+          "}": 92,
+          "": 24,
+          "Entry": 22,
+          "return null;": 15,
+          "try {": 15,
+          "/*": 8,
+          "*/": 8,
+          "Try": 3,
+          "return false;": 2,
+          "@LTLengthOf(\"a\")": 2
+        },
+        "types": {
+          "": 250
+        }
+      },
+      "pattern_differences": {
+        "positive_only": [
+          "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value='u'), name=__cfwr_temp4)], modifiers=set(), type=BasicType(dimensions=[], name=char))",
+          "private Character __cfwr_handle447() {",
+          "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=['-'], qualifier=None, selectors=[], value=52L), name=__cfwr_data89)], modifiers=set(), type=BasicType(dimensions=[], name=long))",
+          "if (true || false) {",
+          "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=['-'], qualifier=None, selectors=[], value=78.37f), name=__cfwr_data82)], modifiers=set(), type=BasicType(dimensions=[], name=float))"
+        ],
+        "negative_only": [
+          "",
+          "import org.checkerframework.checker.index.qual.SameLen;",
+          "return true;",
+          "import org.checkerframework.checker.index.qual.IndexOrHigh;",
+          "@LTEqLengthOf(\"a\")"
+        ],
+        "common": []
+      }
+    }
+  }
+}

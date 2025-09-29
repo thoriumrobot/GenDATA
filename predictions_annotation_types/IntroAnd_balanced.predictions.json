@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/IntroAnd.java__IntroAnd_test_ubc_and_int_int___int_int_int_/IntroAnd.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5662903189659119,
+      "features": [
+        1.0,
+        2.200000047683716,
+        0.5642856359481812,
+        0.022642608731985092,
+        0.020732462406158447,
+        -0.005803844425827265,
+        0.018120625987648964,
+        0.008770838379859924,
+        -1.1920929132713809e-08,
+        -0.015085008926689625,
+        -0.018086539581418037,
+        0.0,
+        0.4611111283302307,
+        0.0833333358168602,
+        0.32793208956718445,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.566 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

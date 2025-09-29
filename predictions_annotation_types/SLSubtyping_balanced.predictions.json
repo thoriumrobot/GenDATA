@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/SLSubtyping.java__SLSubtyping_subtype_int___int___/SLSubtyping.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.55047607421875,
+      "features": [
+        1.0,
+        2.1818182468414307,
+        0.5454545617103577,
+        -0.0029137840028852224,
+        0.023123301565647125,
+        -0.014730916358530521,
+        6.382968109619469e-08,
+        0.025317424908280373,
+        0.009877982549369335,
+        -0.0026007890701293945,
+        -0.013759461231529713,
+        0.0,
+        0.46464645862579346,
+        0.0,
+        0.3423120379447937,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.550 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

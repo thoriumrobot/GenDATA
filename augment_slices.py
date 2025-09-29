@@ -265,7 +265,7 @@ def main():
     parser = argparse.ArgumentParser(description='Generate random Java code augmentations for CFWR training data')
     parser.add_argument('--slices_dir', required=True, help='Directory containing original slice files')
     parser.add_argument('--out_dir', required=True, help='Output directory for augmented files')
-    parser.add_argument('--variants_per_file', type=int, default=10, help='Number of variants to generate per file')
+    parser.add_argument('--variants_per_file', type=int, default=100, help='Number of variants to generate per file')
     parser.add_argument('--seed', type=int, default=42, help='Random seed for reproducible results')
     parser.add_argument('--max_methods', type=int, default=3, help='Maximum number of random methods to add')
     parser.add_argument('--max_statements', type=int, default=2, help='Maximum number of random statements to add')

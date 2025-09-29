@@ -1,0 +1,44 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/SpecialTransfersForEquality.java__SpecialTransfersForEquality_gteN1Test_int_/SpecialTransfersForEquality.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5211037397384644,
+      "features": [
+        1.0,
+        2.5714285373687744,
+        0.5824175477027893,
+        -0.028551727533340454,
+        -0.015344755724072456,
+        0.028131868690252304,
+        0.027934568002820015,
+        0.03189858794212341,
+        0.012855036184191704,
+        0.0,
+        0.0,
+        0.0,
+        0.3809524178504944,
+        0.0317460335791111,
+        0.26807764172554016,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced improved_balanced_causal model with 0.521 confidence (tabular inputs, real code training)",
+      "model_type": "enhanced_balanced_improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:58:13",
+  "model_type": "enhanced_balanced_graph_models",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 21,
+  "pipeline_version": "enhanced_balanced_pipeline",
+  "uses_batching": true,
+  "uses_graph_inputs": true,
+  "enhanced_framework": true
+}

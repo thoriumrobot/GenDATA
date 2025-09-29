@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/StringMethods.java__StringMethods_testSubstring_String_/StringMethods.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5780128240585327,
+      "features": [
+        1.0,
+        2.4000000953674316,
+        0.5249999761581421,
+        0.03822369500994682,
+        1.1920929132713809e-08,
+        0.06821628659963608,
+        0.02875031903386116,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.4000000059604645,
+        0.111111119389534,
+        0.2814815044403076,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.578 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

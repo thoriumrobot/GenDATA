@@ -1,0 +1,44 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/RefineSubtrahend.java__RefineSubtrahend_withVariable_int___int_int_int_/RefineSubtrahend.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5410308241844177,
+      "features": [
+        1.0,
+        1.75,
+        0.3854166269302368,
+        0.002487294375896454,
+        7.078051567077637e-08,
+        0.11522755771875381,
+        -0.05370088666677475,
+        -3.725290298461914e-08,
+        -0.0325201191008091,
+        0.022789470851421356,
+        0.0,
+        0.0,
+        0.4166666865348816,
+        0.0,
+        0.3090277910232544,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced improved_balanced_causal model with 0.541 confidence (tabular inputs, real code training)",
+      "model_type": "enhanced_balanced_improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:58:13",
+  "model_type": "enhanced_balanced_graph_models",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 21,
+  "pipeline_version": "enhanced_balanced_pipeline",
+  "uses_batching": true,
+  "uses_graph_inputs": true,
+  "enhanced_framework": true
+}

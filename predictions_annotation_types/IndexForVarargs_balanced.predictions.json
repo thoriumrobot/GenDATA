@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/IndexForVarargs.java__IndexForVarargs_m__/IndexForVarargs.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5919058322906494,
+      "features": [
+        1.0,
+        2.6666667461395264,
+        0.5833333134651184,
+        0.03631012514233589,
+        0.028274325653910637,
+        0.008169773034751415,
+        0.003012980567291379,
+        0.016344131901860237,
+        -0.016687920317053795,
+        -0.020352013409137726,
+        -0.0032206003088504076,
+        0.0,
+        0.3993055522441864,
+        0.0321180559694767,
+        0.27614617347717285,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.592 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

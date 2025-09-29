@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/ArrayConstructionPositiveLength.java__ArrayConstructionPositiveLength_makeArray_int_/ArrayConstructionPositiveLength.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.584944486618042,
+      "features": [
+        1.0,
+        2.0,
+        0.555555522441864,
+        5.397531595008331e-07,
+        -0.04218186065554619,
+        6.622738357719982e-09,
+        -0.023011842742562294,
+        0.003327455371618271,
+        0.0037960675545036793,
+        0.03171027824282646,
+        4.337893528827408e-07,
+        0.0,
+        0.5061728358268738,
+        0.037037041038274765,
+        0.38443076610565186,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.585 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

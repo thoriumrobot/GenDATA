@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/LubIndex.java__LubIndex_Bottom_int___int___/LubIndex.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.549480676651001,
+      "features": [
+        1.0,
+        3.058823585510254,
+        0.5294116735458374,
+        0.031127294525504112,
+        0.005661640781909227,
+        0.008040426298975945,
+        0.00151970109436661,
+        -0.006492480169981718,
+        0.0010479040211066604,
+        0.019023874774575233,
+        -0.021725043654441833,
+        0.0,
+        0.3364425599575043,
+        0.04042017087340355,
+        0.20252662897109985,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.549 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

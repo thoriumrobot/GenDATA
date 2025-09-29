@@ -1,0 +1,44 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/RefineNeq.java__RefineNeq_testLTL_int_/RefineNeq.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5338777303695679,
+      "features": [
+        1.0,
+        2.8888888359069824,
+        0.5055555105209351,
+        0.039269037544727325,
+        0.03249765560030937,
+        -3.1176838888313796e-08,
+        0.04972560331225395,
+        -0.032543256878852844,
+        6.706767408104497e-08,
+        -0.03270011395215988,
+        -0.004251847043633461,
+        0.0,
+        0.354938268661499,
+        0.0555555634200573,
+        0.21849282085895538,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced improved_balanced_causal model with 0.534 confidence (tabular inputs, real code training)",
+      "model_type": "enhanced_balanced_improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:58:13",
+  "model_type": "enhanced_balanced_graph_models",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 21,
+  "pipeline_version": "enhanced_balanced_pipeline",
+  "uses_batching": true,
+  "uses_graph_inputs": true,
+  "enhanced_framework": true
+}

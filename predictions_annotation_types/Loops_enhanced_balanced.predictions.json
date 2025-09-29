@@ -1,0 +1,44 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/Loops.java__Loops_test4_int___int_int_/Loops.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5626936554908752,
+      "features": [
+        1.0,
+        2.222222328186035,
+        0.5158729553222656,
+        -0.018132688477635384,
+        -0.009221832267940044,
+        0.004494437947869301,
+        -0.05834818631410599,
+        -0.014298692345619202,
+        0.027455277740955353,
+        -0.0035819874610751867,
+        0.005496290046721697,
+        0.0,
+        0.45061731338500977,
+        0.018518520519137383,
+        0.2949245870113373,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced improved_balanced_causal model with 0.563 confidence (tabular inputs, real code training)",
+      "model_type": "enhanced_balanced_improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:58:13",
+  "model_type": "enhanced_balanced_graph_models",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 21,
+  "pipeline_version": "enhanced_balanced_pipeline",
+  "uses_batching": true,
+  "uses_graph_inputs": true,
+  "enhanced_framework": true
+}

@@ -1,0 +1,44 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/RefineLTE2.java__RefineLTE2_add_int_/RefineLTE2.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5712401270866394,
+      "features": [
+        1.0,
+        2.0,
+        0.5494505167007446,
+        0.00022817829449195415,
+        0.05292630195617676,
+        -8.514949634275126e-09,
+        2.1287373641598606e-08,
+        -0.02023250423371792,
+        -0.08004003018140793,
+        0.0,
+        0.0,
+        0.0,
+        0.40476194024086,
+        0.0,
+        0.3353174328804016,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced improved_balanced_causal model with 0.571 confidence (tabular inputs, real code training)",
+      "model_type": "enhanced_balanced_improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:58:13",
+  "model_type": "enhanced_balanced_graph_models",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 21,
+  "pipeline_version": "enhanced_balanced_pipeline",
+  "uses_batching": true,
+  "uses_graph_inputs": true,
+  "enhanced_framework": true
+}

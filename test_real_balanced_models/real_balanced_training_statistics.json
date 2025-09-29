@@ -1,0 +1,441 @@
+{
+  "annotation_types": [
+    "@Positive",
+    "@NonNegative",
+    "@GTENegativeOne"
+  ],
+  "training_history": {
+    "@Positive": {
+      "train_losses": [
+        1.2762562870979308,
+        0.9780522584915161,
+        1.1427029609680175,
+        1.354399609565735,
+        1.138972097635269,
+        1.0537302851676942,
+        1.1793267369270324,
+        0.8293816208839416,
+        1.2066284358501433,
+        0.5704150140285492
+      ],
+      "val_losses": [
+        0.8131703734397888,
+        0.5151449665427208,
+        0.47026192396879196,
+        0.3757626563310623,
+        0.36167948320508003,
+        0.33920422568917274,
+        0.35496699437499046,
+        0.35767633095383644,
+        0.408800583332777,
+        0.41323986276984215
+      ],
+      "val_accuracies": [
+        10.0,
+        50.0,
+        60.0,
+        70.0,
+        70.0,
+        70.0,
+        70.0,
+        70.0,
+        70.0,
+        70.0
+      ],
+      "best_val_accuracy": 70.0,
+      "epochs_trained": 10
+    },
+    "@NonNegative": {
+      "train_losses": [
+        0.7533488869667053,
+        1.0070281624794006,
+        0.7445282220840455,
+        0.6433074057102204,
+        0.9363083839416504,
+        0.9956428527832031,
+        0.6182955980300904,
+        0.5662430882453918,
+        0.5391450583934784,
+        0.6324306786060333
+      ],
+      "val_losses": [
+        0.6478666961193085,
+        0.60173499584198,
+        0.6325055658817291,
+        0.6728121042251587,
+        0.768444687128067,
+        0.7901471257209778,
+        0.8049059212207794,
+        0.898857057094574,
+        0.99615478515625,
+        1.2631142139434814
+      ],
+      "val_accuracies": [
+        60.0,
+        60.0,
+        60.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0,
+        40.0
+      ],
+      "best_val_accuracy": 60.0,
+      "epochs_trained": 10
+    },
+    "@GTENegativeOne": {
+      "train_losses": [
+        0.6861633718013763,
+        0.7070239543914795,
+        0.5797467261552811,
+        0.41042349934577943,
+        0.6551563978195191,
+        0.5402452766895294,
+        0.34421985149383544,
+        0.5123156383633614,
+        0.3830271363258362,
+        0.44260563552379606
+      ],
+      "val_losses": [
+        0.4480789303779602,
+        0.402221716940403,
+        0.3760429695248604,
+        0.35701581835746765,
+        0.3435836210846901,
+        0.3411714509129524,
+        0.33542998880147934,
+        0.3259127363562584,
+        0.3234765753149986,
+        0.327571764588356
+      ],
+      "val_accuracies": [
+        70.0,
+        70.0,
+        70.0,
+        70.0,
+        70.0,
+        70.0,
+        70.0,
+        70.0,
+        70.0,
+        70.0
+      ],
+      "best_val_accuracy": 70.0,
+      "epochs_trained": 10
+    }
+  },
+  "best_accuracies": {
+    "@Positive": 70.0,
+    "@NonNegative": 60.0,
+    "@GTENegativeOne": 70.0
+  },
+  "final_metrics": {
+    "@Positive": {
+      "accuracy": 0.7,
+      "classification_report": {
+        "Negative": {
+          "precision": 1.0,
+          "recall": 0.5,
+          "f1-score": 0.6666666666666666,
+          "support": 6.0
+        },
+        "Positive": {
+          "precision": 0.5714285714285714,
+          "recall": 1.0,
+          "f1-score": 0.7272727272727273,
+          "support": 4.0
+        },
+        "accuracy": 0.7,
+        "macro avg": {
+          "precision": 0.7857142857142857,
+          "recall": 0.75,
+          "f1-score": 0.696969696969697,
+          "support": 10.0
+        },
+        "weighted avg": {
+          "precision": 0.8285714285714285,
+          "recall": 0.7,
+          "f1-score": 0.6909090909090909,
+          "support": 10.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          3,
+          3
+        ],
+        [
+          0,
+          4
+        ]
+      ],
+      "total_samples": 10,
+      "positive_samples": 4,
+      "negative_samples": 6,
+      "confidence_analysis": {
+        "positive_avg_confidence": 0.9574903249740601,
+        "negative_avg_confidence": 0.9229496121406555,
+        "overall_avg_confidence": 0.9367659687995911
+      }
+    },
+    "@NonNegative": {
+      "accuracy": 0.4,
+      "classification_report": {
+        "Negative": {
+          "precision": 1.0,
+          "recall": 0.14285714285714285,
+          "f1-score": 0.25,
+          "support": 7.0
+        },
+        "Positive": {
+          "precision": 0.3333333333333333,
+          "recall": 1.0,
+          "f1-score": 0.5,
+          "support": 3.0
+        },
+        "accuracy": 0.4,
+        "macro avg": {
+          "precision": 0.6666666666666666,
+          "recall": 0.5714285714285714,
+          "f1-score": 0.375,
+          "support": 10.0
+        },
+        "weighted avg": {
+          "precision": 0.8,
+          "recall": 0.4,
+          "f1-score": 0.325,
+          "support": 10.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          1,
+          6
+        ],
+        [
+          0,
+          3
+        ]
+      ],
+      "total_samples": 10,
+      "positive_samples": 3,
+      "negative_samples": 7,
+      "confidence_analysis": {
+        "positive_avg_confidence": 0.7890961766242981,
+        "negative_avg_confidence": 0.883292019367218,
+        "overall_avg_confidence": 0.8550332188606262
+      }
+    },
+    "@GTENegativeOne": {
+      "accuracy": 0.7,
+      "classification_report": {
+        "Negative": {
+          "precision": 0.5,
+          "recall": 1.0,
+          "f1-score": 0.6666666666666666,
+          "support": 3.0
+        },
+        "Positive": {
+          "precision": 1.0,
+          "recall": 0.5714285714285714,
+          "f1-score": 0.7272727272727273,
+          "support": 7.0
+        },
+        "accuracy": 0.7,
+        "macro avg": {
+          "precision": 0.75,
+          "recall": 0.7857142857142857,
+          "f1-score": 0.696969696969697,
+          "support": 10.0
+        },
+        "weighted avg": {
+          "precision": 0.85,
+          "recall": 0.7,
+          "f1-score": 0.7090909090909091,
+          "support": 10.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "total_samples": 10,
+      "positive_samples": 7,
+      "negative_samples": 3,
+      "confidence_analysis": {
+        "positive_avg_confidence": 0.8182424902915955,
+        "negative_avg_confidence": 0.7908698916435242,
+        "overall_avg_confidence": 0.8100307583808899
+      }
+    }
+  },
+  "real_code_analysis": {
+    "@Positive": {
+      "positive_patterns": {
+        "labels": {
+          "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ArrayCreator(dimensions=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=5)], initializer=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=BasicType(dimensions=None, name=int)), name=arr)], modifiers=set(), type=BasicType(dimensions=[None], name=int))": 2,
+          "int[] newArray = new int[x + y];": 1,
+          "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ArrayCreator(dimensions=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=8)], initializer=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=BasicType(dimensions=None, name=int)), name=a)], modifiers=set(), type=BasicType(dimensions=[None], name=int))": 1,
+          "private static int lineStartIndex(String s, int start) {": 1,
+          "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=arr, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=MemberReference(member=n1p, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))]), name=a)], modifiers=set(), type=BasicType(dimensions=[], name=int))": 1,
+          "void test(@IndexFor(\"#3\") int start, @IndexOrHigh(\"#3\") int end, int[] a) {": 1,
+          "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ArrayCreator(dimensions=[MemberReference(member=len, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], initializer=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=BasicType(dimensions=None, name=int)), name=arr)], modifiers=set(), type=BasicType(dimensions=[None], name=int))": 1,
+          "int newlinePos = s.indexOf(\"\\n\", start - 1);": 1,
+          "static void fn1(int[] arr, @IndexFor(\"#1\") int i) {": 1,
+          "public void makeArray(@Positive int max_values) {": 1
+        },
+        "types": {
+          "": 25
+        }
+      },
+      "negative_patterns": {
+        "labels": {
+          "": 3,
+          "Entry": 2,
+          "}": 2,
+          "Exit": 2,
+          "For(BinaryOperation(operandl=MemberReference(member=__cfwr_i54, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=6), operator=<))": 1,
+          "import java.util.BitSet;": 1,
+          "/*": 1,
+          "try {": 1,
+          "Update(MemberReference(member=__cfwr_i54, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[]))": 1,
+          "For(BinaryOperation(operandl=MemberReference(member=__cfwr_i87, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=4), operator=<))": 1
+        },
+        "types": {
+          "": 25
+        }
+      },
+      "pattern_differences": {
+        "positive_only": [
+          "int[] newArray = new int[x + y];",
+          "void test(@IndexFor(\"#3\") int start, @IndexOrHigh(\"#3\") int end, int[] a) {",
+          "public void useTryShiftIndex(@NonNegative int x) {",
+          "public static void bar(@NonNegative int i, String @ArrayLen(4) [] args) {",
+          "private static int lastIndexOf(short[] array, short target, @IndexOrHigh(\"#1\") int start, @IndexOrHigh(\"#1\") int end) {"
+        ],
+        "negative_only": [
+          "",
+          "Update(MemberReference(member=__cfwr_i54, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[]))",
+          "Update(MemberReference(member=__cfwr_i87, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[]))",
+          "private void m(BitSet b) {",
+          "For(BinaryOperation(operandl=MemberReference(member=__cfwr_i87, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=4), operator=<))"
+        ],
+        "common": []
+      }
+    },
+    "@NonNegative": {
+      "positive_patterns": {
+        "labels": {
+          "import org.checkerframework.checker.index.qual.LTLengthOf;": 6,
+          "import org.checkerframework.checker.index.qual.LTEqLengthOf;": 3,
+          "LocalVariableDeclaration(annotations=[Annotation(element=ElementArrayValue(values=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"arr\")]), name=LTLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=BinaryOperation(operandl=MemberReference(member=a, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=7), operator=-), name=f)], modifiers=set(), type=BasicType(dimensions=[], name=int))": 1,
+          "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=arr, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=BinaryOperation(operandl=MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=arr, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator=-))]), name=i)], modifiers=set(), type=BasicType(dimensions=[], name=int))": 1,
+          "Assignment(expressionl=MemberReference(member=index, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type==, value=MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=array, selectors=[]))": 1,
+          "LocalVariableDeclaration(annotations=[Annotation(element=ElementArrayValue(values=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"arr\")]), name=LTLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=BinaryOperation(operandl=MemberReference(member=a, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator=-), name=c)], modifiers=set(), type=BasicType(dimensions=[], name=int))": 1,
+          "If(BinaryOperation(operandl=MemberReference(member=y, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=array, selectors=[]), operator=<))": 1,
+          "LocalVariableDeclaration(annotations=[Annotation(element=ElementArrayValue(values=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"arr\")]), name=LTEqLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=BinaryOperation(operandl=MemberReference(member=a, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator=-), name=c1)], modifiers=set(), type=BasicType(dimensions=[], name=int))": 1,
+          "LocalVariableDeclaration(annotations=[Annotation(element=ElementArrayValue(values=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"arr\")]), name=LTLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=BinaryOperation(operandl=MemberReference(member=a, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=0), operator=-), name=d)], modifiers=set(), type=BasicType(dimensions=[], name=int))": 1,
+          "Assignment(expressionl=This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[MemberReference(member=vDown, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None)]), type==, value=ArrayCreator(dimensions=[This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[MemberReference(member=size, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None)])], initializer=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=BasicType(dimensions=None, name=int)))": 1
+        },
+        "types": {
+          "": 25
+        }
+      },
+      "negative_patterns": {
+        "labels": {
+          "@GTENegativeOne": 3,
+          "Exit": 2,
+          "b.clear(b.nextSetBit(0));": 1,
+          "For(BinaryOperation(operandl=MemberReference(member=__cfwr_i54, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=6), operator=<))": 1,
+          "For(BinaryOperation(operandl=MemberReference(member=__cfwr_i87, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=4), operator=<))": 1,
+          "} catch (Exception __cfwr_e60) {": 1,
+          "if ((78L % -8) && false) {": 1,
+          "for (int __cfwr_i89 = 0; __cfwr_i89 < 8; __cfwr_i89++) {": 1,
+          "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), name=__cfwr_item38)], modifiers=set(), type=BasicType(dimensions=[], name=byte))": 1,
+          "Update(MemberReference(member=__cfwr_i87, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[]))": 1
+        },
+        "types": {
+          "": 25
+        }
+      },
+      "pattern_differences": {
+        "positive_only": [
+          "LocalVariableDeclaration(annotations=[Annotation(element=ElementArrayValue(values=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"arr\")]), name=LTLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=BinaryOperation(operandl=MemberReference(member=a, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator=-), name=c)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+          "int @SameLen(\"s\") [] array1 = new int[s.length() + 1];",
+          "LocalVariableDeclaration(annotations=[Annotation(element=ElementArrayValue(values=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"arr\")]), name=LTEqLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=7), name=j)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+          "import org.checkerframework.checker.index.qual.LTLengthOf;",
+          "LocalVariableDeclaration(annotations=[Annotation(element=ElementArrayValue(values=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"arr\")]), name=LTLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=BinaryOperation(operandl=MemberReference(member=a, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=7), operator=-), name=f)], modifiers=set(), type=BasicType(dimensions=[], name=int))"
+        ],
+        "negative_only": [
+          "Update(MemberReference(member=__cfwr_i54, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[]))",
+          "for (int __cfwr_i89 = 0; __cfwr_i89 < 8; __cfwr_i89++) {",
+          "Update(MemberReference(member=__cfwr_i87, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[]))",
+          "private void m(BitSet b) {",
+          "int i = b.nextSetBit(0);"
+        ],
+        "common": []
+      }
+    },
+    "@GTENegativeOne": {
+      "positive_patterns": {
+        "labels": {
+          "import org.checkerframework.checker.index.qual.PolyUpperBound;": 2,
+          "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), name=__cfwr_temp61)], modifiers=set(), type=BasicType(dimensions=[], name=short))": 1,
+          "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=BinaryOperation(operandl=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=false), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), operator=>>), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=true), operator=^), name=__cfwr_var35)], modifiers=set(), type=BasicType(dimensions=[], name=int))": 1,
+          "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value='1'), operandr=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value='n'), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=53.29), operator=|), operator=*), name=__cfwr_val91)], modifiers=set(), type=BasicType(dimensions=[], name=short))": 1,
+          "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), name=__cfwr_var21)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=Boolean, sub_type=None))": 1,
+          "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), name=__cfwr_val81)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=Boolean, sub_type=None))": 1,
+          "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value='5'), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=7.50f), operator=&), name=__cfwr_var2)], modifiers=set(), type=BasicType(dimensions=[], name=double))": 1,
+          "Object __cfwr_temp24 = null;": 1,
+          "long __cfwr_temp633(Boolean __cfwr_p0, long __cfwr_p1, Integer __cfwr_p2) {": 1,
+          "LocalVariableDeclaration(annotations=[Annotation(element=None, name=LowerBoundUnknown)], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=['-'], qualifier=None, selectors=[], value=10), name=u)], modifiers=set(), type=BasicType(dimensions=[], name=int))": 1
+        },
+        "types": {
+          "": 25
+        }
+      },
+      "negative_patterns": {
+        "labels": {
+          "}": 9,
+          "": 4,
+          "try {": 3,
+          "Entry": 2,
+          "return null;": 2,
+          "return true;": 1,
+          "*/": 1,
+          "/*": 1,
+          "import org.checkerframework.checker.index.qual.GTENegativeOne;": 1,
+          "return -29.39f;": 1
+        },
+        "types": {
+          "": 25
+        }
+      },
+      "pattern_differences": {
+        "positive_only": [
+          "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), name=__cfwr_item65)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=Character, sub_type=None))",
+          "import org.checkerframework.checker.index.qual.PolyUpperBound;",
+          "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), name=__cfwr_val81)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=Boolean, sub_type=None))",
+          "String __cfwr_result23 = \"test82\";",
+          "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=null), name=__cfwr_var21)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[], name=Boolean, sub_type=None))"
+        ],
+        "negative_only": [
+          "",
+          "import org.checkerframework.checker.index.qual.GTENegativeOne;",
+          "return null;",
+          "}",
+          "/*"
+        ],
+        "common": []
+      }
+    }
+  }
+}

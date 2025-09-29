@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/BitSetLowerBound.java__BitSetLowerBound_m_BitSet_/BitSetLowerBound.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5998949408531189,
+      "features": [
+        1.0,
+        1.7142857313156128,
+        0.5204081535339355,
+        6.386211737208214e-08,
+        -0.034163761883974075,
+        -6.83648266885939e-08,
+        -0.034163784235715866,
+        4.257474728319721e-08,
+        -0.024157417938113213,
+        0.0,
+        0.0,
+        0.0,
+        0.5714285969734192,
+        0.0,
+        0.4642857015132904,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.600 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/Polymorphic3.java__Polymorphic3_ubc_id_int___int___int_int_int_int_/Polymorphic3.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.588381826877594,
+      "features": [
+        1.0,
+        1.8181818723678589,
+        0.5206611156463623,
+        4.876743631143654e-08,
+        -0.016840266063809395,
+        -6.773255023517777e-08,
+        -0.01684020645916462,
+        -1.993700138314125e-08,
+        -0.01684017851948738,
+        -1.8965113923741228e-08,
+        -0.016840197145938873,
+        0.0,
+        0.5454545617103577,
+        0.0,
+        0.4318181872367859,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.588 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

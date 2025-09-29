@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/RefineLT.java__RefineLT_testLTEL_int_/RefineLT.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5512781739234924,
+      "features": [
+        1.0,
+        3.1111111640930176,
+        0.5246913433074951,
+        0.025164835155010223,
+        0.009669486433267593,
+        -0.03251738101243973,
+        0.030943453311920166,
+        -0.006415792740881443,
+        -0.00976078025996685,
+        0.05084039643406868,
+        -0.008490257896482944,
+        0.0,
+        0.30709877610206604,
+        0.06558642536401749,
+        0.20045655965805054,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.551 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

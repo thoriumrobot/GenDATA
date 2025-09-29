@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/PlusPlusBug.java__PlusPlusBug_test_int_/PlusPlusBug.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5807816982269287,
+      "features": [
+        1.0,
+        1.600000023841858,
+        0.5249999165534973,
+        -2.9802322387695312e-08,
+        -0.05857863277196884,
+        -1.1920929132713809e-08,
+        -0.041421305388212204,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.6000000238418579,
+        0.0,
+        0.5,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.581 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

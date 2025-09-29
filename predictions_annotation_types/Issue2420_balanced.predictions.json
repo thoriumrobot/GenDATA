@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/Issue2420.java__Issue2420_str_String_/Issue2420.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5658032298088074,
+      "features": [
+        1.0,
+        2.0,
+        0.5612244606018066,
+        -0.027370138093829155,
+        -0.0439663790166378,
+        2.9528871792194877e-08,
+        0.005203843116760254,
+        -0.047571200877428055,
+        -0.02316693775355816,
+        0.0,
+        0.0,
+        0.0,
+        0.484127014875412,
+        0.0476190522313118,
+        0.3600088059902191,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.566 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

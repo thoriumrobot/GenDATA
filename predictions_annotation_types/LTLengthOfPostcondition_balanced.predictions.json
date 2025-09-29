@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/LTLengthOfPostcondition.java__LTLengthOfPostcondition_useTryShiftIndex_int_/LTLengthOfPostcondition.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5531328916549683,
+      "features": [
+        1.0,
+        1.7142857313156128,
+        0.5904761552810669,
+        -1.7029899268550253e-08,
+        -3.4059798537100505e-08,
+        0.14285710453987122,
+        0.09056782722473145,
+        -2.1287373641598606e-08,
+        1.7029899268550253e-08,
+        0.0,
+        0.0,
+        0.0,
+        0.380952388048172,
+        0.0317460335791111,
+        0.2539682686328888,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.553 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

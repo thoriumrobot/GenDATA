@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/MinMaxIndex.java__MinMaxIndex_twoSequences_String_String_int_int_/MinMaxIndex.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.589146077632904,
+      "features": [
+        1.0,
+        1.6666666269302368,
+        0.5666666030883789,
+        -1.3907749973895989e-07,
+        -0.043661873787641525,
+        2.4835268064293814e-08,
+        0.04366198182106018,
+        4.967053612858763e-08,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.5833333134651184,
+        0.0,
+        0.4791666567325592,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.589 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/EnumValues.java__EnumValues_enumValues__/EnumValues.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5753504037857056,
+      "features": [
+        1.0,
+        2.0,
+        0.5357142686843872,
+        0.011660794727504253,
+        0.007544361986219883,
+        0.008398935198783875,
+        -0.020606884732842445,
+        3.8489699363708496e-05,
+        -0.009583501145243645,
+        -0.0006518278969451785,
+        0.019212840124964714,
+        0.0,
+        0.5039682984352112,
+        0.0238095261156559,
+        0.3751102089881897,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.575 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

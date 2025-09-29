@@ -1,0 +1,217 @@
+{
+  "annotation_types": [
+    "@Positive",
+    "@NonNegative",
+    "@GTENegativeOne"
+  ],
+  "training_history": {
+    "@Positive": {
+      "train_losses": [
+        1.105533480644226,
+        1.3021499693393708,
+        1.1917527318000793,
+        1.1461213827133179,
+        0.8412218570709229
+      ],
+      "val_losses": [
+        0.7138608396053314,
+        0.6517048478126526,
+        0.6996669471263885,
+        0.7266951203346252,
+        0.7465928792953491
+      ],
+      "val_accuracies": [
+        60.0,
+        60.0,
+        50.0,
+        50.0,
+        50.0
+      ],
+      "best_val_accuracy": 60.0
+    },
+    "@NonNegative": {
+      "train_losses": [
+        1.2602913975715637,
+        1.2834098935127258,
+        1.05026872754097,
+        0.808737063407898,
+        1.040851879119873
+      ],
+      "val_losses": [
+        0.8083354830741882,
+        0.9424878358840942,
+        1.0417260825634003,
+        1.019371211528778,
+        1.0253360271453857
+      ],
+      "val_accuracies": [
+        50.0,
+        50.0,
+        50.0,
+        50.0,
+        50.0
+      ],
+      "best_val_accuracy": 50.0
+    },
+    "@GTENegativeOne": {
+      "train_losses": [
+        1.066623318195343,
+        1.14324893951416,
+        1.2486139416694642,
+        1.0797396063804627,
+        0.8225239157676697
+      ],
+      "val_losses": [
+        0.6984597742557526,
+        0.6395650506019592,
+        0.6912828683853149,
+        0.7264704406261444,
+        0.6981781423091888
+      ],
+      "val_accuracies": [
+        60.0,
+        70.0,
+        60.0,
+        50.0,
+        60.0
+      ],
+      "best_val_accuracy": 70.0
+    }
+  },
+  "best_accuracies": {
+    "@Positive": 60.0,
+    "@NonNegative": 50.0,
+    "@GTENegativeOne": 70.0
+  },
+  "final_metrics": {
+    "@Positive": {
+      "accuracy": 0.5,
+      "classification_report": {
+        "Negative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 4.0
+        },
+        "Positive": {
+          "precision": 0.5555555555555556,
+          "recall": 0.8333333333333334,
+          "f1-score": 0.6666666666666666,
+          "support": 6.0
+        },
+        "accuracy": 0.5,
+        "macro avg": {
+          "precision": 0.2777777777777778,
+          "recall": 0.4166666666666667,
+          "f1-score": 0.3333333333333333,
+          "support": 10.0
+        },
+        "weighted avg": {
+          "precision": 0.33333333333333337,
+          "recall": 0.5,
+          "f1-score": 0.4,
+          "support": 10.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          0,
+          4
+        ],
+        [
+          1,
+          5
+        ]
+      ],
+      "total_samples": 10,
+      "positive_samples": 6,
+      "negative_samples": 4
+    },
+    "@NonNegative": {
+      "accuracy": 0.5,
+      "classification_report": {
+        "Negative": {
+          "precision": 0.5,
+          "recall": 1.0,
+          "f1-score": 0.6666666666666666,
+          "support": 5.0
+        },
+        "Positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 5.0
+        },
+        "accuracy": 0.5,
+        "macro avg": {
+          "precision": 0.25,
+          "recall": 0.5,
+          "f1-score": 0.3333333333333333,
+          "support": 10.0
+        },
+        "weighted avg": {
+          "precision": 0.25,
+          "recall": 0.5,
+          "f1-score": 0.3333333333333333,
+          "support": 10.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ]
+      ],
+      "total_samples": 10,
+      "positive_samples": 5,
+      "negative_samples": 5
+    },
+    "@GTENegativeOne": {
+      "accuracy": 0.6,
+      "classification_report": {
+        "Negative": {
+          "precision": 0.6666666666666666,
+          "recall": 0.8571428571428571,
+          "f1-score": 0.75,
+          "support": 7.0
+        },
+        "Positive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 3.0
+        },
+        "accuracy": 0.6,
+        "macro avg": {
+          "precision": 0.3333333333333333,
+          "recall": 0.42857142857142855,
+          "f1-score": 0.375,
+          "support": 10.0
+        },
+        "weighted avg": {
+          "precision": 0.4666666666666666,
+          "recall": 0.6,
+          "f1-score": 0.525,
+          "support": 10.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          6,
+          1
+        ],
+        [
+          3,
+          0
+        ]
+      ],
+      "total_samples": 10,
+      "positive_samples": 3,
+      "negative_samples": 7
+    }
+  }
+}

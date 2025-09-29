@@ -35,7 +35,7 @@ class GlobalAttentionPool(nn.Module):
 
 
 class GraphTransformerEncoder(nn.Module):
-    def __init__(self, in_dim: int, edge_dim: int = 2, hidden_dim: int = 128, layers: int = 4, heads: int = 4, out_dim: int = 256, dropout: float = 0.1):
+    def __init__(self, in_dim: int, edge_dim: int = 2, hidden_dim: int = 256, layers: int = 6, heads: int = 16, out_dim: int = 512, dropout: float = 0.1):
         super().__init__()
         self.input = nn.Linear(in_dim, hidden_dim)
         convs = []
@@ -61,7 +61,7 @@ class GraphTransformerEncoder(nn.Module):
 
 
 class PNAGATEncoder(nn.Module):
-    def __init__(self, in_dim: int, edge_dim: int = 2, hidden_dim: int = 128, layers: int = 4, out_dim: int = 256, heads: int = 4):
+    def __init__(self, in_dim: int, edge_dim: int = 2, hidden_dim: int = 256, layers: int = 6, out_dim: int = 512, heads: int = 16):
         super().__init__()
         self.input = nn.Linear(in_dim, hidden_dim)
         convs = []

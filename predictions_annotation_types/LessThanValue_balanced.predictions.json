@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/LessThanValue.java__lessthan.LessThanValue_calls__/LessThanValue.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.6222279667854309,
+      "features": [
+        1.0,
+        2.0,
+        0.6173912286758423,
+        -0.02544707991182804,
+        0.017671450972557068,
+        -0.007120092399418354,
+        -0.09993232786655426,
+        -0.003677999135106802,
+        0.002847272204235196,
+        0.03118193708360195,
+        0.011751011945307255,
+        0.0,
+        0.3750000298023224,
+        0.0625,
+        0.27118057012557983,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.622 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

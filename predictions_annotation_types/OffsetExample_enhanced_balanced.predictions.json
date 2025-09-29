@@ -1,0 +1,44 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/OffsetExample.java__OffsetExample_test_int_int_int___/OffsetExample.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5960388779640198,
+      "features": [
+        1.0,
+        2.200000047683716,
+        0.5384615063667297,
+        -0.013963568024337292,
+        2.1855035114981547e-08,
+        -4.7683716530855236e-08,
+        -0.13536867499351501,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.03999999910593033,
+        0.34800001978874207,
+        0.13360001146793365,
+        0.24451999366283417,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced improved_balanced_causal model with 0.596 confidence (tabular inputs, real code training)",
+      "model_type": "enhanced_balanced_improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:58:13",
+  "model_type": "enhanced_balanced_graph_models",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 21,
+  "pipeline_version": "enhanced_balanced_pipeline",
+  "uses_batching": true,
+  "uses_graph_inputs": true,
+  "enhanced_framework": true
+}

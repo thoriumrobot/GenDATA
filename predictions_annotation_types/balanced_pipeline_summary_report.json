@@ -1,0 +1,426 @@
+{
+  "timestamp": "2025-09-29 12:48:17",
+  "pipeline_type": "improved_balanced_pipeline",
+  "mode": "predict",
+  "device": "auto",
+  "project_root": "/home/ubuntu/GenDATA/case_studies",
+  "models_used": [
+    {
+      "annotation_type": "@Positive",
+      "model_file": "/home/ubuntu/GenDATA/models_annotation_types/positive_real_balanced_model.pth",
+      "model_type": "improved_balanced_causal",
+      "status": "loaded"
+    },
+    {
+      "annotation_type": "@NonNegative",
+      "model_file": "/home/ubuntu/GenDATA/models_annotation_types/nonnegative_real_balanced_model.pth",
+      "model_type": "improved_balanced_causal",
+      "status": "loaded"
+    },
+    {
+      "annotation_type": "@GTENegativeOne",
+      "model_file": "/home/ubuntu/GenDATA/models_annotation_types/gtenegativeone_real_balanced_model.pth",
+      "model_type": "improved_balanced_causal",
+      "status": "loaded"
+    }
+  ],
+  "predictions_generated": [
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/StringLength.java__StringLength_testNewArraySameLen_String_/StringLength.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/Polymorphic.java__Polymorphic_ubc_id_int___int___int_int_int_int_/Polymorphic.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/Polymorphic2.java__Polymorphic2_testUpperBound2_int_int_/Polymorphic2.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/Issue2494.java__Issue2494_factorials/Issue2494.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/EqualToTransfer.java__EqualToTransfer_eq_bad_check_int___/EqualToTransfer.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/ShiftRight.java__ShiftRight_negative_Object___int_/ShiftRight.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/CharSequenceTest.java__CharSequenceTest_testAppend_Appendable_CharSequence_int_/CharSequenceTest.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/SkipBufferedReader.java__SkipBufferedReader_method__/SkipBufferedReader.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/IntroSub.java__IntroSub_test_int___int_/IntroSub.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/IntroAdd.java__IntroAdd_test_int___int_/IntroAdd.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/Index118.java__Index118_bar_int_String___/Index118.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/LessThanDec.java__LessThanDec_lastIndexOf_short___short_int_int_/LessThanDec.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/GreaterThanOrEqualTransfer.java__GreaterThanOrEqualTransfer_gte_bad_check_int___/GreaterThanOrEqualTransfer.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/IndexForVarargs.java__IndexForVarargs_m__/IndexForVarargs.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/ErrorMessageCheck.java__ErrorMessageCheck_method3_int_int_/ErrorMessageCheck.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/RefineNeqLength.java__RefineNeqLength_refineNeqLengthMThree_String_int_/RefineNeqLength.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/RefineLT.java__RefineLT_testLTEL_int_/RefineLT.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/StringMethods.java__StringMethods_testSubstring_String_/StringMethods.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/StringBuilderOffset.java__StringBuilderOffset_OffsetStringBuilder__/StringBuilderOffset.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/Index176.java__Index176_test_String_int_/Index176.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/SizeVsLength.java__SizeVsLength_getArray_int_/SizeVsLength.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/PreAndPostDec.java__PreAndPostDec_pre2_int___/PreAndPostDec.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/BitSetLowerBound.java__BitSetLowerBound_m_BitSet_/BitSetLowerBound.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/LubIndex.java__LubIndex_Bottom_int___int___/LubIndex.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/Errors.java__Errors_test__/Errors.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/MinMaxIndex.java__MinMaxIndex_twoSequences_String_String_int_int_/MinMaxIndex.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/StringOffsetTest.java__StringOffsetTest_OffsetString__/StringOffsetTest.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/MinLenFromPositive.java__MinLenFromPositive_test_int_/MinLenFromPositive.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/RandomTest.java__RandomTest_test__/RandomTest.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/IntroAnd.java__IntroAnd_test_ubc_and_int_int___int_int_int_/IntroAnd.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/NegativeArray.java__NegativeArray_negativeArray_int_/NegativeArray.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/InvalidSubsequence.java__InvalidSubsequence_assignC_int___/InvalidSubsequence.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/Index166.java__Index166_testMethodInvocation__/Index166.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/SLSubtyping.java__SLSubtyping_subtype_int___int___/SLSubtyping.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/Polymorphic3.java__Polymorphic3_ubc_id_int___int___int_int_int_int_/Polymorphic3.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/IndexForTestLBC.java__index.IndexForTestLBC_callTest1_int_/IndexForTestLBC.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/ConstantsIndex.java__ConstantsIndex_test__/ConstantsIndex.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/RefineLTE2.java__RefineLTE2_add_int_/RefineLTE2.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/Loops.java__Loops_test4_int___int_int_/Loops.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/PlusPlusBug.java__PlusPlusBug_test_int_/PlusPlusBug.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/ParserOffsetTest.java__ParserOffsetTest_subtraction5_String___int_/ParserOffsetTest.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/Issue2029.java__Issue2029_LessThanOffsetUpperBound_int_int_int_int_/Issue2029.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/MinLenIndexFor.java__MinLenIndexFor_callTest_int_/MinLenIndexFor.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/LessThanTransferTest.java__LessThanTransferTest_lt_bad_check_int___/LessThanTransferTest.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/Issue1984.java__Issue1984_m_int___int_/Issue1984.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/UBSubtyping.java__UBSubtyping_test_int_/UBSubtyping.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/LTLDivide.java__LTLDivide_test2_int___/LTLDivide.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/UBPoly.java__UBPoly_poly_char___int_/UBPoly.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/ArrayWrapper.java__ArrayWrapper_set_int_T_/ArrayWrapper.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/ArrayCreationChecks.java__ArrayCreationChecks_test6_int_int_/ArrayCreationChecks.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/RefineNeq.java__RefineNeq_testLTL_int_/RefineNeq.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/ArrayConstructionPositiveLength.java__ArrayConstructionPositiveLength_makeArray_int_/ArrayConstructionPositiveLength.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/ReflectArray.java__ReflectArray_testNewInstance_int_/ReflectArray.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/ArraysSort.java__ArraysSort_sortInt_int___/ArraysSort.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/RefineSubtrahend.java__RefineSubtrahend_withVariable_int___int_int_int_/RefineSubtrahend.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/OffsetExample.java__OffsetExample_test_int_int_int___/OffsetExample.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/UncheckedMinLen.java__UncheckedMinLen_addToPositiveOK_int_Object_/UncheckedMinLen.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/StringIndexOf.java__StringIndexOf_stringLiteral_String_/StringIndexOf.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/ArrayIntro.java__ArrayIntro_test__/ArrayIntro.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/AndExample.java__AndExample_getYearInfo_int_/AndExample.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/LessThanCustomCollection.java__lessthan.LessThanCustomCollection_checkElementIndex_int_int_/LessThanCustomCollection.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/EnumValues.java__EnumValues_enumValues__/EnumValues.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/IndexOrLowTests.java__IndexOrLowTests_test__/IndexOrLowTests.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/PrimitiveWrappers.java__PrimitiveWrappers_array_creation_Integer_int_/PrimitiveWrappers.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/GreaterThanTransfer.java__GreaterThanTransfer_gt_bad_check_int___/GreaterThanTransfer.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/BinomialTest.java__BinomialTest_binomial_2Error_int_int_/BinomialTest.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/LTLengthOfPostcondition.java__LTLengthOfPostcondition_useTryShiftIndex_int_/LTLengthOfPostcondition.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/BasicSubsequence.java__BasicSubsequence_test5_int_int___/BasicSubsequence.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/IndexForTest.java__IndexForTest_callTest2_int_/IndexForTest.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/LessThanOrEqualTransfer.java__LessThanOrEqualTransfer_lte_bad_check_int___/LessThanOrEqualTransfer.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/SpecialTransfersForEquality.java__SpecialTransfersForEquality_gteN1Test_int_/SpecialTransfersForEquality.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/LessThanValue.java__lessthan.LessThanValue_calls__/LessThanValue.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/LessThanLen.java__LessThanLen_m4_int___/LessThanLen.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/LengthOfArrayMinusOne.java__LengthOfArrayMinusOne_test_int___/LengthOfArrayMinusOne.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/ExampleUsage.java__ExampleUsage_obviously_unsafe_loop__/ExampleUsage.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/Index167.java__Index167_fn2_int___int_/Index167.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/Issue2420.java__Issue2420_str_String_/Issue2420.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    },
+    {
+      "file": "/home/ubuntu/GenDATA/prediction_slices/OffsetsAndConstants.java__OffsetsAndConstants_main_String___/OffsetsAndConstants.java",
+      "predictions_count": 1,
+      "timestamp": "2025-09-29 12:48:17"
+    }
+  ],
+  "training_data_info": {
+    "type": "real_code_examples",
+    "balance_ratio": "50% positive, 50% negative",
+    "feature_dimensions": 20,
+    "examples_per_annotation": 2000
+  },
+  "overall_success": true
+}

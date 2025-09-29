@@ -1,0 +1,44 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/LessThanDec.java__LessThanDec_lastIndexOf_short___short_int_int_/LessThanDec.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5477519035339355,
+      "features": [
+        1.0,
+        1.7142857313156128,
+        0.5523809194564819,
+        -0.0015182665083557367,
+        0.0975014790892601,
+        -0.10712502151727676,
+        0.03777186945080757,
+        0.06965930759906769,
+        -0.052282873541116714,
+        0.0,
+        0.0,
+        0.0,
+        0.3452381193637848,
+        0.0357142873108387,
+        0.2504960596561432,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced improved_balanced_causal model with 0.548 confidence (tabular inputs, real code training)",
+      "model_type": "enhanced_balanced_improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:58:13",
+  "model_type": "enhanced_balanced_graph_models",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 21,
+  "pipeline_version": "enhanced_balanced_pipeline",
+  "uses_batching": true,
+  "uses_graph_inputs": true,
+  "enhanced_framework": true
+}

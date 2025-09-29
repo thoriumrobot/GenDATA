@@ -1,0 +1,44 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/Errors.java__Errors_test__/Errors.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.6149438619613647,
+      "features": [
+        1.0,
+        2.545454502105713,
+        0.6190475821495056,
+        0.018473614007234573,
+        0.025871478021144867,
+        -0.016694234684109688,
+        -0.020156964659690857,
+        -3.455437180832632e-08,
+        -0.02724510431289673,
+        -0.017629088833928108,
+        -0.048516929149627686,
+        0.0,
+        0.3737373650074005,
+        0.03030303306877613,
+        0.23653198778629303,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced improved_balanced_causal model with 0.615 confidence (tabular inputs, real code training)",
+      "model_type": "enhanced_balanced_improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:58:13",
+  "model_type": "enhanced_balanced_graph_models",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 21,
+  "pipeline_version": "enhanced_balanced_pipeline",
+  "uses_batching": true,
+  "uses_graph_inputs": true,
+  "enhanced_framework": true
+}

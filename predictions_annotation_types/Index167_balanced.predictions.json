@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/Index167.java__Index167_fn2_int___int_/Index167.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5698046088218689,
+      "features": [
+        1.0,
+        2.6666667461395264,
+        0.5333333015441895,
+        0.03380146250128746,
+        0.046415213495492935,
+        -0.03918255493044853,
+        -0.018139014020562172,
+        0.034054938703775406,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.36574074625968933,
+        0.0972222313284874,
+        0.24389147758483887,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.570 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

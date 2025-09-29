@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/UBSubtyping.java__UBSubtyping_test_int_/UBSubtyping.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5426030158996582,
+      "features": [
+        1.0,
+        2.3636362552642822,
+        0.5563636422157288,
+        -0.03584648668766022,
+        0.006275128107517958,
+        -0.0024264564272016287,
+        0.014822783879935741,
+        0.019610809162259102,
+        0.019057072699069977,
+        0.010074052959680557,
+        -0.038211897015571594,
+        0.0,
+        0.41919195652008057,
+        0.04242424666881561,
+        0.30199214816093445,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.543 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

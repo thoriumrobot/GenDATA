@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/OffsetsAndConstants.java__OffsetsAndConstants_main_String___/OffsetsAndConstants.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5771103501319885,
+      "features": [
+        1.0,
+        2.5714285373687744,
+        0.5952380299568176,
+        -0.025447070598602295,
+        0.021272214129567146,
+        0.03978449106216431,
+        -0.05317307263612747,
+        0.06288426369428635,
+        -0.0028207472059875727,
+        0.0,
+        0.0,
+        0.0,
+        0.3492063879966736,
+        0.06666667014360428,
+        0.22363318502902985,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.577 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}

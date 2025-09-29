@@ -1,0 +1,41 @@
+{
+  "file": "/home/ubuntu/GenDATA/prediction_slices/StringLength.java__StringLength_testNewArraySameLen_String_/StringLength.java",
+  "predictions": [
+    {
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5655711889266968,
+      "features": [
+        1.0,
+        2.0,
+        0.5312499403953552,
+        0.007309275679290295,
+        0.01039310172200203,
+        -0.011446259915828705,
+        0.008294573053717613,
+        0.010650768876075745,
+        0.012828893959522247,
+        0.001977972686290741,
+        -0.010917671024799347,
+        0.0,
+        0.5034722089767456,
+        0.0,
+        0.3785686492919922,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reason": "@NonNegative predicted by balanced model with 0.566 confidence (real code training)",
+      "model_type": "improved_balanced_causal"
+    }
+  ],
+  "timestamp": "2025-09-29 12:48:17",
+  "model_type": "improved_balanced_causal",
+  "training_data": "real_code_examples",
+  "balance_ratio": "50% positive, 50% negative",
+  "feature_dimensions": 20,
+  "pipeline_version": "improved_balanced_pipeline"
+}
