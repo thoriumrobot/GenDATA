@@ -1,104 +1,34 @@
 {
-  "file": "/home/ubuntu/checker-framework/checker/tests/index/ArrayConstructionPositiveLength.java",
+  "file": "/home/ubuntu/GenDATA/prediction_slices/ArrayConstructionPositiveLength.java__ArrayConstructionPositiveLength_makeArray_int_/ArrayConstructionPositiveLength.java",
   "predictions": [
     {
-      "line": 12,
+      "line": 1,
       "annotation_type": "@Positive",
-      "confidence": 0.5486738085746765,
-      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.549 confidence)",
-      "model_type": "enhanced_causal",
-      "features": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ]
+      "confidence": 0.6993998885154724,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.699 confidence) (using real CFG data)",
+      "model_type": "enhanced_causal"
     },
     {
-      "line": 11,
-      "annotation_type": "@Positive",
-      "confidence": 0.5488634705543518,
-      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.549 confidence)",
-      "model_type": "enhanced_causal",
-      "features": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ]
+      "line": 1,
+      "annotation_type": "@GTENegativeOne",
+      "confidence": 0.6215274333953857,
+      "reason": "value >= -1 expected (predicted by ENHANCED_CAUSAL model with 0.622 confidence) (using real CFG data)",
+      "model_type": "enhanced_causal"
     },
     {
-      "line": 10,
-      "annotation_type": "@Positive",
-      "confidence": 0.5578190684318542,
-      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.558 confidence)",
-      "model_type": "enhanced_causal",
-      "features": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        1.0
-      ]
+      "line": 1,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.8681429746849891,
+      "reason": "non-negative value expected (predicted by GBT model with 0.868 confidence) (using real CFG data)",
+      "model_type": "gbt"
     },
     {
-      "line": 9,
-      "annotation_type": "@Positive",
-      "confidence": 0.5554108023643494,
-      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.555 confidence)",
-      "model_type": "enhanced_causal",
-      "features": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        1.0
-      ]
-    },
-    {
-      "line": 7,
-      "annotation_type": "@Positive",
-      "confidence": 0.5517953634262085,
-      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.552 confidence)",
-      "model_type": "enhanced_causal",
-      "features": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ]
-    },
-    {
-      "line": 5,
-      "annotation_type": "@Positive",
-      "confidence": 0.5572353005409241,
-      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.557 confidence)",
-      "model_type": "enhanced_causal",
-      "features": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ]
-    },
-    {
-      "line": 4,
-      "annotation_type": "@Positive",
-      "confidence": 0.5574413537979126,
-      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.557 confidence)",
-      "model_type": "enhanced_causal",
-      "features": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ]
+      "line": 1,
+      "annotation_type": "@GTENegativeOne",
+      "confidence": 0.6530600899065665,
+      "reason": "value >= -1 expected (predicted by GBT model with 0.653 confidence) (using real CFG data)",
+      "model_type": "gbt"
     }
   ],
-  "timestamp": "2025-09-29 06:47:45"
+  "timestamp": "2025-09-29 07:24:50"
 }
