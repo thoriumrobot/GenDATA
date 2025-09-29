@@ -1,0 +1,66 @@
+{
+  "model_name": "gtenegativeone_gcsn_annotation",
+  "project_name": "guava",
+  "timestamp": "20250929_001824",
+  "metadata": {
+    "annotation_type": "@GTENegativeOne",
+    "base_model": "gcsn",
+    "model_type": "GTENEGATIVEONE_GCSN_ANNOTATION",
+    "project_path": "case_studies/guava",
+    "hyperparameters": {
+      "episodes": 50,
+      "base_model": "gcsn"
+    }
+  },
+  "predictions": [
+    {
+      "line": 45,
+      "node_type": "method",
+      "label": "public static List<String> getStrings()",
+      "confidence": 0.6695000000000001,
+      "annotation_type": "@GTENegativeOne",
+      "base_model": "gcsn",
+      "reasoning": "Method might return index-like values (predicted by GCSN model)"
+    },
+    {
+      "line": 67,
+      "node_type": "variable",
+      "label": "private final Map<String, Object> cache",
+      "confidence": 0.7725,
+      "annotation_type": "@GTENegativeOne",
+      "base_model": "gcsn",
+      "reasoning": "Variable might store index-like values (predicted by GCSN model)"
+    },
+    {
+      "line": 89,
+      "node_type": "parameter",
+      "label": "String input parameter",
+      "confidence": 0.927,
+      "annotation_type": "@GTENegativeOne",
+      "base_model": "gcsn",
+      "reasoning": "Parameter likely to be array index or similar (>= -1) (predicted by GCSN model)"
+    }
+  ],
+  "summary": {
+    "total_predictions": 3,
+    "prediction_types": {
+      "total_count": 3,
+      "line_numbers": [
+        45,
+        67,
+        89
+      ],
+      "confidence_scores": [
+        0.6695000000000001,
+        0.7725,
+        0.927
+      ],
+      "node_types": {
+        "method": 1,
+        "variable": 1,
+        "parameter": 1
+      },
+      "avg_confidence": 0.7896666666666667
+    }
+  }
+}
