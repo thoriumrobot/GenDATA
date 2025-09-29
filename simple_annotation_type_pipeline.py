@@ -415,7 +415,13 @@ class SimpleAnnotationTypePipeline:
                     # Pass models dict (empty if auto-training) to the prediction method
                     predictions = self._predict_annotations_for_file_with_cfg(java_file, models if models else {})
                     if predictions:
-                        self._place_annotations_in_file(java_file, predictions)
+                        # Save predictions report (always save predictions)
+                        self._save_predictions_report(java_file, predictions)
+                        
+                        # Only place annotations if not in predict-only mode
+                        # For now, we'll always save predictions but not place annotations
+                        # This can be controlled by a command line flag if needed
+                        
                         total_predictions += len(predictions)
                         processed_files += 1
                         
@@ -447,7 +453,7 @@ class SimpleAnnotationTypePipeline:
             prediction_cfg_dir = os.path.join(self.cfwr_root, 'prediction_cfg_output')
 
             for base_model_type in base_model_types:
-                if not predictor.load_or_train_models(base_model_type=base_model_type, episodes=10, project_root='/home/ubuntu/checker-framework/checker/tests/index'):
+                if not predictor.load_or_train_models(base_model_type=base_model_type, epochs=10):
                     logger.warning(f"Skipping base model type {base_model_type}: load/train failed")
                     continue
 
@@ -600,6 +606,14 @@ class SimpleAnnotationTypePipeline:
             logger.info(f"Placed {annotations_placed} annotations in {java_file}")
             
             # Save prediction report
+            self._save_predictions_report(java_file, predictions)
+            
+        except Exception as e:
+            logger.error(f"Error placing annotations in {java_file}: {e}")
+    
+    def _save_predictions_report(self, java_file, predictions):
+        """Save predictions report to JSON file"""
+        try:
             report_file = os.path.join(self.predictions_dir, f"{os.path.basename(java_file)}.predictions.json")
             with open(report_file, 'w') as f:
                 json.dump({
@@ -607,9 +621,9 @@ class SimpleAnnotationTypePipeline:
                     'predictions': predictions,
                     'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')
                 }, f, indent=2)
-            
+            logger.info(f"Saved {len(predictions)} predictions to {report_file}")
         except Exception as e:
-            logger.error(f"Error placing annotations in {java_file}: {e}")
+            logger.error(f"Error saving predictions report: {e}")
     
     def generate_summary_report(self):
         """Generate a summary report of all training and prediction results"""
