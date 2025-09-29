@@ -155,7 +155,7 @@ def load_cfg_as_pyg(cfg_file: str, k_lpe: int = DEFAULT_K_LPE, rw_steps: int = D
     # degree
     deg = degree(edge_index[0], num_nodes=num_nodes).unsqueeze(1)
     # line number normalized
-    lines = torch.tensor([float(n.get('line', 0)) for n in nodes]).unsqueeze(1)
+    lines = torch.tensor([float(n.get('line') if n.get('line') is not None else 0) for n in nodes]).unsqueeze(1)
     if lines.max() > 0:
         lines = lines / (lines.max() + 1e-6)
 

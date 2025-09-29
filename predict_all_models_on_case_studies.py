@@ -13,10 +13,15 @@ import os
 import sys
 import json
 import subprocess
+import logging
 from typing import List, Dict
 
+# Set up logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
 CASE_STUDIES_ROOT = os.path.join(os.getcwd(), 'case_studies')
-PRED_CFG_DIR = os.path.join(os.getcwd(), 'prediction_cfg_output')
+PRED_CFG_DIR = os.path.join(os.getcwd(), 'test_case_study_cfg_output')  # Use test CFG directory
 PRED_OUT_DIR = os.path.join(os.getcwd(), 'predictions_annotation_types')
 MODELS_DIR = os.path.join(os.getcwd(), 'models_annotation_types')
 
@@ -29,9 +34,30 @@ def run(cmd: List[str]):
 
 
 def ensure_prediction_cfgs():
-    """Call the simplified pipeline predict once to populate prediction_slices/ and prediction_cfg_output/."""
-    cmd = [sys.executable, 'simple_annotation_type_pipeline.py', '--mode', 'predict']
-    run(cmd)
+    """Generate CFGs for case study files specifically."""
+    logger.info("Generating CFGs for case study files...")
+    
+    # Find all Java files in case studies
+    java_files = []
+    for root, dirs, files in os.walk(CASE_STUDIES_ROOT):
+        for file in files:
+            if file.endswith('.java'):
+                java_files.append(os.path.join(root, file))
+    
+    logger.info(f"Found {len(java_files)} Java files in case studies")
+    
+    # Generate CFGs for each case study file (limit to first 5 for testing)
+    processed_count = 0
+    for java_file in java_files[:5]:
+        try:
+            logger.info(f"Generating CFG for {os.path.basename(java_file)}...")
+            cmd = [sys.executable, 'simple_annotation_type_pipeline.py', '--mode', 'predict', '--target_file', java_file]
+            run(cmd)
+            processed_count += 1
+        except Exception as e:
+            logger.warning(f"Failed to generate CFG for {java_file}: {e}")
+    
+    logger.info(f"Successfully generated CFGs for {processed_count} case study files")
 
 
 def list_java_files(root: str) -> List[str]:

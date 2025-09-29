@@ -231,22 +231,27 @@ class ModelBasedPredictor:
         line = node.get('line', 0)
         
         # Basic feature extraction
-        features = [
-            float(len(label)),  # label_length
-            float(line),  # line_number
-            float('method' in node_type.lower()),  # is_method
-            float('field' in node_type.lower()),  # is_field
-            float('parameter' in node_type.lower()),  # is_parameter
-            float('variable' in node_type.lower()),  # is_variable
-            float('positive' in label.lower()),  # contains_positive
-            float('negative' in label.lower()),  # contains_negative
-            float('count' in label.lower()),  # is_count_variable
-            float('size' in label.lower()),  # is_size_variable
-            float('length' in label.lower()),  # is_length_variable
-            float('index' in label.lower()),  # is_index_variable
-            float('offset' in label.lower()),  # is_offset_variable
-            float('capacity' in label.lower()),  # is_capacity_variable
-        ]
+        try:
+            features = [
+                float(len(label)),  # label_length
+                float(line if line is not None else 0),  # line_number
+                float('method' in node_type.lower()),  # is_method
+                float('field' in node_type.lower()),  # is_field
+                float('parameter' in node_type.lower()),  # is_parameter
+                float('variable' in node_type.lower()),  # is_variable
+                float('positive' in label.lower()),  # contains_positive
+                float('negative' in label.lower()),  # contains_negative
+                float('count' in label.lower()),  # is_count_variable
+                float('size' in label.lower()),  # is_size_variable
+                float('length' in label.lower()),  # is_length_variable
+                float('index' in label.lower()),  # is_index_variable
+                float('offset' in label.lower()),  # is_offset_variable
+                float('capacity' in label.lower()),  # is_capacity_variable
+            ]
+        except Exception as e:
+            logger.error(f"Error extracting features for node {node}: {e}")
+            logger.error(f"Label: {label}, Line: {line}, Node type: {node_type}")
+            raise
         
         # Pad to expected dimension if using enhanced causal
         if ENHANCED_CAUSAL_AVAILABLE:
@@ -329,6 +334,11 @@ class ModelBasedPredictor:
                 logger.warning("Empty graph features; skipping")
                 return []
             
+            # Add batch tensor for graph encoder compatibility
+            if not hasattr(graph_data, 'batch') or graph_data.batch is None:
+                # All nodes belong to the same graph (batch 0)
+                graph_data.batch = torch.zeros(graph_data.x.size(0), dtype=torch.long)
+            
             predictions = []
             for annotation_type in ['@Positive', '@NonNegative', '@GTENegativeOne']:
                 if annotation_type in self.loaded_models:
@@ -338,6 +348,7 @@ class ModelBasedPredictor:
                     graph_models = {'hgt', 'gcn', 'gcsn', 'dg2n'}
 
                     try:
+                        logger.info(f"Processing {annotation_type} with base_model_type={base_model_type}")
                         if base_model_type in graph_models and hasattr(trainer.model, 'forward'):
                             # Try passing the full graph directly to graph models
                             trainer.model.eval() if hasattr(trainer.model, 'eval') else None
@@ -353,12 +364,29 @@ class ModelBasedPredictor:
                                     pred = 1 if score > 0.0 else 0
                                     conf = float(torch.sigmoid(torch.tensor(score)).item())
                             is_positive = (pred == 1 and conf >= threshold)
+                            logger.debug(f"Graph model prediction: {annotation_type} - pred={pred}, conf={conf:.3f}, threshold={threshold}, is_positive={is_positive}")
                             reason = self._generate_model_reason(annotation_type, graph_data.to_dict() if hasattr(graph_data, 'to_dict') else {}, conf, base_model_type)
                         else:
                             # Non-graph models: build/apply a graph encoder to get a fixed-length embedding
+                            logger.info(f"Using non-graph model approach for {annotation_type}")
                             emb = self._encode_graph(graph_data, base_model_type)
+                            logger.info(f"Generated embedding with shape: {emb.shape}")
+                            
+                            # Fix dimension mismatch: enhanced causal models expect 32 features
+                            if base_model_type == 'enhanced_causal' and emb.shape[0] != 32:
+                                if emb.shape[0] > 32:
+                                    # Truncate to 32 dimensions
+                                    emb = emb[:32]
+                                    logger.info(f"Truncated embedding to shape: {emb.shape}")
+                                else:
+                                    # Pad to 32 dimensions with zeros
+                                    padding = torch.zeros(32 - emb.shape[0])
+                                    emb = torch.cat([emb, padding])
+                                    logger.info(f"Padded embedding to shape: {emb.shape}")
+                            
                             prediction, conf, reason = self._predict_with_embedding(trainer, emb, annotation_type, base_model_type)
                             is_positive = prediction and conf >= threshold
+                            logger.info(f"Non-graph model prediction: {annotation_type} - pred={prediction}, conf={conf:.3f}, threshold={threshold}, is_positive={is_positive}")
 
                         if is_positive:
                             # Best-effort line: choose min line among nodes
@@ -401,16 +429,24 @@ class ModelBasedPredictor:
 
     def _predict_with_embedding(self, trainer, emb: torch.Tensor, annotation_type: str, base_model_type: str):
         """Run classification using an embedding with either torch or sklearn model."""
+        logger.info(f"_predict_with_embedding called for {annotation_type}")
         if hasattr(trainer.model, 'forward'):
-            with torch.no_grad():
-                logits = trainer.model(emb.unsqueeze(0) if emb.dim() == 1 else emb)
-                probs = torch.softmax(logits, dim=1)
-                pred = int(torch.argmax(logits, dim=1).item())
-                conf = float(probs[0, pred].item())
-            if pred == 1:
-                reason = self._generate_model_reason(annotation_type, {}, conf, base_model_type)
-                return True, conf, reason
-            return False, conf, "Model predicted no annotation needed"
+            logger.info(f"Model has forward method, using PyTorch path")
+            try:
+                with torch.no_grad():
+                    logits = trainer.model(emb.unsqueeze(0) if emb.dim() == 1 else emb)
+                    probs = torch.softmax(logits, dim=1)
+                    pred = int(torch.argmax(logits, dim=1).item())
+                    conf = float(probs[0, pred].item())
+                logger.info(f"PyTorch prediction: pred={pred}, conf={conf}")
+                if pred == 1:
+                    reason = self._generate_model_reason(annotation_type, {}, conf, base_model_type)
+                    return True, conf, reason
+                else:
+                    return False, conf, "Model predicted no annotation needed"
+            except Exception as e:
+                logger.error(f"Error in PyTorch model forward pass: {e}")
+                return False, 0.0, f"Model error: {e}"
         else:
             # scikit-learn like (e.g., GBT)
             import numpy as np
@@ -447,7 +483,7 @@ class ModelBasedPredictor:
             # Extract features similar to mock data but from real CFG
             features = [
                 float(len(node.get('label', ''))),  # label_length
-                float(node.get('line', 0)),  # line_number
+                float(node.get('line') if node.get('line') is not None else 0),  # line_number
                 float('method' in node.get('node_type', '').lower()),  # is_method
                 float('field' in node.get('node_type', '').lower()),  # is_field
                 float('parameter' in node.get('node_type', '').lower()),  # is_parameter

@@ -400,9 +400,11 @@ class SimpleAnnotationTypePipeline:
                 if not found_model:
                     logger.info(f"No trained model found for {annotation_type}")
             
-            if not models:
-                logger.error("No trained models found")
+            if not models and self.no_auto_train:
+                logger.error("No trained models found and auto-training is disabled")
                 return False
+            elif not models:
+                logger.info("No trained models found, but auto-training is enabled - will train models as needed")
             
             # Process each Java file using real CFG data
             total_predictions = 0
@@ -410,7 +412,8 @@ class SimpleAnnotationTypePipeline:
             
             for java_file in target_files:
                 try:
-                    predictions = self._predict_annotations_for_file_with_cfg(java_file, models)
+                    # Pass models dict (empty if auto-training) to the prediction method
+                    predictions = self._predict_annotations_for_file_with_cfg(java_file, models if models else {})
                     if predictions:
                         self._place_annotations_in_file(java_file, predictions)
                         total_predictions += len(predictions)
@@ -621,38 +624,52 @@ class SimpleAnnotationTypePipeline:
             'overall_success': True
         }
         
-        # Check training results
+        # Check training results - only fail if we're in training mode
         for annotation_type in self.annotation_types:
-            model_file = os.path.join(self.models_dir, f"{annotation_type.replace('@', '').lower()}_model.pth")
-            stats_file = os.path.join(self.models_dir, f"{annotation_type.replace('@', '').lower()}_stats.json")
+            # Check for models with any base model type
+            model_found = False
+            base_model_types = ['enhanced_causal', 'causal', 'hgt', 'gcn', 'gbt', 'gcsn', 'dg2n']
             
-            if os.path.exists(model_file) and os.path.exists(stats_file):
-                try:
-                    with open(stats_file, 'r') as f:
-                        stats = json.load(f)
-                    
-                    report['models_trained'].append({
-                        'annotation_type': annotation_type,
-                        'model_file': model_file,
-                        'episodes': len(stats.get('episodes', [])),
-                        'final_reward': stats.get('rewards', [0])[-1] if stats.get('rewards') else 0,
-                        'success': True
-                    })
-                except Exception as e:
-                    logger.warning(f"Error reading stats for {annotation_type}: {e}")
+            for base_model_type in base_model_types:
+                model_name = annotation_type.replace('@', '').lower()
+                model_file = os.path.join(self.models_dir, f"{model_name}_{base_model_type}_model.pth")
+                stats_file = os.path.join(self.models_dir, f"{model_name}_{base_model_type}_stats.json")
+                
+                if os.path.exists(model_file) and os.path.exists(stats_file):
+                    try:
+                        with open(stats_file, 'r') as f:
+                            stats = json.load(f)
+                        
+                        report['models_trained'].append({
+                            'annotation_type': annotation_type,
+                            'base_model_type': base_model_type,
+                            'model_file': model_file,
+                            'episodes': len(stats.get('episodes', [])),
+                            'final_reward': stats.get('rewards', [0])[-1] if stats.get('rewards') else 0,
+                            'success': True
+                        })
+                        model_found = True
+                        break
+                    except Exception as e:
+                        logger.warning(f"Error reading stats for {annotation_type} ({base_model_type}): {e}")
+            
+            if not model_found:
+                # Only fail overall success if we're in training mode
+                if self.mode in ['train', 'both']:
                     report['models_trained'].append({
                         'annotation_type': annotation_type,
                         'success': False,
-                        'error': str(e)
+                        'error': 'Model files not found'
                     })
                     report['overall_success'] = False
-            else:
-                report['models_trained'].append({
-                    'annotation_type': annotation_type,
-                    'success': False,
-                    'error': 'Model files not found'
-                })
-                report['overall_success'] = False
+                else:
+                    # In predict-only mode, just note that no models were found
+                    report['models_trained'].append({
+                        'annotation_type': annotation_type,
+                        'success': False,
+                        'error': 'No trained models found (predict mode)',
+                        'note': 'Models may be auto-trained during prediction'
+                    })
         
         # Check prediction results
         prediction_files = glob.glob(os.path.join(self.predictions_dir, '*.predictions.json'))
