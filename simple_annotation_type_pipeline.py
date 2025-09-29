@@ -24,11 +24,12 @@ logger = logging.getLogger(__name__)
 class SimpleAnnotationTypePipeline:
     """Simplified pipeline for training and testing annotation types"""
     
-    def __init__(self, project_root, warnings_file, cfwr_root, mode='train'):
+    def __init__(self, project_root, warnings_file, cfwr_root, mode='train', no_auto_train=False):
         self.project_root = project_root
         self.warnings_file = warnings_file
         self.cfwr_root = cfwr_root
         self.mode = mode
+        self.no_auto_train = no_auto_train
         
         # Set up directories
         self.models_dir = os.path.join(cfwr_root, 'models_annotation_types')
@@ -129,20 +130,30 @@ class SimpleAnnotationTypePipeline:
         try:
             logger.info("Predicting and placing annotations")
             
-            # Load trained models info
+            # Load trained models info (check for any base model type)
             models = {}
+            base_model_types = ['enhanced_causal', 'causal', 'hgt', 'gcn', 'gbt', 'gcsn', 'dg2n']
+            
             for annotation_type in self.annotation_types:
-                model_file = os.path.join(self.models_dir, f"{annotation_type.replace('@', '').lower()}_model.pth")
-                stats_file = os.path.join(self.models_dir, f"{annotation_type.replace('@', '').lower()}_stats.json")
+                model_name = annotation_type.replace('@', '').lower()
+                found_model = False
                 
-                if os.path.exists(model_file) and os.path.exists(stats_file):
-                    models[annotation_type] = {
-                        'model_file': model_file,
-                        'stats_file': stats_file
-                    }
-                    logger.info(f"Found trained model for {annotation_type}")
-                else:
-                    logger.warning(f"Model not found for {annotation_type}")
+                for base_model_type in base_model_types:
+                    model_file = os.path.join(self.models_dir, f"{model_name}_{base_model_type}_model.pth")
+                    stats_file = os.path.join(self.models_dir, f"{model_name}_{base_model_type}_stats.json")
+                    
+                    if os.path.exists(model_file) and os.path.exists(stats_file):
+                        models[annotation_type] = {
+                            'model_file': model_file,
+                            'stats_file': stats_file,
+                            'base_model_type': base_model_type
+                        }
+                        logger.info(f"Found trained model for {annotation_type} ({base_model_type})")
+                        found_model = True
+                        break
+                
+                if not found_model:
+                    logger.info(f"No trained model found for {annotation_type}")
             
             if not models:
                 logger.error("No trained models found")
@@ -172,47 +183,45 @@ class SimpleAnnotationTypePipeline:
             return False
     
     def _predict_annotations_for_file(self, java_file, models):
-        """Predict annotations for a single Java file"""
-        # Mock prediction logic - in real implementation, this would use the trained models
-        # to analyze the file and predict annotation placements
-        
-        predictions = []
-        
-        # Simple heuristic-based prediction for demonstration
-        with open(java_file, 'r') as f:
-            lines = f.readlines()
-        
-        for i, line in enumerate(lines, 1):
-            line_lower = line.lower()
+        """Predict annotations for a single Java file using trained models"""
+        try:
+            # Import the model-based predictor
+            from model_based_predictor import ModelBasedPredictor
             
-            # Predict @Positive for count/size/length variables
-            if any(keyword in line_lower for keyword in ['count', 'size', 'length']) and 'int' in line_lower:
-                predictions.append({
-                    'line': i,
-                    'annotation_type': '@Positive',
-                    'confidence': 0.8,
-                    'reason': 'count/size/length variable'
-                })
+            # Create predictor with auto-training enabled (unless disabled via command line)
+            auto_train = not getattr(self, 'no_auto_train', False)
+            predictor = ModelBasedPredictor(models_dir=self.models_dir, auto_train=auto_train)
             
-            # Predict @NonNegative for index variables
-            elif any(keyword in line_lower for keyword in ['index', 'offset', 'position']) and 'int' in line_lower:
-                predictions.append({
-                    'line': i,
-                    'annotation_type': '@NonNegative',
-                    'confidence': 0.7,
-                    'reason': 'index/offset variable'
-                })
+            # Try to load or train models with different base model types
+            base_model_types = ['enhanced_causal', 'causal', 'hgt', 'gcn', 'gbt']
+            models_loaded = False
             
-            # Predict @GTENegativeOne for capacity variables
-            elif any(keyword in line_lower for keyword in ['capacity', 'limit', 'bound']) and 'int' in line_lower:
-                predictions.append({
-                    'line': i,
-                    'annotation_type': '@GTENegativeOne',
-                    'confidence': 0.6,
-                    'reason': 'capacity/limit variable'
-                })
-        
-        return predictions
+            for base_model_type in base_model_types:
+                if predictor.load_or_train_models(base_model_type=base_model_type, episodes=10, project_root='/home/ubuntu/checker-framework/checker/tests/index'):
+                    logger.info(f"✅ Using trained models with base model type: {base_model_type}")
+                    models_loaded = True
+                    break
+            
+            if not models_loaded:
+                logger.error("❌ Failed to load or train any models - this should not happen with auto-training enabled")
+                raise Exception("No models available and auto-training failed")
+            
+            # Use trained models for prediction
+            predictions = predictor.predict_annotations_for_file(java_file, threshold=0.3)
+            
+            if predictions:
+                logger.info(f"Generated {len(predictions)} predictions using trained models")
+                return predictions
+            else:
+                logger.warning("No predictions generated by trained models")
+                return []
+                
+        except Exception as e:
+            logger.error(f"Error using trained models: {e}")
+            raise Exception(f"Model-based prediction failed: {e}")
+    
+    # Note: Heuristic fallback removed - the pipeline now auto-trains missing models
+    # to ensure evaluation focuses purely on model performance, not heuristics
     
     def _place_annotations_in_file(self, java_file, predictions):
         """Place annotations in a Java file"""
@@ -326,8 +335,8 @@ class SimpleAnnotationTypePipeline:
 
 def main():
     parser = argparse.ArgumentParser(description='Simplified Annotation Type Pipeline')
-    parser.add_argument('--mode', choices=['train', 'predict', 'both'], default='train',
-                       help='Pipeline mode: train, predict, or both')
+    parser.add_argument('--mode', choices=['train', 'predict', 'both'], default='predict',
+                       help='Pipeline mode: train, predict, or both (default: predict)')
     parser.add_argument('--project_root', default='/home/ubuntu/checker-framework/checker/tests/index',
                        help='Root directory of the Java project')
     parser.add_argument('--warnings_file', default='/home/ubuntu/CFWR/index1.small.out',
@@ -338,8 +347,10 @@ def main():
                        help='Specific Java file to process (for prediction mode)')
     parser.add_argument('--episodes', type=int, default=50,
                        help='Number of training episodes (for training mode)')
-    parser.add_argument('--base_model', default='gcn', choices=['gcn', 'gbt', 'causal'],
-                       help='Base model type (for training mode)')
+    parser.add_argument('--base_model', default='enhanced_causal', choices=['gcn', 'gbt', 'causal', 'enhanced_causal'],
+                       help='Base model type (for training mode, default: enhanced_causal)')
+    parser.add_argument('--no_auto_train', action='store_true',
+                       help='Disable automatic training of missing models (default: auto-train enabled)')
     
     args = parser.parse_args()
     
@@ -348,7 +359,8 @@ def main():
         project_root=args.project_root,
         warnings_file=args.warnings_file,
         cfwr_root=args.cfwr_root,
-        mode=args.mode
+        mode=args.mode,
+        no_auto_train=args.no_auto_train
     )
     
     # Run pipeline

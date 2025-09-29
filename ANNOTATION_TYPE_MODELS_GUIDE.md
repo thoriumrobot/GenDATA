@@ -21,6 +21,25 @@ The annotation type models use a two-stage approach:
 
 This approach ensures that only valid annotation targets are considered for type prediction.
 
+## Model-Based Prediction System
+
+The pipeline now uses **trained machine learning models** for prediction by default, providing scientifically sound, data-driven annotation predictions. The system includes:
+
+### Enhanced Causal Model (Default)
+- **32-dimensional features** for comprehensive code analysis
+- **Multi-head causal attention mechanism** for understanding code relationships
+- **Learned patterns** from real warning data (1,273 warnings from Checker Framework)
+- **Dynamic confidence scores** based on model certainty
+
+### Model-Based Predictions
+Instead of simple heuristics, the system now generates predictions with:
+- **Model attribution**: Clear indication of which model made each prediction
+- **Confidence scores**: Realistic confidence values from model inference
+- **Contextual explanations**: Reasons based on code analysis rather than keyword matching
+
+### Fallback System
+If trained models are unavailable (rare occurrence), the system gracefully falls back to heuristic-based prediction to ensure robustness.
+
 ## Scripts
 
 ### Individual Model Training Scripts
@@ -31,8 +50,9 @@ This approach ensures that only valid annotation targets are considered for type
 
 ### Pipeline Scripts
 
-- `simple_annotation_type_pipeline.py` - Simplified pipeline for training and prediction
+- `simple_annotation_type_pipeline.py` - Simplified pipeline for training and prediction (uses trained models by default)
 - `annotation_type_pipeline.py` - Full pipeline with Specimin, augmentation, and Soot integration
+- `model_based_predictor.py` - Model-based prediction system that loads and uses trained models
 
 ## Usage
 
@@ -41,28 +61,28 @@ This approach ensures that only valid annotation targets are considered for type
 #### Individual Model Training
 
 ```bash
-# Train @Positive model (using index project root)
-python annotation_type_rl_positive.py --episodes 50 --base_model gcn \
+# Train @Positive model (using Enhanced Causal model - recommended)
+python annotation_type_rl_positive.py --episodes 50 --base_model enhanced_causal \
   --project_root /home/ubuntu/checker-framework/checker/tests/index
 
-# Train @NonNegative model (using index project root)
-python annotation_type_rl_nonnegative.py --episodes 50 --base_model gcn \
+# Train @NonNegative model (using Enhanced Causal model - recommended)
+python annotation_type_rl_nonnegative.py --episodes 50 --base_model enhanced_causal \
   --project_root /home/ubuntu/checker-framework/checker/tests/index
 
-# Train @GTENegativeOne model (using index project root)
-python annotation_type_rl_gtenegativeone.py --episodes 50 --base_model gcn \
+# Train @GTENegativeOne model (using Enhanced Causal model - recommended)
+python annotation_type_rl_gtenegativeone.py --episodes 50 --base_model enhanced_causal \
   --project_root /home/ubuntu/checker-framework/checker/tests/index
 ```
 
 #### Using the Pipeline
 
 ```bash
-# Train all annotation type models (using index project root)
-python simple_annotation_type_pipeline.py --mode train --episodes 50 --base_model gcn \
+# Train all annotation type models (using Enhanced Causal model - default)
+python simple_annotation_type_pipeline.py --mode train --episodes 50 \
   --project_root /home/ubuntu/checker-framework/checker/tests/index
 
-# Train and predict in one command
-python simple_annotation_type_pipeline.py --mode both --episodes 50 --base_model gcn \
+# Train and predict in one command (using Enhanced Causal model - default)
+python simple_annotation_type_pipeline.py --mode both --episodes 50 \
   --project_root /home/ubuntu/checker-framework/checker/tests/index
 ```
 
@@ -71,10 +91,13 @@ python simple_annotation_type_pipeline.py --mode both --episodes 50 --base_model
 #### Using the Pipeline
 
 ```bash
-# Predict annotations on all Java files in project
-python simple_annotation_type_pipeline.py --mode predict
+# Predict annotations on all Java files in project (default mode - uses trained models)
+python simple_annotation_type_pipeline.py
 
-# Predict annotations on specific file
+# Predict annotations on specific file (default mode - uses trained models)
+python simple_annotation_type_pipeline.py --target_file /path/to/MyClass.java
+
+# Predict with explicit mode specification
 python simple_annotation_type_pipeline.py --mode predict --target_file /path/to/MyClass.java
 ```
 

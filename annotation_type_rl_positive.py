@@ -22,6 +22,13 @@ import logging
 from sklearn.ensemble import GradientBoostingClassifier
 import joblib
 
+# Import enhanced causal model
+try:
+    from enhanced_causal_model import EnhancedCausalModel, extract_enhanced_causal_features
+    ENHANCED_CAUSAL_AVAILABLE = True
+except ImportError:
+    ENHANCED_CAUSAL_AVAILABLE = False
+
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -65,6 +72,10 @@ class AnnotationTypeTrainer:
             return AnnotationTypeGBTModel()
         elif self.base_model_type == 'causal':
             return AnnotationTypeCausalModel(input_dim=14, hidden_dim=128, out_dim=2)
+        elif self.base_model_type == 'enhanced_causal':
+            if not ENHANCED_CAUSAL_AVAILABLE:
+                raise ImportError("Enhanced causal model not available. Please ensure enhanced_causal_model.py is present.")
+            return AnnotationTypeEnhancedCausalModel(input_dim=32, hidden_dim=128, out_dim=2)
         elif self.base_model_type == 'hgt':
             return AnnotationTypeHGTModel(input_dim=14, hidden_dim=128, out_dim=2)
         elif self.base_model_type == 'gcsn':
@@ -99,6 +110,10 @@ class AnnotationTypeTrainer:
     
     def _extract_annotation_type_features(self, node, cfg_data):
         """Extract features for annotation type prediction"""
+        # Use enhanced causal features if available and model type is enhanced_causal
+        if self.base_model_type == 'enhanced_causal' and ENHANCED_CAUSAL_AVAILABLE:
+            return extract_enhanced_causal_features(node, cfg_data)
+        
         label = node.get('label', '')
         node_type = node.get('node_type', '')
         line = node.get('line', 0)
@@ -182,7 +197,7 @@ class AnnotationTypeTrainer:
     
     def predict_annotation_type(self, features):
         """Predict annotation type for given features"""
-        if self.base_model_type in ['gcn', 'causal', 'hgt', 'gcsn', 'dg2n']:
+        if self.base_model_type in ['gcn', 'causal', 'enhanced_causal', 'hgt', 'gcsn', 'dg2n']:
             self.model.eval()
             with torch.no_grad():
                 X = torch.tensor(features, dtype=torch.float).to(self.device)
@@ -277,8 +292,8 @@ class AnnotationTypeTrainer:
                 logger.info(f"Episode {episode + 1}: avg_reward={avg_reward:.3f}")
         
         # Save model and training statistics
-        self.save_model(f'models_annotation_types/{self.annotation_type.replace("@", "").lower()}_model.pth')
-        self.save_training_stats(f'models_annotation_types/{self.annotation_type.replace("@", "").lower()}_stats.json')
+        self.save_model(f'models_annotation_types/{self.annotation_type.replace("@", "").lower()}_{self.base_model_type}_model.pth')
+        self.save_training_stats(f'models_annotation_types/{self.annotation_type.replace("@", "").lower()}_{self.base_model_type}_stats.json')
         
         logger.info(f"{self.annotation_type} annotation type training completed")
         return self.training_stats
@@ -290,7 +305,7 @@ class AnnotationTypeTrainer:
         
         batch = random.sample(list(self.experience_buffer), batch_size)
         
-        if self.base_model_type in ['gcn', 'causal', 'hgt', 'gcsn', 'dg2n']:
+        if self.base_model_type in ['gcn', 'causal', 'enhanced_causal', 'hgt', 'gcsn', 'dg2n']:
             all_features = []
             all_labels = []
             
@@ -409,6 +424,28 @@ class AnnotationTypeCausalModel(nn.Module):
         features = self.feature_extractor(x)
         return self.classifier(features)
 
+class AnnotationTypeEnhancedCausalModel(nn.Module):
+    """Enhanced causal model for annotation type prediction"""
+    
+    def __init__(self, input_dim, hidden_dim, out_dim):
+        super().__init__()
+        self.feature_extractor = nn.Sequential(
+            nn.Linear(input_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Dropout(0.2),
+            nn.Linear(hidden_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Dropout(0.2),
+            nn.Linear(hidden_dim, hidden_dim // 2),
+            nn.ReLU(),
+            nn.Dropout(0.2)
+        )
+        self.classifier = nn.Linear(hidden_dim // 2, out_dim)
+    
+    def forward(self, x):
+        features = self.feature_extractor(x)
+        return self.classifier(features)
+
 class AnnotationTypeGBTModel:
     """GBT model for annotation type prediction"""
     
@@ -443,7 +480,7 @@ def main():
                        help='Root directory of CFWR project')
     parser.add_argument('--episodes', type=int, default=50, help='Number of training episodes')
     parser.add_argument('--learning_rate', type=float, default=0.001, help='Learning rate')
-    parser.add_argument('--base_model', default='gcn', choices=['gcn', 'gbt', 'causal', 'hgt', 'gcsn', 'dg2n'],
+    parser.add_argument('--base_model', default='gcn', choices=['gcn', 'gbt', 'causal', 'enhanced_causal', 'hgt', 'gcsn', 'dg2n'],
                        help='Base model type to use')
     parser.add_argument('--hidden_dim', type=int, default=128, help='Hidden dimension for neural networks')
     parser.add_argument('--dropout_rate', type=float, default=0.3, help='Dropout rate for neural networks')
