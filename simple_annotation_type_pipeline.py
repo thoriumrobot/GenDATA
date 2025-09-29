@@ -410,7 +410,7 @@ class SimpleAnnotationTypePipeline:
             predictor = ModelBasedPredictor(models_dir=self.models_dir, auto_train=auto_train)
             
             # Try to load or train models with different base model types
-            base_model_types = ['enhanced_causal', 'causal', 'hgt', 'gcn', 'gbt']
+            base_model_types = ['enhanced_causal', 'causal', 'hgt', 'gcn', 'gbt', 'gcsn', 'dg2n']
             models_loaded = False
             
             for base_model_type in base_model_types:
@@ -505,7 +505,7 @@ class SimpleAnnotationTypePipeline:
             predictor = ModelBasedPredictor(models_dir=self.models_dir, auto_train=auto_train)
             
             # Try to load or train models with different base model types
-            base_model_types = ['enhanced_causal', 'causal', 'hgt', 'gcn', 'gbt']
+            base_model_types = ['enhanced_causal', 'causal', 'hgt', 'gcn', 'gbt', 'gcsn', 'dg2n']
             models_loaded = False
             
             for base_model_type in base_model_types:

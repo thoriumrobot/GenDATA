@@ -173,6 +173,10 @@ class AnnotationTypeTrainer:
                 logger.info(f"No features extracted for {self.annotation_type}")
                 return 0.0
             
+            # Train GBT model if needed
+            if self.base_model_type == 'gbt' and not self.model.is_trained:
+                self.model.fit(features, targets)
+            
             # Predict annotation type
             predicted_annotations = self.predict_annotation_type(features)
             
@@ -387,9 +391,11 @@ class AnnotationTypeTrainer:
                     y_combined = np.hstack([y, synthetic_y])
                     
                     self.model.fit(X_combined, y_combined)
+                    self.model.is_trained = True
                     logger.info("GBT experience replay training completed with synthetic data")
                 else:
                     self.model.fit(X, y)
+                    self.model.is_trained = True
                     logger.info("GBT experience replay training completed")
     
     def save_model(self, filepath):
@@ -479,29 +485,8 @@ class AnnotationTypeEnhancedCausalModel(nn.Module):
         features = self.feature_extractor(x)
         return self.classifier(features)
 
-class AnnotationTypeGBTModel:
-    """GBT model for annotation type prediction"""
-    
-    def __init__(self):
-        self.model = GradientBoostingClassifier(
-            n_estimators=50,
-            learning_rate=0.1,
-            max_depth=3,
-            random_state=42
-        )
-        self.is_trained = False
-    
-    def fit(self, X, y):
-        self.model.fit(X, y)
-        self.is_trained = True
-    
-    def predict_proba(self, X):
-        if self.is_trained:
-            return self.model.predict_proba(X)
-        else:
-            # Return random probabilities if not trained
-            n_samples = len(X)
-            return np.array([[0.5, 0.5]] * n_samples)
+# Import GBT model from standalone module to avoid pickle issues
+from gbt_model import AnnotationTypeGBTModel
 
 def main():
     parser = argparse.ArgumentParser(description=f'Training for @Positive annotation type')

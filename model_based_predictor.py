@@ -62,22 +62,34 @@ class ModelBasedPredictor:
                             device=self.device
                         )
                         
-                        # Load model state with weights_only=False for compatibility
-                        checkpoint = torch.load(model_file, map_location=self.device, weights_only=False)
-                        if hasattr(trainer.model, 'load_state_dict'):
-                            # Extract model state from checkpoint
-                            if 'model_state_dict' in checkpoint:
-                                trainer.model.load_state_dict(checkpoint['model_state_dict'])
-                            else:
-                                trainer.model.load_state_dict(checkpoint)
-                        else:
-                            # For non-PyTorch models (like GBT)
-                            if 'model_state_dict' in checkpoint:
-                                trainer.model = checkpoint['model_state_dict']
+                        # Load model based on type
+                        if base_model_type == 'gbt':
+                            # For GBT models, load with joblib
+                            import joblib
+                            checkpoint = joblib.load(model_file)
+                            if 'model' in checkpoint:
+                                trainer.model = checkpoint['model']
                             else:
                                 trainer.model = checkpoint
+                        else:
+                            # For PyTorch models, load with torch
+                            checkpoint = torch.load(model_file, map_location=self.device, weights_only=False)
+                            if hasattr(trainer.model, 'load_state_dict'):
+                                # Extract model state from checkpoint
+                                if 'model_state_dict' in checkpoint:
+                                    trainer.model.load_state_dict(checkpoint['model_state_dict'])
+                                else:
+                                    trainer.model.load_state_dict(checkpoint)
+                            else:
+                                # For non-PyTorch models
+                                if 'model_state_dict' in checkpoint:
+                                    trainer.model = checkpoint['model_state_dict']
+                                else:
+                                    trainer.model = checkpoint
                         
-                        trainer.model.eval()
+                        # Only call eval() for PyTorch models
+                        if hasattr(trainer.model, 'eval'):
+                            trainer.model.eval()
                         
                         # Load stats
                         with open(stats_file, 'r') as f:
@@ -330,7 +342,8 @@ class ModelBasedPredictor:
                 # Non-PyTorch model (e.g., GBT)
                 feature_array = np.array([features])
                 probabilities = trainer.model.predict_proba(feature_array)[0]
-                prediction = trainer.model.predict(feature_array)[0]
+                # For GBT models, use argmax to get prediction
+                prediction = np.argmax(probabilities)
                 confidence = probabilities[prediction] if len(probabilities) > prediction else 0.5
                 
                 if prediction == 1 and confidence > 0.3:
@@ -344,34 +357,16 @@ class ModelBasedPredictor:
             return False, 0.0, f"Prediction error: {e}"
     
     def _generate_model_reason(self, annotation_type: str, node: Dict[str, Any], confidence: float, model_type: str) -> str:
-        """Generate explanation for model prediction"""
-        label = node.get('label', '').lower()
-        node_type = node.get('node_type', '')
-        
-        # Generate contextual reasons based on annotation type
+        """Generate explanation for model prediction based on model inference"""
+        # Generate pure model-based reasons without heuristic keyword matching
         if annotation_type == '@Positive':
-            if 'count' in label or 'size' in label or 'length' in label:
-                return f"count/size/length variable (predicted by {model_type.upper()} model)"
-            elif 'method' in node_type:
-                return f"method likely returns positive values (predicted by {model_type.upper()} model)"
-            else:
-                return f"positive value expected (predicted by {model_type.upper()} model)"
+            return f"positive value expected (predicted by {model_type.upper()} model with {confidence:.3f} confidence)"
                 
         elif annotation_type == '@NonNegative':
-            if 'index' in label or 'offset' in label or 'position' in label:
-                return f"index/offset variable (predicted by {model_type.upper()} model)"
-            elif 'parameter' in node_type:
-                return f"parameter should not be negative (predicted by {model_type.upper()} model)"
-            else:
-                return f"non-negative value expected (predicted by {model_type.upper()} model)"
+            return f"non-negative value expected (predicted by {model_type.upper()} model with {confidence:.3f} confidence)"
                 
         elif annotation_type == '@GTENegativeOne':
-            if 'capacity' in label or 'limit' in label or 'bound' in label:
-                return f"capacity/limit variable (predicted by {model_type.upper()} model)"
-            elif 'index' in label:
-                return f"index variable (>= -1) (predicted by {model_type.upper()} model)"
-            else:
-                return f"value >= -1 expected (predicted by {model_type.upper()} model)"
+            return f"value >= -1 expected (predicted by {model_type.upper()} model with {confidence:.3f} confidence)"
         
         return f"model prediction (predicted by {model_type.upper()} model)"
     
