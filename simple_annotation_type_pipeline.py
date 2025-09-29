@@ -632,8 +632,14 @@ class SimpleAnnotationTypePipeline:
             
             for base_model_type in base_model_types:
                 model_name = annotation_type.replace('@', '').lower()
-                model_file = os.path.join(self.models_dir, f"{model_name}_{base_model_type}_model.pth")
-                stats_file = os.path.join(self.models_dir, f"{model_name}_{base_model_type}_stats.json")
+                # Try the new naming pattern first (without base_model_type suffix)
+                model_file = os.path.join(self.models_dir, f"{model_name}_model.pth")
+                stats_file = os.path.join(self.models_dir, f"{model_name}_stats.json")
+                
+                # If not found, try the old pattern with base_model_type suffix
+                if not (os.path.exists(model_file) and os.path.exists(stats_file)):
+                    model_file = os.path.join(self.models_dir, f"{model_name}_{base_model_type}_model.pth")
+                    stats_file = os.path.join(self.models_dir, f"{model_name}_{base_model_type}_stats.json")
                 
                 if os.path.exists(model_file) and os.path.exists(stats_file):
                     try:
