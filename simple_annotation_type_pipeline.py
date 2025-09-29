@@ -434,7 +434,7 @@ class SimpleAnnotationTypePipeline:
         """Predict annotations for a single Java file using real CFG data"""
         try:
             # Import the model-based predictor
-            from model_based_predictor import ModelBasedPredictor
+            from graph_based_predictor import GraphBasedPredictor as ModelBasedPredictor
             
             # Create predictor with auto-training enabled (unless disabled via command line)
             auto_train = not getattr(self, 'no_auto_train', False)
@@ -533,7 +533,7 @@ class SimpleAnnotationTypePipeline:
         """Predict annotations for a single Java file using trained models"""
         try:
             # Import the model-based predictor
-            from model_based_predictor import ModelBasedPredictor
+            from graph_based_predictor import GraphBasedPredictor as ModelBasedPredictor
             
             # Create predictor with auto-training enabled (unless disabled via command line)
             auto_train = not getattr(self, 'no_auto_train', False)
