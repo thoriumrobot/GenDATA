@@ -190,105 +190,30 @@ class ModelBasedPredictor:
             return False
     
     def predict_annotations_for_file(self, java_file: str, threshold: float = 0.3, cfg_dir: str = None) -> List[Dict[str, Any]]:
-        """Predict annotations for a single Java file using trained models"""
+        """Predict annotations for a single Java file using trained models and real CFGs only."""
         if not self.loaded_models:
             logger.error("No trained models loaded")
             return []
         
-        # Try to use real CFG data if available
-        if cfg_dir:
-            return self.predict_annotations_for_file_with_cfg(java_file, cfg_dir, threshold)
-        
-        try:
-            # Read Java file
-            with open(java_file, 'r') as f:
-                lines = f.readlines()
-            
-            predictions = []
-            
-            # Create mock CFG data for prediction (fallback only)
-            # In a real implementation, this would come from actual CFG analysis
-            for i, line in enumerate(lines, 1):
-                line_lower = line.lower().strip()
-                
-                # Skip empty lines and comments
-                if not line_lower or line_lower.startswith('//') or line_lower.startswith('/*'):
-                    continue
-                
-                # Create mock node data
-                mock_node = self._create_mock_node(line, i)
-                mock_cfg_data = self._create_mock_cfg_data(lines)
-                
-                # Get predictions from all loaded models
-                for annotation_type, trainer in self.loaded_models.items():
-                    try:
-                        # Extract features
-                        if hasattr(trainer, '_extract_annotation_type_features'):
-                            features = trainer._extract_annotation_type_features(mock_node, mock_cfg_data)
-                        else:
-                            features = self._extract_basic_features(mock_node, mock_cfg_data)
-                        
-                        # Get prediction
-                        prediction, confidence, reason = self._get_model_prediction(
-                            trainer, features, annotation_type, mock_node
-                        )
-                        
-                        if prediction and confidence >= threshold:
-                            predictions.append({
-                                'line': i,
-                                'annotation_type': annotation_type,
-                                'confidence': confidence,
-                                'reason': reason,
-                                'model_type': trainer.base_model_type,
-                                'features': features[:5] if len(features) > 5 else features  # Show first 5 features
-                            })
-                            
-                    except Exception as e:
-                        logger.debug(f"Error predicting with {annotation_type}: {e}")
-            
-            # Remove duplicate predictions (same line, different models)
-            predictions = self._deduplicate_predictions(predictions)
-            
-            logger.debug(f"Generated {len(predictions)} predictions for {java_file}")
-            return predictions
-            
-        except Exception as e:
-            logger.error(f"Error predicting annotations for {java_file}: {e}")
+        if not cfg_dir:
+            logger.error("CFG directory is required for prediction; mock fallback is disabled")
             return []
+
+        return self.predict_annotations_for_file_with_cfg(java_file, cfg_dir, threshold)
     
     def _create_mock_node(self, line: str, line_number: int) -> Dict[str, Any]:
-        """Create mock node data from Java line"""
-        line_lower = line.lower().strip()
-        
-        # Determine node type based on line content
-        if 'int' in line_lower and ('=' in line or ';' in line):
-            node_type = 'variable'
-        elif line_lower.startswith('public') or line_lower.startswith('private'):
-            if '(' in line and ')' in line:
-                node_type = 'method'
-            else:
-                node_type = 'field'
-        elif 'int' in line_lower and ('(' in line and ')' in line):
-            node_type = 'parameter'
-        else:
-            node_type = 'statement'
-        
+        """Deprecated: mock node generator (retained for compatibility). Not used."""
         return {
             'id': f"node_{line_number}",
-            'label': line.strip(),
-            'node_type': node_type,
+            'label': '',
+            'node_type': 'statement',
             'line': line_number,
-            'is_annotation_target': True
+            'is_annotation_target': False
         }
     
     def _create_mock_cfg_data(self, lines: List[str]) -> Dict[str, Any]:
-        """Create mock CFG data"""
-        return {
-            'nodes': [self._create_mock_node(line, i+1) for i, line in enumerate(lines)],
-            'edges': [],
-            'method_name': 'mock_method',
-            'file_path': 'mock_file.java'
-        }
+        """Deprecated: mock CFG generator (retained for compatibility). Not used."""
+        return {'nodes': [], 'edges': []}
     
     def _extract_basic_features(self, node: Dict[str, Any], cfg_data: Dict[str, Any]) -> List[float]:
         """Extract basic features for prediction"""
@@ -382,8 +307,8 @@ class ModelBasedPredictor:
             cfg_file = os.path.join(cfg_dir, java_basename, 'cfg.json')
             
             if not os.path.exists(cfg_file):
-                logger.warning(f"No CFG file found for {java_file}, falling back to mock data")
-                return self.predict_annotations_for_file(java_file, threshold)
+                logger.warning(f"No CFG file found for {java_file}; skipping (mock disabled)")
+                return []
             
             # Load CFG data
             with open(cfg_file, 'r') as f:
