@@ -43,7 +43,18 @@ class EnhancedGraphPredictor:
             max_batch_size: Maximum batch size for inference
         """
         self.models_dir = models_dir
-        self.device = device
+        
+        # Auto-detect best device (GPU if available)
+        if device == 'auto':
+            if torch.cuda.is_available():
+                self.device = 'cuda'
+                logger.info(f"🚀 Using GPU: {torch.cuda.get_device_name(0)}")
+            else:
+                self.device = 'cpu'
+                logger.info("💻 Using CPU")
+        else:
+            self.device = device
+            
         self.auto_train = auto_train
         self.max_nodes = max_nodes
         self.max_edges = max_edges
@@ -121,14 +132,29 @@ class EnhancedGraphPredictor:
                             continue
                         
                         if 'model_state_dict' in checkpoint:
-                            # Try loading with strict=False to handle architecture mismatches
+                            # Try loading with dimension adaptation for architecture mismatches
                             try:
-                                missing_keys, unexpected_keys = model.load_state_dict(checkpoint['model_state_dict'], strict=False)
-                                if missing_keys or unexpected_keys:
-                                    logger.warning(f"⚠️  Architecture mismatch for {annotation_type}: {len(missing_keys)} missing, {len(unexpected_keys)} unexpected keys")
-                                    logger.info(f"Creating new model with partial weights for {annotation_type}")
-                                else:
-                                    logger.info(f"✅ Loaded {annotation_type} enhanced model from {os.path.basename(model_file)}")
+                                # First try strict loading
+                                model.load_state_dict(checkpoint['model_state_dict'], strict=True)
+                                logger.info(f"✅ Loaded {annotation_type} enhanced model from {os.path.basename(model_file)}")
+                            except RuntimeError as strict_error:
+                                # Handle architecture mismatch with dimension adaptation
+                                logger.warning(f"⚠️  Architecture mismatch for {annotation_type}: {strict_error}")
+                                
+                                # Try partial loading with dimension adaptation
+                                try:
+                                    self._adapt_model_weights(model, checkpoint['model_state_dict'])
+                                    logger.info(f"✅ Adapted {annotation_type} model weights for enhanced architecture")
+                                except Exception as adapt_error:
+                                    logger.warning(f"⚠️  Weight adaptation failed: {adapt_error}")
+                                    logger.info(f"Creating new untrained model for {annotation_type}")
+                                    # Create a new untrained model as fallback
+                                    model = self._create_enhanced_model(base_model_type, annotation_type)
+                                    model.eval()
+                                    model = model.to(self.device)
+                                    self.loaded_models[annotation_type] = model
+                                    loaded_count += 1
+                                    continue
                             except Exception as load_error:
                                 logger.warning(f"⚠️  Failed to load {annotation_type} model: {load_error}")
                                 logger.info(f"Creating new untrained model for {annotation_type}")
@@ -216,6 +242,69 @@ class EnhancedGraphPredictor:
                 dropout=0.1,
                 max_nodes=self.max_nodes
             )
+    
+    def _adapt_model_weights(self, model: torch.nn.Module, old_state_dict: Dict[str, torch.Tensor]) -> None:
+        """Adapt old model weights to new enhanced architecture dimensions"""
+        try:
+            current_state_dict = model.state_dict()
+            
+            # Handle dimension mismatches by adapting weights
+            adapted_state_dict = {}
+            
+            for key, old_tensor in old_state_dict.items():
+                if key in current_state_dict:
+                    new_tensor = current_state_dict[key]
+                    
+                    # Ensure tensors are on the same device
+                    if old_tensor.device != new_tensor.device:
+                        old_tensor = old_tensor.to(new_tensor.device)
+                    
+                    # Check for dimension mismatches
+                    if old_tensor.shape != new_tensor.shape:
+                        logger.info(f"Adapting weights for {key}: {old_tensor.shape} -> {new_tensor.shape}")
+                        
+                        if 'classifier' in key and len(old_tensor.shape) == 2:
+                            # Handle classifier weight adaptation
+                            if old_tensor.shape[1] == new_tensor.shape[1]:
+                                # Same input dimension, adapt output dimension
+                                if old_tensor.shape[0] < new_tensor.shape[0]:
+                                    # Pad with zeros for larger output (ensure same device)
+                                    padding = torch.zeros(new_tensor.shape[0] - old_tensor.shape[0], old_tensor.shape[1], device=new_tensor.device)
+                                    adapted_tensor = torch.cat([old_tensor, padding], dim=0)
+                                else:
+                                    # Truncate for smaller output
+                                    adapted_tensor = old_tensor[:new_tensor.shape[0], :]
+                            else:
+                                # Different input dimension, use Xavier initialization
+                                adapted_tensor = torch.nn.init.xavier_uniform_(torch.zeros_like(new_tensor))
+                        elif 'bias' in key and len(old_tensor.shape) == 1:
+                            # Handle bias adaptation
+                            if old_tensor.shape[0] < new_tensor.shape[0]:
+                                # Pad with zeros (ensure same device)
+                                padding = torch.zeros(new_tensor.shape[0] - old_tensor.shape[0], device=new_tensor.device)
+                                adapted_tensor = torch.cat([old_tensor, padding], dim=0)
+                            else:
+                                # Truncate
+                                adapted_tensor = old_tensor[:new_tensor.shape[0]]
+                        else:
+                            # Use Xavier initialization for other mismatches
+                            adapted_tensor = torch.nn.init.xavier_uniform_(torch.zeros_like(new_tensor))
+                        
+                        adapted_state_dict[key] = adapted_tensor
+                    else:
+                        # Same shape, use original weights
+                        adapted_state_dict[key] = old_tensor
+                else:
+                    # Key not in current model, skip
+                    logger.debug(f"Skipping key {key} not in current model")
+            
+            # Load adapted weights
+            model.load_state_dict(adapted_state_dict, strict=False)
+            logger.info(f"Successfully adapted model weights with {len(adapted_state_dict)} parameters")
+            
+        except Exception as e:
+            logger.error(f"Weight adaptation failed: {e}")
+            raise
     
     def predict_annotations_for_file_with_cfg(self, 
                                             java_file: str, 
