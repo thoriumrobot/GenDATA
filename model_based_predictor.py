@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
 Model-based predictor that uses trained annotation type models for prediction
+Now uses graph-based models that process CFG graphs directly
 """
 
 import os
@@ -15,14 +16,30 @@ from pathlib import Path
 try:
     from cfg_graph import load_cfg_as_pyg
     from graph_encoder import build_graph_encoder
+    from graph_based_annotation_models import (
+        create_graph_based_model, 
+        GraphBasedGBTModel,
+        AnnotationTypeGCNModel,
+        AnnotationTypeGATModel,
+        AnnotationTypeTransformerModel,
+        AnnotationTypeHGTModel,
+        AnnotationTypeGCSNModel,
+        AnnotationTypeDG2NModel,
+        AnnotationTypeCausalModel,
+        AnnotationTypeEnhancedCausalModel
+    )
     PYG_AVAILABLE = True
-except Exception:
+except Exception as e:
+    logger.warning(f"Graph-based models not available: {e}")
     PYG_AVAILABLE = False
 
-# Import the annotation type trainers
-from annotation_type_rl_positive import AnnotationTypeTrainer as PositiveTrainer
-from annotation_type_rl_nonnegative import AnnotationTypeTrainer as NonNegativeTrainer
-from annotation_type_rl_gtenegativeone import AnnotationTypeTrainer as GTENegativeOneTrainer
+# Import the annotation type trainers for compatibility
+try:
+    from annotation_type_rl_positive import AnnotationTypeTrainer as PositiveTrainer
+    from annotation_type_rl_nonnegative import AnnotationTypeTrainer as NonNegativeTrainer
+    from annotation_type_rl_gtenegativeone import AnnotationTypeTrainer as GTENegativeOneTrainer
+except ImportError:
+    logger.warning("Legacy trainers not available, using graph-based models only")
 
 # Import enhanced causal model if available
 try:

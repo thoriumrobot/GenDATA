@@ -70,7 +70,7 @@ def list_java_files(root: str) -> List[str]:
 
 
 def predict_for_file(predictor, java_file: str, base_model_type: str) -> List[Dict]:
-    from model_based_predictor import ModelBasedPredictor
+    from graph_based_predictor import GraphBasedPredictor as ModelBasedPredictor
     # prediction_cfg_output/<basename>/cfg.json is expected
     cfg_dir = PRED_CFG_DIR
     preds = predictor.predict_annotations_for_file_with_cfg(java_file, cfg_dir, threshold=0.3)
@@ -87,7 +87,7 @@ def main():
     ensure_prediction_cfgs()
 
     # 2) Prepare predictor
-    from model_based_predictor import ModelBasedPredictor
+    from graph_based_predictor import GraphBasedPredictor as ModelBasedPredictor
     predictor = ModelBasedPredictor(models_dir=MODELS_DIR, auto_train=True)
 
     base_models = ['enhanced_causal', 'causal', 'hgt', 'gcn', 'gbt', 'gcsn', 'dg2n']
