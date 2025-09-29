@@ -1,3 +1,6 @@
+    @GTENegativeOne
+    @GTENegativeOne
+    @Positive
 import org.checkerframework.common.value.qual.MinLen;
 
 public class GreaterThanOrEqualTransfer {

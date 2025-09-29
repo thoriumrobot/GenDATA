@@ -1,3 +1,6 @@
+    @NonNegative
+    @GTENegativeOne
+    @Positive
 import java.util.Random;
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.IndexOrHigh;
