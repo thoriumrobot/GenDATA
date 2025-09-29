@@ -321,9 +321,8 @@ python simple_annotation_type_pipeline.py --target_file /path/to/test.java
 # Quick evaluation (auto-trains models if missing)
 python simple_annotation_type_pipeline.py --target_file MyClass.java
 
-# Comprehensive 18-model evaluation (3,399 predictions)
-python simple_annotation_type_pipeline.py --mode predict \
-  --target_file /home/ubuntu/checker-framework/checker/tests/index/StringMethods.java
+# Standard prediction (uses Soot for slicing, Vineflower for decomp, CFG Builder, models only)
+python simple_annotation_type_pipeline.py --mode predict
 
 # Train all 18 models explicitly
 python simple_annotation_type_pipeline.py --mode train --episodes 50
