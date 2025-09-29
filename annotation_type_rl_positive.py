@@ -67,6 +67,7 @@ class AnnotationTypeTrainer:
 
         # Graph embedding provider for graph inputs (used for non-graph models and to enrich features)
         self.graph_embedder = GraphEmbeddingProvider(out_dim=256, variant='transformer', device=device)
+        self.cfg_root = None  # set during train()
         
     def _init_annotation_model(self):
         """Initialize model for specific annotation type prediction"""
@@ -105,14 +106,15 @@ class AnnotationTypeTrainer:
             # Extract features for annotation type prediction
             feature_vector = self._extract_annotation_type_features(node, cfg_data)
             # Append graph embedding pooled over method-level CFGs (if available on disk)
-            cfg_dir = os.path.dirname(cfg_data.get('source_path', '') or '')
-            try:
-                # If cfg_data originated from a file, expect keys to help locate the cfg dir
-                java_base = os.path.splitext(os.path.basename(cfg_data.get('java_file','') or ''))[0]
-                cfg_root = os.environ.get('CFG_OUTPUT_DIR', 'cfg_output_specimin')
-                cfg_dir = os.path.join(cfg_root, java_base)
-            except Exception:
-                pass
+            # Determine CFG directory for this Java file
+            java_base = os.path.splitext(os.path.basename(cfg_data.get('java_file','') or ''))[0]
+            cfg_dir = None
+            if self.cfg_root and java_base:
+                cfg_dir = os.path.join(self.cfg_root, java_base)
+            if not cfg_dir or not os.path.isdir(cfg_dir):
+                # Fallback to environment or prediction cfg output
+                env_root = os.environ.get('CFG_OUTPUT_DIR') or os.environ.get('PREDICTION_CFG_DIR') or 'prediction_cfg_output'
+                cfg_dir = os.path.join(env_root, java_base) if java_base else ''
             if os.path.isdir(cfg_dir):
                 emb = self.graph_embedder.embed_cfg_dir(cfg_dir)
                 feature_vector = np.concatenate([feature_vector, emb.cpu().numpy()])
@@ -294,6 +296,9 @@ class AnnotationTypeTrainer:
         logger.info(f"Episodes: {num_episodes}")
         logger.info(f"Use real CFG data: {use_real_cfg_data}")
         
+        # Remember cfg root for graph embeddings
+        self.cfg_root = cfg_dir if cfg_dir and os.path.exists(cfg_dir) else None
+
         # Load real CFG data if available
         if use_real_cfg_data and cfg_dir and os.path.exists(cfg_dir):
             logger.info("Loading real CFG data for training")
