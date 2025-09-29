@@ -197,10 +197,6 @@ def run_train(model):
     if model == 'causal' or model == 'all':
         print("[TRAIN] Causal -> causal_model.py")
         run([sys.executable, 'causal_model.py'])
-    if model == 'sgcfgnet' or model == 'all':
-        # Train SG-CFGNet on CFGs
-        print("[TRAIN] SG-CFGNet -> sg_cfgnet_train.py")
-        run([sys.executable, 'sg_cfgnet_train.py', '--train_cfg_dir', CFG_OUTPUT_DIR_DEFAULT])
     if model == 'dg2n' or model == 'all':
         # Build DG2N dataset from CFGs, then train
         print("[TRAIN] DG2N -> dg2n_adapter.py + dg2n/train_dg2n.py")
@@ -317,7 +313,7 @@ def main():
     parser = argparse.ArgumentParser(description='End-to-end pipeline for CFWR')
     parser.add_argument('--steps', default='all', choices=['all','slice','augment','cfg','train','predict','predict-original'], help='Which step to run')
     # Include SG-CFGNet in model choices
-    parser.add_argument('--model', default='all', choices=['all','hgt','gbt','causal','sgcfgnet','dg2n','gcn','nullgtn','dgcrf','gcsn'], help='Which model(s) to train/predict')
+    parser.add_argument('--model', default='all', choices=['all','hgt','gbt','causal','dg2n','gcn','nullgtn','dgcrf','gcsn'], help='Which model(s) to train/predict')
     parser.add_argument('--slices_dir', default=SLICES_DIR_DEFAULT)
     parser.add_argument('--cfg_output_dir', default=CFG_OUTPUT_DIR_DEFAULT)
     parser.add_argument('--models_dir', default=MODELS_DIR_DEFAULT)
