@@ -2,35 +2,2525 @@
   "file": "/home/ubuntu/checker-framework/checker/tests/index/annotated-jdk/src/java.base/share/classes/java/util/zip/ZipFile.java",
   "predictions": [
     {
-      "line": 199,
+      "line": 236,
       "annotation_type": "@NonNegative",
-      "confidence": 0.7,
-      "reason": "index/offset variable"
+      "confidence": 0.5393510460853577,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
     },
     {
-      "line": 176,
+      "line": 235,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5393517017364502,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 234,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5393524169921875,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 233,
       "annotation_type": "@Positive",
-      "confidence": 0.8,
-      "reason": "count/size/length variable"
+      "confidence": 0.5378332138061523,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.538 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 231,
+      "annotation_type": "@Positive",
+      "confidence": 0.5430595874786377,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.543 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 229,
+      "annotation_type": "@Positive",
+      "confidence": 0.5432363748550415,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.543 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 227,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5393531918525696,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 226,
+      "annotation_type": "@Positive",
+      "confidence": 0.5418767929077148,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.542 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 224,
+      "annotation_type": "@Positive",
+      "confidence": 0.5393100380897522,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 222,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.539352536201477,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 221,
+      "annotation_type": "@Positive",
+      "confidence": 0.5363219380378723,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.536 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 219,
+      "annotation_type": "@Positive",
+      "confidence": 0.5376338362693787,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.538 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 217,
+      "annotation_type": "@Positive",
+      "confidence": 0.537605345249176,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.538 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 215,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5393532514572144,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 214,
+      "annotation_type": "@Positive",
+      "confidence": 0.5386880040168762,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 212,
+      "annotation_type": "@Positive",
+      "confidence": 0.5407146215438843,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.541 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 210,
+      "annotation_type": "@Positive",
+      "confidence": 0.5391754508018494,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 208,
+      "annotation_type": "@Positive",
+      "confidence": 0.5421555042266846,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.542 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 206,
+      "annotation_type": "@Positive",
+      "confidence": 0.5407540202140808,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.541 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 204,
+      "annotation_type": "@Positive",
+      "confidence": 0.5489153861999512,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.549 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 203,
+      "annotation_type": "@Positive",
+      "confidence": 0.5392678380012512,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 202,
+      "annotation_type": "@Positive",
+      "confidence": 0.5413452982902527,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.541 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 201,
+      "annotation_type": "@Positive",
+      "confidence": 0.5392494201660156,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 199,
+      "annotation_type": "@Positive",
+      "confidence": 0.539582371711731,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 197,
+      "annotation_type": "@Positive",
+      "confidence": 0.5395833849906921,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 195,
+      "annotation_type": "@Positive",
+      "confidence": 0.5356562733650208,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.536 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 193,
+      "annotation_type": "@Positive",
+      "confidence": 0.5392453670501709,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 191,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5393028855323792,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 190,
+      "annotation_type": "@Positive",
+      "confidence": 0.538896381855011,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 188,
+      "annotation_type": "@Positive",
+      "confidence": 0.5383466482162476,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.538 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 186,
+      "annotation_type": "@Positive",
+      "confidence": 0.5383349657058716,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.538 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 184,
+      "annotation_type": "@Positive",
+      "confidence": 0.5383232831954956,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.538 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 182,
+      "annotation_type": "@Positive",
+      "confidence": 0.5370738506317139,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 180,
+      "annotation_type": "@Positive",
+      "confidence": 0.5388765931129456,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 179,
+      "annotation_type": "@Positive",
+      "confidence": 0.5390447378158569,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 178,
+      "annotation_type": "@Positive",
+      "confidence": 0.5390377044677734,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 177,
+      "annotation_type": "@Positive",
+      "confidence": 0.539030909538269,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 175,
+      "annotation_type": "@Positive",
+      "confidence": 0.5458970069885254,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.546 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 173,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5392480492591858,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 172,
+      "annotation_type": "@Positive",
+      "confidence": 0.5477482080459595,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.548 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 171,
+      "annotation_type": "@Positive",
+      "confidence": 0.538990318775177,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 169,
+      "annotation_type": "@Positive",
+      "confidence": 0.539696216583252,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 167,
+      "annotation_type": "@Positive",
+      "confidence": 0.5459441542625427,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.546 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 165,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.539228618144989,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 164,
+      "annotation_type": "@Positive",
+      "confidence": 0.5423996448516846,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.542 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 163,
+      "annotation_type": "@Positive",
+      "confidence": 0.5389364361763,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 161,
+      "annotation_type": "@Positive",
+      "confidence": 0.5391525626182556,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 160,
+      "annotation_type": "@Positive",
+      "confidence": 0.5412169694900513,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.541 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 159,
+      "annotation_type": "@Positive",
+      "confidence": 0.5389124155044556,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 157,
+      "annotation_type": "@Positive",
+      "confidence": 0.5391908884048462,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 156,
+      "annotation_type": "@Positive",
+      "confidence": 0.5388944149017334,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 154,
+      "annotation_type": "@Positive",
+      "confidence": 0.5413017272949219,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.541 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 153,
+      "annotation_type": "@Positive",
+      "confidence": 0.5388761162757874,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 151,
+      "annotation_type": "@Positive",
+      "confidence": 0.5413371920585632,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.541 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 150,
+      "annotation_type": "@Positive",
+      "confidence": 0.538857638835907,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 148,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5392120480537415,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 147,
+      "annotation_type": "@Positive",
+      "confidence": 0.5432801842689514,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.543 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 146,
+      "annotation_type": "@Positive",
+      "confidence": 0.5388362407684326,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
     },
     {
       "line": 144,
       "annotation_type": "@Positive",
-      "confidence": 0.8,
-      "reason": "count/size/length variable"
+      "confidence": 0.5385695099830627,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
     },
     {
-      "line": 86,
+      "line": 142,
+      "annotation_type": "@Positive",
+      "confidence": 0.5393738150596619,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 140,
       "annotation_type": "@NonNegative",
-      "confidence": 0.7,
-      "reason": "index/offset variable"
+      "confidence": 0.5392124056816101,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 139,
+      "annotation_type": "@Positive",
+      "confidence": 0.5403071045875549,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 137,
+      "annotation_type": "@Positive",
+      "confidence": 0.5392143726348877,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 135,
+      "annotation_type": "@Positive",
+      "confidence": 0.5397123694419861,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 133,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5348735451698303,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.535 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 131,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5392125248908997,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 130,
+      "annotation_type": "@Positive",
+      "confidence": 0.5394065380096436,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 129,
+      "annotation_type": "@Positive",
+      "confidence": 0.5387499928474426,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 127,
+      "annotation_type": "@Positive",
+      "confidence": 0.5364224910736084,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.536 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 125,
+      "annotation_type": "@Positive",
+      "confidence": 0.5436074137687683,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.544 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 124,
+      "annotation_type": "@Positive",
+      "confidence": 0.5387268662452698,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 123,
+      "annotation_type": "@Positive",
+      "confidence": 0.5387232303619385,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 122,
+      "annotation_type": "@Positive",
+      "confidence": 0.5427257418632507,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.543 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 120,
+      "annotation_type": "@Positive",
+      "confidence": 0.5422619581222534,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.542 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 119,
+      "annotation_type": "@Positive",
+      "confidence": 0.5387085676193237,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 117,
+      "annotation_type": "@Positive",
+      "confidence": 0.5395002365112305,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 116,
+      "annotation_type": "@Positive",
+      "confidence": 0.5386976003646851,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 114,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5392362475395203,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 113,
+      "annotation_type": "@Positive",
+      "confidence": 0.5424383878707886,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.542 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 111,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5392401814460754,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 110,
+      "annotation_type": "@Positive",
+      "confidence": 0.5443025231361389,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.544 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 108,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5392443537712097,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 107,
+      "annotation_type": "@Positive",
+      "confidence": 0.5424758791923523,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.542 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 105,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5392464399337769,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 104,
+      "annotation_type": "@Positive",
+      "confidence": 0.5395504236221313,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 102,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5392513275146484,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 101,
+      "annotation_type": "@Positive",
+      "confidence": 0.5425134301185608,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.543 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 99,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5392562747001648,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 98,
+      "annotation_type": "@Positive",
+      "confidence": 0.5405746698379517,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.541 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 96,
+      "annotation_type": "@Positive",
+      "confidence": 0.5480448007583618,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.548 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 95,
+      "annotation_type": "@Positive",
+      "confidence": 0.5386328101158142,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 93,
+      "annotation_type": "@Positive",
+      "confidence": 0.5480395555496216,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.548 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 92,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5386431217193604,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 90,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5348338484764099,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.535 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 89,
+      "annotation_type": "@Positive",
+      "confidence": 0.5396443009376526,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 88,
+      "annotation_type": "@Positive",
+      "confidence": 0.5453978180885315,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.545 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "line": 87,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5386641025543213,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 85,
+      "annotation_type": "@Positive",
+      "confidence": 0.5389093160629272,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 84,
+      "annotation_type": "@Positive",
+      "confidence": 0.5388972759246826,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 83,
+      "annotation_type": "@Positive",
+      "confidence": 0.5397909879684448,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 82,
+      "annotation_type": "@Positive",
+      "confidence": 0.5373139381408691,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 81,
+      "annotation_type": "@Positive",
+      "confidence": 0.5399048328399658,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 80,
+      "annotation_type": "@Positive",
+      "confidence": 0.5398865938186646,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 79,
+      "annotation_type": "@Positive",
+      "confidence": 0.5398684144020081,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
     },
     {
       "line": 78,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5387051105499268,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 77,
       "annotation_type": "@Positive",
-      "confidence": 0.8,
-      "reason": "count/size/length variable"
+      "confidence": 0.5398319959640503,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 76,
+      "annotation_type": "@Positive",
+      "confidence": 0.5398135185241699,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 75,
+      "annotation_type": "@Positive",
+      "confidence": 0.5397947430610657,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 74,
+      "annotation_type": "@Positive",
+      "confidence": 0.5397759675979614,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 73,
+      "annotation_type": "@Positive",
+      "confidence": 0.5373207926750183,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 72,
+      "annotation_type": "@Positive",
+      "confidence": 0.5373228192329407,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 71,
+      "annotation_type": "@Positive",
+      "confidence": 0.5373249053955078,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 70,
+      "annotation_type": "@Positive",
+      "confidence": 0.5389673709869385,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 69,
+      "annotation_type": "@Positive",
+      "confidence": 0.5348450541496277,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.535 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 68,
+      "annotation_type": "@Positive",
+      "confidence": 0.5373311042785645,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 67,
+      "annotation_type": "@Positive",
+      "confidence": 0.536702573299408,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 66,
+      "annotation_type": "@Positive",
+      "confidence": 0.5366900563240051,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 65,
+      "annotation_type": "@Positive",
+      "confidence": 0.5373373031616211,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 64,
+      "annotation_type": "@Positive",
+      "confidence": 0.5373393893241882,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 63,
+      "annotation_type": "@Positive",
+      "confidence": 0.5366523861885071,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 62,
+      "annotation_type": "@Positive",
+      "confidence": 0.5373435020446777,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 61,
+      "annotation_type": "@Positive",
+      "confidence": 0.5366309285163879,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 60,
+      "annotation_type": "@Positive",
+      "confidence": 0.5373476147651672,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 59,
+      "annotation_type": "@Positive",
+      "confidence": 0.5366110801696777,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 58,
+      "annotation_type": "@Positive",
+      "confidence": 0.5373517870903015,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 57,
+      "annotation_type": "@Positive",
+      "confidence": 0.536591649055481,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 56,
+      "annotation_type": "@Positive",
+      "confidence": 0.5373580455780029,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 55,
+      "annotation_type": "@Positive",
+      "confidence": 0.537361741065979,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 54,
+      "annotation_type": "@Positive",
+      "confidence": 0.536563515663147,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 53,
+      "annotation_type": "@Positive",
+      "confidence": 0.5373690128326416,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 52,
+      "annotation_type": "@Positive",
+      "confidence": 0.536544680595398,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 51,
+      "annotation_type": "@Positive",
+      "confidence": 0.5373764038085938,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 50,
+      "annotation_type": "@Positive",
+      "confidence": 0.5373809337615967,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 49,
+      "annotation_type": "@Positive",
+      "confidence": 0.5373861789703369,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 48,
+      "annotation_type": "@Positive",
+      "confidence": 0.5373914241790771,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 47,
+      "annotation_type": "@Positive",
+      "confidence": 0.5411083102226257,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.541 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 46,
+      "annotation_type": "@Positive",
+      "confidence": 0.5411065220832825,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.541 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 45,
+      "annotation_type": "@Positive",
+      "confidence": 0.5374011397361755,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 44,
+      "annotation_type": "@Positive",
+      "confidence": 0.537403404712677,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 43,
+      "annotation_type": "@Positive",
+      "confidence": 0.5388078689575195,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 42,
+      "annotation_type": "@Positive",
+      "confidence": 0.5374079346656799,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 41,
+      "annotation_type": "@Positive",
+      "confidence": 0.5374101400375366,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 40,
+      "annotation_type": "@Positive",
+      "confidence": 0.5374124050140381,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 39,
+      "annotation_type": "@Positive",
+      "confidence": 0.5374146699905396,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 38,
+      "annotation_type": "@Positive",
+      "confidence": 0.5374171733856201,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 37,
+      "annotation_type": "@Positive",
+      "confidence": 0.5374197959899902,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 36,
+      "annotation_type": "@Positive",
+      "confidence": 0.5374218821525574,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 35,
+      "annotation_type": "@Positive",
+      "confidence": 0.5374213457107544,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 34,
+      "annotation_type": "@Positive",
+      "confidence": 0.5374208688735962,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 33,
+      "annotation_type": "@Positive",
+      "confidence": 0.537420392036438,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 32,
+      "annotation_type": "@Positive",
+      "confidence": 0.5374199151992798,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 31,
+      "annotation_type": "@Positive",
+      "confidence": 0.5403966903686523,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 30,
+      "annotation_type": "@Positive",
+      "confidence": 0.5374189019203186,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 29,
+      "annotation_type": "@Positive",
+      "confidence": 0.5374184250831604,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 28,
+      "annotation_type": "@Positive",
+      "confidence": 0.5374176502227783,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 27,
+      "annotation_type": "@Positive",
+      "confidence": 0.5374165773391724,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 25,
+      "annotation_type": "@Positive",
+      "confidence": 0.5374141335487366,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 24,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5395520925521851,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 23,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5365598201751709,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 22,
+      "annotation_type": "@Positive",
+      "confidence": 0.5404249429702759,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 21,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5402998328208923,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 20,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5395588874816895,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 19,
+      "annotation_type": "@Positive",
+      "confidence": 0.5377337336540222,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.538 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 18,
+      "annotation_type": "@Positive",
+      "confidence": 0.5384020209312439,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.538 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 17,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.54029780626297,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 16,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5395656824111938,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 15,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5365685820579529,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 14,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.539078414440155,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.539 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 13,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5365737676620483,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 12,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5349170565605164,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.535 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 11,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5402932167053223,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 10,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.539567232131958,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 9,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5365841388702393,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 8,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5402917265892029,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 7,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5365892648696899,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 6,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5402907729148865,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 5,
+      "annotation_type": "@Positive",
+      "confidence": 0.5379252433776855,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.538 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 4,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.539569079875946,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.540 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 3,
+      "annotation_type": "@NonNegative",
+      "confidence": 0.5365978479385376,
+      "reason": "non-negative value expected (predicted by ENHANCED_CAUSAL model with 0.537 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "line": 2,
+      "annotation_type": "@Positive",
+      "confidence": 0.5350458025932312,
+      "reason": "positive value expected (predicted by ENHANCED_CAUSAL model with 0.535 confidence)",
+      "model_type": "enhanced_causal",
+      "features": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
     }
   ],
-  "timestamp": "2025-09-27 20:42:04"
+  "timestamp": "2025-09-29 01:36:36"
 }
