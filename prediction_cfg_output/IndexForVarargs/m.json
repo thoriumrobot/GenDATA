@@ -1,0 +1,222 @@
+{
+  "method_name": "m",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1)], member=get, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 6,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"a\"), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"b\")], member=get, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 7,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=2), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"abc\")], member=get, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 8,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ArrayCreator(dimensions=[None], initializer=ArrayInitializer(initializers=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"a\"), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"b\")]), postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=String, sub_type=None)), name=stringArg1)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[None], name=String, sub_type=None))",
+      "line": 9,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ArrayCreator(dimensions=[None], initializer=ArrayInitializer(initializers=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"c\"), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"d\"), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"e\")]), postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=String, sub_type=None)), name=stringArg2)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[None], name=String, sub_type=None))",
+      "line": 10,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=ArrayCreator(dimensions=[None], initializer=ArrayInitializer(initializers=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"a\"), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"b\"), Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"c\")]), postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=ReferenceType(arguments=None, dimensions=None, name=String, sub_type=None)), name=stringArg3)], modifiers=set(), type=ReferenceType(arguments=None, dimensions=[None], name=String, sub_type=None))",
+      "line": 11,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), MemberReference(member=stringArg1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MemberReference(member=stringArg2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=method, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 12,
+      "node_type": "control"
+    },
+    {
+      "id": 9,
+      "label": "MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=2), MemberReference(member=stringArg3, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=method, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 13,
+      "node_type": "control"
+    },
+    {
+      "id": 10,
+      "label": "MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), MemberReference(member=stringArg1, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=get, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 14,
+      "node_type": "control"
+    },
+    {
+      "id": 11,
+      "label": "MethodInvocation(arguments=[Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=3), MemberReference(member=stringArg2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=get, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None)",
+      "line": 15,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 8,
+      "variable": "stringArg1"
+    },
+    {
+      "source": 5,
+      "target": 10,
+      "variable": "stringArg1"
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 8,
+      "variable": "stringArg2"
+    },
+    {
+      "source": 6,
+      "target": 11,
+      "variable": "stringArg2"
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 9,
+      "variable": "stringArg3"
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 11,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 11,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 5,
+      "target": 8,
+      "variable": "stringArg1"
+    },
+    {
+      "source": 5,
+      "target": 10,
+      "variable": "stringArg1"
+    },
+    {
+      "source": 6,
+      "target": 8,
+      "variable": "stringArg2"
+    },
+    {
+      "source": 6,
+      "target": 11,
+      "variable": "stringArg2"
+    },
+    {
+      "source": 7,
+      "target": 9,
+      "variable": "stringArg3"
+    }
+  ]
+}

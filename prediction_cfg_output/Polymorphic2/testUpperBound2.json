@@ -1,0 +1,59 @@
+{
+  "method_name": "testUpperBound2",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"array1\"), name=LTEqLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=a, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MemberReference(member=b, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=mergeUpperBound, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), name=z)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 14,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"array1\"), name=LTLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=MethodInvocation(arguments=[MemberReference(member=a, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), MemberReference(member=b, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[])], member=mergeUpperBound, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[], type_arguments=None), name=zz)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 16,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": []
+}

@@ -1,0 +1,418 @@
+{
+  "method_name": "ArrayIntro",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "import org.checkerframework.common.value.qual.MinLen;",
+      "line": 1,
+      "node_type": "stmt"
+    },
+    {
+      "id": 1,
+      "label": "",
+      "line": 2,
+      "node_type": "stmt"
+    },
+    {
+      "id": 2,
+      "label": "public class ArrayIntro {",
+      "line": 3,
+      "node_type": "stmt"
+    },
+    {
+      "id": 3,
+      "label": "",
+      "line": 4,
+      "node_type": "stmt"
+    },
+    {
+      "id": 4,
+      "label": "void test() {",
+      "line": 5,
+      "node_type": "stmt"
+    },
+    {
+      "id": 5,
+      "label": "int @MinLen(5) [] arr = new int[5];",
+      "line": 6,
+      "node_type": "stmt"
+    },
+    {
+      "id": 6,
+      "label": "int a = 9;",
+      "line": 7,
+      "node_type": "stmt"
+    },
+    {
+      "id": 7,
+      "label": "a += 5;",
+      "line": 8,
+      "node_type": "stmt"
+    },
+    {
+      "id": 8,
+      "label": "a -= 2;",
+      "line": 9,
+      "node_type": "stmt"
+    },
+    {
+      "id": 9,
+      "label": "int @MinLen(12) [] arr1 = new int[a];",
+      "line": 10,
+      "node_type": "stmt"
+    },
+    {
+      "id": 10,
+      "label": "int @MinLen(3) [] arr2 = { 1, 2, 3 };",
+      "line": 11,
+      "node_type": "stmt"
+    },
+    {
+      "id": 11,
+      "label": "int @MinLen(4) [] arr3 = { 4, 5, 6 };",
+      "line": 12,
+      "node_type": "stmt"
+    },
+    {
+      "id": 12,
+      "label": "int @MinLen(7) [] arr4 = new int[4];",
+      "line": 13,
+      "node_type": "stmt"
+    },
+    {
+      "id": 13,
+      "label": "int @MinLen(16) [] arr5 = new int[a];",
+      "line": 14,
+      "node_type": "stmt"
+    },
+    {
+      "id": 14,
+      "label": "}",
+      "line": 15,
+      "node_type": "stmt"
+    },
+    {
+      "id": 15,
+      "label": "}",
+      "line": 16,
+      "node_type": "stmt"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 1
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "variable": "MinLen"
+    },
+    {
+      "source": 1,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "int"
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "variable": "MinLen"
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "variable": "new"
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "a"
+    },
+    {
+      "source": 6,
+      "target": 9,
+      "variable": "int"
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "variable": "a"
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "variable": "a"
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 9,
+      "target": 10,
+      "variable": "int"
+    },
+    {
+      "source": 9,
+      "target": 10,
+      "variable": "MinLen"
+    },
+    {
+      "source": 9,
+      "target": 12,
+      "variable": "new"
+    },
+    {
+      "source": 9,
+      "target": 13,
+      "variable": "a"
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 10,
+      "target": 11,
+      "variable": "int"
+    },
+    {
+      "source": 10,
+      "target": 11,
+      "variable": "MinLen"
+    },
+    {
+      "source": 11,
+      "target": 12
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "int"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "MinLen"
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 12,
+      "target": 13,
+      "variable": "int"
+    },
+    {
+      "source": 12,
+      "target": 13,
+      "variable": "MinLen"
+    },
+    {
+      "source": 12,
+      "target": 13,
+      "variable": "new"
+    },
+    {
+      "source": 13,
+      "target": 14
+    },
+    {
+      "source": 14,
+      "target": 15
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 1
+    },
+    {
+      "source": 1,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 8
+    },
+    {
+      "source": 8,
+      "target": 9
+    },
+    {
+      "source": 9,
+      "target": 10
+    },
+    {
+      "source": 10,
+      "target": 11
+    },
+    {
+      "source": 11,
+      "target": 12
+    },
+    {
+      "source": 12,
+      "target": 13
+    },
+    {
+      "source": 13,
+      "target": 14
+    },
+    {
+      "source": 14,
+      "target": 15
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 0,
+      "target": 5,
+      "variable": "MinLen"
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "variable": "int"
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "variable": "MinLen"
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "variable": "new"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "a"
+    },
+    {
+      "source": 6,
+      "target": 9,
+      "variable": "int"
+    },
+    {
+      "source": 7,
+      "target": 8,
+      "variable": "a"
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "variable": "a"
+    },
+    {
+      "source": 9,
+      "target": 10,
+      "variable": "int"
+    },
+    {
+      "source": 9,
+      "target": 10,
+      "variable": "MinLen"
+    },
+    {
+      "source": 9,
+      "target": 12,
+      "variable": "new"
+    },
+    {
+      "source": 9,
+      "target": 13,
+      "variable": "a"
+    },
+    {
+      "source": 10,
+      "target": 11,
+      "variable": "int"
+    },
+    {
+      "source": 10,
+      "target": 11,
+      "variable": "MinLen"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "int"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "variable": "MinLen"
+    },
+    {
+      "source": 12,
+      "target": 13,
+      "variable": "int"
+    },
+    {
+      "source": 12,
+      "target": 13,
+      "variable": "MinLen"
+    },
+    {
+      "source": 12,
+      "target": 13,
+      "variable": "new"
+    }
+  ]
+}

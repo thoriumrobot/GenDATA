@@ -1,0 +1,109 @@
+{
+  "method_name": "str",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "If(MethodInvocation(arguments=[], member=isEmpty, postfix_operators=[], prefix_operators=[], qualifier=argStr, selectors=[], type_arguments=None))",
+      "line": 7,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Return(None)",
+      "line": 11,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "If(BinaryOperation(operandl=MemberReference(member=argStr, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"abc\"), operator===))",
+      "line": 10,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[MethodInvocation(arguments=[BinaryOperation(operandl=MethodInvocation(arguments=[], member=length, postfix_operators=[], prefix_operators=[], qualifier=argStr, selectors=[], type_arguments=None), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator=-)], member=charAt, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None, type_arguments=None)], value=\"abc\"), name=c)], modifiers=set(), type=BasicType(dimensions=[], name=char))",
+      "line": 13,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[MethodInvocation(arguments=[MethodInvocation(arguments=[], member=length, postfix_operators=[], prefix_operators=[], qualifier=argStr, selectors=[], type_arguments=None)], member=charAt, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None, type_arguments=None)], value=\"abc\"), name=c2)], modifiers=set(), type=BasicType(dimensions=[], name=char))",
+      "line": 14,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 3
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 3
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": []
+}

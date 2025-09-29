@@ -1,0 +1,158 @@
+{
+  "method_name": "test5",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=offset, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), name=otherOffset)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 6,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "While(MemberReference(member=flag, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 7,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Assignment(expressionl=MemberReference(member=otherOffset, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type=+=, value=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1))",
+      "line": 8,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "MemberReference(member=offset, postfix_operators=['++'], prefix_operators=[], qualifier=, selectors=[])",
+      "line": 9,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "Assignment(expressionl=MemberReference(member=offset, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type=+=, value=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1))",
+      "line": 10,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "Assignment(expressionl=MemberReference(member=offset2, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), type=+=, value=MemberReference(member=offset, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 11,
+      "node_type": "control"
+    },
+    {
+      "id": 8,
+      "label": "LocalVariableDeclaration(annotations=[Annotation(element=[ElementValuePair(name=value, value=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"#1\")), ElementValuePair(name=offset, value=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=\"-1000\"))], name=LTLengthOf)], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=otherOffset, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), name=x)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 14,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 8
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "variable": "otherOffset"
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "offset"
+    },
+    {
+      "source": 7,
+      "target": 3
+    },
+    {
+      "source": 8,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 3,
+      "target": 8
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 6
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 3
+    },
+    {
+      "source": 8,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": [
+    {
+      "source": 4,
+      "target": 8,
+      "variable": "otherOffset"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "variable": "offset"
+    }
+  ]
+}

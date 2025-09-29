@@ -1,0 +1,115 @@
+{
+  "method_name": "cases",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "Switch(BinaryOperation(operandl=MemberReference(member=length, postfix_operators=[], prefix_operators=[], qualifier=a, selectors=[]), operandr=MemberReference(member=l, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=-))",
+      "line": 6,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Case([Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1)])",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=a, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=MemberReference(member=l, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))]), name=x)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 8,
+      "node_type": "control"
+    },
+    {
+      "id": 5,
+      "label": "Break",
+      "line": 12,
+      "node_type": "control"
+    },
+    {
+      "id": 6,
+      "label": "Case([Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=2)])",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 7,
+      "label": "LocalVariableDeclaration(annotations=[], declarators=[VariableDeclarator(dimensions=[], initializer=MemberReference(member=a, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=BinaryOperation(operandl=MemberReference(member=l, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operandr=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operator=+))]), name=y)], modifiers=set(), type=BasicType(dimensions=[], name=int))",
+      "line": 11,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 6
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 5
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 6
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 5
+    },
+    {
+      "source": 6,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 5
+    }
+  ],
+  "dataflow_edges": []
+}

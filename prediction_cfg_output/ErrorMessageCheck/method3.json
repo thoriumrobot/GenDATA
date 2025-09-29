@@ -1,0 +1,73 @@
+{
+  "method_name": "method3",
+  "java_file": null,
+  "nodes": [
+    {
+      "id": 0,
+      "label": "Entry",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 1,
+      "label": "Exit",
+      "line": null,
+      "node_type": "control"
+    },
+    {
+      "id": 2,
+      "label": "Assignment(expressionl=This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[MemberReference(member=size, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None)]), type==, value=MemberReference(member=size, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]))",
+      "line": 6,
+      "node_type": "control"
+    },
+    {
+      "id": 3,
+      "label": "Assignment(expressionl=This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[MemberReference(member=vDown, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None)]), type==, value=ArrayCreator(dimensions=[This(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[MemberReference(member=size, postfix_operators=None, prefix_operators=None, qualifier=None, selectors=None)])], initializer=None, postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], type=BasicType(dimensions=None, name=int)))",
+      "line": 7,
+      "node_type": "control"
+    },
+    {
+      "id": 4,
+      "label": "Assignment(expressionl=MemberReference(member=vDown, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[ArraySelector(index=BinaryOperation(operandl=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=1), operandr=MemberReference(member=value, postfix_operators=[], prefix_operators=[], qualifier=, selectors=[]), operator=+))]), type==, value=Literal(postfix_operators=[], prefix_operators=[], qualifier=None, selectors=[], value=10))",
+      "line": 8,
+      "node_type": "control"
+    }
+  ],
+  "edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 1
+    }
+  ],
+  "control_edges": [
+    {
+      "source": 0,
+      "target": 2
+    },
+    {
+      "source": 2,
+      "target": 3
+    },
+    {
+      "source": 3,
+      "target": 4
+    },
+    {
+      "source": 4,
+      "target": 1
+    }
+  ],
+  "dataflow_edges": []
+}
