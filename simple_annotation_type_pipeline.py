@@ -377,7 +377,7 @@ class SimpleAnnotationTypePipeline:
             
             # Load trained models info (check for any base model type)
             models = {}
-            base_model_types = ['enhanced_hybrid', 'enhanced_gcn', 'enhanced_gat', 'enhanced_transformer', 'enhanced_causal', 'causal', 'hgt', 'gcn', 'gbt', 'gcsn', 'dg2n']
+            base_model_types = ['enhanced_hybrid', 'enhanced_gcn', 'enhanced_gat', 'enhanced_transformer', 'enhanced_causal', 'enhanced_graph_causal', 'graph_causal', 'graphite', 'causal', 'hgt', 'gcn', 'gbt', 'gcsn', 'dg2n']
             
             for annotation_type in self.annotation_types:
                 model_name = annotation_type.replace('@', '').lower()
@@ -441,7 +441,7 @@ class SimpleAnnotationTypePipeline:
             predictor = ModelBasedPredictor(models_dir=self.models_dir, auto_train=auto_train)
             
             # Iterate all base model types to produce predictions for all 21 combinations
-            base_model_types = ['enhanced_hybrid', 'enhanced_gcn', 'enhanced_gat', 'enhanced_transformer', 'enhanced_causal', 'causal', 'hgt', 'gcn', 'gbt', 'gcsn', 'dg2n']
+            base_model_types = ['enhanced_hybrid', 'enhanced_gcn', 'enhanced_gat', 'enhanced_transformer', 'enhanced_causal', 'enhanced_graph_causal', 'graph_causal', 'graphite', 'causal', 'hgt', 'gcn', 'gbt', 'gcsn', 'dg2n']
             all_predictions = []
 
             prediction_cfg_dir = os.path.join(self.cfwr_root, 'prediction_cfg_output')
@@ -479,7 +479,7 @@ class SimpleAnnotationTypePipeline:
             
             # Load trained models info (check for any base model type)
             models = {}
-            base_model_types = ['enhanced_hybrid', 'enhanced_gcn', 'enhanced_gat', 'enhanced_transformer', 'enhanced_causal', 'causal', 'hgt', 'gcn', 'gbt', 'gcsn', 'dg2n']
+            base_model_types = ['enhanced_hybrid', 'enhanced_gcn', 'enhanced_gat', 'enhanced_transformer', 'enhanced_causal', 'enhanced_graph_causal', 'graph_causal', 'graphite', 'causal', 'hgt', 'gcn', 'gbt', 'gcsn', 'dg2n']
             
             for annotation_type in self.annotation_types:
                 model_name = annotation_type.replace('@', '').lower()
@@ -540,7 +540,7 @@ class SimpleAnnotationTypePipeline:
             predictor = ModelBasedPredictor(models_dir=self.models_dir, auto_train=auto_train)
             
             # Try to load or train models with different base model types
-            base_model_types = ['enhanced_hybrid', 'enhanced_gcn', 'enhanced_gat', 'enhanced_transformer', 'enhanced_causal', 'causal', 'hgt', 'gcn', 'gbt', 'gcsn', 'dg2n']
+            base_model_types = ['enhanced_hybrid', 'enhanced_gcn', 'enhanced_gat', 'enhanced_transformer', 'enhanced_causal', 'enhanced_graph_causal', 'graph_causal', 'graphite', 'causal', 'hgt', 'gcn', 'gbt', 'gcsn', 'dg2n']
             models_loaded = False
             
             for base_model_type in base_model_types:
@@ -628,7 +628,7 @@ class SimpleAnnotationTypePipeline:
         for annotation_type in self.annotation_types:
             # Check for models with any base model type
             model_found = False
-            base_model_types = ['enhanced_hybrid', 'enhanced_gcn', 'enhanced_gat', 'enhanced_transformer', 'enhanced_causal', 'causal', 'hgt', 'gcn', 'gbt', 'gcsn', 'dg2n']
+            base_model_types = ['enhanced_hybrid', 'enhanced_gcn', 'enhanced_gat', 'enhanced_transformer', 'enhanced_causal', 'enhanced_graph_causal', 'graph_causal', 'graphite', 'causal', 'hgt', 'gcn', 'gbt', 'gcsn', 'dg2n']
             
             for base_model_type in base_model_types:
                 model_name = annotation_type.replace('@', '').lower()

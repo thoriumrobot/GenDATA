@@ -8,6 +8,7 @@ The annotation-type models have been **completely rearchitected** with a sophist
 
 ### **Dual Input Architecture**
 - **✅ Graph Input Models**: HGT, GCN, GCSN, DG2N - Direct CFG processing with sophisticated GNNs
+- **✅ Native Graph Causal Models**: Graph Causal, Enhanced Graph Causal, GraphITE - Direct CFG processing with causal attention and treatment effect estimation
 - **✅ Embedding Input Models**: GBT, Causal, Enhanced Causal - Graph encoder → embeddings → MLP classification
 - **✅ Unified Batching Framework**: Same `CFGDataLoader` infrastructure for both input types
 - **✅ Large Scale Support**: 50x increase in CFG capacity (1000 nodes, 2000 edges)
@@ -15,6 +16,7 @@ The annotation-type models have been **completely rearchitected** with a sophist
 
 ### **Enhanced Model Architectures**
 - **Graph Neural Networks**: GCN, GAT, Transformer, Hybrid with attention mechanisms
+- **Native Graph Causal Models**: Direct CFG processing with causal attention, relationship modeling, and treatment effect estimation
 - **Graph Encoders**: Transformer-based encoders with edge encodings and global attention pooling
 - **Sophisticated Embeddings**: 256-dimensional embeddings with multi-layer processing
 - **Auto-Training System**: Automatically trains missing models for pure model-based evaluation
@@ -23,10 +25,11 @@ The annotation-type models have been **completely rearchitected** with a sophist
 
 ### **Batching Implementation Verification**
 - **✅ Graph Input Models**: 4/4 successful (HGT, GCN, GCSN, DG2N)
+- **✅ Native Graph Causal Models**: 3/3 successful (Graph Causal, Enhanced Graph Causal, GraphITE)
 - **✅ Embedding Input Models**: 3/3 successful (GBT, Causal, Enhanced Causal)
-- **✅ Total Model Types**: 14 (11 graph input + 3 embedding input)
-- **✅ Total Combinations**: 42 (14 models × 3 annotation types)
-- **✅ Success Rate**: 100% (7/7 tested models working correctly)
+- **✅ Total Model Types**: 17 (14 graph input + 3 embedding input)
+- **✅ Total Combinations**: 51 (17 models × 3 annotation types)
+- **✅ Success Rate**: 100% (10/10 tested models working correctly)
 
 ### **Large-Scale CFG Support**
 - **✅ CFG Size**: Up to 1000 nodes, 2000 edges (50x increase)
@@ -210,6 +213,7 @@ The enhanced framework uses a dual input architecture with sophisticated process
 - **Graph Attention Networks (GAT)**: Attention-based graph processing with multiple heads
 - **Graph Transformers**: Transformer architecture adapted for graph data with edge encodings
 - **Hybrid Models**: Combine multiple architectures (GCN + GAT + Transformer) for enhanced performance
+- **Native Graph Causal Models**: Direct CFG processing with causal attention, relationship modeling, and treatment effect estimation
 
 #### **Embedding Input Models** (Sophisticated Graph Embeddings)
 - **Graph Encoders**: Transformer-based encoders with edge encodings and global attention pooling

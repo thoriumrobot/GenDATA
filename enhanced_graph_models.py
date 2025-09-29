@@ -557,6 +557,272 @@ class EnhancedEmbeddingHybridModel(EnhancedEmbeddingBaseModel):
         return self.fusion(all_features)
 
 
+# ============================================================================
+# NATIVE GRAPH CAUSAL MODELS (Direct CFG Processing with Causal Mechanisms)
+# These models process CFG graphs directly with causal attention mechanisms
+# ============================================================================
+
+class EnhancedGraphCausalModel(EnhancedGraphBasedModel):
+    """
+    Enhanced Graph Causal model with native graph input support.
+    
+    This model processes CFG graphs directly using graph convolutions
+    and causal attention mechanisms, without requiring embedding conversion.
+    """
+    
+    def __init__(self, input_dim: int, hidden_dim: int = 256, out_dim: int = 2, 
+                 num_layers: int = 4, dropout: float = 0.1, **kwargs):
+        super().__init__(input_dim, hidden_dim, out_dim, num_layers, dropout, **kwargs)
+        
+        # Causal graph convolution layers
+        self.causal_convs = nn.ModuleList()
+        self.causal_norms = nn.ModuleList()
+        
+        for i in range(num_layers):
+            self.causal_convs.append(GCNConv(hidden_dim, hidden_dim))
+            self.causal_norms.append(nn.LayerNorm(hidden_dim))
+        
+        # Causal attention mechanism for modeling causal relationships
+        self.causal_attention = nn.MultiheadAttention(
+            hidden_dim, 
+            num_heads=8, 
+            dropout=dropout,
+            batch_first=True
+        )
+        self.attention_norm = nn.LayerNorm(hidden_dim)
+        
+        # Causal relationship encoder
+        self.causal_relationship_encoder = nn.Sequential(
+            nn.Linear(hidden_dim, hidden_dim // 2),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden_dim // 2, hidden_dim // 4),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden_dim // 4, hidden_dim // 4)
+        )
+        
+        # Enhanced pooling dimension (includes causal features)
+        self.pooling_dim = hidden_dim * 4 + hidden_dim // 4  # 4 pooling strategies + causal features
+        
+        # Enhanced classifier with causal features
+        self.classifier = nn.Sequential(
+            nn.Linear(self.pooling_dim, hidden_dim),
+            nn.LayerNorm(hidden_dim),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden_dim, hidden_dim // 2),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden_dim // 2, out_dim)
+        )
+    
+    def graph_forward(self, x, edge_index):
+        """
+        Apply causal graph convolutions with residual connections.
+        """
+        for i, (conv, norm) in enumerate(zip(self.causal_convs, self.causal_norms)):
+            x_res = x
+            
+            # Apply graph convolution
+            x = conv(x, edge_index)
+            x = norm(x)
+            x = F.relu(x)
+            x = F.dropout(x, p=self.dropout, training=self.training)
+            
+            # Residual connection (skip first layer)
+            if i > 0:
+                x = x + x_res
+        
+        return x
+    
+    def apply_causal_attention(self, x, batch):
+        """
+        Apply causal attention mechanism to model causal relationships.
+        """
+        batch_size = batch.max().item() + 1
+        
+        # Apply attention within each graph
+        attended_features = []
+        for graph_id in range(batch_size):
+            # Get nodes for this graph
+            mask = batch == graph_id
+            graph_nodes = x[mask]  # [num_nodes_in_graph, hidden_dim]
+            
+            if graph_nodes.size(0) == 0:
+                continue
+            
+            # Apply self-attention for causal modeling
+            graph_nodes_seq = graph_nodes.unsqueeze(0)  # [1, num_nodes, hidden_dim]
+            attended_nodes, _ = self.causal_attention(
+                graph_nodes_seq, graph_nodes_seq, graph_nodes_seq
+            )
+            attended_nodes = attended_nodes.squeeze(0)  # [num_nodes, hidden_dim]
+            
+            # Apply layer norm with residual connection
+            attended_nodes = self.attention_norm(attended_nodes + graph_nodes)
+            attended_features.append(attended_nodes)
+        
+        # Concatenate back
+        if attended_features:
+            x = torch.cat(attended_features, dim=0)
+        
+        return x
+    
+    def forward(self, data):
+        """
+        Enhanced forward pass with causal relationship modeling.
+        """
+        x, edge_index, batch = data.x, data.edge_index, data.batch
+        
+        # Input projection
+        x = self.input_proj(x)
+        
+        # Apply causal graph convolutions
+        x = self.graph_forward(x, edge_index)
+        
+        # Apply causal attention
+        x = self.apply_causal_attention(x, batch)
+        
+        # Enhanced global pooling
+        x_mean = global_mean_pool(x, batch)
+        x_max = global_max_pool(x, batch)
+        x_sum = global_add_pool(x, batch)
+        
+        # Apply attention pooling if available
+        if self.use_attention_pooling and hasattr(self, 'attention_pool'):
+            x_att = self.attention_pool(x, batch)
+            x_pooled = torch.cat([x_att, x_mean, x_max, x_sum], dim=1)
+        else:
+            x_pooled = torch.cat([x_mean, x_max, x_sum], dim=1)
+        
+        # Model causal relationships
+        x_causal = self.causal_relationship_encoder(x)
+        x_causal_pooled = global_mean_pool(x_causal, batch)
+        
+        # Combine all features
+        x_combined = torch.cat([x_pooled, x_causal_pooled], dim=1)
+        
+        # Final classification
+        return self.classifier(x_combined)
+
+
+class GraphITECausalModel(EnhancedGraphBasedModel):
+    """
+    GraphITE-inspired model for CFG-based causal inference.
+    
+    Based on "GraphITE: Individual Treatment Effect Estimation for Graph Data"
+    (Harada & Kashima, 2021). This model treats CFG structures as graph treatments
+    and estimates causal effects of different CFG configurations on annotation placement.
+    """
+    
+    def __init__(self, input_dim: int, hidden_dim: int = 256, out_dim: int = 2, 
+                 num_layers: int = 4, dropout: float = 0.1, **kwargs):
+        super().__init__(input_dim, hidden_dim, out_dim, num_layers, dropout, **kwargs)
+        
+        # GNN encoder for graph treatments (CFG structures)
+        self.treatment_encoder = nn.ModuleList()
+        self.treatment_norms = nn.ModuleList()
+        
+        for i in range(num_layers):
+            self.treatment_encoder.append(GCNConv(hidden_dim, hidden_dim))
+            self.treatment_norms.append(nn.LayerNorm(hidden_dim))
+        
+        # Treatment effect estimator (causal effect of CFG structure)
+        self.treatment_effect_estimator = nn.Sequential(
+            nn.Linear(hidden_dim, hidden_dim // 2),
+            nn.LayerNorm(hidden_dim // 2),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden_dim // 2, hidden_dim // 4),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden_dim // 4, hidden_dim // 4)
+        )
+        
+        # Counterfactual predictor (what-if scenarios)
+        self.counterfactual_predictor = nn.Sequential(
+            nn.Linear(hidden_dim, hidden_dim // 2),
+            nn.LayerNorm(hidden_dim // 2),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden_dim // 2, out_dim)
+        )
+        
+        # Treatment effect pooling
+        self.treatment_pooling_dim = hidden_dim + hidden_dim // 4  # treatment + effect features
+        
+        # Final classifier combining treatment effects and counterfactuals
+        self.classifier = nn.Sequential(
+            nn.Linear(self.treatment_pooling_dim, hidden_dim),
+            nn.LayerNorm(hidden_dim),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden_dim, hidden_dim // 2),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden_dim // 2, out_dim)
+        )
+    
+    def encode_treatment(self, x, edge_index):
+        """
+        Encode CFG structure as a treatment representation.
+        """
+        for i, (conv, norm) in enumerate(zip(self.treatment_encoder, self.treatment_norms)):
+            x_res = x
+            
+            # Apply treatment encoding
+            x = conv(x, edge_index)
+            x = norm(x)
+            x = F.relu(x)
+            x = F.dropout(x, p=self.dropout, training=self.training)
+            
+            # Residual connection (skip first layer)
+            if i > 0:
+                x = x + x_res
+        
+        return x
+    
+    def estimate_treatment_effect(self, treatment_embedding):
+        """
+        Estimate the causal effect of CFG structure (treatment).
+        """
+        return self.treatment_effect_estimator(treatment_embedding)
+    
+    def predict_counterfactual(self, treatment_embedding):
+        """
+        Predict counterfactual outcomes for different CFG structures.
+        """
+        return self.counterfactual_predictor(treatment_embedding)
+    
+    def forward(self, data):
+        """
+        GraphITE forward pass: treatment effect estimation + counterfactual prediction.
+        """
+        x, edge_index, batch = data.x, data.edge_index, data.batch
+        
+        # Input projection
+        x = self.input_proj(x)
+        
+        # Encode CFG structure as treatment
+        treatment_embedding = self.encode_treatment(x, edge_index)
+        
+        # Global pooling for treatment representation
+        treatment_global = global_mean_pool(treatment_embedding, batch)
+        
+        # Estimate treatment effect (causal effect of CFG structure)
+        treatment_effect = self.estimate_treatment_effect(treatment_global)
+        
+        # Predict counterfactual outcomes
+        counterfactual = self.predict_counterfactual(treatment_global)
+        
+        # Combine treatment and effect features
+        combined_features = torch.cat([treatment_global, treatment_effect], dim=1)
+        
+        # Final classification
+        return self.classifier(combined_features)
+
+
 def create_enhanced_model(model_type: str, input_dim: int, hidden_dim: int = 256, 
                          out_dim: int = 2, **kwargs) -> nn.Module:
     """Factory function to create enhanced models with proper input handling"""
@@ -575,6 +841,11 @@ def create_enhanced_model(model_type: str, input_dim: int, hidden_dim: int = 256
         'enhanced_gat': EnhancedGATModel,
         'enhanced_transformer': EnhancedTransformerModel,
         'enhanced_hybrid': EnhancedHybridModel,
+        # Native graph causal models
+        'graph_causal': EnhancedGraphCausalModel,  # NEW: Native graph causal
+        'enhanced_graph_causal': EnhancedGraphCausalModel,  # NEW: Enhanced variant
+        # GraphITE-inspired causal models
+        'graphite': GraphITECausalModel,  # NEW: GraphITE treatment effect estimation
     }
     
     # Models that take sophisticated graph embeddings (not direct graphs)
