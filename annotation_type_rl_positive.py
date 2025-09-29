@@ -21,6 +21,7 @@ import time
 import logging
 from sklearn.ensemble import GradientBoostingClassifier
 import joblib
+from annotation_graph_input import GraphEmbeddingProvider
 
 # Import enhanced causal model
 try:
@@ -63,6 +64,9 @@ class AnnotationTypeTrainer:
             'annotation_predictions': [],
             'accuracy': []
         }
+
+        # Graph embedding provider for graph inputs (used for non-graph models and to enrich features)
+        self.graph_embedder = GraphEmbeddingProvider(out_dim=256, variant='transformer', device=device)
         
     def _init_annotation_model(self):
         """Initialize model for specific annotation type prediction"""
@@ -100,6 +104,18 @@ class AnnotationTypeTrainer:
             
             # Extract features for annotation type prediction
             feature_vector = self._extract_annotation_type_features(node, cfg_data)
+            # Append graph embedding pooled over method-level CFGs (if available on disk)
+            cfg_dir = os.path.dirname(cfg_data.get('source_path', '') or '')
+            try:
+                # If cfg_data originated from a file, expect keys to help locate the cfg dir
+                java_base = os.path.splitext(os.path.basename(cfg_data.get('java_file','') or ''))[0]
+                cfg_root = os.environ.get('CFG_OUTPUT_DIR', 'cfg_output_specimin')
+                cfg_dir = os.path.join(cfg_root, java_base)
+            except Exception:
+                pass
+            if os.path.isdir(cfg_dir):
+                emb = self.graph_embedder.embed_cfg_dir(cfg_dir)
+                feature_vector = np.concatenate([feature_vector, emb.cpu().numpy()])
             features.append(feature_vector)
             
             # Determine if this node should have the specific annotation type
