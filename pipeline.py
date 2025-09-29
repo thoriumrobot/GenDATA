@@ -312,8 +312,8 @@ def run_predict_over_original(model, original_root, models_dir, out_root):
 def main():
     parser = argparse.ArgumentParser(description='End-to-end pipeline for CFWR')
     parser.add_argument('--steps', default='all', choices=['all','slice','augment','cfg','train','predict','predict-original'], help='Which step to run')
-    # Include SG-CFGNet in model choices
-    parser.add_argument('--model', default='all', choices=['all','hgt','gbt','causal','dg2n','gcn','nullgtn','dgcrf','gcsn'], help='Which model(s) to train/predict')
+    # Include annotation_types in model choices and use as default
+    parser.add_argument('--model', default='annotation_types', choices=['annotation_types','all','hgt','gbt','causal','dg2n','gcn','nullgtn','dgcrf','gcsn'], help='Which model(s) to train/predict')
     parser.add_argument('--slices_dir', default=SLICES_DIR_DEFAULT)
     parser.add_argument('--cfg_output_dir', default=CFG_OUTPUT_DIR_DEFAULT)
     parser.add_argument('--models_dir', default=MODELS_DIR_DEFAULT)
