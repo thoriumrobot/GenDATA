@@ -219,8 +219,9 @@ public class CheckerFrameworkWarningResolver {
     }
 
     private static List<String> buildSpeciminCommand(BodyDeclaration<?> member, Warning warning, String projectRoot) throws IOException {
-        String baseSlicesDir = System.getenv().getOrDefault("SLICES_DIR_SOOT",
-                System.getenv().getOrDefault("SLICES_DIR", "slices"));
+        // Use slices_specimin directory for Specimin output
+        String baseSlicesDir = System.getenv().getOrDefault("SLICES_DIR", 
+                Paths.get(resolverPath, "slices_specimin").toString());
         Path baseDirPath = Paths.get(baseSlicesDir).toAbsolutePath().normalize();
         Files.createDirectories(baseDirPath);
 
@@ -281,7 +282,8 @@ public class CheckerFrameworkWarningResolver {
         String outputDirectory = outputPath.toString();
 
         List<String> command = new ArrayList<>();
-        command.add("./gradlew");
+        // Use the Gradle wrapper from the main GenDATA project, not from Specimin directory
+        command.add(Paths.get(resolverPath, "gradlew").toString());
         command.add("run");
 
         // Collect possible jarPath directories for Specimin context
@@ -338,10 +340,10 @@ public class CheckerFrameworkWarningResolver {
             speciminArgs.add(targetMethodOrField);
         }
 
-        // Append any jarPath directories gathered above
-        for (String dir : jarPathDirs) {
+        // Append jarPath - Specimin only accepts one jarPath directory, so use the first one
+        if (!jarPathDirs.isEmpty()) {
             speciminArgs.add("--jarPath");
-            speciminArgs.add(dir);
+            speciminArgs.add(jarPathDirs.iterator().next());
         }
 
         // Join all arguments into a single string for --args, properly escaping
