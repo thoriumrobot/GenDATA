@@ -189,11 +189,15 @@ class ModelBasedPredictor:
             logger.warning(f"Models missing for {base_model_type} and auto_train is disabled")
             return False
     
-    def predict_annotations_for_file(self, java_file: str, threshold: float = 0.3) -> List[Dict[str, Any]]:
+    def predict_annotations_for_file(self, java_file: str, threshold: float = 0.3, cfg_dir: str = None) -> List[Dict[str, Any]]:
         """Predict annotations for a single Java file using trained models"""
         if not self.loaded_models:
             logger.error("No trained models loaded")
             return []
+        
+        # Try to use real CFG data if available
+        if cfg_dir:
+            return self.predict_annotations_for_file_with_cfg(java_file, cfg_dir, threshold)
         
         try:
             # Read Java file
@@ -202,7 +206,7 @@ class ModelBasedPredictor:
             
             predictions = []
             
-            # Create mock CFG data for prediction
+            # Create mock CFG data for prediction (fallback only)
             # In a real implementation, this would come from actual CFG analysis
             for i, line in enumerate(lines, 1):
                 line_lower = line.lower().strip()

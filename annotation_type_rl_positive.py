@@ -270,7 +270,7 @@ class AnnotationTypeTrainer:
             'dataflow_edges': []
         }
     
-    def train(self, project_root, warnings_file, cfwr_root, num_episodes=50, slices_dir=None, cfg_dir=None, use_real_cfg_data=False):
+    def train(self, project_root, warnings_file, cfwr_root, num_episodes=50, slices_dir=None, cfg_dir=None, use_real_cfg_data=True):
         """Train the annotation type model"""
         logger.info(f"Starting training for {self.annotation_type} annotation type")
         logger.info(f"Base model: {self.base_model_type}")
@@ -508,7 +508,7 @@ def main():
     parser.add_argument('--device', default='cpu', help='Device to use (cpu/cuda)')
     parser.add_argument('--slices_dir', help='Directory containing slice files')
     parser.add_argument('--cfg_dir', help='Directory containing CFG files')
-    parser.add_argument('--use_real_cfg_data', action='store_true', help='Use real CFG data instead of mock data')
+    parser.add_argument('--use_real_cfg_data', action='store_true', default=True, help='Use real CFG data instead of mock data (default: True)')
     
     args = parser.parse_args()
     
