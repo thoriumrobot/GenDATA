@@ -1,0 +1,43 @@
+{
+  "method_name": "indexForOrHigh",
+  "nodes": [
+    {"id": 24, "label": "    @NonNegative", "line": 24, "node_type": "stmt"},
+    {"id": 25, "label": "  void indexForOrHigh(String str, @IndexFor(\"#1\") int i1, @IndexOrHigh(\"#1\") int i2) {", "line": 25, "node_type": "stmt"},
+    {"id": 26, "label": "    str.substring(Math.max(i1, i2));", "line": 26, "node_type": "stmt"},
+    {"id": 27, "label": "    str.substring(Math.min(i1, i2));", "line": 27, "node_type": "stmt"},
+    {"id": 28, "label": "    // :: error: (argument)", "line": 28, "node_type": "stmt"},
+    {"id": 29, "label": "    str.charAt(Math.max(i1, i2));", "line": 29, "node_type": "stmt"},
+    {"id": 30, "label": "    str.charAt(Math.min(i1, i2));", "line": 30, "node_type": "stmt"},
+    {"id": 31, "label": "  }", "line": 31, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 24, "target": 25, "type": "control"},
+    {"source": 25, "target": 26, "type": "control"},
+    {"source": 26, "target": 27, "type": "control"},
+    {"source": 27, "target": 28, "type": "control"},
+    {"source": 28, "target": 29, "type": "control"},
+    {"source": 29, "target": 30, "type": "control"},
+    {"source": 30, "target": 31, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 25, "target": 26, "type": "dataflow", "var": "str"},
+    {"source": 25, "target": 26, "type": "dataflow", "var": "i1"},
+    {"source": 25, "target": 26, "type": "dataflow", "var": "i2"},
+    {"source": 26, "target": 27, "type": "dataflow", "var": "str"},
+    {"source": 26, "target": 27, "type": "dataflow", "var": "substring"},
+    {"source": 26, "target": 27, "type": "dataflow", "var": "Math"},
+    {"source": 26, "target": 27, "type": "dataflow", "var": "i1"},
+    {"source": 26, "target": 27, "type": "dataflow", "var": "i2"},
+    {"source": 27, "target": 29, "type": "dataflow", "var": "str"},
+    {"source": 27, "target": 29, "type": "dataflow", "var": "Math"},
+    {"source": 26, "target": 29, "type": "dataflow", "var": "max"},
+    {"source": 27, "target": 29, "type": "dataflow", "var": "i1"},
+    {"source": 27, "target": 29, "type": "dataflow", "var": "i2"},
+    {"source": 29, "target": 30, "type": "dataflow", "var": "str"},
+    {"source": 29, "target": 30, "type": "dataflow", "var": "charAt"},
+    {"source": 29, "target": 30, "type": "dataflow", "var": "Math"},
+    {"source": 27, "target": 30, "type": "dataflow", "var": "min"},
+    {"source": 29, "target": 30, "type": "dataflow", "var": "i1"},
+    {"source": 29, "target": 30, "type": "dataflow", "var": "i2"}
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "method_name": "subtype",
+  "nodes": [
+    {"id": 8, "label": "  void subtype(int @SameLen(\"#2\") [] a, int[] b) {", "line": 8, "node_type": "stmt"},
+    {"id": 9, "label": "    int @SameLen({\"a\", \"b\"}) [] c = a;", "line": 9, "node_type": "stmt"},
+    {"id": 10, "label": "", "line": 10, "node_type": "stmt"},
+    {"id": 11, "label": "    // :: error: (assignment)", "line": 11, "node_type": "stmt"},
+    {"id": 12, "label": "    int @SameLen(\"c\") [] q = {1, 2};", "line": 12, "node_type": "stmt"},
+    {"id": 13, "label": "    int @SameLen(\"c\") [] d = q;", "line": 13, "node_type": "stmt"},
+    {"id": 14, "label": "", "line": 14, "node_type": "stmt"},
+    {"id": 15, "label": "    // :: error: (assignment)", "line": 15, "node_type": "stmt"},
+    {"id": 16, "label": "    int @SameLen(\"f\") [] e = a;", "line": 16, "node_type": "stmt"},
+    {"id": 17, "label": "  }", "line": 17, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 8, "target": 9, "type": "control"},
+    {"source": 9, "target": 10, "type": "control"},
+    {"source": 10, "target": 11, "type": "control"},
+    {"source": 11, "target": 12, "type": "control"},
+    {"source": 12, "target": 13, "type": "control"},
+    {"source": 13, "target": 14, "type": "control"},
+    {"source": 14, "target": 15, "type": "control"},
+    {"source": 15, "target": 16, "type": "control"},
+    {"source": 16, "target": 17, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 8, "target": 9, "type": "dataflow", "var": "SameLen"},
+    {"source": 8, "target": 9, "type": "dataflow", "var": "a"},
+    {"source": 8, "target": 9, "type": "dataflow", "var": "b"},
+    {"source": 9, "target": 12, "type": "dataflow", "var": "SameLen"},
+    {"source": 9, "target": 12, "type": "dataflow", "var": "c"},
+    {"source": 12, "target": 13, "type": "dataflow", "var": "SameLen"},
+    {"source": 12, "target": 13, "type": "dataflow", "var": "c"},
+    {"source": 12, "target": 13, "type": "dataflow", "var": "q"},
+    {"source": 11, "target": 15, "type": "dataflow", "var": "error"},
+    {"source": 11, "target": 15, "type": "dataflow", "var": "assignment"},
+    {"source": 13, "target": 16, "type": "dataflow", "var": "SameLen"},
+    {"source": 9, "target": 16, "type": "dataflow", "var": "a"}
+  ]
+}

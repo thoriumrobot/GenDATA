@@ -1,0 +1,18 @@
+{
+  "method_name": "foo",
+  "nodes": [
+    {"id": 4, "label": "  void foo(@IntRange(from = 0, to = 11) int x, int @MinLen(10) [] a) {", "line": 4, "node_type": "stmt"},
+    {"id": 5, "label": "    // :: error: (array.access.unsafe.high.range)", "line": 5, "node_type": "stmt"},
+    {"id": 6, "label": "    int y = a[x];", "line": 6, "node_type": "stmt"},
+    {"id": 7, "label": "  }", "line": 7, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 4, "target": 5, "type": "control"},
+    {"source": 5, "target": 6, "type": "control"},
+    {"source": 6, "target": 7, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 4, "target": 6, "type": "dataflow", "var": "a"},
+    {"source": 4, "target": 6, "type": "dataflow", "var": "x"}
+  ]
+}

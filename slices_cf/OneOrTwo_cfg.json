@@ -1,0 +1,25 @@
+{
+  "method_name": "slice",
+  "nodes": [
+    {"id": 10, "label": "    // :: error: (array.length.negative)", "line": 10, "node_type": "stmt"},
+    {"id": 11, "label": "    int[] b = new int[Integer.valueOf(x)];", "line": 11, "node_type": "stmt"},
+    {"id": 12, "label": "  }", "line": 12, "node_type": "stmt"},
+    {"id": 13, "label": "", "line": 13, "node_type": "stmt"},
+    {"id": 14, "label": "  @PolyValue int poly(@PolyValue int y) {", "line": 14, "node_type": "stmt"},
+    {"id": 15, "label": "    return y;", "line": 15, "node_type": "stmt"},
+    {"id": 16, "label": "  }", "line": 16, "node_type": "stmt"},
+    {"id": 17, "label": "}", "line": 17, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 10, "target": 11, "type": "control"},
+    {"source": 11, "target": 12, "type": "control"},
+    {"source": 12, "target": 13, "type": "control"},
+    {"source": 13, "target": 14, "type": "control"},
+    {"source": 14, "target": 15, "type": "control"},
+    {"source": 15, "target": 16, "type": "control"},
+    {"source": 16, "target": 17, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 14, "target": 15, "type": "dataflow", "var": "y"}
+  ]
+}

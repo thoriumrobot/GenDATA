@@ -1,0 +1,18 @@
+{
+  "method_name": "m",
+  "nodes": [
+    {"id": 7, "label": "  public int m(int[] a, @IntRange(from = 0, to = 12) int i) {", "line": 7, "node_type": "stmt"},
+    {"id": 8, "label": "    // :: error: (array.access.unsafe.high.range)", "line": 8, "node_type": "stmt"},
+    {"id": 9, "label": "    return a[i];", "line": 9, "node_type": "stmt"},
+    {"id": 10, "label": "  }", "line": 10, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 7, "target": 8, "type": "control"},
+    {"source": 8, "target": 9, "type": "control"},
+    {"source": 9, "target": 10, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 7, "target": 9, "type": "dataflow", "var": "a"},
+    {"source": 7, "target": 9, "type": "dataflow", "var": "i"}
+  ]
+}

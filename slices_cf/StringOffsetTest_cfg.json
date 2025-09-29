@@ -1,0 +1,27 @@
+{
+  "method_name": "OffsetString",
+  "nodes": [
+    {"id": 2, "label": "  public static void OffsetString() {", "line": 2, "node_type": "stmt"},
+    {"id": 3, "label": "    char[] chars = new char[10];", "line": 3, "node_type": "stmt"},
+    {"id": 4, "label": "", "line": 4, "node_type": "stmt"},
+    {"id": 5, "label": "    // :: error: (argument)", "line": 5, "node_type": "stmt"},
+    {"id": 6, "label": "    String string2 = new String(chars, 5, 7);", "line": 6, "node_type": "stmt"},
+    {"id": 7, "label": "", "line": 7, "node_type": "stmt"},
+    {"id": 8, "label": "    String string3 = new String(chars, 5, 4);", "line": 8, "node_type": "stmt"},
+    {"id": 9, "label": "  }", "line": 9, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 2, "target": 3, "type": "control"},
+    {"source": 3, "target": 4, "type": "control"},
+    {"source": 4, "target": 5, "type": "control"},
+    {"source": 5, "target": 6, "type": "control"},
+    {"source": 6, "target": 7, "type": "control"},
+    {"source": 7, "target": 8, "type": "control"},
+    {"source": 8, "target": 9, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 3, "target": 6, "type": "dataflow", "var": "chars"},
+    {"source": 6, "target": 8, "type": "dataflow", "var": "String"},
+    {"source": 6, "target": 8, "type": "dataflow", "var": "chars"}
+  ]
+}

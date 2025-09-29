@@ -1,0 +1,15 @@
+{
+  "method_name": "makeArray",
+  "nodes": [
+    {"id": 9, "label": "  public void makeArray(@Positive int max_values) {", "line": 9, "node_type": "stmt"},
+    {"id": 10, "label": "    String @MinLen(1) [] a = new String[max_values];", "line": 10, "node_type": "stmt"},
+    {"id": 11, "label": "  }", "line": 11, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 9, "target": 10, "type": "control"},
+    {"source": 10, "target": 11, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 9, "target": 10, "type": "dataflow", "var": "max_values"}
+  ]
+}

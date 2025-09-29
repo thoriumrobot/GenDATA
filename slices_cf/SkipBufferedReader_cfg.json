@@ -1,0 +1,27 @@
+{
+  "method_name": "method",
+  "nodes": [
+    {"id": 6, "label": "  public static void method() throws IOException {", "line": 6, "node_type": "stmt"},
+    {"id": 7, "label": "    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));", "line": 7, "node_type": "stmt"},
+    {"id": 8, "label": "", "line": 8, "node_type": "stmt"},
+    {"id": 9, "label": "    // :: error: (argument)", "line": 9, "node_type": "stmt"},
+    {"id": 10, "label": "    bufferedReader.skip(-1);", "line": 10, "node_type": "stmt"},
+    {"id": 11, "label": "", "line": 11, "node_type": "stmt"},
+    {"id": 12, "label": "    bufferedReader.skip(1);", "line": 12, "node_type": "stmt"},
+    {"id": 13, "label": "  }", "line": 13, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 6, "target": 7, "type": "control"},
+    {"source": 7, "target": 8, "type": "control"},
+    {"source": 8, "target": 9, "type": "control"},
+    {"source": 9, "target": 10, "type": "control"},
+    {"source": 10, "target": 11, "type": "control"},
+    {"source": 11, "target": 12, "type": "control"},
+    {"source": 12, "target": 13, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 7, "target": 10, "type": "dataflow", "var": "bufferedReader"},
+    {"source": 10, "target": 12, "type": "dataflow", "var": "bufferedReader"},
+    {"source": 10, "target": 12, "type": "dataflow", "var": "skip"}
+  ]
+}

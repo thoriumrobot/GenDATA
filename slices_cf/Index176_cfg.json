@@ -1,0 +1,41 @@
+{
+  "method_name": "test",
+  "nodes": [
+    {"id": 7, "label": "    @NonNegative", "line": 7, "node_type": "stmt"},
+    {"id": 8, "label": "  void test(String arglist, @IndexFor(\"#1\") int pos) {", "line": 8, "node_type": "stmt"},
+    {"id": 9, "label": "    @NonNegative", "line": 9, "node_type": "stmt"},
+    {"id": 10, "label": "    int semi_pos = arglist.indexOf(\";\");", "line": 10, "node_type": "stmt"},
+    {"id": 11, "label": "    if (semi_pos == -1) {", "line": 11, "node_type": "stmt"},
+    {"id": 12, "label": "      throw new Error(\"Malformed arglist: \" + arglist);", "line": 12, "node_type": "stmt"},
+    {"id": 13, "label": "    }", "line": 13, "node_type": "stmt"},
+    {"id": 14, "label": "    arglist.substring(pos, semi_pos + 1);", "line": 14, "node_type": "stmt"},
+    {"id": 15, "label": "    // :: error: (argument)", "line": 15, "node_type": "stmt"},
+    {"id": 16, "label": "    arglist.substring(pos, semi_pos + 2);", "line": 16, "node_type": "stmt"},
+    {"id": 17, "label": "  }", "line": 17, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 7, "target": 8, "type": "control"},
+    {"source": 8, "target": 9, "type": "control"},
+    {"source": 9, "target": 10, "type": "control"},
+    {"source": 10, "target": 11, "type": "control"},
+    {"source": 11, "target": 12, "type": "control"},
+    {"source": 12, "target": 13, "type": "control"},
+    {"source": 13, "target": 14, "type": "control"},
+    {"source": 14, "target": 15, "type": "control"},
+    {"source": 15, "target": 16, "type": "control"},
+    {"source": 16, "target": 17, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 7, "target": 9, "type": "dataflow", "var": "NonNegative"},
+    {"source": 8, "target": 10, "type": "dataflow", "var": "arglist"},
+    {"source": 10, "target": 11, "type": "dataflow", "var": "semi_pos"},
+    {"source": 10, "target": 12, "type": "dataflow", "var": "arglist"},
+    {"source": 12, "target": 14, "type": "dataflow", "var": "arglist"},
+    {"source": 8, "target": 14, "type": "dataflow", "var": "pos"},
+    {"source": 11, "target": 14, "type": "dataflow", "var": "semi_pos"},
+    {"source": 14, "target": 16, "type": "dataflow", "var": "arglist"},
+    {"source": 14, "target": 16, "type": "dataflow", "var": "substring"},
+    {"source": 14, "target": 16, "type": "dataflow", "var": "pos"},
+    {"source": 14, "target": 16, "type": "dataflow", "var": "semi_pos"}
+  ]
+}

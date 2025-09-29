@@ -1,0 +1,38 @@
+{
+  "method_name": "test",
+  "nodes": [
+    {"id": 19, "label": "  @SuppressWarnings(\"lowerbound\")", "line": 19, "node_type": "stmt"},
+    {"id": 20, "label": "  void test(int[] a, @Positive int y) {", "line": 20, "node_type": "stmt"},
+    {"id": 21, "label": "    @Positive", "line": 21, "node_type": "stmt"},
+    {"id": 22, "label": "    @LTLengthOf(\"a\") int x = a.length - 1;", "line": 22, "node_type": "stmt"},
+    {"id": 23, "label": "    @LTLengthOf(", "line": 23, "node_type": "stmt"},
+    {"id": 24, "label": "        value = {\"a\", \"a\"},", "line": 24, "node_type": "stmt"},
+    {"id": 25, "label": "        offset = {\"0\", \"y\"})", "line": 25, "node_type": "stmt"},
+    {"id": 26, "label": "    int z = x - y;", "line": 26, "node_type": "stmt"},
+    {"id": 27, "label": "    a[z + y] = 0;", "line": 27, "node_type": "stmt"},
+    {"id": 28, "label": "  }", "line": 28, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 19, "target": 20, "type": "control"},
+    {"source": 20, "target": 21, "type": "control"},
+    {"source": 21, "target": 22, "type": "control"},
+    {"source": 22, "target": 23, "type": "control"},
+    {"source": 23, "target": 24, "type": "control"},
+    {"source": 24, "target": 25, "type": "control"},
+    {"source": 25, "target": 26, "type": "control"},
+    {"source": 26, "target": 27, "type": "control"},
+    {"source": 27, "target": 28, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 20, "target": 21, "type": "dataflow", "var": "Positive"},
+    {"source": 20, "target": 22, "type": "dataflow", "var": "a"},
+    {"source": 22, "target": 23, "type": "dataflow", "var": "LTLengthOf"},
+    {"source": 22, "target": 24, "type": "dataflow", "var": "a"},
+    {"source": 20, "target": 25, "type": "dataflow", "var": "y"},
+    {"source": 22, "target": 26, "type": "dataflow", "var": "x"},
+    {"source": 25, "target": 26, "type": "dataflow", "var": "y"},
+    {"source": 24, "target": 27, "type": "dataflow", "var": "a"},
+    {"source": 26, "target": 27, "type": "dataflow", "var": "z"},
+    {"source": 26, "target": 27, "type": "dataflow", "var": "y"}
+  ]
+}

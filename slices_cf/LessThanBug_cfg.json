@@ -1,0 +1,18 @@
+{
+  "method_name": "bug",
+  "nodes": [
+    {"id": 11, "label": "  void bug(@IntRange(to = 42) int a, @IntVal(1) int c) {", "line": 11, "node_type": "stmt"},
+    {"id": 12, "label": "    // :: error: (assignment)", "line": 12, "node_type": "stmt"},
+    {"id": 13, "label": "    @LessThan(\"c\") int x = a;", "line": 13, "node_type": "stmt"},
+    {"id": 14, "label": "  }", "line": 14, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 11, "target": 12, "type": "control"},
+    {"source": 12, "target": 13, "type": "control"},
+    {"source": 13, "target": 14, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 11, "target": 13, "type": "dataflow", "var": "c"},
+    {"source": 11, "target": 13, "type": "dataflow", "var": "a"}
+  ]
+}

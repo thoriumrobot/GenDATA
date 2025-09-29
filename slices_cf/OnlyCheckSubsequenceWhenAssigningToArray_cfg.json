@@ -1,0 +1,17 @@
+{
+  "method_name": "testAssignmentToArray",
+  "nodes": [
+    {"id": 27, "label": "  void testAssignmentToArray(int[] a) {", "line": 27, "node_type": "stmt"},
+    {"id": 28, "label": "    // :: error: (to.not.ltel) :: error: (from.gt.to)", "line": 28, "node_type": "stmt"},
+    {"id": 29, "label": "    array = a;", "line": 29, "node_type": "stmt"},
+    {"id": 30, "label": "  }", "line": 30, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 27, "target": 28, "type": "control"},
+    {"source": 28, "target": 29, "type": "control"},
+    {"source": 29, "target": 30, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 27, "target": 29, "type": "dataflow", "var": "a"}
+  ]
+}

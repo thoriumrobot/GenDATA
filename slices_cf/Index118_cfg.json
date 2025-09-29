@@ -1,0 +1,21 @@
+{
+  "method_name": "bar",
+  "nodes": [
+    {"id": 13, "label": "  public static void bar(@NonNegative int i, String @ArrayLen(4) [] args) {", "line": 13, "node_type": "stmt"},
+    {"id": 14, "label": "    if (i <= 3) {", "line": 14, "node_type": "stmt"},
+    {"id": 15, "label": "      System.out.println(args[i]);", "line": 15, "node_type": "stmt"},
+    {"id": 16, "label": "    }", "line": 16, "node_type": "stmt"},
+    {"id": 17, "label": "  }", "line": 17, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 13, "target": 14, "type": "control"},
+    {"source": 14, "target": 15, "type": "control"},
+    {"source": 15, "target": 16, "type": "control"},
+    {"source": 16, "target": 17, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 13, "target": 14, "type": "dataflow", "var": "i"},
+    {"source": 13, "target": 15, "type": "dataflow", "var": "args"},
+    {"source": 14, "target": 15, "type": "dataflow", "var": "i"}
+  ]
+}

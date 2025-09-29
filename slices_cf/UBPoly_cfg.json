@@ -1,0 +1,35 @@
+{
+  "method_name": "access",
+  "nodes": [
+    {"id": 13, "label": "    @GTENegativeOne", "line": 13, "node_type": "stmt"},
+    {"id": 14, "label": "  public static void poly(char[] a, @NonNegative @PolyUpperBound int i) {", "line": 14, "node_type": "stmt"},
+    {"id": 15, "label": "    // :: error: (argument)", "line": 15, "node_type": "stmt"},
+    {"id": 16, "label": "    access(a, i);", "line": 16, "node_type": "stmt"},
+    {"id": 17, "label": "  }", "line": 17, "node_type": "stmt"},
+    {"id": 18, "label": "", "line": 18, "node_type": "stmt"},
+    {"id": 19, "label": "    @Positive", "line": 19, "node_type": "stmt"},
+    {"id": 20, "label": "  public static void access(char[] a, @NonNegative @LTLengthOf(\"#1\") int j) {", "line": 20, "node_type": "stmt"},
+    {"id": 21, "label": "    char c = a[j];", "line": 21, "node_type": "stmt"},
+    {"id": 22, "label": "  }", "line": 22, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 13, "target": 14, "type": "control"},
+    {"source": 14, "target": 15, "type": "control"},
+    {"source": 15, "target": 16, "type": "control"},
+    {"source": 16, "target": 17, "type": "control"},
+    {"source": 17, "target": 18, "type": "control"},
+    {"source": 18, "target": 19, "type": "control"},
+    {"source": 19, "target": 20, "type": "control"},
+    {"source": 20, "target": 21, "type": "control"},
+    {"source": 21, "target": 22, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 14, "target": 16, "type": "dataflow", "var": "a"},
+    {"source": 14, "target": 16, "type": "dataflow", "var": "i"},
+    {"source": 16, "target": 20, "type": "dataflow", "var": "access"},
+    {"source": 16, "target": 20, "type": "dataflow", "var": "a"},
+    {"source": 14, "target": 20, "type": "dataflow", "var": "NonNegative"},
+    {"source": 20, "target": 21, "type": "dataflow", "var": "a"},
+    {"source": 20, "target": 21, "type": "dataflow", "var": "j"}
+  ]
+}

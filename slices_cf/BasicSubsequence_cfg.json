@@ -1,0 +1,26 @@
+{
+  "method_name": "test7",
+  "nodes": [
+    {"id": 41, "label": "    @NonNegative", "line": 41, "node_type": "stmt"},
+    {"id": 42, "label": "  void test7(@IndexFor(\"this\") @LessThan(\"y\") int x1, @IndexOrHigh(\"this\") int y1, int[] a) {", "line": 42, "node_type": "stmt"},
+    {"id": 43, "label": "    x = x1;", "line": 43, "node_type": "stmt"},
+    {"id": 44, "label": "    y = y1;", "line": 44, "node_type": "stmt"},
+    {"id": 45, "label": "    // :: warning: (which.subsequence)", "line": 45, "node_type": "stmt"},
+    {"id": 46, "label": "    b = a;", "line": 46, "node_type": "stmt"},
+    {"id": 47, "label": "  }", "line": 47, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 41, "target": 42, "type": "control"},
+    {"source": 42, "target": 43, "type": "control"},
+    {"source": 43, "target": 44, "type": "control"},
+    {"source": 44, "target": 45, "type": "control"},
+    {"source": 45, "target": 46, "type": "control"},
+    {"source": 46, "target": 47, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 42, "target": 43, "type": "dataflow", "var": "x1"},
+    {"source": 42, "target": 44, "type": "dataflow", "var": "y"},
+    {"source": 42, "target": 44, "type": "dataflow", "var": "y1"},
+    {"source": 42, "target": 46, "type": "dataflow", "var": "a"}
+  ]
+}

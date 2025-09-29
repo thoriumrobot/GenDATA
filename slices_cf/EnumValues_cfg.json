@@ -1,0 +1,40 @@
+{
+  "method_name": "enumValues",
+  "nodes": [
+    {"id": 12, "label": "  public static void enumValues() {", "line": 12, "node_type": "stmt"},
+    {"id": 13, "label": "    Direction @ArrayLen(4) [] arr4 = Direction.values();", "line": 13, "node_type": "stmt"},
+    {"id": 14, "label": "    Direction[] arr = Direction.values();", "line": 14, "node_type": "stmt"},
+    {"id": 15, "label": "    Direction a = arr[0];", "line": 15, "node_type": "stmt"},
+    {"id": 16, "label": "    Direction b = arr[1];", "line": 16, "node_type": "stmt"},
+    {"id": 17, "label": "    Direction c = arr[2];", "line": 17, "node_type": "stmt"},
+    {"id": 18, "label": "    Direction d = arr[3];", "line": 18, "node_type": "stmt"},
+    {"id": 19, "label": "    // :: error: (array.access.unsafe.high.constant)", "line": 19, "node_type": "stmt"},
+    {"id": 20, "label": "    Direction e = arr[4];", "line": 20, "node_type": "stmt"},
+    {"id": 21, "label": "  }", "line": 21, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 12, "target": 13, "type": "control"},
+    {"source": 13, "target": 14, "type": "control"},
+    {"source": 14, "target": 15, "type": "control"},
+    {"source": 15, "target": 16, "type": "control"},
+    {"source": 16, "target": 17, "type": "control"},
+    {"source": 17, "target": 18, "type": "control"},
+    {"source": 18, "target": 19, "type": "control"},
+    {"source": 19, "target": 20, "type": "control"},
+    {"source": 20, "target": 21, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 13, "target": 14, "type": "dataflow", "var": "Direction"},
+    {"source": 13, "target": 14, "type": "dataflow", "var": "values"},
+    {"source": 14, "target": 15, "type": "dataflow", "var": "Direction"},
+    {"source": 14, "target": 15, "type": "dataflow", "var": "arr"},
+    {"source": 15, "target": 16, "type": "dataflow", "var": "Direction"},
+    {"source": 15, "target": 16, "type": "dataflow", "var": "arr"},
+    {"source": 16, "target": 17, "type": "dataflow", "var": "Direction"},
+    {"source": 16, "target": 17, "type": "dataflow", "var": "arr"},
+    {"source": 17, "target": 18, "type": "dataflow", "var": "Direction"},
+    {"source": 17, "target": 18, "type": "dataflow", "var": "arr"},
+    {"source": 18, "target": 20, "type": "dataflow", "var": "Direction"},
+    {"source": 18, "target": 20, "type": "dataflow", "var": "arr"}
+  ]
+}

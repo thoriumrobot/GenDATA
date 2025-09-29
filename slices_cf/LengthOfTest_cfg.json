@@ -1,0 +1,36 @@
+{
+  "method_name": "foo",
+  "nodes": [
+    {"id": 4, "label": "    @Positive", "line": 4, "node_type": "stmt"},
+    {"id": 5, "label": "  void foo(int[] a, @LengthOf(\"#1\") int x) {", "line": 5, "node_type": "stmt"},
+    {"id": 6, "label": "    @NonNegative", "line": 6, "node_type": "stmt"},
+    {"id": 7, "label": "    @IndexOrHigh(\"a\") int y = x;", "line": 7, "node_type": "stmt"},
+    {"id": 8, "label": "    // :: error: (assignment)", "line": 8, "node_type": "stmt"},
+    {"id": 9, "label": "    @NonNegative", "line": 9, "node_type": "stmt"},
+    {"id": 10, "label": "    @IndexFor(\"a\") int w = x;", "line": 10, "node_type": "stmt"},
+    {"id": 11, "label": "    @Positive", "line": 11, "node_type": "stmt"},
+    {"id": 12, "label": "    @LengthOf(\"a\") int z = a.length;", "line": 12, "node_type": "stmt"},
+    {"id": 13, "label": "  }", "line": 13, "node_type": "stmt"}
+  ],
+  "control_edges": [
+    {"source": 4, "target": 5, "type": "control"},
+    {"source": 5, "target": 6, "type": "control"},
+    {"source": 6, "target": 7, "type": "control"},
+    {"source": 7, "target": 8, "type": "control"},
+    {"source": 8, "target": 9, "type": "control"},
+    {"source": 9, "target": 10, "type": "control"},
+    {"source": 10, "target": 11, "type": "control"},
+    {"source": 11, "target": 12, "type": "control"},
+    {"source": 12, "target": 13, "type": "control"}
+  ],
+  "dataflow_edges": [
+    {"source": 5, "target": 7, "type": "dataflow", "var": "a"},
+    {"source": 5, "target": 7, "type": "dataflow", "var": "x"},
+    {"source": 6, "target": 9, "type": "dataflow", "var": "NonNegative"},
+    {"source": 7, "target": 10, "type": "dataflow", "var": "a"},
+    {"source": 7, "target": 10, "type": "dataflow", "var": "x"},
+    {"source": 4, "target": 11, "type": "dataflow", "var": "Positive"},
+    {"source": 5, "target": 12, "type": "dataflow", "var": "LengthOf"},
+    {"source": 10, "target": 12, "type": "dataflow", "var": "a"}
+  ]
+}
