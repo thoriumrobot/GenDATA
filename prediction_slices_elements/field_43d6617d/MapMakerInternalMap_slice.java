@@ -1,0 +1,23 @@
+// Source-based slice around line 115
+// Method: com.google.common.collect.MapMakerInternalMap.MAXIMUM_CAPACITY
+
+   */
+
+  // Constants
+
+  /**
+   * The maximum capacity, used if a higher value is implicitly specified by either of the
+   * constructors with arguments. MUST be a power of two no greater than {@code 1<<30} to ensure
+   * that entries are indexable using ints.
+   */
+  static final int MAXIMUM_CAPACITY = Ints.MAX_POWER_OF_TWO;
+
+  /** The maximum number of segments to allow; used to bound constructor arguments. */
+  static final int MAX_SEGMENTS = 1 << 16; // slightly conservative
+
+  /** Number of (unsynchronized) retries in the containsValue method. */
+  static final int CONTAINS_VALUE_RETRIES = 3;
+
+  /**
+   * Number of cache access operations that can be buffered per segment before the cache's recency
+   * ordering information is updated. This is used to avoid lock contention by recording a memento

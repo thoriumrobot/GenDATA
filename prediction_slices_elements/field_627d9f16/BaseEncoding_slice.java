@@ -1,0 +1,23 @@
+// Source-based slice around line 376
+// Method: com.google.common.io.BaseEncoding.BASE32
+
+   *
+   * <p>No line feeds are added by default, as per <a
+   * href="http://tools.ietf.org/html/rfc4648#section-3.1">RFC 4648 section 3.1</a>, Line Feeds in
+   * Encoded Data. Line feeds may be added using {@link #withSeparator(String, int)}.
+   */
+  public static BaseEncoding base64Url() {
+    return BASE64_URL;
+  }
+
+  private static final BaseEncoding BASE32 =
+      new StandardBaseEncoding("base32()", "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567", '=');
+
+  /**
+   * The "base32" encoding specified by <a href="http://tools.ietf.org/html/rfc4648#section-6">RFC
+   * 4648 section 6</a>, Base 32 Encoding. (This is the same as the base 32 encoding from <a
+   * href="http://tools.ietf.org/html/rfc3548#section-5">RFC 3548</a>.)
+   *
+   * <p>The character {@code '='} is used for padding, but can be {@linkplain #omitPadding()
+   * omitted} or {@linkplain #withPadChar(char) replaced}.
+   *

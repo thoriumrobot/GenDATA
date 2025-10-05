@@ -1,0 +1,23 @@
+// Source-based slice around line 205
+// Method: com.google.common.cache.CacheBuilder.NULL_STATS_COUNTER
+
+  private static final int DEFAULT_INITIAL_CAPACITY = 16;
+  private static final int DEFAULT_CONCURRENCY_LEVEL = 4;
+
+  @SuppressWarnings("GoodTime") // should be a Duration
+  private static final int DEFAULT_EXPIRATION_NANOS = 0;
+
+  @SuppressWarnings("GoodTime") // should be a Duration
+  private static final int DEFAULT_REFRESH_NANOS = 0;
+
+  static final Supplier<? extends StatsCounter> NULL_STATS_COUNTER =
+      Suppliers.ofInstance(
+          new StatsCounter() {
+            @Override
+            public void recordHits(int count) {}
+
+            @Override
+            public void recordMisses(int count) {}
+
+            @SuppressWarnings("GoodTime") // b/122668874
+            @Override

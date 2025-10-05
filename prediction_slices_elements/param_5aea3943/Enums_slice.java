@@ -1,0 +1,23 @@
+// Source-based slice around line 77
+// Method: <com.google.common.base.Enums: Map populateCache(Class)>
+
+    checkNotNull(enumClass);
+    checkNotNull(value);
+    return Platform.getEnumIfPresent(enumClass, value);
+  }
+
+  private static final Map<Class<? extends Enum<?>>, Map<String, WeakReference<? extends Enum<?>>>>
+      enumConstantCache = new WeakHashMap<>();
+
+  private static <T extends Enum<T>> Map<String, WeakReference<? extends Enum<?>>> populateCache(
+      Class<T> enumClass) {
+    Map<String, WeakReference<? extends Enum<?>>> result = new HashMap<>();
+    for (T enumInstance : EnumSet.allOf(enumClass)) {
+      result.put(enumInstance.name(), new WeakReference<Enum<?>>(enumInstance));
+    }
+    enumConstantCache.put(enumClass, result);
+    return result;
+  }
+
+  static <T extends Enum<T>> Map<String, WeakReference<? extends Enum<?>>> getEnumConstants(
+      Class<T> enumClass) {

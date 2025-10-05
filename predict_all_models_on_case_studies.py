@@ -90,6 +90,7 @@ def main():
     from enhanced_graph_predictor import EnhancedGraphPredictor as ModelBasedPredictor
     predictor = ModelBasedPredictor(models_dir=MODELS_DIR, auto_train=True)
 
+    # Full list of base model types supported by the predictor
     base_models = ['enhanced_causal', 'enhanced_graph_causal', 'graph_causal', 'graphite', 'causal', 'hgt', 'gcn', 'gbt', 'gcsn', 'dg2n']
     java_files = list_java_files(CASE_STUDIES_ROOT)
     print(f"Found {len(java_files)} Java files under case_studies/")

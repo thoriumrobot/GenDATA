@@ -16,6 +16,13 @@ import logging
 from pathlib import Path
 import time
 import glob
+import uuid
+
+try:
+    import javalang  # For enumerating fields, methods, and parameters
+    JAVALANG_AVAILABLE = True
+except Exception:
+    JAVALANG_AVAILABLE = False
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -31,6 +38,7 @@ class SimpleAnnotationTypePipeline:
         self.mode = mode
         self.no_auto_train = no_auto_train
         self.device = device
+        self.debug_verbose = False
         
         # Set up directories
         self.slices_dir = os.path.join(cfwr_root, 'slices_specimin')
@@ -49,6 +57,13 @@ class SimpleAnnotationTypePipeline:
             '@NonNegative': 'annotation_type_rl_nonnegative.py',
             '@GTENegativeOne': 'annotation_type_rl_gtenegativeone.py'
         }
+
+        # Element-wise prediction bookkeeping
+        self.pred_element_slices_dir = os.path.join(self.cfwr_root, 'prediction_slices_elements')
+        self.pred_element_cfg_dir = os.path.join(self.cfwr_root, 'prediction_cfg_output_elements')
+        os.makedirs(self.pred_element_slices_dir, exist_ok=True)
+        os.makedirs(self.pred_element_cfg_dir, exist_ok=True)
+        self._prediction_elements = []  # list of dicts with element metadata
     
     def run_training_pipeline(self, episodes=50, base_model='gcn'):
         """Run the training pipeline for annotation type models"""
@@ -81,21 +96,28 @@ class SimpleAnnotationTypePipeline:
     def run_prediction_pipeline(self, target_file=None):
         """Run the prediction pipeline"""
         logger.info("Starting simplified annotation type prediction pipeline")
+        if self.debug_verbose:
+            logger.info(f"[DEBUG] project_root={self.project_root}")
+            logger.info(f"[DEBUG] cfwr_root={self.cfwr_root}")
+            logger.info(f"[DEBUG] slices_dir (train)={self.slices_dir}")
+            logger.info(f"[DEBUG] cfg_dir (train)={self.cfg_dir}")
+            logger.info(f"[DEBUG] pred_element_slices_dir={self.pred_element_slices_dir}")
+            logger.info(f"[DEBUG] pred_element_cfg_dir={self.pred_element_cfg_dir}")
         
-        # Step 1: Generate slices for prediction files
-        logger.info("Step 1: Generating slices for prediction")
+        # Step 1: Generate slices for prediction files (element-wise)
+        logger.info("Step 1: Generating element-wise slices for prediction")
         if not self._generate_slices_for_prediction(target_file):
             logger.error("Failed to generate slices for prediction")
             return False
         
-        # Step 2: Generate CFGs from prediction slices
-        logger.info("Step 2: Generating CFGs from prediction slices")
+        # Step 2: Generate CFGs from element-wise prediction slices
+        logger.info("Step 2: Generating CFGs from element-wise prediction slices")
         if not self._generate_cfgs_for_prediction():
             logger.error("Failed to generate CFGs for prediction")
             return False
         
-        # Step 3: Predict and place annotations using real CFG data
-        logger.info("Step 3: Predicting and placing annotations using real CFG data")
+        # Step 3: Predict and place annotations using real CFG data (element-wise)
+        logger.info("Step 3: Predicting and placing annotations using real CFG data (element-wise)")
         if not self._predict_and_place_annotations_with_cfgs(target_file):
             logger.error("Failed to predict and place annotations")
             return False
@@ -259,16 +281,20 @@ class SimpleAnnotationTypePipeline:
         return success_count > 0
     
     def _generate_slices_for_prediction(self, target_file):
-        """Generate slices for prediction files using Soot and Vineflower"""
+        """Generate element-wise slices for prediction using Soot and Vineflower.
+
+        Strategy:
+        - Enumerate all fields, methods, and parameters in target scope (project or file)
+        - For each element, invoke SootSlicer with --member to target the element
+        - Store each element's slice in a unique subdirectory under prediction_slices_elements/
+        - Record metadata in self._prediction_elements
+        """
         try:
-            # For prediction, we use Soot for bytecode slicing and Vineflower for decompilation
-            logger.info("Generating slices for prediction using Soot and Vineflower")
+            if not JAVALANG_AVAILABLE:
+                logger.error("javalang not available; cannot enumerate program elements for element-wise prediction")
+                return False
 
-            # Create prediction slices directory
-            pred_slices_dir = os.path.join(self.cfwr_root, 'prediction_slices')
-            os.makedirs(pred_slices_dir, exist_ok=True)
-
-            # Determine target files: if not provided, scan case_studies for .java files
+            # Determine target source files
             if target_file:
                 target_files = [target_file]
             else:
@@ -276,80 +302,215 @@ class SimpleAnnotationTypePipeline:
                 if os.path.isdir(case_studies_root):
                     target_files = glob.glob(os.path.join(case_studies_root, '**/*.java'), recursive=True)
                 else:
-                    # Fallback to project_root
                     target_files = glob.glob(os.path.join(self.project_root, '**/*.java'), recursive=True)
 
             if not target_files:
-                logger.warning("No target files found for Soot prediction slicing")
+                logger.warning("No target files found for element-wise prediction slicing")
                 return True
+            if self.debug_verbose:
+                logger.info(f"[DEBUG] Found {len(target_files)} target source files for element-wise slicing")
 
-            # Use SootSlicer for bytecode slicing with Vineflower decompilation
             soot_slicer_jar = os.path.join(self.cfwr_root, 'build/libs/GenDATA-all.jar')
             vineflower_jar = os.path.join(self.cfwr_root, 'tools/vineflower.jar')
 
-            if os.path.exists(soot_slicer_jar) and os.path.exists(vineflower_jar):
-                successes = 0
-                for tf in target_files:
-                    cmd = [
-                        'java', '-cp', soot_slicer_jar,
-                        'cfwr.SootSlicer',
-                        '--projectRoot', os.path.dirname(tf),
-                        '--targetFile', tf,
-                        '--output', pred_slices_dir,
-                        '--decompiler', vineflower_jar,
-                        '--prediction-mode'
-                    ]
-                    result = subprocess.run(cmd, capture_output=True, text=True)
-                    if result.returncode == 0:
-                        successes += 1
-                    else:
-                        logger.debug(f"Soot slicing failed for {tf}: {result.stderr}")
+            if not (os.path.exists(soot_slicer_jar) and os.path.exists(vineflower_jar)):
+                logger.error("SootSlicer or Vineflower jar not found; cannot perform element-wise slicing")
+                return False
 
-                if successes > 0:
-                    logger.info(f"Soot slicing with Vineflower completed for {successes}/{len(target_files)} files")
-                    return True
-                else:
-                    logger.warning("Soot slicing produced no slices; proceeding with existing slices if any")
-            else:
-                logger.warning("SootSlicer or Vineflower jar not found; proceeding with existing slices if any")
+            elements_total = 0
+            successes = 0
+            for tf in target_files:
+                try:
+                    with open(tf, 'r') as f:
+                        src = f.read()
+                    tree = javalang.parse.parse(src)
+                except Exception:
+                    if self.debug_verbose:
+                        logger.warning(f"[DEBUG] Skipping unparsable file: {tf}")
+                    continue
 
-            # Fallback to existing slices if Soot slicing fails
-            if os.path.exists(self.slices_dir):
-                import shutil
-                shutil.copytree(self.slices_dir, pred_slices_dir, dirs_exist_ok=True)
-                logger.info("Using existing slices for prediction")
-                return True
-            else:
-                logger.warning("No existing slices found, skipping slice generation for prediction")
-                return True
+                package_name = None
+                if hasattr(tree, 'package') and tree.package:
+                    package_name = tree.package.name
+
+                # Walk types in file
+                for type_decl in getattr(tree, 'types', []) or []:
+                    if not hasattr(type_decl, 'name'):
+                        continue
+                    class_name = type_decl.name
+
+                    # Fields
+                    for field in getattr(type_decl, 'fields', []) or []:
+                        for decl in field.declarators or []:
+                            element_id = f"field_{uuid.uuid4().hex[:8]}"
+                            member_sig = self._build_field_signature(package_name, class_name, decl.name)
+                            out_dir = os.path.join(self.pred_element_slices_dir, element_id)
+                            os.makedirs(out_dir, exist_ok=True)
+                            # Determine best-guess source line
+                            line_num = None
+                            try:
+                                line_num = getattr(decl, 'position', None).line if getattr(decl, 'position', None) else None
+                                if line_num is None:
+                                    line_num = getattr(field, 'position', None).line if getattr(field, 'position', None) else None
+                            except Exception:
+                                line_num = None
+                            if line_num is None:
+                                line_num = 1
+                            if self.debug_verbose:
+                                logger.info(f"[DEBUG] Slicing field: {member_sig} @ line {line_num} -> {out_dir}")
+                            cmd = [
+                                'java', '-cp', soot_slicer_jar,
+                                'cfwr.SootSlicer',
+                                '--projectRoot', os.path.dirname(tf),
+                                '--targetFile', tf,
+                                '--output', out_dir,
+                                '--decompiler', vineflower_jar,
+                                '--member', member_sig,
+                                '--line', str(line_num),
+                                '--prediction-mode'
+                            ]
+                            result = subprocess.run(cmd, capture_output=True, text=True)
+                            elements_total += 1
+                            if result.returncode == 0:
+                                successes += 1
+                                self._prediction_elements.append({
+                                    'element_id': element_id,
+                                    'kind': 'field',
+                                    'file': tf,
+                                    'package': package_name,
+                                    'class': class_name,
+                                    'name': decl.name,
+                                    'member_signature': member_sig,
+                                    'slice_dir': out_dir
+                                })
+                            elif self.debug_verbose:
+                                logger.warning(f"[DEBUG] Soot slice failed for field {member_sig}: {result.stderr.strip()[:200]}")
+
+                    # Methods (and parameters)
+                    for method in [m for m in getattr(type_decl, 'methods', []) or []]:
+                        method_name = method.name
+                        param_types = [self._type_to_str(p.type) for p in (method.parameters or [])]
+                        ret_type = self._type_to_str(getattr(method, 'return_type', None))
+                        member_sig = self._build_method_signature(package_name, class_name, ret_type, method_name, param_types)
+
+                        # Method-level slice
+                        element_id = f"method_{uuid.uuid4().hex[:8]}"
+                        out_dir = os.path.join(self.pred_element_slices_dir, element_id)
+                        os.makedirs(out_dir, exist_ok=True)
+                        line_num = getattr(method, 'position', None).line if getattr(method, 'position', None) else 1
+                        if self.debug_verbose:
+                            logger.info(f"[DEBUG] Slicing method: {member_sig} @ line {line_num} -> {out_dir}")
+                        cmd = [
+                            'java', '-cp', soot_slicer_jar,
+                            'cfwr.SootSlicer',
+                            '--projectRoot', os.path.dirname(tf),
+                            '--targetFile', tf,
+                            '--output', out_dir,
+                            '--decompiler', vineflower_jar,
+                            '--member', member_sig,
+                            '--line', str(line_num),
+                            '--prediction-mode'
+                        ]
+                        result = subprocess.run(cmd, capture_output=True, text=True)
+                        elements_total += 1
+                        if result.returncode == 0:
+                            successes += 1
+                            self._prediction_elements.append({
+                                'element_id': element_id,
+                                'kind': 'method',
+                                'file': tf,
+                                'package': package_name,
+                                'class': class_name,
+                                'name': method_name,
+                                'member_signature': member_sig,
+                                'slice_dir': out_dir
+                            })
+                        elif self.debug_verbose:
+                            logger.warning(f"[DEBUG] Soot slice failed for method {member_sig}: {result.stderr.strip()[:200]}")
+
+                        # Parameter-level slices (target same method, record parameter index)
+                        for idx, p in enumerate(method.parameters or []):
+                            param_element_id = f"param_{uuid.uuid4().hex[:8]}"
+                            out_dir_p = os.path.join(self.pred_element_slices_dir, param_element_id)
+                            os.makedirs(out_dir_p, exist_ok=True)
+                            p_line = getattr(p, 'position', None).line if getattr(p, 'position', None) else line_num
+                            cmd = [
+                                'java', '-cp', soot_slicer_jar,
+                                'cfwr.SootSlicer',
+                                '--projectRoot', os.path.dirname(tf),
+                                '--targetFile', tf,
+                                '--output', out_dir_p,
+                                '--decompiler', vineflower_jar,
+                                '--member', member_sig,
+                                '--line', str(p_line),
+                                '--prediction-mode'
+                            ]
+                            if self.debug_verbose:
+                                logger.info(f"[DEBUG] Slicing parameter idx={idx} of {member_sig} @ line {p_line} -> {out_dir_p}")
+                            result = subprocess.run(cmd, capture_output=True, text=True)
+                            elements_total += 1
+                            if result.returncode == 0:
+                                successes += 1
+                                self._prediction_elements.append({
+                                    'element_id': param_element_id,
+                                    'kind': 'parameter',
+                                    'file': tf,
+                                    'package': package_name,
+                                    'class': class_name,
+                                    'name': method_name,
+                                    'param_index': idx,
+                                    'param_type': self._type_to_str(p.type),
+                                    'member_signature': member_sig,
+                                    'slice_dir': out_dir_p
+                                })
+                            elif self.debug_verbose:
+                                logger.warning(f"[DEBUG] Soot slice failed for parameter idx={idx} of {member_sig}: {result.stderr.strip()[:200]}")
+
+            logger.info(f"Element-wise slicing complete: {successes}/{elements_total} succeeded")
+            return True
 
         except Exception as e:
             logger.error(f"Error generating slices for prediction: {e}")
             return False
     
     def _generate_cfgs_for_prediction(self):
-        """Generate CFGs for prediction"""
+        """Generate CFGs for element-wise prediction.
+
+        Each element slice is placed in its own directory; we emit CFGs into
+        a unique directory per element to avoid collisions.
+        """
         try:
-            # Use existing CFG generation
-            pred_slices_dir = os.path.join(self.cfwr_root, 'prediction_slices')
-            pred_cfg_dir = os.path.join(self.cfwr_root, 'prediction_cfg_output')
-            os.makedirs(pred_cfg_dir, exist_ok=True)
-            
-            if os.path.exists(pred_slices_dir):
-                from pipeline import run_cfg_generation
-                run_cfg_generation(pred_slices_dir, pred_cfg_dir)
-                logger.info("Generated CFGs for prediction")
-                return True
-            else:
-                logger.warning("No prediction slices found, using existing CFGs")
-                return True
+            generated = 0
+            for elem in self._prediction_elements:
+                slice_dir = elem.get('slice_dir')
+                elem_id = elem.get('element_id')
+                if not slice_dir or not os.path.isdir(slice_dir):
+                    continue
+                # Find java files under this element slice dir
+                java_files = [p for p in glob.glob(os.path.join(slice_dir, '**/*.java'), recursive=True)]
+                if not java_files:
+                    continue
+                # Use cfg.py directly with unique out_dir per element
+                out_dir = os.path.join(self.pred_element_cfg_dir, elem_id)
+                os.makedirs(out_dir, exist_ok=True)
+                for jf in java_files:
+                    if self.debug_verbose:
+                        logger.info(f"[DEBUG] Generating CFG for element {elem_id} from {jf} -> {out_dir}")
+                    cmd = [sys.executable, 'cfg.py', '--java_file', jf, '--out_dir', out_dir]
+                    result = subprocess.run(cmd, capture_output=True, text=True)
+                    if result.returncode == 0:
+                        generated += 1
+                    elif self.debug_verbose:
+                        logger.warning(f"[DEBUG] CFG generation failed for {jf}: {result.stderr.strip()[:200]}")
+            logger.info(f"Generated CFGs for {generated} element slices")
+            return True
                 
         except Exception as e:
             logger.error(f"Error generating CFGs for prediction: {e}")
             return False
     
     def _predict_and_place_annotations_with_cfgs(self, target_file):
-        """Predict and place annotations using improved balanced models"""
+        """Predict and place annotations using improved balanced models (element-wise)."""
         try:
             logger.info("Predicting and placing annotations using improved balanced models")
             
@@ -430,30 +591,49 @@ class SimpleAnnotationTypePipeline:
             elif not models:
                 logger.info("No trained models found, but auto-training is enabled - will train models as needed")
             
-            # Process each Java file using real CFG data
+            # Process each element slice using its CFG
             total_predictions = 0
-            processed_files = 0
-            
-            for java_file in target_files:
+            processed_elements = 0
+
+            elements_iter = self._prediction_elements if self._prediction_elements else [
+                {
+                    'element_id': os.path.basename(java_file),
+                    'kind': 'file',
+                    'file': java_file,
+                    'slice_dir': os.path.join(self.cfwr_root, 'prediction_slices')
+                } for java_file in target_files
+            ]
+
+            for elem in elements_iter:
+                # Determine a representative java file for this element's slice
+                slice_dir = elem.get('slice_dir')
+                java_candidates = []
+                if slice_dir and os.path.isdir(slice_dir):
+                    java_candidates = glob.glob(os.path.join(slice_dir, '**/*.java'), recursive=True)
+                java_file = java_candidates[0] if java_candidates else elem.get('file')
+                # Determine cfg directory for this element
+                elem_cfg_dir = os.path.join(self.pred_element_cfg_dir, elem['element_id'])
                 try:
-                    # Pass models dict (empty if auto-training) to the prediction method
-                    predictions = self._predict_annotations_for_file_with_cfg(java_file, models if models else {})
+                    if self.debug_verbose:
+                        logger.info(f"[DEBUG] Predicting for element {elem.get('element_id')} kind={elem.get('kind')} cfg_dir={elem_cfg_dir}")
+                    # Pass models dict (empty if auto-training) to the prediction method, with element-specific CFGs
+                    predictions = self._predict_annotations_for_element_with_cfg(java_file, elem_cfg_dir, models if models else {}, elem)
                     if predictions:
                         # Save predictions report (always save predictions)
-                        self._save_predictions_report(java_file, predictions)
+                        self._save_predictions_report_for_element(elem, java_file, predictions)
                         
                         # Only place annotations if not in predict-only mode
                         # For now, we'll always save predictions but not place annotations
                         # This can be controlled by a command line flag if needed
                         
                         total_predictions += len(predictions)
-                        processed_files += 1
+                        processed_elements += 1
                         
-                        logger.info(f"Processed {java_file}: {len(predictions)} predictions")
+                        logger.info(f"Processed {elem.get('kind')} {elem.get('member_signature', elem.get('name'))}: {len(predictions)} predictions")
                 except Exception as e:
-                    logger.warning(f"Error processing {java_file}: {e}")
-            
-            logger.info(f"Made {total_predictions} annotation predictions across {processed_files} files")
+                    logger.warning(f"Error processing element {elem.get('element_id')}: {e}")
+
+            logger.info(f"Made {total_predictions} annotation predictions across {processed_elements} elements")
             return True
             
         except Exception as e:
@@ -476,6 +656,151 @@ class SimpleAnnotationTypePipeline:
         except Exception as e:
             logger.error(f"Error in prediction: {e}")
             return []
+
+    def _predict_annotations_for_element_with_cfg(self, java_file, cfg_dir, models, element_meta):
+        """Predict annotations for a single element using its specific CFG directory."""
+        try:
+            balanced_models_found = any(model.get('training_type') == 'balanced_real_code' for model in models.values())
+            if balanced_models_found:
+                # Reuse balanced path but load CFG from provided cfg_dir
+                return self._predict_with_balanced_models_from_cfg(java_file, cfg_dir, models)
+            else:
+                # Legacy predictor supports passing cfg_dir
+                from enhanced_graph_predictor import EnhancedGraphPredictor as ModelBasedPredictor
+                auto_train = not getattr(self, 'no_auto_train', False)
+                predictor = ModelBasedPredictor(models_dir=self.models_dir, device=self.device, auto_train=auto_train)
+                all_predictions = []
+                base_model_types = ['enhanced_hybrid', 'enhanced_gcn', 'enhanced_gat', 'enhanced_transformer', 'enhanced_causal', 'enhanced_graph_causal', 'graph_causal', 'graphite', 'causal', 'hgt', 'gcn', 'gbt', 'gcsn', 'dg2n']
+                for annotation_type, model_info in models.items():
+                    base_model_type = model_info.get('base_model_type', 'enhanced_causal')
+                    if not predictor.load_or_train_models(base_model_type=base_model_type, epochs=10):
+                        continue
+                    preds = predictor.predict_annotations_for_file_with_cfg(java_file, cfg_dir, threshold=0.3)
+                    for p in preds or []:
+                        p['model_type'] = base_model_type
+                        p['training_type'] = model_info.get('training_type', 'legacy')
+                        p['element_id'] = element_meta.get('element_id')
+                        p['element_kind'] = element_meta.get('kind')
+                    if preds:
+                        all_predictions.extend(preds)
+                return all_predictions
+        except Exception as e:
+            logger.error(f"Error predicting for element: {e}")
+            return []
+
+    def _predict_with_balanced_models_from_cfg(self, java_file, cfg_dir, models):
+        """Balanced model prediction using a specific cfg_dir for an element."""
+        try:
+            import torch
+            from enhanced_graph_predictor import EnhancedGraphPredictor
+            predictor = EnhancedGraphPredictor(models_dir=self.models_dir, device=self.device, auto_train=False)
+
+            balanced_models = {}
+            for annotation_type, model_info in models.items():
+                if model_info.get('training_type') == 'balanced_real_code':
+                    checkpoint = torch.load(model_info['model_file'], map_location=predictor.device)
+                    from improved_balanced_annotation_type_trainer import ImprovedBalancedAnnotationTypeModel
+                    model = ImprovedBalancedAnnotationTypeModel(
+                        input_dim=21,
+                        hidden_dims=[512, 256, 128, 64],
+                        dropout_rate=0.4
+                    )
+                    model.load_state_dict(checkpoint['model_state_dict'])
+                    model.eval()
+                    model = model.to(predictor.device)
+                    balanced_models[annotation_type] = model
+
+            if not balanced_models:
+                return []
+
+            # Load the element CFG
+            cfg_json_candidates = glob.glob(os.path.join(cfg_dir, '**/*.json'), recursive=True)
+            if not cfg_json_candidates:
+                return []
+            cfg_json = cfg_json_candidates[0]
+            from cfg_graph import load_cfg_as_pyg
+            cfg_data = load_cfg_as_pyg(cfg_json)
+            if not hasattr(cfg_data, 'batch') or cfg_data.batch is None:
+                cfg_data.batch = torch.zeros(cfg_data.x.shape[0], dtype=torch.long)
+            cfg_data = cfg_data.to(predictor.device)
+
+            node_features = cfg_data.x.cpu().numpy() if hasattr(cfg_data, 'x') else None
+            if node_features is not None and node_features.shape[0] > 0:
+                representative = torch.tensor(node_features.mean(axis=0), dtype=torch.float32).unsqueeze(0).to(predictor.device)
+                if representative.shape[1] < 21:
+                    padding = torch.zeros(representative.shape[0], 21 - representative.shape[1], device=representative.device)
+                    representative = torch.cat([representative, padding], dim=1)
+                elif representative.shape[1] > 21:
+                    representative = representative[:, :21]
+            else:
+                representative = torch.zeros(1, 21, device=predictor.device)
+
+            predictions = []
+            for annotation_type, model in balanced_models.items():
+                with torch.no_grad():
+                    logits = model(representative)
+                    probabilities = torch.softmax(logits, dim=1)
+                    prediction = torch.argmax(logits, dim=1)
+                    confidence = probabilities.gather(1, prediction.unsqueeze(1)).squeeze(1)
+                    if prediction.item() == 1 and confidence.item() > 0.3:
+                        predictions.append({
+                            'line': 1,
+                            'annotation_type': annotation_type,
+                            'confidence': confidence.item(),
+                            'features': representative.cpu().numpy().flatten().tolist(),
+                            'reason': f"{annotation_type} predicted by balanced model with {confidence.item():.3f} confidence (real code training)",
+                            'model_type': 'improved_balanced_causal'
+                        })
+            return predictions
+
+        except Exception as e:
+            logger.error(f"Error predicting with balanced models from cfg: {e}")
+            return []
+
+    def _save_predictions_report_for_element(self, element_meta, java_file, predictions):
+        """Save predictions with element metadata."""
+        try:
+            base_name = element_meta.get('element_id', os.path.splitext(os.path.basename(java_file))[0])
+            report_file = os.path.join(self.predictions_dir, f"{base_name}.predictions.json")
+            import time
+            metadata = {
+                'file': java_file,
+                'element': element_meta,
+                'predictions': predictions,
+                'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')
+            }
+            with open(report_file, 'w') as f:
+                json.dump(metadata, f, indent=2)
+            logger.info(f"Saved element predictions to {report_file}")
+        except Exception as e:
+            logger.error(f"Error saving element prediction report: {e}")
+
+    def _build_field_signature(self, package_name, class_name, field_name):
+        # Soot field signature format: <pkg.Class: type name> — type may be optional for targeting by name
+        # We fall back to name-only targeting via SootSlicer if supported.
+        if package_name:
+            return f"{package_name}.{class_name}.{field_name}"
+        return f"{class_name}.{field_name}"
+
+    def _build_method_signature(self, package_name, class_name, return_type, method_name, param_types):
+        # Soot method signature: <pkg.Class: returnType method(paramTypes)>
+        pkg_cls = f"{package_name}.{class_name}" if package_name else class_name
+        ret = return_type or 'void'
+        params = ','.join(param_types) if param_types else ''
+        return f"<{pkg_cls}: {ret} {method_name}({params})>"
+
+    def _type_to_str(self, t):
+        try:
+            if t is None:
+                return None
+            # javalang tree types can be ReferenceType/BasicType; both have .name
+            name = getattr(t, 'name', None) or str(t)
+            if getattr(t, 'dimensions', None):
+                dims = '[]' * len(t.dimensions)
+                return f"{name}{dims}"
+            return name
+        except Exception:
+            return None
     
     def _predict_with_balanced_models(self, java_file, models):
         """Predict using improved balanced models"""
@@ -938,6 +1263,7 @@ def main():
                        help='Disable automatic training of missing models (default: auto-train enabled)')
     parser.add_argument('--device', default='auto', choices=['auto', 'cpu', 'cuda'],
                        help='Device to use for training/inference (default: auto)')
+    parser.add_argument('--debug_verbose', action='store_true', help='Enable verbose debug output for one-off runs')
     
     args = parser.parse_args()
     
@@ -950,6 +1276,8 @@ def main():
         no_auto_train=args.no_auto_train,
         device=args.device
     )
+    if args.debug_verbose:
+        pipeline.debug_verbose = True
     
     # Run pipeline
     success = True

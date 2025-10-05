@@ -1,0 +1,23 @@
+// Source-based slice around line 48
+// Method: com.google.common.graph.StandardValueGraph.allowsSelfLoops
+
+ *
+ * @author James Sexton
+ * @author Joshua O'Madadhain
+ * @author Omar Darwish
+ * @param <N> Node parameter type
+ * @param <V> Value parameter type
+ */
+class StandardValueGraph<N, V> extends AbstractValueGraph<N, V> {
+  private final boolean isDirected;
+  private final boolean allowsSelfLoops;
+  private final ElementOrder<N> nodeOrder;
+
+  final MapIteratorCache<N, GraphConnections<N, V>> nodeConnections;
+
+  long edgeCount; // must be updated when edges are added or removed
+
+  /** Constructs a graph with the properties specified in {@code builder}. */
+  StandardValueGraph(AbstractGraphBuilder<? super N> builder) {
+    this(
+        builder,

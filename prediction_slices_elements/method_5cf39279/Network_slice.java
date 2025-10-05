@@ -1,0 +1,23 @@
+// Source-based slice around line 431
+// Method: <com.google.common.graph.Network: Optional edgeConnecting(N,N)>
+
+   *
+   * <p>In an undirected network, this is equal to {@code edgeConnecting(nodeV, nodeU)}.
+   *
+   * @throws IllegalArgumentException if there are multiple parallel edges connecting {@code nodeU}
+   *     to {@code nodeV}
+   * @throws IllegalArgumentException if {@code nodeU} or {@code nodeV} is not an element of this
+   *     network
+   * @since 23.0
+   */
+  Optional<E> edgeConnecting(N nodeU, N nodeV);
+
+  /**
+   * Returns the single edge that directly connects {@code endpoints} (in the order, if any,
+   * specified by {@code endpoints}), if one is present, or {@code Optional.empty()} if no such edge
+   * exists.
+   *
+   * <p>If this network is directed, the endpoints must be ordered.
+   *
+   * @throws IllegalArgumentException if there are multiple parallel edges connecting {@code nodeU}
+   *     to {@code nodeV}
