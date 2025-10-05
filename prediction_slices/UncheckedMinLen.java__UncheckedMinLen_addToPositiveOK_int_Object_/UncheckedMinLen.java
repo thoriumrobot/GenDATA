@@ -1,6 +1,3 @@
-    @GTENegativeOne
-    @GTENegativeOne
-    @Positive
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.common.value.qual.IntRange;

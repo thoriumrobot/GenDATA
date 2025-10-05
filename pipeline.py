@@ -36,7 +36,7 @@ def run(cmd, env=None):
         sys.exit(res.returncode)
 
 
-def run_slicing(project_root, warnings_file, cfwr_root, base_slices_dir, slicer_type='cf'):
+def run_slicing(project_root, warnings_file, cfwr_root, base_slices_dir, slicer_type='soot'):
     # Create slicer-specific directory
     slices_dir = os.path.join(base_slices_dir, f"slices_{slicer_type}")
     os.makedirs(slices_dir, exist_ok=True)

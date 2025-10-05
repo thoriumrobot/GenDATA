@@ -1,5 +1,3 @@
-    @GTENegativeOne
-    @Positive
 import org.checkerframework.common.value.qual.BottomVal;
 import org.checkerframework.common.value.qual.MinLen;
 

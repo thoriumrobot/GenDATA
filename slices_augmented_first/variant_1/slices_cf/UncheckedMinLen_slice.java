@@ -1,0 +1,29 @@
+    @Positive
+  void addToNonNegative(@NonNegative int l, Object v) {
+    // :: error: (assignment)
+    @Positive
+    Object @MinLen(100) [] o = new Object[1 + l];
+    @Positive
+    o[99] = v;
+    @Positive
+  }
+
+    @Positive
+  void addToPositive(@Positive int l, Object v) {
+    // :: error: (assignment)
+    @Positive
+    Object @MinLen(100) [] o = new Object[1 + l];
+    @Positive
+    o[99] = v;
+    @Positive
+  }
+
+    @Positive
+  void addToUnboundedIntRange(@IntRange(from = 0) int l, Object v) {
+    // :: error: (assignment)
+    @Positive
+    Object @MinLen(100) [] o = new Object[1 + l];
+    @Positive
+    o[99] = v;
+    @Positive
+  }

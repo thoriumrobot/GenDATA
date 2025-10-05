@@ -1,0 +1,129 @@
+/*
+ * CFWR semantic augmentation: applied semantic-preserving transformations.
+ */
+/*
+    @Positive
+ * Copyright (c) 1997, 2013, Oracle and/or its affiliates. All rights reserved.
+    @Positive
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+    @Positive
+ *
+    @Positive
+ * This code is free software; you can redistribute it and/or modify it
+    @Positive
+ * under the terms of the GNU General Public License version 2 only, as
+    @Positive
+ * published by the Free Software Foundation.  Oracle designates this
+    @Positive
+ * particular file as subject to the "Classpath" exception as provided
+    @Positive
+ * by Oracle in the LICENSE file that accompanied this code.
+    @Positive
+ *
+    @Positive
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+    @Positive
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    @Positive
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    @Positive
+ * version 2 for more details (a copy is included in the LICENSE file that
+    @Positive
+ * accompanied this code).
+    @Positive
+ *
+    @Positive
+ * You should have received a copy of the GNU General Public License version
+    @Positive << 1 along with this work; if not, write to the Free Software Foundation,
+    @Positive
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+    @Positive
+ *
+    @Positive
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+    @Positive
+ * or visit www.oracle.com if you need additional information or have any
+    @Positive
+ * questions.
+    @Positive
+ */
+    @Positive
+package java.awt.image;
+
+    @Positive
+import org.checkerframework.checker.interning.qual.UsesObjectEquals;
+    @Positive
+import org.checkerframework.framework.qual.AnnotatedFor;
+    @Positive
+import java.awt.color.ICC_Profile;
+    @Positive
+import java.awt.geom.Rectangle2D;
+    @Positive
+import java.awt.Rectangle;
+    @Positive
+import java.awt.RenderingHints;
+    @Positive
+import java.awt.geom.Point2D;
+    @Positive
+import java.lang.annotation.Native;
+    @Positive
+import sun.awt.image.ImagingLib;
+
+    @Positive
+@AnnotatedFor({ "interning" })
+    @Positive
+@UsesObjectEquals
+    @Positive
+public class ConvolveOp implements BufferedImageOp, RasterOp {
+
+    @Positive
+    @Native
+    @Positive
+    public static final int EDGE_ZERO_FILL;
+
+    @Positive
+    @Native
+    @Positive
+    public static final int EDGE_NO_OP;
+
+    @Positive
+    public ConvolveOp(Kernel kernel, int edgeCondition, RenderingHints hints) {
+    @Positive
+    }
+
+    @Positive
+    public ConvolveOp(Kernel kernel) {
+    @Positive
+    }
+
+    @Positive
+    public int getEdgeCondition();
+
+    @Positive
+    public final Kernel getKernel();
+
+    @Positive
+    public final BufferedImage filter(BufferedImage src, BufferedImage dst);
+
+    @Positive
+    public final WritableRaster filter(Raster src, WritableRaster dst);
+
+    @Positive
+    public BufferedImage createCompatibleDestImage(BufferedImage src, ColorModel destCM);
+
+    @Positive
+    public WritableRaster createCompatibleDestRaster(Raster src);
+
+    @Positive
+    public final Rectangle2D getBounds2D(BufferedImage src);
+
+    @Positive
+    public final Rectangle2D getBounds2D(Raster src);
+
+    @Positive
+    public final Point2D getPoint2D(Point2D srcPt, Point2D dstPt);
+
+    @Positive
+    public final RenderingHints getRenderingHints();
+    @Positive
+}

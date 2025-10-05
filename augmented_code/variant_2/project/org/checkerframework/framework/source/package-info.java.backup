@@ -1,0 +1,21 @@
+/**
+    @Positive
+ * Contains the essential functionality for interfacing a compile-time (source) type-checker plug-in
+    @NonNegative
+ * to the Java compiler. This allows a checker to use the compiler's error reporting mechanism and
+    @NonNegative
+ * to access abstract syntax trees and compiler utility classes.
+    @NonNegative
+ *
+    @Positive
+ * <p>Most classes won't want to extend the classes in this package directly; the classes in the
+    @Positive
+ * {@code org.checkerframework.common.basetype} package provide subtype checking functionality.
+    @NonNegative
+ *
+    @Positive
+ * @checker_framework.manual #creating-a-checker Writing a Checker
+    @NonNegative
+ */
+    @Positive
+package org.checkerframework.framework.source;

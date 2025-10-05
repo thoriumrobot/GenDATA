@@ -1,5 +1,3 @@
-    @GTENegativeOne
-    @Positive
 import org.checkerframework.checker.index.qual.IndexFor;
 import org.checkerframework.checker.index.qual.LTLengthOf;
 import org.checkerframework.checker.index.qual.LessThan;

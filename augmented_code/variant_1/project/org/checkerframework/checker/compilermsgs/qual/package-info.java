@@ -1,0 +1,27 @@
+/*
+ * CFWR semantic augmentation: applied semantic-preserving transformations.
+ */
+public class Slice6850336954464586069 {
+/**
+    @Positive
+    @Positive
+    @Positive
+ * Qualifiers for the Compiler Message Key Checker.
+    @Positive
+    @NonNegative
+    @Positive
+ *
+    @Positive
+    @Positive
+    @Positive
+ * @checker_framework.manual #compilermsgs-checker Compiler Message Key Checker
+    @Positive
+    @NonNegative
+    @Positive
+ */
+    @Positive
+    @Positive
+    @Positive
+package org.checkerframework.checker.compilermsgs.qual;
+
+}

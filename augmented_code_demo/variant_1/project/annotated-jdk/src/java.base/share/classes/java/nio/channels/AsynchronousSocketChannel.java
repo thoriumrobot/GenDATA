@@ -1,0 +1,153 @@
+/*
+    @Positive
+ * Copyright (c) 2007, 2017, Oracle and/or its affiliates. All rights reserved.
+    @Positive
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+    @Positive
+ *
+    @Positive
+ * This code is free software; you can redistribute it and/or modify it
+    @Positive
+ * under the terms of the GNU General Public License version 2 only, as
+    @Positive
+ * published by the Free Software Foundation.  Oracle designates this
+    @Positive
+ * particular file as subject to the "Classpath" exception as provided
+    @Positive
+ * by Oracle in the LICENSE file that accompanied this code.
+    @Positive
+ *
+    @Positive
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+    @Positive
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    @Positive
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    @Positive
+ * version 2 for more details (a copy is included in the LICENSE file that
+    @Positive
+ * accompanied this code).
+    @Positive
+ *
+    @Positive
+ * You should have received a copy of the GNU General Public License version
+    @Positive
+ * 2 along with this work; if not, write to the Free Software Foundation,
+    @Positive
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+    @Positive
+ *
+    @Positive
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+    @Positive
+ * or visit www.oracle.com if you need additional information or have any
+    @Positive
+ * questions.
+    @Positive
+ */
+    @Positive
+package java.nio.channels;
+
+    @Positive
+import org.checkerframework.checker.interning.qual.UsesObjectEquals;
+    @Positive
+import org.checkerframework.framework.qual.AnnotatedFor;
+    @Positive
+import java.nio.channels.spi.*;
+    @Positive
+import java.util.concurrent.TimeUnit;
+    @Positive
+import java.util.concurrent.Future;
+    @Positive
+import java.io.IOException;
+    @Positive
+import java.net.SocketOption;
+    @Positive
+import java.net.SocketAddress;
+    @Positive
+import java.nio.ByteBuffer;
+
+    @Positive
+@AnnotatedFor({ "interning" })
+    @Positive
+@UsesObjectEquals
+    @Positive
+public abstract class AsynchronousSocketChannel implements AsynchronousByteChannel, NetworkChannel {
+
+    @Positive
+    protected AsynchronousSocketChannel(AsynchronousChannelProvider provider) {
+    @Positive
+    }
+
+    @Positive
+    public final AsynchronousChannelProvider provider();
+
+    @Positive
+    public static AsynchronousSocketChannel open(AsynchronousChannelGroup group) throws IOException;
+
+    @Positive
+    public static AsynchronousSocketChannel open() throws IOException;
+
+    @Positive
+    @Override
+    @Positive
+    public abstract AsynchronousSocketChannel bind(SocketAddress local) throws IOException;
+
+    @Positive
+    @Override
+    @Positive
+    public abstract <T> AsynchronousSocketChannel setOption(SocketOption<T> name, T value) throws IOException;
+
+    @Positive
+    public abstract AsynchronousSocketChannel shutdownInput() throws IOException;
+
+    @Positive
+    public abstract AsynchronousSocketChannel shutdownOutput() throws IOException;
+
+    @Positive
+    public abstract SocketAddress getRemoteAddress() throws IOException;
+
+    @Positive
+    public abstract <A> void connect(SocketAddress remote, A attachment, CompletionHandler<Void, ? super A> handler);
+
+    @Positive
+    public abstract Future<Void> connect(SocketAddress remote);
+
+    @Positive
+    public abstract <A> void read(ByteBuffer dst, long timeout, TimeUnit unit, A attachment, CompletionHandler<Integer, ? super A> handler);
+
+    @Positive
+    @Override
+    @Positive
+    public final <A> void read(ByteBuffer dst, A attachment, CompletionHandler<Integer, ? super A> handler);
+
+    @Positive
+    @Override
+    @Positive
+    public abstract Future<Integer> read(ByteBuffer dst);
+
+    @Positive
+    public abstract <A> void read(ByteBuffer[] dsts, int offset, int length, long timeout, TimeUnit unit, A attachment, CompletionHandler<Long, ? super A> handler);
+
+    @Positive
+    public abstract <A> void write(ByteBuffer src, long timeout, TimeUnit unit, A attachment, CompletionHandler<Integer, ? super A> handler);
+
+    @Positive
+    @Override
+    @Positive
+    public final <A> void write(ByteBuffer src, A attachment, CompletionHandler<Integer, ? super A> handler);
+
+    @Positive
+    @Override
+    @Positive
+    public abstract Future<Integer> write(ByteBuffer src);
+
+    @Positive
+    public abstract <A> void write(ByteBuffer[] srcs, int offset, int length, long timeout, TimeUnit unit, A attachment, CompletionHandler<Long, ? super A> handler);
+
+    @Positive
+    public abstract SocketAddress getLocalAddress() throws IOException;
+    @Positive
+}
+
+// CFWR semantic augmentation - variant 1

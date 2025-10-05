@@ -1,17 +1,23 @@
 #!/usr/bin/env python3
 """
-Train All 21 Models Script
+Train All 21 Models Script with Enhanced Pipeline
 
-This script trains all 21 annotation type models:
+This script trains all 21 annotation type models using the enhanced pipeline:
 - 7 base model types: gcn, gbt, causal, enhanced_causal, hgt, gcsn, dg2n
 - 3 annotation types: @Positive, @NonNegative, @GTENegativeOne
 - Total: 7 × 3 = 21 models
 
-Each model is trained using the full pipeline:
-1. Specimin slice generation
-2. Slice augmentation
+Each model is trained using the enhanced pipeline:
+1. Semantic-preserving augmentation (augment-first approach)
+2. Enhanced Soot slicing (forward/backward/combined)
 3. CFG generation using Checker Framework's CFG Builder
 4. Model training on real CFG data
+
+Enhanced Features:
+- Semantic-preserving transformations that maintain code meaning
+- Augment-first approach (augment code then slice each variant)
+- Enhanced Soot slicer with comprehensive data flow analysis
+- Combined forward/backward slicing for complete dependency tracking
 
 Models are saved with the correct naming convention: {annotation_type}_{base_model}_model.pth
 """
@@ -26,9 +32,10 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 class AllModelsTrainer:
-    def __init__(self, project_root='/home/ubuntu/checker-framework/checker/tests/index', episodes=10):
+    def __init__(self, project_root='/home/ubuntu/checker-framework/checker/tests/index', episodes=100, augmentation_factor=10):
         self.project_root = project_root
         self.episodes = episodes
+        self.augmentation_factor = augmentation_factor
         
         # All base model types (including enhanced_causal)
         self.base_models = ['gcn', 'gbt', 'causal', 'enhanced_causal', 'hgt', 'gcsn', 'dg2n']
@@ -44,22 +51,22 @@ class AllModelsTrainer:
         self.failed_models = []
 
     def train_single_model(self, annotation_type, base_model, script_path):
-        """Train a single model using the full pipeline"""
+        """Train a single model using the enhanced pipeline"""
         model_name = f"{annotation_type.replace('@', '').lower()}_{base_model}"
-        logger.info(f"🚀 Training {model_name} model using full pipeline...")
+        logger.info(f"🚀 Training {model_name} model using enhanced pipeline...")
         
-        # Build command with full pipeline parameters
+        # Build command with enhanced pipeline parameters
         cmd = [
             'python3', script_path,
             '--project_root', self.project_root,
             '--warnings_file', '/home/ubuntu/GenDATA/index1.out',
             '--cfwr_root', '/home/ubuntu/GenDATA',
-            '--slices_dir', '/home/ubuntu/GenDATA/slices_augmented',
-            '--cfg_dir', '/home/ubuntu/GenDATA/cfg_output_specimin',
             '--episodes', str(self.episodes),
             '--base_model', base_model,
-            '--device', 'cpu',
-            '--use_real_cfg_data'
+            '--device', 'auto'
+            # Note: --augment_first is now the default (True)
+            # Note: Soot slicer is now the default
+            # Note: Semantic augmentation is now the default
         ]
         
         try:
@@ -84,9 +91,10 @@ class AllModelsTrainer:
             return False
 
     def train_all_models(self):
-        """Train all 21 models using the full pipeline"""
+        """Train all 21 models using the enhanced pipeline"""
         logger.info("🎯 Starting training of all 21 annotation type models...")
-        logger.info("Using full pipeline: Specimin → Augmentation → CFG Builder → Training")
+        logger.info("Using enhanced pipeline: Semantic Augmentation → Enhanced Soot Slicing → CFG Builder → Training")
+        logger.info("Enhanced features: Augment-first approach, semantic-preserving transformations, forward/backward slicing")
         logger.info("=" * 80)
         
         total_models = len(self.base_models) * len(self.annotation_configs)
@@ -162,17 +170,18 @@ class AllModelsTrainer:
 
 def main():
     """Main function"""
-    logger.info("🎯 GenDATA - Train All 21 Models")
+    logger.info("🎯 GenDATA - Train All 21 Models with Enhanced Pipeline")
     logger.info("=" * 80)
     logger.info("Training 21 annotation type models:")
     logger.info("- 7 base model types: gcn, gbt, causal, enhanced_causal, hgt, gcsn, dg2n")
     logger.info("- 3 annotation types: @Positive, @NonNegative, @GTENegativeOne")
     logger.info("- Total: 7 × 3 = 21 models")
-    logger.info("- Using full pipeline: Specimin → Augmentation → CFG Builder → Training")
+    logger.info("- Using enhanced pipeline: Semantic Augmentation → Enhanced Soot Slicing → CFG Builder → Training")
+    logger.info("- Enhanced features: Augment-first approach, semantic-preserving transformations, forward/backward slicing")
     logger.info("=" * 80)
     
     # Create trainer
-    trainer = AllModelsTrainer(episodes=10)  # Reduced episodes for faster training
+    trainer = AllModelsTrainer(episodes=100, augmentation_factor=10)  # Full training with enhanced pipeline
     
     # Train all models
     success = trainer.train_all_models()

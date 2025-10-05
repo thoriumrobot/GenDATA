@@ -7,6 +7,10 @@ import soot.toolkits.scalar.*;
 import soot.jimple.toolkits.callgraph.*;
 import soot.jimple.toolkits.pointer.*;
 
+// Import our custom slicing analyses
+import cfwr.BackwardSliceAnalysis;
+import cfwr.ForwardSliceAnalysis;
+
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -23,7 +27,7 @@ public class SootSlicer {
     
     public static void main(String[] args) {
         if (args.length < 8) {
-            System.err.println("Usage: java cfwr.SootSlicer --projectRoot <path> --targetFile <file> --line <num> --output <dir> --member <sig> [--decompiler <vineflower.jar>] [--prediction-mode]");
+            System.err.println("Usage: java cfwr.SootSlicer --projectRoot <path> --targetFile <file> --line <num> --output <dir> --member <sig> [--decompiler <vineflower.jar>] [--prediction-mode] [--slice-mode <backward|forward|combined>]");
             System.exit(1);
         }
         
@@ -36,10 +40,11 @@ public class SootSlicer {
         String memberSig = params.get("member");
         String vineflowerJar = params.get("decompiler");
         boolean predictionMode = params.containsKey("prediction-mode");
+        String sliceMode = params.getOrDefault("slice-mode", "combined");
         
         try {
             SootSlicer slicer = new SootSlicer();
-            slicer.sliceMethod(projectRoot, targetFile, lineNumber, outputDir, memberSig, vineflowerJar, predictionMode);
+            slicer.sliceMethod(projectRoot, targetFile, lineNumber, outputDir, memberSig, vineflowerJar, predictionMode, sliceMode);
         } catch (Exception e) {
             System.err.println("Error during slicing: " + e.getMessage());
             e.printStackTrace();
@@ -80,7 +85,7 @@ public class SootSlicer {
     }
     
     public void sliceMethod(String projectRoot, String targetFile, int lineNumber, 
-                           String outputDir, String memberSig, String vineflowerJar, boolean predictionMode) throws Exception {
+                           String outputDir, String memberSig, String vineflowerJar, boolean predictionMode, String sliceMode) throws Exception {
         
         // Create output directory
         Files.createDirectories(Paths.get(outputDir));
@@ -103,15 +108,15 @@ public class SootSlicer {
         try {
             if (predictionMode && vineflowerJar != null) {
                 // Prediction mode: Use true bytecode slicing with Vineflower decompilation
-                performBytecodeSlicingWithDecompilation(targetPath, lineNumber, outputDir, memberSig, vineflowerJar);
+                performBytecodeSlicingWithDecompilation(targetPath, lineNumber, outputDir, memberSig, vineflowerJar, sliceMode);
             } else {
                 // Training mode: Use source-based slicing for better compatibility
-                performSourceBasedSlicing(targetPath, lineNumber, outputDir, memberSig);
+                performSourceBasedSlicing(targetPath, lineNumber, outputDir, memberSig, sliceMode);
             }
         } catch (Exception e) {
             System.err.println("Slicing failed: " + e.getMessage());
             // Fallback to source-based slicing
-            performSourceBasedSlicing(targetPath, lineNumber, outputDir, memberSig);
+            performSourceBasedSlicing(targetPath, lineNumber, outputDir, memberSig, sliceMode);
         }
     }
     
@@ -189,7 +194,7 @@ public class SootSlicer {
         return null;
     }
     
-    private void performBytecodeSlicingWithDecompilation(Path targetFile, int lineNumber, String outputDir, String memberSig, String vineflowerJar) {
+    private void performBytecodeSlicingWithDecompilation(Path targetFile, int lineNumber, String outputDir, String memberSig, String vineflowerJar, String sliceMode) {
         try {
             System.out.println("[soot_slicer] Performing bytecode slicing with Vineflower decompilation");
             
@@ -212,7 +217,7 @@ public class SootSlicer {
             }
             
             // Step 3: Perform program slicing on bytecode
-            List<Unit> sliceUnits = performProgramSlicing(targetMethod, lineNumber);
+            List<Unit> sliceUnits = performProgramSlicing(targetMethod, lineNumber, sliceMode);
             
             // Step 4: Generate bytecode slice
             Path bytecodeSlice = generateBytecodeSlice(sliceUnits, outputDir, className);
@@ -277,7 +282,7 @@ public class SootSlicer {
         Scene.v().setSootClassPath(Options.v().soot_classpath());
     }
     
-    private List<Unit> performProgramSlicing(SootMethod targetMethod, int targetLine) {
+    private List<Unit> performProgramSlicing(SootMethod targetMethod, int targetLine, String sliceMode) {
         try {
             Body body = targetMethod.retrieveActiveBody();
             
@@ -288,28 +293,111 @@ public class SootSlicer {
                 return new ArrayList<>(body.getUnits());
             }
             
-            // Perform backward slicing from the target unit
-            // This is a simplified version - in practice, you'd use Soot's slicing algorithms
-            List<Unit> sliceUnits = new ArrayList<>();
-            sliceUnits.add(targetUnit);
+            System.out.println("[soot_slicer] Performing program slicing with mode: " + sliceMode);
+            System.out.println("[soot_slicer] Target unit: " + targetUnit);
             
-            // Add all units for now (simplified slicing)
-            sliceUnits.addAll(body.getUnits());
+            // Create control flow graph
+            UnitGraph cfg = new BriefUnitGraph(body);
+            Set<Unit> resultSlice = new HashSet<>();
+            
+            switch (sliceMode.toLowerCase()) {
+                case "backward":
+                    System.out.println("[soot_slicer] Computing backward slice...");
+                    BackwardSliceAnalysis backwardAnalysis = new BackwardSliceAnalysis(cfg, targetUnit);
+                    resultSlice = backwardAnalysis.getBackwardSlice();
+                    System.out.println("[soot_slicer] Backward slice contains " + resultSlice.size() + " units");
+                    break;
+                    
+                case "forward":
+                    System.out.println("[soot_slicer] Computing forward slice...");
+                    ForwardSliceAnalysis forwardAnalysis = new ForwardSliceAnalysis(cfg, targetUnit);
+                    resultSlice = forwardAnalysis.getForwardSlice();
+                    System.out.println("[soot_slicer] Forward slice contains " + resultSlice.size() + " units");
+                    break;
+                    
+                case "combined":
+                default:
+                    System.out.println("[soot_slicer] Computing combined slice (backward + forward)...");
+                    
+                    // Perform backward slicing
+                    System.out.println("[soot_slicer] Computing backward slice...");
+                    BackwardSliceAnalysis backwardAnalysis2 = new BackwardSliceAnalysis(cfg, targetUnit);
+                    Set<Unit> backwardSlice = backwardAnalysis2.getBackwardSlice();
+                    System.out.println("[soot_slicer] Backward slice contains " + backwardSlice.size() + " units");
+                    
+                    // Perform forward slicing
+                    System.out.println("[soot_slicer] Computing forward slice...");
+                    ForwardSliceAnalysis forwardAnalysis2 = new ForwardSliceAnalysis(cfg, targetUnit);
+                    Set<Unit> forwardSlice = forwardAnalysis2.getForwardSlice();
+                    System.out.println("[soot_slicer] Forward slice contains " + forwardSlice.size() + " units");
+                    
+                    // Combine both slices
+                    resultSlice.addAll(backwardSlice);
+                    resultSlice.addAll(forwardSlice);
+                    System.out.println("[soot_slicer] Combined slice contains " + resultSlice.size() + " units");
+                    break;
+            }
+            
+            // Convert to list and sort by position
+            List<Unit> sliceUnits = new ArrayList<>(resultSlice);
+            // Sort by position in the method (simplified approach)
+            List<Unit> allUnits = new ArrayList<>(body.getUnits());
+            sliceUnits.sort((u1, u2) -> {
+                int index1 = allUnits.indexOf(u1);
+                int index2 = allUnits.indexOf(u2);
+                return Integer.compare(index1, index2);
+            });
             
             return sliceUnits;
             
         } catch (Exception e) {
             System.err.println("Error during program slicing: " + e.getMessage());
+            e.printStackTrace();
             return new ArrayList<>();
         }
     }
     
     private Unit findUnitAtLine(Body body, int targetLine) {
-        // Simplified: return the first unit
-        // In practice, you'd map bytecode line numbers to Soot units
-        for (Unit unit : body.getUnits()) {
-            return unit; // Return first unit for now
+        // Try to find the unit that corresponds to the target line
+        // This is a heuristic approach since bytecode line numbers don't always map directly
+        
+        List<Unit> units = new ArrayList<>(body.getUnits());
+        
+        // First, try to find a unit with exact line number match
+        for (Unit unit : units) {
+            if (unit.getJavaSourceStartLineNumber() == targetLine) {
+                return unit;
+            }
         }
+        
+        // If no exact match, find the unit closest to the target line
+        Unit closestUnit = null;
+        int minDistance = Integer.MAX_VALUE;
+        
+        for (Unit unit : units) {
+            int unitLine = unit.getJavaSourceStartLineNumber();
+            if (unitLine > 0) { // Valid line number
+                int distance = Math.abs(unitLine - targetLine);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestUnit = unit;
+                }
+            }
+        }
+        
+        if (closestUnit != null) {
+            System.out.println("[soot_slicer] Found closest unit at line " + 
+                             closestUnit.getJavaSourceStartLineNumber() + 
+                             " (target was line " + targetLine + ")");
+            return closestUnit;
+        }
+        
+        // Fallback: return the first unit if no line number mapping is available
+        if (!units.isEmpty()) {
+            System.out.println("[soot_slicer] No line number mapping available, using first unit");
+            return units.get(0);
+        }
+        
         return null;
     }
     
@@ -450,7 +538,7 @@ public class SootSlicer {
         }
     }
     
-    private void performSourceBasedSlicing(Path targetFile, int lineNumber, String outputDir, String memberSig) {
+    private void performSourceBasedSlicing(Path targetFile, int lineNumber, String outputDir, String memberSig, String sliceMode) {
         try {
             // Read the source file
             String content = Files.readString(targetFile);

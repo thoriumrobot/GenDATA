@@ -24,13 +24,14 @@ logger = logging.getLogger(__name__)
 class SimpleAnnotationTypePipeline:
     """Simplified pipeline for training and testing annotation types"""
     
-    def __init__(self, project_root, warnings_file, cfwr_root, mode='train', no_auto_train=False, device='auto'):
+    def __init__(self, project_root, warnings_file, cfwr_root, mode='train', no_auto_train=False, device='auto', augment_first=True):
         self.project_root = project_root
         self.warnings_file = warnings_file
         self.cfwr_root = cfwr_root
         self.mode = mode
         self.no_auto_train = no_auto_train
         self.device = device
+        self.augment_first = augment_first
         
         # Set up directories
         self.slices_dir = os.path.join(cfwr_root, 'slices_specimin')
@@ -56,11 +57,54 @@ class SimpleAnnotationTypePipeline:
         logger.info(f"Project root: {self.project_root}")
         logger.info(f"Episodes: {episodes}")
         logger.info(f"Base model: {base_model}")
+        logger.info(f"Augment-first mode: {self.augment_first}")
         
-        # Step 1: Generate slices using Specimin
-        logger.info("Step 1: Generating slices using Specimin")
-        if not self._generate_slices_with_specimin():
-            logger.error("Failed to generate slices with Specimin")
+        if self.augment_first:
+            # Use the new augment-first approach
+            return self._run_augment_first_training(episodes, base_model)
+        else:
+            # Use the traditional approach: slice first, then augment
+            return self._run_traditional_training(episodes, base_model)
+    
+    def _run_augment_first_training(self, episodes, base_model):
+        """Run training using the augment-first approach"""
+        logger.info("Using augment-first training approach")
+        
+        # Step 1: Augment original code first
+        logger.info("Step 1: Augmenting original code with semantic transformations")
+        if not self._augment_original_code():
+            logger.error("Failed to augment original code")
+            return False
+        
+        # Step 2: Slice each augmented variant
+        logger.info("Step 2: Slicing each augmented variant")
+        if not self._slice_augmented_variants():
+            logger.error("Failed to slice augmented variants")
+            return False
+        
+        # Step 3: Generate CFGs from all slices
+        logger.info("Step 3: Generating CFGs from all slices")
+        if not self._generate_cfgs_from_slices():
+            logger.error("Failed to generate CFGs from slices")
+            return False
+        
+        # Step 4: Train annotation type models
+        logger.info("Step 4: Training annotation type models")
+        if not self._train_annotation_type_models_with_cfgs(episodes, base_model):
+            logger.error("Failed to train annotation type models")
+            return False
+        
+        logger.info("Augment-first training pipeline completed successfully")
+        return True
+    
+    def _run_traditional_training(self, episodes, base_model):
+        """Run training using the traditional approach (slice first, then augment)"""
+        logger.info("Using traditional training approach")
+        
+        # Step 1: Generate slices using Soot
+        logger.info("Step 1: Generating slices using Soot")
+        if not self._generate_slices_with_soot():
+            logger.error("Failed to generate slices with Soot")
             return False
         
         # Step 2: Generate CFGs from slices
@@ -75,8 +119,122 @@ class SimpleAnnotationTypePipeline:
             logger.error("Failed to train annotation type models")
             return False
         
-        logger.info("Training pipeline completed successfully")
+        logger.info("Traditional training pipeline completed successfully")
         return True
+    
+    def _augment_original_code(self):
+        """Augment the original code with semantic transformations"""
+        try:
+            from semantic_augment_slices import SemanticTransformer, iter_java_files
+            
+            # Create augmented code directory
+            self.augmented_code_dir = os.path.join(self.cfwr_root, 'augmented_code')
+            os.makedirs(self.augmented_code_dir, exist_ok=True)
+            
+            logger.info("Augmenting original code with semantic transformations")
+            
+            transformer = SemanticTransformer(seed=42)
+            augmented_count = 0
+            
+            # Process each Java file in the project
+            for java_file in iter_java_files(self.project_root):
+                # Create output directory maintaining structure
+                rel_path = os.path.relpath(java_file, self.project_root)
+                base_name = os.path.splitext(rel_path)[0]
+                
+                # Generate variants
+                for variant_idx in range(50):  # 50 variants per file
+                    variant_dir = os.path.join(self.augmented_code_dir, f"{base_name}__variant_{variant_idx}")
+                    os.makedirs(variant_dir, exist_ok=True)
+                    output_path = os.path.join(variant_dir, os.path.basename(rel_path))
+                    
+                    # Apply semantic transformations
+                    augmented_content = transformer.transform_file(java_file, variant_idx)
+                    with open(output_path, 'w') as f:
+                        f.write(augmented_content)
+                    augmented_count += 1
+            
+            # Verify augmentation
+            original_files = len(glob.glob(os.path.join(self.project_root, '**/*.java'), recursive=True))
+            augmented_files = len(glob.glob(os.path.join(self.augmented_code_dir, '**/*.java'), recursive=True))
+            
+            logger.info(f"Original files: {original_files}, Augmented files: {augmented_files}")
+            logger.info(f"Generated {augmented_count} semantically augmented code variants")
+            
+            return True
+                
+        except Exception as e:
+            logger.error(f"Error augmenting original code: {e}")
+            return False
+    
+    def _slice_augmented_variants(self):
+        """Slice each augmented variant using Specimin"""
+        try:
+            from pipeline import run_slicing
+            
+            logger.info("Slicing each augmented variant")
+            
+            # Update slices directory for augment-first approach
+            self.slices_dir = os.path.join(self.cfwr_root, 'slices_augmented_first')
+            os.makedirs(self.slices_dir, exist_ok=True)
+            
+            total_slices = 0
+            
+            # Process each augmented variant
+            for variant_dir in os.listdir(self.augmented_code_dir):
+                variant_path = os.path.join(self.augmented_code_dir, variant_dir)
+                if not os.path.isdir(variant_path):
+                    continue
+                
+                # Create slice output directory for this variant
+                variant_slice_dir = os.path.join(self.slices_dir, variant_dir)
+                os.makedirs(variant_slice_dir, exist_ok=True)
+                
+                # Run slicing on this variant
+                if self._slice_single_variant(variant_path, variant_slice_dir):
+                    # Count slices generated for this variant
+                    variant_slices = len(glob.glob(os.path.join(variant_slice_dir, '**/*.java'), recursive=True))
+                    total_slices += variant_slices
+                    logger.info(f"Generated {variant_slices} slices for variant {variant_dir}")
+                else:
+                    logger.warning(f"Failed to slice variant {variant_dir}")
+            
+            logger.info(f"Total slices generated: {total_slices}")
+            
+            return total_slices > 0
+                
+        except Exception as e:
+            logger.error(f"Error slicing augmented variants: {e}")
+            return False
+    
+    def _slice_single_variant(self, variant_path, output_dir):
+        """Slice a single augmented variant"""
+        try:
+            # Use the existing slicing infrastructure
+            from pipeline import run_slicing
+            
+            # Create a temporary warnings file for this variant
+            temp_warnings = os.path.join(output_dir, "temp_warnings.out")
+            shutil.copy2(self.warnings_file, temp_warnings)
+            
+            # Run slicing on this variant
+            success = run_slicing(
+                project_root=variant_path,
+                warnings_file=temp_warnings,
+                cfwr_root=self.cfwr_root,
+                base_slices_dir=output_dir,
+                slicer_type='soot'
+            )
+            
+            # Clean up temporary warnings file
+            if os.path.exists(temp_warnings):
+                os.remove(temp_warnings)
+            
+            return success
+            
+        except Exception as e:
+            logger.error(f"Error slicing variant {variant_path}: {e}")
+            return False
     
     def run_prediction_pipeline(self, target_file=None):
         """Run the prediction pipeline"""
@@ -139,36 +297,36 @@ class SimpleAnnotationTypePipeline:
         logger.info(f"Successfully trained {success_count}/{len(self.annotation_types)} annotation type models")
         return success_count > 0
     
-    def _generate_slices_with_specimin(self):
-        """Generate slices using Specimin and augment them"""
+    def _generate_slices_with_soot(self):
+        """Generate slices using Soot and augment them"""
         try:
             # Use the existing pipeline slicing functionality
             from pipeline import run_slicing
             
-            logger.info("Generating slices using Specimin")
+            logger.info("Generating slices using Soot")
             # Use the correct warnings file path
             warnings_file = os.path.join(self.cfwr_root, 'index1.out')
             run_slicing(self.project_root, warnings_file, self.cfwr_root, 
-                       os.path.dirname(self.slices_dir), 'specimin')
+                       os.path.dirname(self.slices_dir), 'soot')
             
-            # Augment slices using augment_slices.py
-            logger.info("Augmenting slices with augment_slices.py")
+            # Augment slices using semantic-preserving transformations
+            logger.info("Augmenting slices with semantic-preserving transformations")
             augmented_dir = os.path.join(self.cfwr_root, 'slices_augmented')
             os.makedirs(augmented_dir, exist_ok=True)
             
-            # Run augmentation
+            # Run semantic augmentation
             import subprocess
             augment_cmd = [
-                'python', 'augment_slices.py',
+                'python', 'semantic_augment_slices.py',
                 '--slices_dir', self.slices_dir,
                 '--out_dir', augmented_dir,
-                '--variants_per_file', '100'
+                '--variants_per_file', '50'  # Reduced since semantic transformations are more meaningful
             ]
             result = subprocess.run(augment_cmd, capture_output=True, text=True)
             if result.returncode != 0:
-                logger.warning(f"Slice augmentation failed: {result.stderr}")
+                logger.warning(f"Semantic slice augmentation failed: {result.stderr}")
             else:
-                logger.info("Slice augmentation completed successfully")
+                logger.info("Semantic slice augmentation completed successfully")
                 # Update slices_dir to use augmented slices
                 self.slices_dir = augmented_dir
             
@@ -938,6 +1096,8 @@ def main():
                        help='Disable automatic training of missing models (default: auto-train enabled)')
     parser.add_argument('--device', default='auto', choices=['auto', 'cpu', 'cuda'],
                        help='Device to use for training/inference (default: auto)')
+    parser.add_argument('--no_augment_first', action='store_true',
+                       help='Disable augment-first approach (use traditional slice-first approach)')
     
     args = parser.parse_args()
     
@@ -948,7 +1108,8 @@ def main():
         cfwr_root=args.cfwr_root,
         mode=args.mode,
         no_auto_train=args.no_auto_train,
-        device=args.device
+        device=args.device,
+        augment_first=not args.no_augment_first
     )
     
     # Run pipeline

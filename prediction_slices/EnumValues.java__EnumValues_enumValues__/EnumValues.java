@@ -1,7 +1,3 @@
-    @GTENegativeOne
-    @NonNegative
-    @GTENegativeOne
-    @Positive
 import org.checkerframework.common.value.qual.*;
 
 public class EnumValues {

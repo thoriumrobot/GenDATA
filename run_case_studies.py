@@ -130,9 +130,8 @@ class CaseStudyRunner:
             logger.warning(f"Project {project_name} not found at {project_path}")
             return None
         
-        # For now, we'll create mock predictions based on the project structure
-        # In a real implementation, this would run the actual prediction pipeline
-        predictions = self._generate_mock_predictions_for_project(project_name, model_name)
+        # Generate real predictions using trained models
+        predictions = self._generate_real_predictions_for_project(project_name, model_name)
         
         metadata = {
             'model_type': model_name.upper(),
@@ -143,51 +142,84 @@ class CaseStudyRunner:
         filepath = self.saver.save_predictions(model_name, project_name, predictions, metadata)
         return filepath
     
-    def _generate_mock_predictions_for_project(self, project_name, model_name):
-        """Generate mock predictions for a project (placeholder for real prediction logic)"""
-        # This is a placeholder - in reality, you would:
-        # 1. Find Java files in the project
-        # 2. Generate CFGs for each file
-        # 3. Run the trained model on each CFG
-        # 4. Collect predictions
+    def _generate_real_predictions_for_project(self, project_name, model_name):
+        """Generate real predictions for a project using trained models"""
+        predictions = []
         
-        mock_predictions = []
+        # Load the trained model
+        model_path = f'models_annotation_types/{model_name}_model.pth'
+        if not os.path.exists(model_path):
+            logger.warning(f"Model not found: {model_path}")
+            return predictions
         
-        # Simulate different prediction patterns for different projects
-        if project_name == 'guava':
-            mock_predictions = [
-                {'line': 45, 'confidence': 0.85, 'node_type': 'method', 'label': 'public static List<String> getStrings()'},
-                {'line': 67, 'confidence': 0.72, 'node_type': 'variable', 'label': 'private final Map<String, Object> cache'},
-                {'line': 89, 'confidence': 0.91, 'node_type': 'parameter', 'label': 'String input parameter'}
-            ]
-        elif project_name == 'jfreechart':
-            mock_predictions = [
-                {'line': 23, 'confidence': 0.78, 'node_type': 'method', 'label': 'public void drawChart(Graphics2D g2d)'},
-                {'line': 156, 'confidence': 0.65, 'node_type': 'variable', 'label': 'private ChartData dataset'},
-                {'line': 234, 'confidence': 0.88, 'node_type': 'parameter', 'label': 'double value parameter'}
-            ]
-        elif project_name == 'plume-lib':
-            mock_predictions = [
-                {'line': 12, 'confidence': 0.82, 'node_type': 'method', 'label': 'public static void processFile(File f)'},
-                {'line': 78, 'confidence': 0.69, 'node_type': 'variable', 'label': 'private final List<String> lines'},
-                {'line': 145, 'confidence': 0.76, 'node_type': 'parameter', 'label': 'String filename parameter'}
-            ]
+        # Find Java files in the project
+        project_path = os.path.join(self.case_studies_dir, project_name)
+        if not os.path.exists(project_path):
+            logger.warning(f"Project not found: {project_path}")
+            return predictions
         
-        # Add model-specific variations
-        if model_name == 'gcn':
-            # GCN tends to be more conservative
-            for pred in mock_predictions:
-                pred['confidence'] = max(0.3, pred['confidence'] - 0.1)
-        elif model_name == 'gbt':
-            # GBT tends to be more confident
-            for pred in mock_predictions:
-                pred['confidence'] = min(1.0, pred['confidence'] + 0.05)
-        elif model_name == 'causal':
-            # Causal model has different confidence patterns
-            for pred in mock_predictions:
-                pred['confidence'] = abs(pred['confidence'] - 0.1)
+        java_files = []
+        for root, dirs, files in os.walk(project_path):
+            for file in files:
+                if file.endswith('.java'):
+                    java_files.append(os.path.join(root, file))
         
-        return mock_predictions
+        # Generate CFGs and predictions for each Java file
+        for java_file in java_files[:10]:  # Limit to first 10 files
+            try:
+                # Generate CFG for this file
+                cfg_data = self._generate_cfg_for_file(java_file)
+                if cfg_data:
+                    # Run prediction using the trained model
+                    file_predictions = self._predict_with_model(cfg_data, model_name, java_file)
+                    predictions.extend(file_predictions)
+            except Exception as e:
+                logger.warning(f"Failed to process {java_file}: {e}")
+        
+        return predictions
+    
+    def _generate_cfg_for_file(self, java_file):
+        """Generate CFG data for a Java file using the pipeline"""
+        try:
+            # Use the simple annotation type pipeline to generate CFG
+            from simple_annotation_type_pipeline import SimpleAnnotationTypePipeline
+            
+            pipeline = SimpleAnnotationTypePipeline(
+                project_root=os.path.dirname(java_file),
+                warnings_file='/home/ubuntu/GenDATA/index1.out',
+                cfwr_root='/home/ubuntu/GenDATA',
+                mode='predict'
+            )
+            
+            # Generate slices and CFGs for this file
+            if pipeline._generate_slices_for_prediction(java_file):
+                cfg_data = pipeline._generate_cfgs_for_prediction()
+                return cfg_data
+            
+        except Exception as e:
+            logger.warning(f"Failed to generate CFG for {java_file}: {e}")
+        
+        return None
+    
+    def _predict_with_model(self, cfg_data, model_name, java_file):
+        """Run prediction using a trained model"""
+        try:
+            # Load the trained model
+            model_path = f'models_annotation_types/{model_name}_model.pth'
+            if not os.path.exists(model_path):
+                return []
+            
+            # Use the model-based predictor
+            from model_based_predictor import ModelBasedPredictor
+            predictor = ModelBasedPredictor(model_path)
+            
+            # Generate predictions
+            predictions = predictor.predict_annotation_placements(cfg_data, java_file)
+            return predictions
+            
+        except Exception as e:
+            logger.warning(f"Failed to predict with model {model_name}: {e}")
+            return []
     
     def run_all_models_on_project(self, project_name):
         """Run all models on a single project and create comparison"""

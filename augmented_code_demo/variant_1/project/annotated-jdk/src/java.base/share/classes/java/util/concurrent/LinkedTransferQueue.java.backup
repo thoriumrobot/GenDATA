@@ -1,0 +1,191 @@
+/*
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 only, as
+ * published by the Free Software Foundation.  Oracle designates this
+ * particular file as subject to the "Classpath" exception as provided
+ * by Oracle in the LICENSE file that accompanied this code.
+ *
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+ * version 2 for more details (a copy is included in the LICENSE file that
+ * accompanied this code).
+ *
+ * You should have received a copy of the GNU General Public License version
+ * 2 along with this work; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+ * or visit www.oracle.com if you need additional information or have any
+ * questions.
+ */
+package java.util.concurrent;
+
+import org.checkerframework.checker.index.qual.PolyGrowShrink;
+import org.checkerframework.checker.index.qual.Shrinkable;
+import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.nonempty.qual.EnsuresNonEmpty;
+import org.checkerframework.checker.nonempty.qual.EnsuresNonEmptyIf;
+import org.checkerframework.checker.nonempty.qual.NonEmpty;
+import org.checkerframework.checker.nonempty.qual.PolyNonEmpty;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.nullness.qual.PolyNull;
+import org.checkerframework.checker.signedness.qual.PolySigned;
+import org.checkerframework.checker.signedness.qual.UnknownSignedness;
+import org.checkerframework.dataflow.qual.Pure;
+import org.checkerframework.dataflow.qual.SideEffectsOnly;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
+import java.util.AbstractQueue;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Queue;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.concurrent.locks.LockSupport;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
+public class LinkedTransferQueue<E> extends AbstractQueue<E> implements TransferQueue<E>, java.io.Serializable {
+
+    static final class Node implements ForkJoinPool.ManagedBlocker {
+
+        final boolean casNext(Node cmp, Node val);
+
+        final boolean casItem(Object cmp, Object val);
+
+        final void selfLink();
+
+        final void appendRelaxed(Node next);
+
+        final boolean isMatched();
+
+        final boolean tryMatch(Object cmp, Object val);
+
+        final boolean cannotPrecede(boolean haveData);
+
+        public final boolean isReleasable();
+
+        public final boolean block();
+    }
+
+    final Node firstDataNode();
+
+    public String toString();
+
+    @PolyNull
+    @PolySigned
+    public Object[] toArray(LinkedTransferQueue<@PolyNull @PolySigned E> this);
+
+    @SuppressWarnings("unchecked")
+    @Nullable
+    public <T> T[] toArray(@PolyNull T[] a);
+
+    final class Itr implements Iterator<E> {
+
+        @Pure
+        @EnsuresNonEmptyIf(result = true, expression = "this")
+        public final boolean hasNext();
+
+        @SideEffectsOnly("this")
+        public final E next(@NonEmpty Itr this);
+
+        public void forEachRemaining(Consumer<? super E> action);
+
+        public final void remove();
+    }
+
+    final class LTQSpliterator implements Spliterator<E> {
+
+        public Spliterator<E> trySplit();
+
+        public void forEachRemaining(Consumer<? super E> action);
+
+        @SuppressWarnings("unchecked")
+        public boolean tryAdvance(Consumer<? super E> action);
+
+        public long estimateSize();
+
+        public int characteristics();
+    }
+
+    public Spliterator<E> spliterator();
+
+    final void unsplice(Node pred, Node s);
+
+    public LinkedTransferQueue() {
+    }
+
+    public LinkedTransferQueue(Collection<? extends E> c) {
+    }
+
+    public void put(E e);
+
+    public boolean offer(E e, long timeout, TimeUnit unit);
+
+    public boolean offer(E e);
+
+    @EnsuresNonEmpty("this")
+    public boolean add(E e);
+
+    public boolean tryTransfer(@GuardSatisfied @Shrinkable LinkedTransferQueue<E> this, E e);
+
+    public void transfer(@GuardSatisfied @Shrinkable LinkedTransferQueue<E> this, E e) throws InterruptedException;
+
+    public boolean tryTransfer(@GuardSatisfied @Shrinkable LinkedTransferQueue<E> this, E e, long timeout, TimeUnit unit) throws InterruptedException;
+
+    public E take(@GuardSatisfied @Shrinkable LinkedTransferQueue<E> this) throws InterruptedException;
+
+    public E poll(@GuardSatisfied @Shrinkable LinkedTransferQueue<E> this, long timeout, TimeUnit unit) throws InterruptedException;
+
+    public E poll(@GuardSatisfied @Shrinkable LinkedTransferQueue<E> this);
+
+    public int drainTo(@GuardSatisfied @Shrinkable LinkedTransferQueue<E> this, Collection<? super E> c);
+
+    public int drainTo(@GuardSatisfied @Shrinkable LinkedTransferQueue<E> this, Collection<? super E> c, int maxElements);
+
+    @PolyGrowShrink
+    @PolyNonEmpty
+    public Iterator<E> iterator(@PolyGrowShrink @PolyNonEmpty LinkedTransferQueue<E> this);
+
+    @Pure
+    public E peek();
+
+    @Pure
+    @EnsuresNonEmptyIf(result = false, expression = "this")
+    public boolean isEmpty();
+
+    public boolean hasWaitingConsumer();
+
+    @Pure
+    public int size();
+
+    public int getWaitingConsumerCount();
+
+    public boolean remove(@Shrinkable LinkedTransferQueue<E> this, @GuardSatisfied @Nullable @UnknownSignedness Object o);
+
+    @Pure
+    @EnsuresNonEmptyIf(result = true, expression = "this")
+    public boolean contains(@GuardSatisfied @Nullable @UnknownSignedness Object o);
+
+    public int remainingCapacity();
+
+    public boolean removeIf(@Shrinkable LinkedTransferQueue<E> this, Predicate<? super E> filter);
+
+    public boolean removeAll(@Shrinkable LinkedTransferQueue<E> this, Collection<? extends @NonNull @UnknownSignedness Object> c);
+
+    public boolean retainAll(@GuardSatisfied @Shrinkable LinkedTransferQueue<E> this, Collection<? extends @NonNull @UnknownSignedness Object> c);
+
+    public void clear(@GuardSatisfied @Shrinkable LinkedTransferQueue<E> this);
+
+    @SuppressWarnings("unchecked")
+    void forEachFrom(Consumer<? super E> action, Node p);
+
+    public void forEach(Consumer<? super E> action);
+}

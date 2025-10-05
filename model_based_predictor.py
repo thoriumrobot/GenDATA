@@ -238,7 +238,8 @@ class ModelBasedPredictor:
         }
     
     def _create_mock_cfg_data(self, lines: List[str]) -> Dict[str, Any]:
-        """Deprecated: mock CFG generator (retained for compatibility). Not used."""
+        """Deprecated: mock CFG generator (removed - use real pipeline data)."""
+        logger.warning("Mock CFG data generation is deprecated. Use real pipeline data instead.")
         return {'nodes': [], 'edges': []}
     
     def _extract_basic_features(self, node: Dict[str, Any], cfg_data: Dict[str, Any]) -> List[float]:

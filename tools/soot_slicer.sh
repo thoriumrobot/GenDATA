@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Soot-based slicer interface for CFWR
-# Uses the Java-based SootSlicer for proper bytecode slicing
+# Uses the Java-based SootSlicer for proper bytecode slicing with forward and backward slicing
 # Accepts:
 #   --projectRoot <path>
 #   --targetFile <relative-or-abs .java>
@@ -10,6 +10,7 @@ set -euo pipefail
 #   --output <dir>
 #   --member <class#sig>
 #   --decompiler <vineflower.jar> (optional)
+#   --slice-mode <backward|forward|combined> (optional, default: combined)
 
 PROJECT_ROOT=""
 TARGET_FILE=""
@@ -18,6 +19,7 @@ OUTPUT_DIR=""
 MEMBER_SIG=""
 DECOMPILER_JAR=""
 PREDICTION_MODE=""
+SLICE_MODE="combined"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -27,6 +29,7 @@ while [[ $# -gt 0 ]]; do
     --output)      OUTPUT_DIR="$2"; shift 2;;
     --member)      MEMBER_SIG="$2"; shift 2;;
     --decompiler)  DECOMPILER_JAR="$2"; shift 2;;
+    --slice-mode)  SLICE_MODE="$2"; shift 2;;
     --prediction-mode) PREDICTION_MODE="--prediction-mode"; shift 1;;
     *) echo "[soot_slicer] Unknown arg: $1"; shift 1;;
   esac
@@ -67,7 +70,10 @@ if [[ -n "$PREDICTION_MODE" ]]; then
   CMD+=("$PREDICTION_MODE")
 fi
 
+CMD+=("--slice-mode" "$SLICE_MODE")
+
 echo "[soot_slicer] Running: ${CMD[*]}"
+echo "[soot_slicer] Slice mode: $SLICE_MODE"
 
 # Execute the SootSlicer
 if "${CMD[@]}"; then

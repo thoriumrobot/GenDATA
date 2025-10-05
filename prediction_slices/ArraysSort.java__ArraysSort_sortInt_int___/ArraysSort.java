@@ -1,5 +1,3 @@
-    @GTENegativeOne
-    @Positive
 import java.util.Arrays;
 import org.checkerframework.common.value.qual.MinLen;
 

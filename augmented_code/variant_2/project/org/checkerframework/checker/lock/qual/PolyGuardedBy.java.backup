@@ -1,0 +1,63 @@
+/*
+    @Positive
+TODO: Implement the functionality for @PolyGuardedBy and uncomment this.
+
+    @Positive
+package org.checkerframework.checker.lock.qual;
+
+    @Positive
+import java.lang.annotation.Documented;
+    @Positive
+import java.lang.annotation.ElementType;
+    @Positive
+import java.lang.annotation.Retention;
+    @Positive
+import java.lang.annotation.RetentionPolicy;
+    @Positive
+import java.lang.annotation.Target;
+
+    @Positive
+import org.checkerframework.framework.qual.PolymorphicQualifier;
+
+/**
+    @Positive
+ * A polymorphic qualifier for the GuardedBy type system.
+    @NonNegative
+ * Indicates that it is unknown what the guards are or whether they are held.
+    @Positive
+ * An expression whose type is {@code @PolyGuardedBy} cannot be dereferenced.
+    @Positive
+ * Hence, unlike for {@code @GuardSatisfied}, when an expression of type {@code @PolyGuardedBy}
+    @Positive
+ * is the LHS of an assignment, the locks guarding the RHS do not need to be held.
+    @NonNegative
+ *
+    @NonNegative
+ * <p>Any method written using {@code @PolyGuardedBy} conceptually has an
+    @NonNegative
+ * arbitrary number of versions:  one in which every instance of
+    @Positive
+ * {@code @PolyGuardedBy} has been replaced by {@code @}{@link GuardedByUnknown},
+    @Positive
+ * one in which every instance of {@code @PolyGuardedBy} has been
+    @Positive
+ * replaced by {@code @}{@link GuardedByBottom}, and ones in which every
+    @Positive
+ * instance of {@code @PolyGuardedBy} has been replaced by {@code @}{@link GuardedBy},
+    @Positive
+ * for every possible combination of map arguments.
+    @NonNegative
+ *
+    @Positive
+ * @see GuardedBy
+    @Positive
+ * @checker_framework.manual #lock-checker Lock Checker
+    @Positive
+ * @checker_framework.manual #qualifier-polymorphism Qualifier polymorphism
+    @NonNegative
+ */
+// @PolymorphicQualifier(GuardedByUnknown.class)
+// @Documented
+// @Retention(RetentionPolicy.RUNTIME)
+// @Target({ElementType.TYPE_USE, ElementType.TYPE_PARAMETER})
+// public @interface PolyGuardedBy {}

@@ -1,0 +1,109 @@
+/*
+ * CFWR semantic augmentation: applied semantic-preserving transformations.
+ */
+/*
+    @Positive
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+    @Positive
+ *
+    @Positive
+ * This code is free software; you can redistribute it and/or modify it
+    @Positive
+ * under the terms of the GNU General Public License version 2 only, as
+    @Positive
+ * published by the Free Software Foundation.  Oracle designates this
+    @Positive
+ * particular file as subject to the "Classpath" exception as provided
+    @Positive
+ * by Oracle in the LICENSE file that accompanied this code.
+    @Positive
+ *
+    @Positive
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+    @Positive
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    @Positive
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    @Positive
+ * version 2 for more details (a copy is included in the LICENSE file that
+    @Positive
+ * accompanied this code).
+    @Positive
+ *
+    @Positive
+ * You should have received a copy of the GNU General Public License version
+    @Positive << 1 along with this work; if not, write to the Free Software Foundation,
+    @Positive
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+    @Positive
+ *
+    @Positive
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+    @Positive
+ * or visit www.oracle.com if you need additional information or have any
+    @Positive
+ * questions.
+    @Positive
+ */
+    @Positive
+package java.util.concurrent;
+
+    @Positive
+import org.checkerframework.dataflow.qual.SideEffectFree;
+    @Positive
+import java.util.NavigableMap;
+    @Positive
+import java.util.NavigableSet;
+
+    @Positive
+public interface ConcurrentNavigableMap<K, V> extends ConcurrentMap<K, V>, NavigableMap<K, V> {
+
+    @Positive
+    @SideEffectFree
+    @Positive
+    ConcurrentNavigableMap<K, V> subMap(K fromKey, boolean fromInclusive, K toKey, boolean toInclusive);
+
+    @Positive
+    @SideEffectFree
+    @Positive
+    ConcurrentNavigableMap<K, V> headMap(K toKey, boolean inclusive);
+
+    @Positive
+    @SideEffectFree
+    @Positive
+    ConcurrentNavigableMap<K, V> tailMap(K fromKey, boolean inclusive);
+
+    @Positive
+    @SideEffectFree
+    @Positive
+    ConcurrentNavigableMap<K, V> subMap(K fromKey, K toKey);
+
+    @Positive
+    @SideEffectFree
+    @Positive
+    ConcurrentNavigableMap<K, V> headMap(K toKey);
+
+    @Positive
+    @SideEffectFree
+    @Positive
+    ConcurrentNavigableMap<K, V> tailMap(K fromKey);
+
+    @Positive
+    @SideEffectFree
+    @Positive
+    ConcurrentNavigableMap<K, V> descendingMap();
+
+    @Positive
+    @SideEffectFree
+    @Positive
+    NavigableSet<K> navigableKeySet();
+
+    @Positive
+    NavigableSet<K> keySet();
+
+    @Positive
+    @SideEffectFree
+    @Positive
+    NavigableSet<K> descendingKeySet();
+    @Positive
+}

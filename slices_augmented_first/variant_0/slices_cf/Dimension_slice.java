@@ -1,0 +1,21 @@
+/*
+    @Positive
+ * Copyright (c) 1995, 2021, Oracle and/or its affiliates. All rights reserved.
+    @Positive
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+    @Positive
+ *
+    @Positive
+ * This code is free software; you can redistribute it and/or modify it
+    @Positive
+ * under the terms of the GNU General Public License version 2 only, as
+    @Positive
+ * published by the Free Software Foundation.  Oracle designates this
+    @Positive
+ * particular file as subject to the "Classpath" exception as provided
+    @Positive
+ * by Oracle in the LICENSE file that accompanied this code.
+    @Positive
+ *
+    @Positive
+ * This code is distributed in the hope that it will be useful, but WITHOUT

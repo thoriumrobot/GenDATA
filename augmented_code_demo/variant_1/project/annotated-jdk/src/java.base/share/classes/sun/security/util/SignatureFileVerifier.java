@@ -1,0 +1,160 @@
+/*
+    @Positive
+ * Copyright (c) 1997, 2020, Oracle and/or its affiliates. All rights reserved.
+    @Positive
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+    @Positive
+ *
+    @Positive
+ * This code is free software; you can redistribute it and/or modify it
+    @Positive
+ * under the terms of the GNU General Public License version 2 only, as
+    @Positive
+ * published by the Free Software Foundation.  Oracle designates this
+    @Positive
+ * particular file as subject to the "Classpath" exception as provided
+    @Positive
+ * by Oracle in the LICENSE file that accompanied this code.
+    @Positive
+ *
+    @Positive
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+    @Positive
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    @Positive
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    @Positive
+ * version 2 for more details (a copy is included in the LICENSE file that
+    @Positive
+ * accompanied this code).
+    @Positive
+ *
+    @Positive
+ * You should have received a copy of the GNU General Public License version
+    @Positive
+ * 2 along with this work; if not, write to the Free Software Foundation,
+    @Positive
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+    @Positive
+ *
+    @Positive
+ * Please contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+    @Positive
+ * or visit www.oracle.com if you need additional information or have any
+    @Positive
+ * questions.
+    @Positive
+ */
+    @Positive
+package sun.security.util;
+
+    @Positive
+import org.checkerframework.dataflow.qual.Pure;
+    @Positive
+import java.io.ByteArrayInputStream;
+    @Positive
+import java.io.IOException;
+    @Positive
+import java.security.CodeSigner;
+    @Positive
+import java.security.GeneralSecurityException;
+    @Positive
+import java.security.MessageDigest;
+    @Positive
+import java.security.NoSuchAlgorithmException;
+    @Positive
+import java.security.PrivateKey;
+    @Positive
+import java.security.SignatureException;
+    @Positive
+import java.security.cert.CertPath;
+    @Positive
+import java.security.cert.X509Certificate;
+    @Positive
+import java.security.cert.CertificateException;
+    @Positive
+import java.security.cert.CertificateFactory;
+    @Positive
+import java.util.ArrayList;
+    @Positive
+import java.util.Base64;
+    @Positive
+import java.util.HashMap;
+    @Positive
+import java.util.Hashtable;
+    @Positive
+import java.util.HexFormat;
+    @Positive
+import java.util.Iterator;
+    @Positive
+import java.util.List;
+    @Positive
+import java.util.Locale;
+    @Positive
+import java.util.Map;
+    @Positive
+import java.util.Set;
+    @Positive
+import java.util.jar.Attributes;
+    @Positive
+import java.util.jar.JarException;
+    @Positive
+import java.util.jar.JarFile;
+    @Positive
+import java.util.jar.Manifest;
+    @Positive
+import sun.security.jca.Providers;
+    @Positive
+import sun.security.pkcs.PKCS7;
+    @Positive
+import sun.security.pkcs.SignerInfo;
+
+    @Positive
+public class SignatureFileVerifier {
+
+    @Positive
+    public SignatureFileVerifier(ArrayList<CodeSigner[]> signerCache, ManifestDigester md, String name, byte[] rawBytes) throws IOException, CertificateException {
+    @Positive
+    }
+
+    @Positive
+    public boolean needSignatureFileBytes();
+
+    @Positive
+    public boolean needSignatureFile(String name);
+
+    @Positive
+    public void setSignatureFile(byte[] sfBytes);
+
+    @Positive
+    public static boolean isBlockOrSF(String s);
+
+    @Positive
+    public static String getBlockExtension(PrivateKey key);
+
+    @Positive
+    public static boolean isSigningRelated(String name);
+
+    @Positive
+    public void process(Hashtable<String, CodeSigner[]> signers, List<Object> manifestDigests) throws IOException, SignatureException, NoSuchAlgorithmException, JarException, CertificateException;
+
+    @Positive
+    String getWeakAlgorithms(String header);
+
+    @Positive
+    @Pure
+    @Positive
+    static boolean contains(CodeSigner[] set, CodeSigner signer);
+
+    @Positive
+    static boolean isSubSet(CodeSigner[] subset, CodeSigner[] set);
+
+    @Positive
+    static boolean matches(CodeSigner[] signers, CodeSigner[] oldSigners, CodeSigner[] newSigners);
+
+    @Positive
+    void updateSigners(CodeSigner[] newSigners, Hashtable<String, CodeSigner[]> signers, String name);
+    @Positive
+}
+
+// CFWR semantic augmentation - variant 1

@@ -1,0 +1,29 @@
+    @Positive
+package com.google.errorprone.annotations;
+
+    @Positive
+import java.lang.annotation.Documented;
+    @Positive
+import java.lang.annotation.ElementType;
+    @Positive
+import java.lang.annotation.Retention;
+    @Positive
+import java.lang.annotation.RetentionPolicy;
+    @Positive
+import java.lang.annotation.Target;
+
+/**
+    @Positive
+ * Annotation for a method that takes a printf-style format string as an argument followed by
+    @Positive
+ * arguments for that format string.
+    @NonNegative
+ */
+    @Positive
+@Documented
+    @Positive
+@Retention(RetentionPolicy.RUNTIME)
+    @Positive
+@Target({ElementType.METHOD, ElementType.CONSTRUCTOR})
+    @Positive
+public @interface FormatMethod {}

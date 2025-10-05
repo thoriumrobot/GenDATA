@@ -334,37 +334,12 @@ class BinaryGCNTrainer:
         logger.info(f"CFWR root: {cfwr_root}")
         logger.info(f"Episodes: {num_episodes}")
         
-        # For now, use mock data since we're testing the RL framework
-        # In a real implementation, you would:
-        # 1. Run the pipeline to generate slices and CFGs
-        # 2. Load the generated CFG data
-        # 3. Use real Java files for annotation placement
+        # Load real CFG data from pipeline
+        cfg_data_list = self._load_cfg_data_from_pipeline(cfwr_root)
         
-        # Create mock CFG data for testing
-        mock_cfg_data = {
-            'nodes': [
-                {'id': 0, 'label': 'public void method()', 'node_type': 'method', 'line': 10},
-                {'id': 1, 'label': 'int variable = 5;', 'node_type': 'variable', 'line': 11},
-                {'id': 2, 'label': 'return variable;', 'node_type': 'control', 'line': 12}
-            ],
-            'control_edges': [
-                {'source': 0, 'target': 1},
-                {'source': 1, 'target': 2}
-            ],
-            'dataflow_edges': [
-                {'source': 1, 'target': 2}
-            ]
-        }
-        
-        # Create mock Java file
-        mock_java_file = os.path.join(cfwr_root, 'mock_test.java')
-        with open(mock_java_file, 'w') as f:
-            f.write("""public class MockTest {
-    public void method() {
-        int variable = 5;
-        return variable;
-    }
-}""")
+        if not cfg_data_list:
+            logger.error("No CFG data found from pipeline. Please run the pipeline first to generate CFG data.")
+            return
         
         # Training loop
         episode_rewards = []
@@ -373,11 +348,18 @@ class BinaryGCNTrainer:
         for episode in range(num_episodes):
             logger.info(f"Episode {episode + 1}/{num_episodes}")
             
-            # Get original warnings (simulate)
-            original_warnings = [f"warning_{i}" for i in range(random.randint(5, 20))]
-            
-            # Train episode
-            reward, predictions = self.train_episode(mock_cfg_data, original_warnings, mock_java_file)
+            # Use real CFG data from pipeline
+            for cfg_data in cfg_data_list:
+                # Extract Java file path from CFG data
+                java_file = cfg_data.get('java_file', '')
+                if not java_file or not os.path.exists(java_file):
+                    continue
+                
+                # Create warnings based on the Java file
+                original_warnings = [f"warning: {os.path.basename(java_file)}: variable might be null"]
+                
+                # Train episode
+                reward, predictions = self.train_episode(cfg_data, original_warnings, java_file)
             
             episode_rewards.append(reward)
             episode_predictions.append(len(predictions))
@@ -397,9 +379,7 @@ class BinaryGCNTrainer:
                 avg_predictions = np.mean(episode_predictions[-10:])
                 logger.info(f"Episode {episode + 1}: avg_reward={avg_reward:.3f}, avg_predictions={avg_predictions:.1f}")
         
-        # Clean up mock file
-        if os.path.exists(mock_java_file):
-            os.remove(mock_java_file)
+        # No cleanup needed for real data
         
         # Save model and training statistics
         self.save_model('models/binary_rl_gcn_model.pth')
@@ -408,6 +388,37 @@ class BinaryGCNTrainer:
         logger.info("Binary RL training completed")
         return self.training_stats
     
+    def _load_cfg_data_from_pipeline(self, cfwr_root):
+        """Load real CFG data from pipeline output"""
+        cfg_data_list = []
+        
+        # Look for CFG output directories
+        cfg_dirs = [
+            os.path.join(cfwr_root, 'cfg_output'),
+            os.path.join(cfwr_root, 'cfg_output_augmented_first'),
+            os.path.join(cfwr_root, 'cfg_output_prediction')
+        ]
+        
+        for cfg_dir in cfg_dirs:
+            if os.path.exists(cfg_dir):
+                for root, dirs, files in os.walk(cfg_dir):
+                    for file in files:
+                        if file.endswith('_cfg.json'):
+                            cfg_file = os.path.join(root, file)
+                            try:
+                                with open(cfg_file, 'r') as f:
+                                    cfg_data = json.load(f)
+                                    # Add Java file path if available
+                                    java_file = cfg_file.replace('_cfg.json', '.java')
+                                    if os.path.exists(java_file):
+                                        cfg_data['java_file'] = java_file
+                                    cfg_data_list.append(cfg_data)
+                            except Exception as e:
+                                logger.warning(f"Failed to load CFG file {cfg_file}: {e}")
+        
+        logger.info(f"Loaded {len(cfg_data_list)} CFG data files from pipeline")
+        return cfg_data_list
+
     def _train_from_experience(self, batch_size):
         """Train model using experience replay"""
         if len(self.experience_buffer) < batch_size:
@@ -515,23 +526,18 @@ def main():
         from prediction_saver import PredictionSaver
         saver = PredictionSaver(args.predictions_output_dir)
         
-        # Generate predictions on the mock data used for training
-        mock_cfg_data = {
-            'nodes': [
-                {'id': 0, 'label': 'public void method()', 'node_type': 'method', 'line': 10},
-                {'id': 1, 'label': 'int variable = 5;', 'node_type': 'variable', 'line': 11},
-                {'id': 2, 'label': 'return variable;', 'node_type': 'control', 'line': 12}
-            ],
-            'control_edges': [
-                {'source': 0, 'target': 1},
-                {'source': 1, 'target': 2}
-            ],
-            'dataflow_edges': [
-                {'source': 1, 'target': 2}
-            ]
-        }
+        # Load real CFG data for prediction
+        cfg_data_list = trainer._load_cfg_data_from_pipeline('/home/ubuntu/GenDATA')
         
-        predictions = trainer.predict_binary_annotations(mock_cfg_data)
+        if not cfg_data_list:
+            logger.error("No CFG data found for prediction. Please run the pipeline first.")
+            return
+        
+        # Generate predictions on real data
+        predictions = []
+        for cfg_data in cfg_data_list[:5]:  # Limit to first 5 for demo
+            pred = trainer.predict_binary_annotations(cfg_data)
+            predictions.extend(pred)
         metadata = {
             'model_type': 'GCN',
             'hyperparameters': {

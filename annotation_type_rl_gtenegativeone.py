@@ -254,21 +254,9 @@ class AnnotationTypeTrainer:
         return cfg_data_list
     
     def _create_mock_cfg_data(self):
-        """Create mock CFG data for training"""
-        return {
-            'nodes': [
-                {'id': 0, 'label': 'public void method()', 'node_type': 'method', 'line': 10},
-                {'id': 1, 'label': 'int capacity = 100;', 'node_type': 'variable', 'line': 11},
-                {'id': 2, 'label': 'int limit = 50;', 'node_type': 'variable', 'line': 12},
-                {'id': 3, 'label': 'int bound = 25;', 'node_type': 'variable', 'line': 13}
-            ],
-            'control_edges': [
-                {'source': 0, 'target': 1},
-                {'source': 1, 'target': 2},
-                {'source': 2, 'target': 3}
-            ],
-            'dataflow_edges': []
-        }
+        """Deprecated: mock CFG data generation (removed - use real pipeline data)"""
+        logger.warning("Mock CFG data generation is deprecated. Use real pipeline data instead.")
+        return {'nodes': [], 'edges': []}
     
     def train(self, project_root, warnings_file, cfwr_root, num_episodes=50, slices_dir=None, cfg_dir=None, use_real_cfg_data=True):
         """Train the annotation type model"""
@@ -286,11 +274,11 @@ class AnnotationTypeTrainer:
             if cfg_data_list:
                 logger.info(f"Loaded {len(cfg_data_list)} CFG files for training")
             else:
-                logger.warning("No CFG data found, falling back to mock data")
-                cfg_data_list = [self._create_mock_cfg_data()]
+                logger.error("No CFG data found from pipeline. Please run the pipeline first to generate CFG data.")
+                return
         else:
-            logger.info("Using mock CFG data for training")
-            cfg_data_list = [self._create_mock_cfg_data()]
+            logger.error("No CFG data found from pipeline. Please run the pipeline first to generate CFG data.")
+            return
         
         # Training loop
         episode_rewards = []

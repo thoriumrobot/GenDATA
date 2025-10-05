@@ -146,29 +146,50 @@ class AnnotationTypePipeline:
             return False
     
     def _augment_slices(self, augmentation_factor):
-        """Augment slices by the specified factor"""
+        """Augment slices using semantic-preserving transformations"""
         try:
-            # Use the existing augmentation system
-            from augment_slices import augment_directory
+            # Use the new semantic augmentation system
+            from semantic_augment_slices import SemanticTransformer, iter_java_files
             
-            logger.info(f"Augmenting slices by factor {augmentation_factor}")
-            augment_directory(self.slices_dir, self.augmented_slices_dir, augmentation_factor)
+            logger.info(f"Augmenting slices using semantic transformations (factor: {augmentation_factor})")
+            
+            transformer = SemanticTransformer(seed=42)
+            augmented_count = 0
+            
+            # Process each Java file
+            for java_file in iter_java_files(self.slices_dir):
+                # Create output directory maintaining structure
+                rel_path = os.path.relpath(java_file, self.slices_dir)
+                base_name = os.path.splitext(rel_path)[0]
+                
+                # Generate variants
+                for variant_idx in range(augmentation_factor):
+                    variant_dir = os.path.join(self.augmented_slices_dir, f"{base_name}__semantic_aug{variant_idx}")
+                    os.makedirs(variant_dir, exist_ok=True)
+                    output_path = os.path.join(variant_dir, os.path.basename(rel_path))
+                    
+                    # Apply semantic transformations
+                    augmented_content = transformer.transform_file(java_file, variant_idx)
+                    with open(output_path, 'w') as f:
+                        f.write(augmented_content)
+                    augmented_count += 1
             
             # Verify augmentation
             original_files = len(glob.glob(os.path.join(self.slices_dir, '**/*.java'), recursive=True))
             augmented_files = len(glob.glob(os.path.join(self.augmented_slices_dir, '**/*.java'), recursive=True))
             
             logger.info(f"Original files: {original_files}, Augmented files: {augmented_files}")
+            logger.info(f"Generated {augmented_count} semantically augmented files")
             
             if augmented_files >= original_files * augmentation_factor:
-                logger.info("Slice augmentation completed successfully")
+                logger.info("Semantic slice augmentation completed successfully")
                 return True
             else:
                 logger.warning(f"Augmentation may be incomplete: expected ~{original_files * augmentation_factor}, got {augmented_files}")
                 return True  # Still proceed
                 
         except Exception as e:
-            logger.error(f"Error augmenting slices: {e}")
+            logger.error(f"Error augmenting slices with semantic transformations: {e}")
             return False
     
     def _generate_cfgs_with_cfg_builder(self):

@@ -1,7 +1,3 @@
-    @GTENegativeOne
-    @NonNegative
-    @GTENegativeOne
-    @Positive
 import org.checkerframework.checker.index.qual.*;
 import org.checkerframework.common.value.qual.*;
 

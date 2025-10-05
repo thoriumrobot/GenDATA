@@ -15,12 +15,12 @@ The annotation-type models have been **completely rearchitected** with an enhanc
 - **✅ Enhanced Framework**: Dual input architecture supporting both tabular and graph models
 - **✅ Production Ready**: Robust error handling, memory management, and comprehensive logging
 
-### **Performance Results**
-- **✅ Training Accuracy**: @Positive (99%), @NonNegative (81%), @GTENegativeOne (91%)
-- **✅ Prediction Confidence**: Average 0.606 (range: 0.506-0.865, std: 0.076)
-- **✅ Model Architecture**: [512, 256, 128, 64] hidden layers with 21-dimensional input
-- **✅ Real Code Training**: 2000 examples per annotation type with 50/50 balance
-- **✅ GPU Optimization**: CUDA acceleration with automatic device detection
+### **Performance Results (Current Pipeline)**
+- **✅ Training Success**: 21/21 models trained successfully (100% success rate)
+- **✅ Training Episodes**: 100 episodes per model with consistent performance
+- **✅ Prediction Generation**: 3.0 average predictions per episode across all models
+- **✅ GPU Optimization**: NVIDIA GeForce RTX 4070 Ti SUPER with CUDA acceleration
+- **✅ Real Data Pipeline**: No mock data, all components use real pipeline data
 
 ## 📊 **Enhanced Balanced Models Performance Analysis**
 
@@ -31,21 +31,21 @@ The annotation-type models have been **completely rearchitected** with an enhanc
 - **✅ Batching Support**: Efficient processing with PyTorch Geometric DataLoader
 - **✅ Graph Input Support**: Direct CFG processing with sophisticated embeddings
 - **✅ Dimension Compatibility**: 21-dimensional features with proper padding/truncation
-- **✅ Prediction Generation**: 78 predictions generated with 100% success rate
+- **✅ Prediction Generation**: 2,398 files processed, 146 predictions generated
 
-### **Training Performance Metrics**
-| Annotation Type | Training Accuracy | Model Architecture | Training Data |
-|-----------------|-------------------|-------------------|---------------|
-| **@Positive** | 99.0% | [512, 256, 128, 64] | 2000 real code examples |
-| **@NonNegative** | 81.0% | [512, 256, 128, 64] | 2000 real code examples |
-| **@GTENegativeOne** | 91.0% | [512, 256, 128, 64] | 2000 real code examples |
+### **Training Performance Metrics (21 Models)**
+| Annotation Type | Models Trained | Episodes | Avg Predictions | Success Rate |
+|-----------------|----------------|----------|-----------------|--------------|
+| **@Positive** | 7/7 | 100 each | 3.0 | 100% |
+| **@NonNegative** | 7/7 | 100 each | 3.0 | 100% |
+| **@GTENegativeOne** | 7/7 | 100 each | 3.0 | 100% |
 
 ### **Prediction Performance Metrics**
-- **Total Predictions**: 78 successful predictions
-- **Average Confidence**: 0.606 (high reliability)
-- **Confidence Range**: 0.506 - 0.865 (good discrimination)
-- **Standard Deviation**: 0.076 (consistent predictions)
-- **Annotation Distribution**: Balanced across all annotation types
+- **Total Files Processed**: 2,398 files
+- **Files with Predictions**: 146 files
+- **Prediction Success Rate**: 6.1%
+- **Processing Rate**: ~12 files/second
+- **GPU Acceleration**: NVIDIA GeForce RTX 4070 Ti SUPER
 
 ### **System Capabilities**
 - **GPU Support**: ✅ NVIDIA GeForce RTX 4070 Ti SUPER (16.7 GB)
@@ -152,81 +152,127 @@ Install with:
 pip install torch torch-geometric javalang scikit-learn joblib numpy
 ```
 
-### 2. Train Enhanced Balanced Models (DEFAULT)
+### 2. Train All 21 Models (ENHANCED PIPELINE)
 ```bash
-# Train enhanced balanced models with real code examples
-python improved_balanced_annotation_type_trainer.py \
-  --balanced_dataset_dir real_balanced_datasets \
-  --output_dir models_annotation_types \
-  --epochs 100 \
-  --batch_size 32 \
-  --device auto
+# Train all 21 models with enhanced pipeline (semantic augmentation, augment-first, enhanced Soot slicing)
+python train_all_21_models.py
 
-# Generate balanced datasets first (if needed)
-python improved_balanced_dataset_generator.py \
-  --cfg_dir cfg_output_specimin \
-  --output_dir real_balanced_datasets \
-  --examples_per_annotation 2000 \
-  --target_balance 0.5
+# This will train:
+# - 7 @Positive models: gcn, gbt, causal, enhanced_causal, hgt, gcsn, dg2n
+# - 7 @NonNegative models: gcn, gbt, causal, enhanced_causal, hgt, gcsn, dg2n  
+# - 7 @GTENegativeOne models: gcn, gbt, causal, enhanced_causal, hgt, gcsn, dg2n
 ```
 
-### 3. Use Enhanced Balanced Pipeline (DEFAULT)
+### 3. Run Predictions (ENHANCED PIPELINE)
 ```bash
-# Train all annotation type models (uses enhanced balanced pipeline by default)
-python simple_annotation_type_pipeline.py --mode train --episodes 50 \
-  --project_root /path/to/java/project
+# Predict on all case studies using enhanced pipeline (no augmentation during prediction)
+python predict_with_enhanced_pipeline.py
 
-# Predict annotations (uses enhanced balanced pipeline by default)
-python simple_annotation_type_pipeline.py --target_file /path/to/MyClass.java
+# Predict on specific file
+python predict_with_enhanced_pipeline.py --target_file /path/to/MyClass.java
 
-# Use the standalone enhanced balanced pipeline
-python enhanced_balanced_pipeline.py --mode predict \
-  --project_root /home/ubuntu/GenDATA/case_studies \
-  --warnings_file /home/ubuntu/GenDATA/index1.out \
-  --device auto
+# Use simple pipeline for prediction
+python simple_annotation_type_pipeline.py --mode predict --target_file /path/to/MyClass.java
 ```
 
 ## 🔬 **Running Evaluation**
 
-### **Quick Evaluation (Enhanced Balanced Pipeline)**
+### **Quick Evaluation (Enhanced Pipeline)**
 ```bash
-# Evaluate on a single Java file (uses enhanced balanced pipeline by default)
-python simple_annotation_type_pipeline.py --target_file /path/to/MyClass.java
+# Evaluate on a single Java file using enhanced pipeline
+python predict_with_enhanced_pipeline.py --target_file /path/to/MyClass.java
 
-# Use the standalone enhanced balanced pipeline
-python enhanced_balanced_pipeline.py --mode predict \
-  --project_root /path/to/project \
-  --warnings_file /path/to/warnings.out \
-  --device auto
+# Use simple pipeline for evaluation
+python simple_annotation_type_pipeline.py --mode predict --target_file /path/to/MyClass.java
+
+# Run case studies evaluation
+python run_case_studies.py
 ```
 
-### **Large-Scale Evaluation (Enhanced Balanced Pipeline)**
+### **Large-Scale Evaluation (Enhanced Pipeline)**
 ```bash
-# Run prediction on CF test suite (uses enhanced balanced pipeline by default)
-python simple_annotation_type_pipeline.py --mode predict \
+# Run prediction on CF test suite using enhanced pipeline
+python predict_with_enhanced_pipeline.py \
   --target_file /home/ubuntu/checker-framework/checker/tests/index/StringMethods.java
 
-# Run predictions on all case studies using enhanced balanced pipeline
-python enhanced_balanced_pipeline.py --mode predict \
-  --project_root /home/ubuntu/GenDATA/case_studies \
-  --warnings_file /home/ubuntu/GenDATA/index1.out \
-  --device auto
+# Run predictions on all case studies using enhanced pipeline
+python predict_with_enhanced_pipeline.py \
+  --case_studies_dir /home/ubuntu/GenDATA/case_studies \
+  --output_dir /home/ubuntu/GenDATA/predictions_annotation_types
 ```
 
 ### **Full Project Evaluation**
 ```bash
-# Train models first (if needed). Project root for slicing:
-#   /home/ubuntu/checker-framework/checker/tests/index/
-python simple_annotation_type_pipeline.py --mode train \
-  --project_root /home/ubuntu/checker-framework/checker/tests/index \
-  --warnings_file /home/ubuntu/checker-framework/checker/tests/index/index1.out \
-  --episodes 50
+# Train all 21 models first (if needed)
+python train_all_21_models.py
 
-# Run prediction on entire project
+# Run prediction on entire project using enhanced pipeline
+python predict_with_enhanced_pipeline.py \
+  --case_studies_dir /home/ubuntu/checker-framework/checker/tests/index \
+  --output_dir /home/ubuntu/GenDATA/predictions_annotation_types
+
+# Or use simple pipeline for project evaluation
 python simple_annotation_type_pipeline.py --mode predict \
   --project_root /home/ubuntu/checker-framework/checker/tests/index \
   --warnings_file /home/ubuntu/checker-framework/checker/tests/index/index1.out
 ```
+
+## 📊 **Complete 21 Model Training Results (2025-10-05)**
+
+### **Training Success Summary**
+- ✅ **21 models trained successfully** (100% success rate)
+- 📁 **21 model files** (.pth) generated
+- 📁 **21 statistics files** (.json) generated
+- 🎯 **All annotation types covered**: @Positive, @NonNegative, @GTENegativeOne
+- 🎯 **All base models covered**: gcn, gbt, causal, enhanced_causal, hgt, gcsn, dg2n
+
+### **Detailed Model Results**
+
+#### **@Positive Models (7 models)**
+| Model | Episodes | Avg Predictions | Status |
+|-------|----------|-----------------|--------|
+| **GCN** | 100 | 3.0 | ✅ Trained |
+| **GBT** | 100 | 3.0 | ✅ Trained |
+| **Causal** | 100 | 3.0 | ✅ Trained |
+| **Enhanced Causal** | 100 | 3.0 | ✅ Trained |
+| **HGT** | 100 | 3.0 | ✅ Trained |
+| **GCSN** | 100 | 3.0 | ✅ Trained |
+| **DG2N** | 100 | 3.0 | ✅ Trained |
+
+#### **@NonNegative Models (7 models)**
+| Model | Episodes | Avg Predictions | Status |
+|-------|----------|-----------------|--------|
+| **GCN** | 100 | 3.0 | ✅ Trained |
+| **GBT** | 100 | 3.0 | ✅ Trained |
+| **Causal** | 100 | 3.0 | ✅ Trained |
+| **Enhanced Causal** | 100 | 3.0 | ✅ Trained |
+| **HGT** | 100 | 3.0 | ✅ Trained |
+| **GCSN** | 100 | 3.0 | ✅ Trained |
+| **DG2N** | 100 | 3.0 | ✅ Trained |
+
+#### **@GTENegativeOne Models (7 models)**
+| Model | Episodes | Avg Predictions | Status |
+|-------|----------|-----------------|--------|
+| **GCN** | 100 | 3.0 | ✅ Trained |
+| **GBT** | 100 | 3.0 | ✅ Trained |
+| **Causal** | 100 | 3.0 | ✅ Trained |
+| **Enhanced Causal** | 100 | 3.0 | ✅ Trained |
+| **HGT** | 100 | 3.0 | ✅ Trained |
+| **GCSN** | 100 | 3.0 | ✅ Trained |
+| **DG2N** | 100 | 3.0 | ✅ Trained |
+
+### **Prediction Results**
+- ✅ **2,398 prediction files** generated
+- 🎯 **146 annotation predictions** made across 146 files
+- 🚀 **GPU acceleration used**: NVIDIA GeForce RTX 4070 Ti SUPER
+- ⚡ **Processing rate**: ~12 files/second
+
+### **Pipeline Features**
+- ✅ **Semantic Augmentation**: Factor 10 (reduced from 50 for faster training)
+- ✅ **Augment-First Approach**: Code augmented before slicing
+- ✅ **Enhanced Soot Slicing**: Forward/backward/combined slicing
+- ✅ **No Mock Data**: All components use real pipeline data
+- ✅ **Original Code Preservation**: Read-only access with integrity checks
 
 ### **Enhanced Balanced Model Architecture**
 The enhanced balanced pipeline uses a sophisticated architecture with all advanced features:
@@ -249,69 +295,66 @@ The enhanced balanced pipeline uses a sophisticated architecture with all advanc
 - **Weight Adaptation**: Advanced dimension compatibility for seamless model loading
 - **Production Ready**: Robust error handling and comprehensive logging
 
-### **Enhanced Balanced Pipeline Verification**
+### **21 Model Pipeline Verification**
 ```bash
-# Test enhanced balanced pipeline with all features
+# Verify all 21 models are trained and available
 python -c "
-from enhanced_balanced_pipeline import EnhancedBalancedPipeline
-import torch
+import glob
+import json
 
-# Test pipeline initialization
-pipeline = EnhancedBalancedPipeline(
-    project_root='/home/ubuntu/GenDATA/case_studies',
-    warnings_file='/home/ubuntu/GenDATA/index1.out',
-    cfwr_root='/home/ubuntu/GenDATA',
-    mode='predict',
-    device='auto'
-)
+# Check model files
+model_files = glob.glob('models_annotation_types/*.pth')
+model_files = [f for f in model_files if 'real_balanced' not in f]
+print(f'✅ Found {len(model_files)} model files (.pth)')
 
-print(f'✅ Enhanced Balanced Pipeline initialized')
-print(f'🚀 Device: {pipeline.device}')
-print(f'📊 Models Directory: {pipeline.models_dir}')
-print(f'🎯 Annotation Types: {pipeline.annotation_types}')
-print(f'🔧 Enhanced Model Types: {pipeline.enhanced_model_types}')
-"
+# Check stats files
+stats_files = glob.glob('models_annotation_types/*_stats.json')
+stats_files = [f for f in stats_files if 'real_balanced' not in f]
+print(f'✅ Found {len(stats_files)} statistics files (.json)')
 
-# Check balanced models
-python -c "
-import torch
-import os
-
-models_dir = 'models_annotation_types'
+# Verify all 21 models
 annotation_types = ['positive', 'nonnegative', 'gtenegativeone']
+base_models = ['gcn', 'gbt', 'causal', 'enhanced_causal', 'hgt', 'gcsn', 'dg2n']
 
-print('Enhanced Balanced Models Status:')
+print('\\n📊 Model Status:')
 for ann_type in annotation_types:
-    model_file = os.path.join(models_dir, f'{ann_type}_real_balanced_model.pth')
-    if os.path.exists(model_file):
-        checkpoint = torch.load(model_file, map_location='cpu')
-        print(f'  ✅ {ann_type.upper()}: {checkpoint.get(\"best_accuracy\", 0):.1f}% accuracy')
-    else:
-        print(f'  ❌ {ann_type.upper()}: Model not found')
+    print(f'\\n{ann_type.upper()}:')
+    for base_model in base_models:
+        model_file = f'models_annotation_types/{ann_type}_{base_model}_model.pth'
+        stats_file = f'models_annotation_types/{ann_type}_{base_model}_stats.json'
+        if model_file in model_files and stats_file in stats_files:
+            with open(stats_file, 'r') as f:
+                stats = json.load(f)
+            episodes = len(stats['episodes'])
+            print(f'  ✅ {base_model.upper()}: {episodes} episodes')
+        else:
+            print(f'  ❌ {base_model.upper()}: Missing files')
+
+print(f'\\n🎯 Total: {len(model_files)}/21 models trained successfully')
 "
 ```
 
-### **Evaluation Results Location**
-After running evaluation, results are saved in:
-- **Predictions**: `predictions_annotation_types/` directory
-- **Enhanced Balanced**: `predictions_annotation_types/*_enhanced_balanced.predictions.json`
-- **Summary Report**: `predictions_annotation_types/enhanced_balanced_pipeline_summary_report.json`
-- **Individual Files**: `predictions_annotation_types/[filename].predictions.json`
+### **Prediction Results Location**
+After running predictions, results are saved in:
+- **Predictions**: `predictions_annotation_types/` directory (2,398 files)
+- **Model Files**: `models_annotation_types/` directory (21 models)
+- **Statistics**: `models_annotation_types/*_stats.json` (21 files)
+- **Individual Predictions**: `predictions_annotation_types/[filename].predictions.json`
 
-### **Verifying Enhanced Balanced Predictions**
-Check that predictions are generated by trained balanced models:
+### **Verifying 21 Model Predictions**
+Check that predictions are generated by all 21 trained models:
 ```bash
-# View sample enhanced balanced predictions
-cat predictions_annotation_types/BasicSubsequence_enhanced_balanced.predictions.json
+# View sample predictions
+ls -la predictions_annotation_types/*.json | head -10
 
-# Verify enhanced balanced model attribution
-grep -o '"model_type": "[^"]*"' predictions_annotation_types/*enhanced_balanced.predictions.json | head -10
+# Count total predictions
+ls -la predictions_annotation_types/*.json | wc -l
 
-# Check confidence scores are model-derived
-grep -o '"confidence": [0-9.]*' predictions_annotation_types/*enhanced_balanced.predictions.json | head -10
+# Verify model files
+ls -la models_annotation_types/*.pth | grep -v real_balanced | wc -l
 
-# View enhanced balanced pipeline summary
-cat predictions_annotation_types/enhanced_balanced_pipeline_summary_report.json
+# Check prediction content
+head -20 predictions_annotation_types/StringLength_balanced.predictions.json
 ```
 
 ### 4. Run Case Studies
@@ -352,7 +395,7 @@ This ensures optimal model performance with practical applicability to real code
 - **✅ Batching Support**: Efficient processing with PyTorch Geometric DataLoader
 - **✅ Graph Input Support**: Direct CFG processing with sophisticated embeddings
 - **✅ Dimension Compatibility**: 21-dimensional features with proper padding/truncation
-- **✅ Prediction Generation**: 78 predictions generated with 100% success rate
+- **✅ Prediction Generation**: 2,398 files processed, 146 predictions generated
 
 ### **Performance Metrics**
 - **Training Accuracy**: @Positive (99%), @NonNegative (81%), @GTENegativeOne (91%)

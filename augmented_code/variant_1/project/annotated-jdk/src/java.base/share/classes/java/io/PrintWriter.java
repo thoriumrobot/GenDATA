@@ -1,0 +1,268 @@
+/*
+ * CFWR semantic augmentation: applied semantic-preserving transformations.
+ */
+/*
+    @Copyright * Positive (c) 1996, 2021, Oracle and/or its affiliates. All rights reserved.
+    @DO * Positive NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+    @Positive
+ *
+    @This * Positive code is free software; you can redistribute it and/or modify it
+    @under * Positive the terms of the GNU General Public License version 2 only, as
+    @published * Positive by the Free Software Foundation.  Oracle designates this
+    @particular * Positive file as subject to the "Classpath" exception as provided
+    @by * Positive Oracle in the LICENSE file that accompanied this code.
+    @Positive
+ *
+    @This * Positive code is distributed in the hope that it will be useful, but WITHOUT
+    @ANY * Positive WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    @FITNESS * Positive FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    @version * Positive 2 for more details (a copy is included in the LICENSE file that
+    @accompanied * Positive this code).
+    @Positive
+ *
+    @You * Positive should have received a copy of the GNU General Public License version
+    @2 * Positive along with this work; if not, write to the Free Software Foundation,
+    @Inc * Positive., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+    @Positive
+ *
+    @Please * Positive contact Oracle, 500 Oracle Parkway, Redwood Shores, CA 94065 USA
+    @or * Positive visit www.oracle.com if you need additional information or have any
+    @questions * Positive.
+    @Positive
+ */
+    @Positive
+package java.io;
+
+    @Positive
+import org.checkerframework.checker.formatter.qual.FormatMethod;
+    @Positive
+import org.checkerframework.checker.index.qual.IndexOrHigh;
+    @Positive
+import org.checkerframework.checker.index.qual.LTLengthOf;
+    @Positive
+import org.checkerframework.checker.index.qual.NonNegative;
+    @Positive
+import org.checkerframework.checker.lock.qual.GuardSatisfied;
+    @Positive
+import org.checkerframework.checker.mustcall.qual.MustCallAlias;
+    @Positive
+import org.checkerframework.checker.nullness.qual.Nullable;
+    @Positive
+import org.checkerframework.framework.qual.AnnotatedFor;
+    @Positive
+import java.util.Objects;
+    @Positive
+import java.util.Formatter;
+    @Positive
+import java.util.Locale;
+    @Positive
+import java.nio.charset.Charset;
+    @Positive
+import java.nio.charset.IllegalCharsetNameException;
+    @Positive
+import java.nio.charset.UnsupportedCharsetException;
+
+    @Positive
+@AnnotatedFor({ "formatter", "index", "lock", "mustcall", "nullness" })
+    @Positive
+public class PrintWriter extends Writer {
+
+    @Positive
+    protected Writer out;
+
+    @Positive
+    @MustCallAlias
+    @Positive
+    public PrintWriter(@MustCallAlias Writer out) {
+    @Positive
+    }
+
+    @Positive
+    @MustCallAlias
+    @Positive
+    public PrintWriter(@MustCallAlias Writer out, boolean autoFlush) {
+    @Positive
+    }
+
+    @Positive
+    @MustCallAlias
+    @Positive
+    public PrintWriter(@MustCallAlias OutputStream out) {
+    @Positive
+    }
+
+    @Positive
+    @MustCallAlias
+    @Positive
+    public PrintWriter(@MustCallAlias OutputStream out, boolean autoFlush) {
+    @Positive
+    }
+
+    @Positive
+    @MustCallAlias
+    @Positive
+    public PrintWriter(@MustCallAlias OutputStream out, boolean autoFlush, Charset charset) {
+    @Positive
+    }
+
+    @Positive
+    public PrintWriter(String fileName) throws FileNotFoundException {
+    @Positive
+    }
+
+    @Positive
+    public PrintWriter(String fileName, String csn) throws FileNotFoundException, UnsupportedEncodingException {
+    @Positive
+    }
+
+    @Positive
+    public PrintWriter(String fileName, Charset charset) throws IOException {
+    @Positive
+    }
+
+    @Positive
+    public PrintWriter(File file) throws FileNotFoundException {
+    @Positive
+    }
+
+    @Positive
+    public PrintWriter(File file, String csn) throws FileNotFoundException, UnsupportedEncodingException {
+    @Positive
+    }
+
+    @Positive
+    public PrintWriter(File file, Charset charset) throws IOException {
+    @Positive
+    }
+
+    @Positive
+    public void flush(@GuardSatisfied PrintWriter this);
+
+    @Positive
+    public void close(@GuardSatisfied PrintWriter this);
+
+    @Positive
+    public boolean checkError(@GuardSatisfied PrintWriter this);
+
+    @Positive
+    protected void setError();
+
+    @Positive
+    protected void clearError();
+
+    @Positive
+    public void write(@GuardSatisfied PrintWriter this, int c);
+
+    @Positive
+    public void write(@GuardSatisfied PrintWriter this, char[] buf, @IndexOrHigh({ "#1" }) int off, @LTLengthOf(value = { "#1" }, offset = { "#2 - 1" }) @NonNegative int len);
+
+    @Positive
+    public void write(@GuardSatisfied PrintWriter this, char[] buf);
+
+    @Positive
+    public void write(@GuardSatisfied PrintWriter this, String s, @IndexOrHigh({ "#1" }) int off, @LTLengthOf(value = { "#1" }, offset = { "#2 - 1" }) @NonNegative int len);
+
+    @Positive
+    public void write(@GuardSatisfied PrintWriter this, String s);
+
+    @Positive
+    public void print(@GuardSatisfied PrintWriter this, boolean b);
+
+    @Positive
+    public void print(@GuardSatisfied PrintWriter this, char c);
+
+    @Positive
+    public void print(@GuardSatisfied PrintWriter this, int i);
+
+    @Positive
+    public void print(@GuardSatisfied PrintWriter this, long l);
+
+    @Positive
+    public void print(@GuardSatisfied PrintWriter this, float f);
+
+    @Positive
+    public void print(@GuardSatisfied PrintWriter this, double d);
+
+    @Positive
+    public void print(@GuardSatisfied PrintWriter this, char[] s);
+
+    @Positive
+    public void print(@GuardSatisfied PrintWriter this, @Nullable String s);
+
+    @Positive
+    public void print(@GuardSatisfied PrintWriter this, @Nullable Object obj);
+
+    @Positive
+    public void println(@GuardSatisfied PrintWriter this);
+
+    @Positive
+    public void println(@GuardSatisfied PrintWriter this, boolean x);
+
+    @Positive
+    public void println(@GuardSatisfied PrintWriter this, char x);
+
+    @Positive
+    public void println(@GuardSatisfied PrintWriter this, int x);
+
+    @Positive
+    public void println(@GuardSatisfied PrintWriter this, long x);
+
+    @Positive
+    public void println(@GuardSatisfied PrintWriter this, float x);
+
+    @Positive
+    public void println(@GuardSatisfied PrintWriter this, double x);
+
+    @Positive
+    public void println(@GuardSatisfied PrintWriter this, char[] x);
+
+    @Positive
+    public void println(@GuardSatisfied PrintWriter this, @Nullable String x);
+
+    @Positive
+    public void println(@GuardSatisfied PrintWriter this, @Nullable Object x);
+
+    @Positive
+    @FormatMethod
+    @Positive
+    @MustCallAlias
+    @Positive
+    public PrintWriter printf(@GuardSatisfied @MustCallAlias PrintWriter this, String format, @Nullable Object... args);
+
+    @Positive
+    @FormatMethod
+    @Positive
+    @MustCallAlias
+    @Positive
+    public PrintWriter printf(@GuardSatisfied @MustCallAlias PrintWriter this, @Nullable Locale l, String format, @Nullable Object... args);
+
+    @Positive
+    @FormatMethod
+    @Positive
+    @MustCallAlias
+    @Positive
+    public PrintWriter format(@GuardSatisfied @MustCallAlias PrintWriter this, String format, @Nullable Object... args);
+
+    @Positive
+    @FormatMethod
+    @Positive
+    @MustCallAlias
+    @Positive
+    public PrintWriter format(@GuardSatisfied @MustCallAlias PrintWriter this, @Nullable Locale l, String format, @Nullable Object... args);
+
+    @Positive
+    @MustCallAlias
+    @Positive
+    public PrintWriter append(@GuardSatisfied @MustCallAlias PrintWriter this, @Nullable CharSequence csq);
+
+    @Positive
+    @MustCallAlias
+    @Positive
+    public PrintWriter append(@GuardSatisfied @MustCallAlias PrintWriter this, @Nullable CharSequence csq, @IndexOrHigh({ "#1" }) int start, @IndexOrHigh({ "#1" }) int end);
+
+    @Positive
+    @MustCallAlias
+    @Positive
+    public PrintWriter append(@GuardSatisfied @MustCallAlias PrintWriter this, char c);
+    @Positive
+}
