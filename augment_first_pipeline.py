@@ -42,10 +42,10 @@ class AugmentFirstPipeline:
         self.augmentation_factor = augmentation_factor
         self.slicer_type = slicer_type
         
-        # Set up directories
-        self.augmented_code_dir = os.path.join(cfwr_root, 'augmented_code')
-        self.slices_dir = os.path.join(cfwr_root, 'slices_augmented_first')
-        self.cfg_dir = os.path.join(cfwr_root, 'cfg_output_augmented_first')
+        # Set up directories for adaptive semantic augmentation
+        self.augmented_code_dir = os.path.join(cfwr_root, 'augmented_code_adaptive')
+        self.slices_dir = os.path.join(cfwr_root, 'slices_adaptive_augmented_first')
+        self.cfg_dir = os.path.join(cfwr_root, 'cfg_output_adaptive_augmented_first')
         self.models_dir = os.path.join(cfwr_root, 'models_annotation_types')
         self.predictions_dir = os.path.join(cfwr_root, 'predictions_annotation_types')
         
@@ -89,17 +89,40 @@ class AugmentFirstPipeline:
         return True
     
     def _augment_original_code(self) -> bool:
-        """Augment the original code with semantic transformations"""
+        """Augment the original code with adaptive semantic transformations"""
         try:
-            from semantic_augment_slices import SemanticTransformer, iter_java_files
+            # Import both augmentation systems
+            from enhanced_semantic_augment_slices import EnhancedSemanticTransformer, iter_java_files
+            from simple_code_semantic_augment_slices import SimpleCodeSemanticTransformer
             
-            logger.info(f"Augmenting original code with {self.augmentation_factor} variants per file")
+            logger.info(f"Augmenting original code with ADAPTIVE semantic transformations")
+            logger.info(f"Using {self.augmentation_factor} variants per file")
+            logger.info("Adaptive system: Enhanced (17 methods) for complex code, Simple (10 methods) for Checker Framework test cases")
             
-            transformer = SemanticTransformer(seed=42)
+            # Initialize both transformers
+            enhanced_transformer = EnhancedSemanticTransformer(seed=42)
+            simple_transformer = SimpleCodeSemanticTransformer(seed=42)
             augmented_count = 0
+            enhanced_count = 0
+            simple_count = 0
             
             # Process each Java file in the project
             for java_file in iter_java_files(self.project_root):
+                # Analyze code complexity to select appropriate augmentation system
+                complexity_score = self._analyze_code_complexity(java_file)
+                
+                # Select transformer based on complexity
+                if complexity_score >= 3:
+                    transformer = enhanced_transformer
+                    system_type = "Enhanced"
+                    enhanced_count += 1
+                else:
+                    transformer = simple_transformer
+                    system_type = "Simple"
+                    simple_count += 1
+                
+                logger.debug(f"File: {os.path.basename(java_file)}, Complexity: {complexity_score}, System: {system_type}")
+                
                 # Create output directory maintaining structure
                 rel_path = os.path.relpath(java_file, self.project_root)
                 base_name = os.path.splitext(rel_path)[0]
@@ -122,9 +145,10 @@ class AugmentFirstPipeline:
             
             logger.info(f"Original files: {original_files}, Augmented files: {augmented_files}")
             logger.info(f"Generated {augmented_count} semantically augmented code variants")
+            logger.info(f"Enhanced augmentation used for {enhanced_count} files, Simple augmentation used for {simple_count} files")
             
             if augmented_files >= original_files * self.augmentation_factor:
-                logger.info("Original code augmentation completed successfully")
+                logger.info("Adaptive semantic augmentation completed successfully")
                 return True
             else:
                 logger.warning(f"Augmentation may be incomplete: expected ~{original_files * self.augmentation_factor}, got {augmented_files}")
@@ -133,6 +157,33 @@ class AugmentFirstPipeline:
         except Exception as e:
             logger.error(f"Error augmenting original code: {e}")
             return False
+    
+    def _analyze_code_complexity(self, java_file_path: str) -> int:
+        """Analyze code complexity to determine appropriate augmentation system."""
+        try:
+            with open(java_file_path, 'r') as f:
+                content = f.read()
+            
+            # Complexity indicators for enhanced augmentation
+            complexity_indicators = [
+                'for (', 'while (', 'stream()', 'lambda', '->', 
+                'try {', 'catch', 'switch', 'interface', 'enum',
+                'Collection<', 'List<', 'Map<', 'Set<', 'Optional<',
+                'Stream<', 'Function<', 'Predicate<', 'Consumer<',
+                'synchronized', 'volatile', 'transient', 'native'
+            ]
+            
+            # Count complexity indicators
+            complexity_score = 0
+            for indicator in complexity_indicators:
+                if indicator in content:
+                    complexity_score += 1
+            
+            return complexity_score
+            
+        except Exception as e:
+            logger.warning(f"Error analyzing complexity for {java_file_path}: {e}")
+            return 0  # Default to simple augmentation if analysis fails
     
     def _slice_augmented_variants(self) -> bool:
         """Slice each augmented variant using the specified slicer"""

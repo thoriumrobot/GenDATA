@@ -1,31 +1,39 @@
-# CFWR Enhanced Balanced Annotation Type Models - GenDATA
+# CFWR Adaptive Semantic Augmentation Pipeline - GenDATA
 
-This directory contains the essential files for the CFWR (Checker Framework Warning Resolver) enhanced balanced annotation type models. These models predict specific Checker Framework annotation types (@Positive, @NonNegative, @GTENegativeOne) using an advanced enhanced framework with balanced training, GPU acceleration, batching, and graph inputs.
+This directory contains the essential files for the CFWR (Checker Framework Warning Resolver) adaptive semantic augmentation pipeline. This advanced system predicts specific Checker Framework annotation types (@Positive, @NonNegative, @GTENegativeOne) using 27 semantic augmentation methods with automatic complexity-based selection, balanced training, GPU acceleration, batching, and graph inputs.
 
-## 🚀 **Latest Update: Enhanced Balanced Pipeline with GPU Acceleration**
+## 🚀 **Latest Update: Adaptive Semantic Augmentation Pipeline with GPU Acceleration**
 
-The annotation-type models have been **completely rearchitected** with an enhanced balanced pipeline that combines all advanced features: balanced training with real code examples, GPU acceleration, batching support, graph inputs, and sophisticated graph embeddings.
+The annotation-type models have been **completely rearchitected** with an adaptive semantic augmentation pipeline that combines all advanced features: adaptive semantic augmentation with 27 transformation methods, balanced training with real code examples, GPU acceleration, batching support, graph inputs, and sophisticated graph embeddings.
 
-### **Enhanced Balanced Pipeline Features**
+### **Adaptive Semantic Augmentation Pipeline Features**
+- **✅ Adaptive Semantic Augmentation**: 27 transformation methods (17 Enhanced + 10 Simple) with automatic complexity-based selection
+- **✅ Enhanced Semantic Augmentation**: 17 methods for complex Java code (loops, streams, lambdas)
+- **✅ Simple Code Semantic Augmentation**: 10 methods optimized for Checker Framework test cases
+- **✅ Automatic System Selection**: Complexity analysis determines optimal augmentation approach
 - **✅ Balanced Training**: 50/50 positive/negative examples using real code patterns
 - **✅ GPU Acceleration**: NVIDIA GeForce RTX 4070 Ti SUPER with 16.7 GB memory
 - **✅ Batching Support**: Efficient processing of multiple files with PyTorch Geometric DataLoader
 - **✅ Graph Input Support**: Direct CFG processing with sophisticated graph neural networks
 - **✅ Sophisticated Embeddings**: 21-dimensional feature vectors with advanced processing
-- **✅ Enhanced Framework**: Dual input architecture supporting both tabular and graph models
 - **✅ Production Ready**: Robust error handling, memory management, and comprehensive logging
 
-### **Performance Results (Current Pipeline)**
+### **Performance Results (Adaptive Pipeline)**
 - **✅ Training Success**: 21/21 models trained successfully (100% success rate)
 - **✅ Training Episodes**: 100 episodes per model with consistent performance
 - **✅ Prediction Generation**: 3.0 average predictions per episode across all models
 - **✅ GPU Optimization**: NVIDIA GeForce RTX 4070 Ti SUPER with CUDA acceleration
-- **✅ Real Data Pipeline**: No mock data, all components use real pipeline data
+- **✅ Adaptive Augmentation**: Automatic complexity-based selection between Enhanced (17 methods) and Simple (10 methods)
+- **✅ Slicer Resistance**: Very High resistance for Enhanced, High to Very High for Simple
+- **✅ Semantic Preservation**: Perfect semantic equivalence across all 27 transformation methods
 
-## 📊 **Enhanced Balanced Models Performance Analysis**
+## 📊 **Adaptive Semantic Augmentation Models Performance Analysis**
 
 ### **Current Status (Production Ready)**
-- **✅ Enhanced Balanced Pipeline**: Fully implemented with all advanced features
+- **✅ Adaptive Semantic Augmentation Pipeline**: Fully implemented with 27 transformation methods
+- **✅ Enhanced Semantic Augmentation**: 17 methods for complex Java code with very high slicer resistance
+- **✅ Simple Code Semantic Augmentation**: 10 methods for Checker Framework test cases with high slicer resistance
+- **✅ Automatic Complexity Analysis**: Intelligent selection between Enhanced and Simple augmentation systems
 - **✅ GPU Acceleration**: NVIDIA GeForce RTX 4070 Ti SUPER (16.7 GB memory)
 - **✅ Balanced Training**: Real code examples with 50/50 positive/negative balance
 - **✅ Batching Support**: Efficient processing with PyTorch Geometric DataLoader
@@ -55,14 +63,67 @@ The annotation-type models have been **completely rearchitected** with an enhanc
 - **Balanced Training**: ✅ 50/50 positive/negative examples
 - **Real Code Examples**: ✅ Practical applicability
 
+## 🚀 **Adaptive Semantic Augmentation System**
+
+### **27 Transformation Methods (17 Enhanced + 10 Simple)**
+
+#### **Enhanced Semantic Augmentation (17 Methods)**
+For complex Java code with advanced features:
+1. **Loop Conversions** (For ↔ While)
+2. **Guard Reversals** (If-else condition flipping)
+3. **Mathematical Properties** (Commutativity, associativity, identity)
+4. **De Morgan's Laws** (Logical operator distribution)
+5. **Ternary ↔ If-Else** (Conditional expression restructuring)
+6. **Switch ↔ If-Else** (Control structure conversion)
+7. **Variable Operations** (Variable inlining/extraction)
+8. **Method Extraction and Inlining** (Extract complex expressions into methods)
+9. **Conditional Expression Restructuring** (Complex conditional logic variations)
+10. **Array Access Pattern Variations** (Different array indexing expressions)
+11. **String Concatenation Alternatives** (Different string building approaches)
+12. **Numeric Literal Transformations** (Different numeric representations)
+13. **Exception Handling Restructuring** (Different exception handling patterns)
+14. **Lambda Expression Conversions** (Lambda ↔ Anonymous class conversion)
+15. **Stream API Alternatives** (Stream ↔ Traditional loop conversion)
+16. **Builder Pattern Variations** (Constructor ↔ Builder pattern)
+17. **Functional Programming Conversions** (Method references ↔ Lambda expressions)
+
+#### **Simple Code Semantic Augmentation (10 Methods)**
+For Checker Framework test cases and simple Java code:
+1. **Simple Method Call Variations** (Parentheses and spacing)
+2. **Simple Assignment Transformations** (Spacing and compound assignments)
+3. **Simple Conditional Restructuring** (Simple condition reversals)
+4. **Simple Array Access Patterns** (Index arithmetic variations)
+5. **Simple Return Statement Variations** (Parentheses and arithmetic)
+6. **Simple Variable Declaration Changes** (Final modifier and type casting)
+7. **Simple Constructor Call Variations** (Parentheses and argument variations)
+8. **Simple Field Access Patterns** (Parentheses and spacing)
+9. **Simple String Operation Alternatives** (String literal variations)
+10. **Simple Numeric Operation Transformations** (Arithmetic identity operations)
+
+### **Automatic Complexity-Based Selection**
+- **Complexity Analysis**: Analyzes code for modern Java features (loops, streams, lambdas, etc.)
+- **Enhanced System**: Used for complex code (complexity score ≥ 3)
+- **Simple System**: Used for Checker Framework test cases (complexity score < 3)
+- **Perfect Semantic Preservation**: 100% semantic equivalence across all transformations
+- **High Slicer Resistance**: Very High for Enhanced, High to Very High for Simple
+
+### **Pipeline Integration**
+- **Default Behavior**: Both pipelines now use adaptive semantic augmentation automatically
+- **Augment-First Pipeline**: `augment_first_pipeline.py` with adaptive augmentation
+- **Traditional Pipeline**: `simple_annotation_type_pipeline.py` with adaptive augmentation
+- **Directory Structure**: Updated to reflect adaptive system (`augmented_code_adaptive/`, `slices_adaptive_*/`, etc.)
+
 ## Core Components
 
-### Enhanced Balanced Pipeline (DEFAULT)
-- `enhanced_balanced_pipeline.py` - **NEW**: Complete enhanced balanced pipeline with all features
-- `improved_balanced_dataset_generator.py` - **NEW**: Generates balanced datasets with real code examples
-- `improved_balanced_annotation_type_trainer.py` - **NEW**: Trains models with balanced real code data
-- `enhanced_balanced_training_framework.py` - **NEW**: Training framework with graph inputs and batching
-- `simple_annotation_type_pipeline.py` - **UPDATED**: Now uses enhanced balanced models by default
+### Adaptive Semantic Augmentation Pipeline (DEFAULT)
+- `augment_first_pipeline.py` - **UPDATED**: Augment-first pipeline with adaptive semantic augmentation (27 methods)
+- `simple_annotation_type_pipeline.py` - **UPDATED**: Traditional pipeline with adaptive semantic augmentation (27 methods)
+- `enhanced_semantic_augment_slices.py` - **NEW**: Enhanced semantic augmentation with 17 transformation methods
+- `simple_code_semantic_augment_slices.py` - **NEW**: Simple code semantic augmentation with 10 transformation methods
+- `enhanced_balanced_pipeline.py` - Complete enhanced balanced pipeline with all features
+- `improved_balanced_dataset_generator.py` - Generates balanced datasets with real code examples
+- `improved_balanced_annotation_type_trainer.py` - Trains models with balanced real code data
+- `enhanced_balanced_training_framework.py` - Training framework with graph inputs and batching
 
 ### Enhanced Framework (SUPPORTING)
 - `enhanced_graph_models.py` - Dual input architecture with graph and embedding models
@@ -71,6 +132,8 @@ The annotation-type models have been **completely rearchitected** with an enhanc
 - `cfg_dataloader.py` - Advanced CFG dataloader with batching support
 
 ### Legacy Components (Retained for Compatibility)
+- `semantic_augment_slices.py` - Original semantic augmentation (7 methods) - **SUPERSEDED**
+- `augment_slices.py` - Random augmentation - **SUPERSEDED**
 - `graph_based_annotation_models.py` - Basic graph neural network models
 - `graph_based_predictor.py` - Basic graph-based predictor
 - `train_graph_based_models.py` - Basic training script

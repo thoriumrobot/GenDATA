@@ -11,9 +11,9 @@ The augment-first pipeline represents a significant improvement to the GenDATA t
 Original Code → Slicing → Slices → Augmentation → Augmented Slices → CFG Generation → Models
 ```
 
-### Augment-First Approach
+### Adaptive Augment-First Approach
 ```
-Original Code → Semantic Augmentation → Multiple Variants → Slicing Each Variant → All Slices → CFG Generation → Models
+Original Code → Complexity Analysis → Adaptive Semantic Augmentation (27 methods) → Multiple Variants → Slicing Each Variant → All Slices → CFG Generation → Models
 ```
 
 ## Benefits of Augment-First Approach
@@ -23,7 +23,10 @@ Original Code → Semantic Augmentation → Multiple Variants → Slicing Each V
 - Slicers work on semantically equivalent but syntactically different code
 - More diverse slicing patterns from the same semantic intent
 
-### 2. **Better Training Data**
+### 2. **Adaptive Training Data**
+- **Enhanced Augmentation**: 17 methods for complex Java code (loops, streams, lambdas)
+- **Simple Augmentation**: 10 methods optimized for Checker Framework test cases
+- **Automatic Selection**: Complexity analysis determines optimal augmentation approach
 - Models see how the same semantic intent can be expressed differently
 - Exposure to diverse syntactic structures for the same warning patterns
 - More robust learning from equivalent code variations

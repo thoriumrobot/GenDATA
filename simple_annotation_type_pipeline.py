@@ -33,9 +33,9 @@ class SimpleAnnotationTypePipeline:
         self.device = device
         self.augment_first = augment_first
         
-        # Set up directories
-        self.slices_dir = os.path.join(cfwr_root, 'slices_specimin')
-        self.cfg_dir = os.path.join(cfwr_root, 'cfg_output_specimin')
+        # Set up directories for adaptive semantic augmentation
+        self.slices_dir = os.path.join(cfwr_root, 'slices_adaptive_specimin')
+        self.cfg_dir = os.path.join(cfwr_root, 'cfg_output_adaptive_specimin')
         self.models_dir = os.path.join(cfwr_root, 'models_annotation_types')
         self.predictions_dir = os.path.join(cfwr_root, 'predictions_annotation_types')
         
@@ -123,21 +123,43 @@ class SimpleAnnotationTypePipeline:
         return True
     
     def _augment_original_code(self):
-        """Augment the original code with semantic transformations"""
+        """Augment the original code with adaptive semantic transformations"""
         try:
-            from semantic_augment_slices import SemanticTransformer, iter_java_files
+            # Import both augmentation systems
+            from enhanced_semantic_augment_slices import EnhancedSemanticTransformer, iter_java_files
+            from simple_code_semantic_augment_slices import SimpleCodeSemanticTransformer
             
             # Create augmented code directory
-            self.augmented_code_dir = os.path.join(self.cfwr_root, 'augmented_code')
+            self.augmented_code_dir = os.path.join(self.cfwr_root, 'augmented_code_adaptive')
             os.makedirs(self.augmented_code_dir, exist_ok=True)
             
-            logger.info("Augmenting original code with semantic transformations")
+            logger.info("Augmenting original code with ADAPTIVE semantic transformations")
+            logger.info("Adaptive system: Enhanced (17 methods) for complex code, Simple (10 methods) for Checker Framework test cases")
             
-            transformer = SemanticTransformer(seed=42)
+            # Initialize both transformers
+            enhanced_transformer = EnhancedSemanticTransformer(seed=42)
+            simple_transformer = SimpleCodeSemanticTransformer(seed=42)
             augmented_count = 0
+            enhanced_count = 0
+            simple_count = 0
             
             # Process each Java file in the project
             for java_file in iter_java_files(self.project_root):
+                # Analyze code complexity to select appropriate augmentation system
+                complexity_score = self._analyze_code_complexity(java_file)
+                
+                # Select transformer based on complexity
+                if complexity_score >= 3:
+                    transformer = enhanced_transformer
+                    system_type = "Enhanced"
+                    enhanced_count += 1
+                else:
+                    transformer = simple_transformer
+                    system_type = "Simple"
+                    simple_count += 1
+                
+                logger.debug(f"File: {os.path.basename(java_file)}, Complexity: {complexity_score}, System: {system_type}")
+                
                 # Create output directory maintaining structure
                 rel_path = os.path.relpath(java_file, self.project_root)
                 base_name = os.path.splitext(rel_path)[0]
@@ -160,12 +182,40 @@ class SimpleAnnotationTypePipeline:
             
             logger.info(f"Original files: {original_files}, Augmented files: {augmented_files}")
             logger.info(f"Generated {augmented_count} semantically augmented code variants")
+            logger.info(f"Enhanced augmentation used for {enhanced_count} files, Simple augmentation used for {simple_count} files")
             
             return True
                 
         except Exception as e:
             logger.error(f"Error augmenting original code: {e}")
             return False
+    
+    def _analyze_code_complexity(self, java_file_path: str) -> int:
+        """Analyze code complexity to determine appropriate augmentation system."""
+        try:
+            with open(java_file_path, 'r') as f:
+                content = f.read()
+            
+            # Complexity indicators for enhanced augmentation
+            complexity_indicators = [
+                'for (', 'while (', 'stream()', 'lambda', '->', 
+                'try {', 'catch', 'switch', 'interface', 'enum',
+                'Collection<', 'List<', 'Map<', 'Set<', 'Optional<',
+                'Stream<', 'Function<', 'Predicate<', 'Consumer<',
+                'synchronized', 'volatile', 'transient', 'native'
+            ]
+            
+            # Count complexity indicators
+            complexity_score = 0
+            for indicator in complexity_indicators:
+                if indicator in content:
+                    complexity_score += 1
+            
+            return complexity_score
+            
+        except Exception as e:
+            logger.warning(f"Error analyzing complexity for {java_file_path}: {e}")
+            return 0  # Default to simple augmentation if analysis fails
     
     def _slice_augmented_variants(self):
         """Slice each augmented variant using Specimin"""
