@@ -102,7 +102,7 @@ class MockAnnotationPlacementManager:
 class BinaryRLTrainer:
     """Binary RL trainer for HGT-based annotation placement prediction"""
     
-    def __init__(self, learning_rate=0.001, device='cpu', checker_type='index'):
+    def __init__(self, learning_rate=0.001, device='cuda', checker_type='index'):
         self.device = device
         self.learning_rate = learning_rate
         self.checker_type = checker_type

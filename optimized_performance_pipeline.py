@@ -12,12 +12,17 @@ import json
 import time
 import logging
 import numpy as np
+from datetime import datetime
 from typing import List, Dict, Any, Optional, Tuple
 from pathlib import Path
 import torch
 
 from optimized_annotation_type_pipeline import OptimizedAnnotationTypePipeline
 from pipeline_config import AUGMENTATION_POLICY_CONFIG
+from unified_augmentation_registry import UnifiedAugmentationRegistry
+from code_location_analyzer import CodeLocationAnalyzer
+from augmentation_policy_learner import RandomWalkOptimizer
+from augmentation_sequence_evaluator import AugmentationSequenceEvaluator
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +32,7 @@ class OptimizedPerformancePipeline(OptimizedAnnotationTypePipeline):
     model and annotation combinations for maximum improvement.
     """
     
-    def __init__(self, config_path: Optional[str] = None, device: str = 'auto', config_dict: Optional[Dict[str, Any]] = None):
+    def __init__(self, config_path: Optional[str] = None, device: str = 'cuda', config_dict: Optional[Dict[str, Any]] = None):
         # Start with optimized config
         optimized_config = AUGMENTATION_POLICY_CONFIG.copy()
         
@@ -38,10 +43,25 @@ class OptimizedPerformancePipeline(OptimizedAnnotationTypePipeline):
         # Apply performance optimizations
         optimized_config = self._apply_performance_optimizations(optimized_config)
         
+        # Handle device selection with GPU as default
+        if device == 'auto':
+            device = self._get_optimal_device()
+        
         super().__init__(config_path, device, optimized_config)
         
         # Set up models directory
         self.models_dir = Path(self.config.get('models_dir', 'models_annotation_types'))
+        
+        # Initialize unified augmentation registry
+        self.unified_registry = UnifiedAugmentationRegistry(seed=42)
+        self.location_analyzer = CodeLocationAnalyzer()
+        
+        # Initialize random walk optimizer with unified registry
+        self.random_walk_optimizer = RandomWalkOptimizer(
+            methods=['rl', 'mcts', 'evolutionary', 'graph'],
+            device=device,
+            registry=self.unified_registry
+        )
         
         # Performance tracking
         self.performance_history = []
@@ -52,7 +72,29 @@ class OptimizedPerformancePipeline(OptimizedAnnotationTypePipeline):
             'optimized_accuracy': 0.0
         }
         
+        logger.info(f"Initialized OptimizedPerformancePipeline with device: {device}")
         logger.info("Initialized OptimizedPerformancePipeline with performance-focused configuration")
+    
+    def _get_optimal_device(self) -> str:
+        """Get optimal device with GPU as default when available"""
+        try:
+            import torch
+            if torch.cuda.is_available():
+                device = 'cuda'
+                logger.info(f"🚀 GPU detected: {torch.cuda.get_device_name(0)}")
+                logger.info(f"📊 CUDA version: {torch.version.cuda}")
+                logger.info(f"💾 GPU memory: {torch.cuda.get_device_properties(0).total_memory / 1024**3:.1f} GB")
+            else:
+                device = 'cpu'
+                logger.info("💻 CUDA not available, using CPU")
+        except ImportError:
+            device = 'cpu'
+            logger.warning("⚠️ PyTorch not available, using CPU")
+        except Exception as e:
+            device = 'cpu'
+            logger.warning(f"⚠️ Error detecting GPU: {e}, using CPU")
+        
+        return device
     
     def _apply_performance_optimizations(self, config: Dict[str, Any]) -> Dict[str, Any]:
         """Apply performance optimizations based on evaluation results"""
@@ -227,6 +269,92 @@ class OptimizedPerformancePipeline(OptimizedAnnotationTypePipeline):
         logger.info(f"Training completed in {training_time:.3f}s with {result.get('improvement_percentage', 0):.2f}% improvement")
         
         return result
+    
+    def _generate_optimized_augmentation(self, warnings_data: List[Dict[str, Any]], 
+                                       project_root: str, annotation_type: str) -> Dict[str, Any]:
+        """Generate optimized augmentation using unified registry and location-aware random walk"""
+        logger.info("Generating optimized augmentation with unified registry and location-aware random walk")
+        
+        try:
+            optimized_data = {
+                'slices': [],
+                'cfgs': [],
+                'augmentation_metadata': {
+                    'method': 'unified_random_walk',
+                    'registry_used': 'UnifiedAugmentationRegistry',
+                    'optimization_methods': ['rl', 'mcts', 'evolutionary', 'graph'],
+                    'factor': self.config.get('learned_augmentation_factor', 15),
+                    'timestamp': datetime.now().isoformat()
+                }
+            }
+            
+            # Process each warning with location-aware random walk optimization
+            for warning in warnings_data:
+                try:
+                    # Get source file and line info
+                    source_file = warning.get('source_file')
+                    line_number = warning.get('line_number')
+                    
+                    if not source_file or not line_number:
+                        continue
+                    
+                    # Read source file
+                    source_path = os.path.join(project_root, source_file)
+                    if not os.path.exists(source_path):
+                        continue
+                    
+                    with open(source_path, 'r') as f:
+                        original_code = f.read()
+                    
+                    # Analyze code locations for transformation opportunities
+                    locations = self.location_analyzer.analyze_code(original_code)
+                    
+                    # Use random walk optimizer to find optimal augmentation sequence
+                    optimization_result = self.random_walk_optimizer.optimize_augmentation_sequence(
+                        initial_code=original_code,
+                        max_iterations=50,  # Reduced for performance
+                        parallel=True
+                    )
+                    
+                    if optimization_result and optimization_result.get('best_sequence'):
+                        # Apply the best sequence found
+                        best_sequence = optimization_result['best_sequence']
+                        best_code, success_flags = self.unified_registry.apply_transformation_sequence(
+                            original_code, best_sequence
+                        )
+                        
+                        # Generate slice if code was successfully transformed
+                        if any(success_flags):
+                            slice_result = self._generate_slice_for_code(
+                                best_code, source_file, project_root
+                            )
+                            
+                            if slice_result:
+                                optimized_data['slices'].append(slice_result)
+                                
+                                # Generate CFG
+                                cfg_result = self._generate_cfg_for_slice(slice_result)
+                                if cfg_result:
+                                    optimized_data['cfgs'].append(cfg_result)
+                
+                except Exception as e:
+                    logger.error(f"Error processing warning {warning.get('id', 'unknown')}: {e}")
+                    continue
+            
+            # Add statistics
+            optimized_data['augmentation_metadata']['total_slices'] = len(optimized_data['slices'])
+            optimized_data['augmentation_metadata']['total_cfgs'] = len(optimized_data['cfgs'])
+            optimized_data['augmentation_metadata']['success_rate'] = (
+                len(optimized_data['slices']) / len(warnings_data) if warnings_data else 0
+            )
+            
+            logger.info(f"Generated {len(optimized_data['slices'])} optimized slices")
+            return optimized_data
+            
+        except Exception as e:
+            logger.error(f"Error in optimized augmentation generation: {e}")
+            # Fallback to parent implementation
+            return super()._generate_optimized_augmentation(warnings_data, project_root, annotation_type)
     
     def _train_with_baseline_augmentation(
         self, 
@@ -517,8 +645,8 @@ class OptimizedPerformancePipeline(OptimizedAnnotationTypePipeline):
         }
 
 # Create a convenience function for easy access
-def create_optimized_pipeline(config_dict: Optional[Dict[str, Any]] = None, device: str = 'auto') -> OptimizedPerformancePipeline:
-    """Create an optimized performance pipeline with default settings"""
+def create_optimized_pipeline(config_dict: Optional[Dict[str, Any]] = None, device: str = 'cuda') -> OptimizedPerformancePipeline:
+    """Create an optimized performance pipeline with GPU as default"""
     return OptimizedPerformancePipeline(config_dict=config_dict, device=device)
 
 if __name__ == "__main__":

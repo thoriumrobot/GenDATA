@@ -85,7 +85,7 @@ class BinaryGCNModel(nn.Module):
 class BinaryGCNTrainer:
     """Binary RL trainer for GCN-based annotation placement prediction"""
     
-    def __init__(self, learning_rate=0.001, hidden_dim=64, dropout_rate=0.3, device='cpu', checker_type='index'):
+    def __init__(self, learning_rate=0.001, hidden_dim=64, dropout_rate=0.3, device='cuda', checker_type='index'):
         self.device = device
         self.learning_rate = learning_rate
         self.hidden_dim = hidden_dim

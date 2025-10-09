@@ -33,15 +33,42 @@ class MainOptimizedPipeline:
     
     def __init__(self, config_path: Optional[str] = None, device: str = 'auto'):
         self.config_path = config_path
-        self.device = device
+        
+        # Determine device with GPU as default
+        if device == 'auto':
+            self.device = self._get_optimal_device()
+        else:
+            self.device = device
         
         # Load configuration
         self.config = self._load_config(config_path)
         
         # Initialize optimized pipeline
-        self.pipeline = create_optimized_pipeline(config_dict=self.config, device=device)
+        self.pipeline = create_optimized_pipeline(config_dict=self.config, device=self.device)
         
+        logger.info(f"Initialized MainOptimizedPipeline with device: {self.device}")
         logger.info("Initialized MainOptimizedPipeline with performance-focused configuration")
+    
+    def _get_optimal_device(self) -> str:
+        """Get optimal device with GPU as default when available"""
+        try:
+            import torch
+            if torch.cuda.is_available():
+                device = 'cuda'
+                logger.info(f"🚀 GPU detected: {torch.cuda.get_device_name(0)}")
+                logger.info(f"📊 CUDA version: {torch.version.cuda}")
+                logger.info(f"💾 GPU memory: {torch.cuda.get_device_properties(0).total_memory / 1024**3:.1f} GB")
+            else:
+                device = 'cpu'
+                logger.info("💻 CUDA not available, using CPU")
+        except ImportError:
+            device = 'cpu'
+            logger.warning("⚠️ PyTorch not available, using CPU")
+        except Exception as e:
+            device = 'cpu'
+            logger.warning(f"⚠️ Error detecting GPU: {e}, using CPU")
+        
+        return device
     
     def _load_config(self, config_path: Optional[str]) -> Dict[str, Any]:
         """Load configuration from file or use defaults"""
@@ -366,8 +393,8 @@ Examples:
                         help='Directory containing trained models')
     
     # System options
-    parser.add_argument('--device', type=str, default='auto', choices=['auto', 'cpu', 'cuda'],
-                        help='Device to use for training')
+    parser.add_argument('--device', type=str, default='cuda', choices=['auto', 'cpu', 'cuda'],
+                        help='Device to use for training (default: cuda)')
     parser.add_argument('--verbose', action='store_true',
                         help='Enable verbose logging')
     

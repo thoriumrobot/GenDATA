@@ -103,7 +103,7 @@ class MockGCSNModel(nn.Module):
 class BinaryGCSTrainer:
     """Binary RL trainer for GCSN-based annotation placement prediction"""
     
-    def __init__(self, learning_rate=0.005, device='cpu', checker_type='index'):
+    def __init__(self, learning_rate=0.005, device='cuda', checker_type='index'):
         self.device = device
         self.learning_rate = learning_rate
         self.checker_type = checker_type

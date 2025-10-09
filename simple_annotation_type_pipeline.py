@@ -17,6 +17,11 @@ from pathlib import Path
 import time
 import glob
 
+# Import unified augmentation components
+from unified_augmentation_registry import UnifiedAugmentationRegistry
+from code_location_analyzer import CodeLocationAnalyzer
+from augmentation_policy_learner import RandomWalkOptimizer
+
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -42,6 +47,17 @@ class SimpleAnnotationTypePipeline:
         # Create directories
         for dir_path in [self.slices_dir, self.cfg_dir, self.models_dir, self.predictions_dir]:
             os.makedirs(dir_path, exist_ok=True)
+        
+        # Initialize unified augmentation registry
+        self.unified_registry = UnifiedAugmentationRegistry(seed=42)
+        self.location_analyzer = CodeLocationAnalyzer()
+        
+        # Initialize random walk optimizer with unified registry
+        self.random_walk_optimizer = RandomWalkOptimizer(
+            methods=['rl', 'mcts', 'evolutionary'],
+            device=device,
+            registry=self.unified_registry
+        )
         
         # Annotation types
         self.annotation_types = ['@Positive', '@NonNegative', '@GTENegativeOne']
@@ -123,58 +139,76 @@ class SimpleAnnotationTypePipeline:
         return True
     
     def _augment_original_code(self):
-        """Augment the original code with adaptive semantic transformations"""
+        """Augment the original code with unified augmentation registry and location-aware random walk"""
         try:
-            # Import both augmentation systems
-            from enhanced_semantic_augment_slices import EnhancedSemanticTransformer, iter_java_files
-            from simple_code_semantic_augment_slices import SimpleCodeSemanticTransformer
+            from enhanced_semantic_augment_slices import iter_java_files
             
             # Create augmented code directory
-            self.augmented_code_dir = os.path.join(self.cfwr_root, 'augmented_code_adaptive')
+            self.augmented_code_dir = os.path.join(self.cfwr_root, 'augmented_code_unified')
             os.makedirs(self.augmented_code_dir, exist_ok=True)
             
-            logger.info("Augmenting original code with ADAPTIVE semantic transformations")
-            logger.info("Adaptive system: Enhanced (17 methods) for complex code, Simple (10 methods) for Checker Framework test cases")
+            logger.info("Augmenting original code with UNIFIED augmentation registry and location-aware random walk")
+            logger.info("Using all 30 transformation types with location-aware selection")
             
-            # Initialize both transformers
-            enhanced_transformer = EnhancedSemanticTransformer(seed=42)
-            simple_transformer = SimpleCodeSemanticTransformer(seed=42)
+            # Use unified registry for augmentation
             augmented_count = 0
             enhanced_count = 0
             simple_count = 0
+            random_count = 0
             
             # Process each Java file in the project
             for java_file in iter_java_files(self.project_root):
-                # Analyze code complexity to select appropriate augmentation system
-                complexity_score = self._analyze_code_complexity(java_file)
+                # Read original code
+                with open(java_file, 'r') as f:
+                    original_code = f.read()
                 
-                # Select transformer based on complexity
-                if complexity_score >= 3:
-                    transformer = enhanced_transformer
-                    system_type = "Enhanced"
-                    enhanced_count += 1
-                else:
-                    transformer = simple_transformer
-                    system_type = "Simple"
-                    simple_count += 1
+                # Analyze code locations for transformation opportunities
+                locations = self.location_analyzer.analyze_code(original_code)
                 
-                logger.debug(f"File: {os.path.basename(java_file)}, Complexity: {complexity_score}, System: {system_type}")
+                logger.debug(f"File: {os.path.basename(java_file)}, Locations found: {len(locations)}")
                 
                 # Create output directory maintaining structure
                 rel_path = os.path.relpath(java_file, self.project_root)
                 base_name = os.path.splitext(rel_path)[0]
                 
-                # Generate variants
+                # Generate variants using random walk optimization
                 for variant_idx in range(50):  # 50 variants per file
                     variant_dir = os.path.join(self.augmented_code_dir, f"{base_name}__variant_{variant_idx}")
                     os.makedirs(variant_dir, exist_ok=True)
                     output_path = os.path.join(variant_dir, os.path.basename(rel_path))
                     
-                    # Apply semantic transformations
-                    augmented_content = transformer.transform_file(java_file, variant_idx)
-                    with open(output_path, 'w') as f:
-                        f.write(augmented_content)
-                    augmented_count += 1
+                    # Use random walk optimizer to find optimal augmentation sequence
+                    optimization_result = self.random_walk_optimizer.optimize_augmentation_sequence(
+                        initial_code=original_code,
+                        max_iterations=20,  # Reduced for performance
+                        parallel=False
+                    )
+                    
+                    if optimization_result and optimization_result.get('best_sequence'):
+                        # Apply the best sequence found
+                        best_sequence = optimization_result['best_sequence']
+                        augmented_code, success_flags = self.unified_registry.apply_transformation_sequence(
+                            original_code, best_sequence, locations
+                        )
+                        
+                        # Count transformation types used
+                        for i, (transformation, success) in enumerate(zip(best_sequence, success_flags)):
+                            if success:
+                                if 'ENHANCED' in transformation.value.upper():
+                                    enhanced_count += 1
+                                elif 'SIMPLE' in transformation.value.upper():
+                                    simple_count += 1
+                                elif 'RANDOM' in transformation.value.upper():
+                                    random_count += 1
+                        
+                        with open(output_path, 'w') as f:
+                            f.write(augmented_code)
+                        augmented_count += 1
+                    else:
+                        # Fallback to original code
+                        with open(output_path, 'w') as f:
+                            f.write(original_code)
+                        augmented_count += 1
             
             # Verify augmentation
             original_files = len(glob.glob(os.path.join(self.project_root, '**/*.java'), recursive=True))
@@ -182,7 +216,7 @@ class SimpleAnnotationTypePipeline:
             
             logger.info(f"Original files: {original_files}, Augmented files: {augmented_files}")
             logger.info(f"Generated {augmented_count} semantically augmented code variants")
-            logger.info(f"Enhanced augmentation used for {enhanced_count} files, Simple augmentation used for {simple_count} files")
+            logger.info(f"Enhanced transformations: {enhanced_count}, Simple transformations: {simple_count}, Random transformations: {random_count}")
             
             return True
                 

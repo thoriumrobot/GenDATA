@@ -28,12 +28,14 @@ import subprocess
 import tempfile
 
 from recursive_augmentation_engine import TransformationState, TransformationType
+from checker_framework_integration import CheckerFrameworkEvaluator, CheckerType
 
 logger = logging.getLogger(__name__)
 
 @dataclass
 class EvaluationMetrics:
     """Container for evaluation metrics"""
+    warning_reduction: float  # Primary optimization objective
     slicer_resistance: float
     model_performance: float
     diversity_score: float
@@ -58,9 +60,19 @@ class AugmentationSequenceEvaluator:
         self.device = device
         self.mini_model_epochs = mini_model_epochs
         
+        # Initialize Checker Framework evaluator
+        self.checker_evaluator = CheckerFrameworkEvaluator()
+        
+        # Model performance evaluation configuration
+        self.model_performance_enabled = False
+        self.model_cache = {}
+        self.cfg_cache = {}
+        self.models_dir = 'models_annotation_types'
+        
         # Evaluation statistics
         self.evaluation_stats = {
             'total_evaluations': 0,
+            'warning_reduction_scores': [],
             'slicer_resistance_scores': [],
             'model_performance_scores': [],
             'diversity_scores': [],
@@ -74,6 +86,137 @@ class AugmentationSequenceEvaluator:
         # Slicing tools configuration
         self.slicing_tools = ['soot', 'specimin']  # Available slicing tools
     
+    def enable_model_performance_evaluation(self, model_type: str = 'gcn', 
+                                          annotation_type: str = 'nonnegative',
+                                          models_dir: str = 'models_annotation_types'):
+        """Enable model performance evaluation during training"""
+        self.model_performance_enabled = True
+        self.model_type = model_type
+        self.annotation_type = annotation_type
+        self.models_dir = models_dir
+        logger.info(f"Enabled model performance evaluation: {model_type} for {annotation_type}")
+    
+    def _load_model(self, model_type: str, annotation_type: str):
+        """Load and cache model for evaluation"""
+        cache_key = f"{model_type}_{annotation_type}"
+        
+        if cache_key not in self.model_cache:
+            try:
+                # Import model classes dynamically
+                if model_type == 'gcn':
+                    from annotation_type_prediction import AnnotationTypeGCNModel
+                    model = AnnotationTypeGCNModel()
+                elif model_type == 'gbt':
+                    from annotation_type_prediction import AnnotationTypeGBTModel
+                    model = AnnotationTypeGBTModel()
+                elif model_type == 'causal':
+                    from annotation_type_causal_model import AnnotationTypeCausalModel
+                    model = AnnotationTypeCausalModel()
+                elif model_type == 'hgt':
+                    from annotation_type_prediction import AnnotationTypeHGTModel
+                    model = AnnotationTypeHGTModel()
+                else:
+                    logger.warning(f"Unknown model type: {model_type}")
+                    return None
+                
+                # Load trained model
+                model_path = os.path.join(self.models_dir, f"{annotation_type}_{model_type}_model.pth")
+                if os.path.exists(model_path):
+                    model.load_state_dict(torch.load(model_path, map_location=self.device))
+                    model.eval()
+                    self.model_cache[cache_key] = model
+                    logger.info(f"Loaded model: {model_path}")
+                else:
+                    logger.warning(f"Model file not found: {model_path}")
+                    return None
+                    
+            except Exception as e:
+                logger.error(f"Error loading model {model_type}_{annotation_type}: {e}")
+                return None
+        
+        return self.model_cache[cache_key]
+    
+    def _generate_cfg(self, code: str) -> Optional[Dict[str, Any]]:
+        """Generate CFG for code with caching"""
+        # Simple hash-based caching
+        code_hash = hash(code)
+        
+        if code_hash not in self.cfg_cache:
+            try:
+                # Import CFG generation utilities
+                from cfg_graph import create_cfg_from_java_code
+                cfg_data = create_cfg_from_java_code(code)
+                self.cfg_cache[code_hash] = cfg_data
+            except Exception as e:
+                logger.error(f"Error generating CFG: {e}")
+                return None
+        
+        return self.cfg_cache[code_hash]
+    
+    def evaluate_model_performance_with_prediction(self, states: List[TransformationState],
+                                                  model_type: Optional[str] = None,
+                                                  annotation_type: Optional[str] = None) -> float:
+        """Evaluate model prediction performance during training"""
+        if not self.model_performance_enabled:
+            return 0.5  # Neutral score when disabled
+        
+        model_type = model_type or getattr(self, 'model_type', 'gcn')
+        annotation_type = annotation_type or getattr(self, 'annotation_type', 'nonnegative')
+        
+        try:
+            # Load model
+            model = self._load_model(model_type, annotation_type)
+            if not model:
+                return 0.5  # Neutral score if model not available
+            
+            # Get final augmented code
+            final_state = states[-1]
+            
+            # Generate CFG
+            cfg_data = self._generate_cfg(final_state.code)
+            if not cfg_data:
+                return 0.5  # Neutral score if CFG generation fails
+            
+            # Get predictions
+            predictions = model.predict_annotation_types(cfg_data, threshold=0.3)
+            
+            # Calculate confidence score
+            confidence = self._compute_prediction_confidence(predictions)
+            
+            # Combine with existing metrics
+            return self._combine_performance_metrics(confidence, predictions)
+            
+        except Exception as e:
+            logger.error(f"Error in model performance evaluation: {e}")
+            return 0.5  # Neutral score on error
+    
+    def _compute_prediction_confidence(self, predictions: List[Dict[str, Any]]) -> float:
+        """Compute average prediction confidence"""
+        if not predictions:
+            return 0.0
+        
+        total_confidence = 0.0
+        for pred in predictions:
+            confidence = pred.get('confidence', 0.0)
+            total_confidence += confidence
+        
+        return total_confidence / len(predictions)
+    
+    def _combine_performance_metrics(self, confidence: float, predictions: List[Dict[str, Any]]) -> float:
+        """Combine confidence with other performance metrics"""
+        # Base score from confidence
+        base_score = confidence
+        
+        # Bonus for having predictions
+        prediction_bonus = 0.1 if predictions else 0.0
+        
+        # Penalty for too many predictions (might indicate over-prediction)
+        if len(predictions) > 10:
+            prediction_bonus -= 0.1
+        
+        final_score = min(1.0, max(0.0, base_score + prediction_bonus))
+        return final_score
+    
     def evaluate_sequence(self, states: List[TransformationState]) -> EvaluationMetrics:
         """Evaluate a complete augmentation sequence"""
         if not states:
@@ -83,23 +226,32 @@ class AugmentationSequenceEvaluator:
         final_state = states[-1]
         
         # Evaluate each metric
+        warning_reduction = self.evaluate_warning_reduction(original_state, final_state)
         slicer_resistance = self.evaluate_slicer_resistance(original_state, final_state)
-        model_performance = self.evaluate_model_performance(states)
+        
+        # Use enhanced model performance evaluation if enabled
+        if self.model_performance_enabled:
+            model_performance = self.evaluate_model_performance_with_prediction(states)
+        else:
+            model_performance = self.evaluate_model_performance(states)
+        
         diversity_score = self.compute_diversity_metrics(states)
         compilation_success = self.evaluate_compilation_success(final_state)
         semantic_preservation = self.evaluate_semantic_preservation(original_state, final_state)
         
-        # Compute overall score (weighted combination)
+        # Compute overall score (weighted combination) - Warning reduction is primary objective
         overall_score = (
-            0.3 * slicer_resistance +
-            0.3 * model_performance +
-            0.2 * diversity_score +
-            0.1 * compilation_success +
-            0.1 * semantic_preservation
+            0.6 * warning_reduction +      # PRIMARY objective
+            0.15 * slicer_resistance +
+            0.15 * model_performance +
+            0.05 * diversity_score +
+            0.03 * compilation_success +
+            0.02 * semantic_preservation
         )
         
         # Create metrics object
         metrics = EvaluationMetrics(
+            warning_reduction=warning_reduction,
             slicer_resistance=slicer_resistance,
             model_performance=model_performance,
             diversity_score=diversity_score,
@@ -118,6 +270,54 @@ class AugmentationSequenceEvaluator:
         self._update_statistics(metrics)
         
         return metrics
+    
+    def evaluate_warning_reduction(self, original_state: TransformationState, 
+                                  final_state: TransformationState) -> float:
+        """Evaluate warning reduction as primary optimization objective"""
+        try:
+            # Save original and final code to temporary files
+            with tempfile.NamedTemporaryFile(mode='w', suffix='.java', delete=False) as orig_file:
+                orig_file.write(original_state.code)
+                original_path = orig_file.name
+            
+            with tempfile.NamedTemporaryFile(mode='w', suffix='.java', delete=False) as final_file:
+                final_file.write(final_state.code)
+                final_path = final_file.name
+            
+            try:
+                # Run Checker Framework Index Checker on both files
+                original_result = self.checker_evaluator.evaluate_file(original_path, CheckerType.INDEX)
+                final_result = self.checker_evaluator.evaluate_file(final_path, CheckerType.INDEX)
+                
+                # Count warnings
+                original_warnings = len(original_result.original_warnings)
+                final_warnings = len(final_result.original_warnings)
+                
+                # Calculate warning reduction
+                if original_warnings == 0:
+                    # No original warnings - score based on whether we introduced any
+                    reduction = 1.0 if final_warnings == 0 else 0.0
+                else:
+                    reduction = max(0.0, (original_warnings - final_warnings) / original_warnings)
+                
+                # Cap reduction at 1.0 and ensure non-negative
+                reduction = min(1.0, max(0.0, reduction))
+                
+                logger.debug(f"Warning reduction: {original_warnings} -> {final_warnings} (reduction: {reduction:.3f})")
+                
+                return reduction
+                
+            finally:
+                # Clean up temporary files
+                try:
+                    os.unlink(original_path)
+                    os.unlink(final_path)
+                except OSError:
+                    pass
+                    
+        except Exception as e:
+            logger.warning(f"Error evaluating warning reduction: {e}")
+            return 0.0  # Default neutral score
     
     def evaluate_slicer_resistance(self, original_state: TransformationState, 
                                  final_state: TransformationState) -> float:
@@ -620,6 +820,7 @@ class AugmentationSequenceEvaluator:
     def _update_statistics(self, metrics: EvaluationMetrics):
         """Update evaluation statistics"""
         self.evaluation_stats['total_evaluations'] += 1
+        self.evaluation_stats['warning_reduction_scores'].append(metrics.warning_reduction)
         self.evaluation_stats['slicer_resistance_scores'].append(metrics.slicer_resistance)
         self.evaluation_stats['model_performance_scores'].append(metrics.model_performance)
         self.evaluation_stats['diversity_scores'].append(metrics.diversity_score)
@@ -629,6 +830,7 @@ class AugmentationSequenceEvaluator:
     def _create_empty_metrics(self) -> EvaluationMetrics:
         """Create empty metrics for invalid sequences"""
         return EvaluationMetrics(
+            warning_reduction=0.0,
             slicer_resistance=0.0,
             model_performance=0.0,
             diversity_score=0.0,
@@ -643,7 +845,7 @@ class AugmentationSequenceEvaluator:
         stats = self.evaluation_stats.copy()
         
         # Add computed statistics
-        for key in ['slicer_resistance_scores', 'model_performance_scores', 
+        for key in ['warning_reduction_scores', 'slicer_resistance_scores', 'model_performance_scores', 
                    'diversity_scores', 'compilation_success_rates', 
                    'semantic_preservation_rates']:
             if stats[key]:
@@ -658,6 +860,7 @@ class AugmentationSequenceEvaluator:
         """Reset evaluation statistics"""
         self.evaluation_stats = {
             'total_evaluations': 0,
+            'warning_reduction_scores': [],
             'slicer_resistance_scores': [],
             'model_performance_scores': [],
             'diversity_scores': [],

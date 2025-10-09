@@ -226,7 +226,7 @@ class RLTrainingPipeline:
                 trainer = EnhancedReinforcementLearningTrainer(
                     model_type=model_type,
                     learning_rate=0.001,
-                    device='cpu',
+                    device='cuda',
                     checker_type=checker_type,
                     reward_strategy='adaptive'
                 )

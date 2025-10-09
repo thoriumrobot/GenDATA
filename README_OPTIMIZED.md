@@ -135,7 +135,7 @@ python main_optimized_pipeline.py --performance-summary
 from optimized_performance_pipeline import create_optimized_pipeline
 
 # Create optimized pipeline
-pipeline = create_optimized_pipeline(device='cpu')
+pipeline = create_optimized_pipeline(device='cuda')
 
 # Train with automatic model selection
 result = pipeline.train_annotation_type_with_optimized_augmentation(

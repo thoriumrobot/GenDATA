@@ -78,7 +78,7 @@ class EnhancedAnnotationPlacementModel(nn.Module):
 class EnhancedReinforcementLearningTrainer:
     """Enhanced RL trainer with better feedback mechanisms"""
     
-    def __init__(self, model_type='hgt', learning_rate=0.001, device='cpu', 
+    def __init__(self, model_type='hgt', learning_rate=0.001, device='cuda', 
                  checker_type='nullness', reward_strategy='adaptive'):
         self.model_type = model_type
         self.device = device

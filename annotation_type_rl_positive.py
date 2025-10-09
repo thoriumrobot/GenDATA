@@ -37,7 +37,7 @@ logger = logging.getLogger(__name__)
 class AnnotationTypeTrainer:
     """Trainer for specific annotation types using binary RL models"""
     
-    def __init__(self, annotation_type='@Positive', base_model_type='gcn', learning_rate=0.001, device='cpu'):
+    def __init__(self, annotation_type='@Positive', base_model_type='gcn', learning_rate=0.001, device='cuda'):
         self.annotation_type = annotation_type
         self.base_model_type = base_model_type
         self.device = device

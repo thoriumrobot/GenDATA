@@ -55,6 +55,11 @@ class TransformationType(Enum):
     SIMPLE_FIELD_ACCESS = "simple_field_access"
     SIMPLE_STRING_OPERATION = "simple_string_operation"
     SIMPLE_NUMERIC_OPERATION = "simple_numeric_operation"
+    
+    # Random augmentation transformations (3 methods)
+    RANDOM_METHOD_INSERTION = "random_method_insertion"
+    RANDOM_STATEMENT_INSERTION = "random_statement_insertion"
+    RANDOM_EXPRESSION_INSERTION = "random_expression_insertion"
 
 @dataclass
 class TransformationState:
