@@ -373,7 +373,6 @@ public class ListProcessor {
         try:
             # Initialize GNN policy
             gnn = TransformationPolicyGNN(
-                device=self.device,
                 hidden_dim=self.config.get('gnn_hidden_dim', 256)
             )
             

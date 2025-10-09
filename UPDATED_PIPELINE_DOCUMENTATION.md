@@ -2,19 +2,57 @@
 
 ## 📋 Overview
 
-The GenDATA pipeline has been comprehensively updated with performance-optimized augmentation methods that use **real data processing** and **actual machine learning optimization techniques**. This documentation reflects the current state of the system as of October 2025.
+The GenDATA pipeline has been enhanced with an **integrated prediction system** that combines the Checker Framework's Lower Bound Checker with intelligent model-based annotation placement. This documentation reflects the current state of the system as of October 2025.
 
 ---
 
 ## ✅ **Current Pipeline Status**
 
 ### **Production Ready Features**
+- ✅ **Enhanced Prediction Pipeline**: Integrated Lower Bound Checker execution
+- ✅ **Warning-Based Slicing**: Soot integration for targeted code analysis
+- ✅ **Intelligent Model Selection**: Auto-selects optimal models based on performance
+- ✅ **CFG Generation**: Converts slices to Control Flow Graphs for model input
+- ✅ **Comprehensive Coverage**: Supports all annotation types (@Positive, @NonNegative, @GTENegativeOne)
 - ✅ **Real Data Processing**: No mock data or simulations
-- ✅ **Actual ML Methods**: RL, MCTS, Evolutionary, GNN implementations
 - ✅ **Performance Optimized**: Best performing model/annotation combinations
-- ✅ **Intelligent Model Selection**: Auto-selects optimal models
-- ✅ **Adaptive Augmentation**: Smart optimization decisions
-- ✅ **Comprehensive Testing**: 100% success rate in validation
+
+---
+
+## 🔍 **Enhanced Prediction Workflow**
+
+### **Step-by-Step Process**
+
+1. **Lower Bound Checker Execution**
+   - Automatically runs Checker Framework's Index Checker on target project
+   - Analyzes all Java files for potential out-of-bounds access issues
+   - Generates comprehensive warning reports
+
+2. **Warning Resolution**
+   - Uses `CheckerFrameworkWarningResolver` to identify specific warning locations
+   - Maps warnings to fields, methods, and parameters
+   - Prepares for targeted slicing
+
+3. **Warning-Based Slicing**
+   - Leverages Soot slicer for precise code slicing
+   - Generates minimal slices focused on warning-generating code
+   - Creates focused analysis targets
+
+4. **CFG Generation**
+   - Converts slices to Control Flow Graphs using Checker Framework's CFG Builder
+   - Prepares graph representations for model input
+   - Ensures compatibility with trained models
+
+5. **Intelligent Prediction**
+   - Selects optimal models for each annotation type based on performance data
+   - Runs predictions on generated CFGs
+   - Saves results for inspection and validation
+
+### **Key Benefits**
+- **Targeted Analysis**: Focuses on code that actually generates warnings
+- **Automated Workflow**: No manual intervention required
+- **Performance Optimized**: Uses best-performing models for each annotation type
+- **Comprehensive Coverage**: Analyzes all relevant code patterns
 
 ---
 

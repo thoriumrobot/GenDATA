@@ -13,7 +13,7 @@ import json
 import argparse
 import logging
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 
 # Add the current directory to Python path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -164,6 +164,72 @@ class MainOptimizedPipeline:
         
         return result
     
+    def predict_with_enhanced_pipeline(
+        self,
+        project_root: Optional[str] = None,
+        output_dir: Optional[str] = None,
+        models_dir: Optional[str] = None,
+        java_files: List[str] = None,
+        use_lower_bound_checker: bool = True
+    ) -> Dict[str, Any]:
+        """
+        Run prediction using the enhanced pipeline with Lower Bound Checker integration.
+        This is now the default prediction behavior.
+        
+        Args:
+            project_root: Root directory of the target project
+            output_dir: Directory to save prediction results
+            models_dir: Directory containing trained models
+            java_files: List of specific Java files to process (if None, processes all files)
+            use_lower_bound_checker: Whether to run Lower Bound Checker (default: True)
+            
+        Returns:
+            Dictionary with prediction results and performance metrics
+        """
+        
+        # Use defaults if not provided
+        project_root = project_root or DEFAULT_PROJECT_ROOT
+        output_dir = output_dir or "predictions_enhanced"
+        models_dir = models_dir or "models_annotation_types"
+        
+        logger.info(f"🚀 Running Enhanced Prediction Pipeline on {project_root}")
+        logger.info(f"📁 Output directory: {output_dir}")
+        logger.info(f"🔍 Lower Bound Checker: {'enabled' if use_lower_bound_checker else 'disabled'}")
+        
+        # Run the enhanced prediction pipeline
+        success = self.pipeline.predict_with_enhanced_pipeline(
+            project_root=project_root,
+            output_dir=output_dir,
+            models_dir=models_dir,
+            java_files=java_files,
+            use_lower_bound_checker=use_lower_bound_checker
+        )
+        
+        if success:
+            result = {
+                'success': True,
+                'project_root': project_root,
+                'output_dir': output_dir,
+                'models_dir': models_dir,
+                'lower_bound_checker_used': use_lower_bound_checker,
+                'message': 'Enhanced prediction pipeline completed successfully'
+            }
+            
+            logger.info("✅ Enhanced prediction completed successfully")
+            return result
+        else:
+            result = {
+                'success': False,
+                'project_root': project_root,
+                'output_dir': output_dir,
+                'models_dir': models_dir,
+                'lower_bound_checker_used': use_lower_bound_checker,
+                'message': 'Enhanced prediction pipeline failed'
+            }
+            
+            logger.error("❌ Enhanced prediction failed")
+            return result
+    
     def train_all_annotation_types(
         self,
         warnings_file: Optional[str] = None,
@@ -247,8 +313,14 @@ Examples:
   # Train with custom configuration
   python main_optimized_pipeline.py --train positive --config custom_config.json
 
-  # Predict using trained models
+  # Predict using trained models (legacy mode)
   python main_optimized_pipeline.py --predict nonnegative
+
+  # Run enhanced prediction with Lower Bound Checker (default)
+  python main_optimized_pipeline.py --predict-enhanced --project-root /path/to/project
+
+  # Enhanced prediction on specific files
+  python main_optimized_pipeline.py --predict-enhanced --java-files File1.java File2.java
 
   # Compare optimized vs baseline performance
   python main_optimized_pipeline.py --train-all --compare-baseline
@@ -261,7 +333,9 @@ Examples:
     parser.add_argument('--train-all', action='store_true',
                         help='Train all annotation types with optimization')
     parser.add_argument('--predict', type=str, choices=['positive', 'nonnegative', 'gtenegativeone'],
-                        help='Predict using trained models')
+                        help='Predict using trained models (legacy mode)')
+    parser.add_argument('--predict-enhanced', action='store_true',
+                        help='Run enhanced prediction with Lower Bound Checker integration (default behavior)')
     
     # Configuration options
     parser.add_argument('--config', type=str,
@@ -282,6 +356,14 @@ Examples:
                         help='Compare optimized vs baseline performance')
     parser.add_argument('--performance-summary', action='store_true',
                         help='Show performance summary')
+    
+    # Enhanced prediction options
+    parser.add_argument('--java-files', nargs='*',
+                        help='Specific Java files to process (if not provided, processes all files)')
+    parser.add_argument('--no-lower-bound-checker', action='store_true',
+                        help='Disable Lower Bound Checker execution (use legacy mode)')
+    parser.add_argument('--models-dir', type=str,
+                        help='Directory containing trained models')
     
     # System options
     parser.add_argument('--device', type=str, default='auto', choices=['auto', 'cpu', 'cuda'],
@@ -355,6 +437,23 @@ Examples:
             print(f"\nPrediction Result for {args.predict}:")
             print(f"  Success: {result.get('success', False)}")
             print(f"  Predictions Generated: {result.get('predictions_count', 0)}")
+        
+        elif args.predict_enhanced:
+            logger.info("Running enhanced prediction with Lower Bound Checker integration")
+            result = pipeline.predict_with_enhanced_pipeline(
+                project_root=args.project_root,
+                output_dir=args.output_dir,
+                models_dir=args.models_dir,
+                java_files=args.java_files,
+                use_lower_bound_checker=not args.no_lower_bound_checker
+            )
+            
+            print(f"\nEnhanced Prediction Result:")
+            print(f"  Success: {result.get('success', False)}")
+            print(f"  Project Root: {result.get('project_root', 'N/A')}")
+            print(f"  Output Directory: {result.get('output_dir', 'N/A')}")
+            print(f"  Lower Bound Checker Used: {result.get('lower_bound_checker_used', False)}")
+            print(f"  Message: {result.get('message', 'N/A')}")
         
         elif args.performance_summary:
             summary = pipeline.get_performance_summary()

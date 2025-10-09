@@ -1,0 +1,11 @@
+=== LOWER BOUND CHECKER OUTPUT ===
+Command: javac -cp /home/ubuntu/checker-framework-3.42.0/checker/dist/checker-qual.jar:/home/ubuntu/checker-framework-3.42.0/checker/dist/checker.jar -processor org.checkerframework.checker.index.IndexChecker -Xmaxwarns 10000 -d ... (1 files)
+Exit code: 1
+
+=== STDOUT ===
+
+=== STDERR ===
+test_array_access.java:1: error: class TestArrayAccess is public, should be declared in a file named TestArrayAccess.java
+public class TestArrayAccess {
+       ^
+1 error

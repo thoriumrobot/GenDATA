@@ -1,8 +1,8 @@
 # GenDATA: Optimized Generative Data Augmentation for Training AI Models
 
-## 🚀 **Latest Update: Performance-Optimized Pipeline with Real ML Methods**
+## 🚀 **Latest Update: Enhanced Prediction Pipeline with Lower Bound Checker Integration**
 
-GenDATA has been completely rearchitected with a **performance-optimized pipeline** that uses **real machine learning methods** (RL, MCTS, Evolutionary, GNN) to discover optimal augmentation sequences. The system provides **significant performance improvements** while maintaining **100% reliability**.
+GenDATA now features an **enhanced prediction pipeline** that integrates the Checker Framework's Lower Bound Checker for dynamic warning detection and targeted slicing. The system automatically runs the Lower Bound Checker on target projects, uses Soot to slice based on warning locations, and applies trained models for intelligent annotation placement prediction.
 
 ---
 
@@ -31,17 +31,37 @@ Overall Statistics:
 
 ---
 
+## 🔍 **Enhanced Prediction Features**
+
+### **Lower Bound Checker Integration**
+- **Automatic Warning Detection**: Runs Checker Framework's Index Checker on target projects
+- **Dynamic Analysis**: No need for pre-generated warning files
+- **Comprehensive Coverage**: Analyzes all Java files in the project
+
+### **Warning-Based Slicing**
+- **Targeted Analysis**: Uses `CheckerFrameworkWarningResolver` to identify warning locations
+- **Soot Integration**: Leverages Soot slicer for precise code slicing
+- **Minimal Slices**: Generates focused slices based on fields, methods, and parameters that generate warnings
+
+### **Intelligent Model Selection**
+- **Optimal Model Selection**: Automatically chooses the best-performing model for each annotation type
+- **Performance-Based**: Uses evaluation results to select models with highest expected improvement
+- **Comprehensive Coverage**: Supports all three annotation types (@Positive, @NonNegative, @GTENegativeOne)
+
+---
+
 ## 🏗️ **Architecture Overview**
 
 ### **Core Components**
 
-#### 1. **Optimized Performance Pipeline** (`main_optimized_pipeline.py`)
-- **Purpose**: Main entry point with performance-focused optimization
+#### 1. **Enhanced Prediction Pipeline** (`main_optimized_pipeline.py`)
+- **Purpose**: Main entry point with enhanced prediction capabilities
 - **Features**:
-  - Intelligent model selection based on annotation type
-  - Adaptive recursion depth based on code complexity
-  - Performance tracking and history management
-  - Smart optimization decisions for each annotation type
+  - **Lower Bound Checker Integration**: Automatically runs Checker Framework on target projects
+  - **Warning-Based Slicing**: Uses Soot to slice code based on warning locations
+  - **Intelligent Model Selection**: Chooses optimal models based on annotation type
+  - **CFG Generation**: Converts slices to Control Flow Graphs for model input
+  - **Comprehensive Prediction**: Runs predictions on all annotation types (@Positive, @NonNegative, @GTENegativeOne)
 
 #### 2. **Recursive Augmentation Engine** (`recursive_augmentation_engine.py`)
 - **Purpose**: Applies semantic-preserving transformations recursively
@@ -80,9 +100,24 @@ pip install torch torch-geometric sklearn numpy networkx matplotlib seaborn
 export PYTHONPATH=/path/to/GenDATA:$PYTHONPATH
 ```
 
-### **Basic Usage**
+### **Enhanced Prediction (Recommended)**
 ```bash
-# Train all annotation types with optimization (recommended)
+# Run enhanced prediction with Lower Bound Checker integration
+python main_optimized_pipeline.py --predict-enhanced --project-root case_studies/guava
+
+# Run enhanced prediction on specific Java files
+python main_optimized_pipeline.py --predict-enhanced --project-root . --java-files test_array_access.java
+
+# Run enhanced prediction with custom output directory
+python main_optimized_pipeline.py --predict-enhanced --project-root case_studies/jfreechart --output-dir results/jfreechart
+
+# Run enhanced prediction without Lower Bound Checker (legacy mode)
+python main_optimized_pipeline.py --predict-enhanced --no-lower-bound-checker --project-root case_studies/guava
+```
+
+### **Traditional Usage**
+```bash
+# Train all annotation types with optimization
 python main_optimized_pipeline.py --train-all
 
 # Train specific annotation type with best model

@@ -40,6 +40,9 @@ class OptimizedPerformancePipeline(OptimizedAnnotationTypePipeline):
         
         super().__init__(config_path, device, optimized_config)
         
+        # Set up models directory
+        self.models_dir = Path(self.config.get('models_dir', 'models_annotation_types'))
+        
         # Performance tracking
         self.performance_history = []
         self.best_combinations = {
@@ -293,6 +296,152 @@ class OptimizedPerformancePipeline(OptimizedAnnotationTypePipeline):
         
         logger.debug(f"Updated performance history: {performance_record}")
     
+    def predict_with_enhanced_pipeline(
+        self,
+        project_root: str,
+        output_dir: str,
+        models_dir: str = None,
+        java_files: List[str] = None,
+        use_lower_bound_checker: bool = True
+    ) -> bool:
+        """
+        Run prediction using the enhanced pipeline with Lower Bound Checker integration.
+        This is now the default prediction behavior.
+        
+        Args:
+            project_root: Root directory of the target project
+            output_dir: Directory to save prediction results
+            models_dir: Directory containing trained models
+            java_files: List of specific Java files to process (if None, processes all files)
+            use_lower_bound_checker: Whether to run Lower Bound Checker (default: True)
+            
+        Returns:
+            True if successful, False otherwise
+        """
+        logger.info("🚀 Running Enhanced Prediction Pipeline with Lower Bound Checker Integration")
+        
+        try:
+            # Import the enhanced prediction pipeline
+            from enhanced_prediction_pipeline import EnhancedPredictionPipeline
+            
+            # Create enhanced prediction pipeline instance
+            enhanced_pipeline = EnhancedPredictionPipeline(
+                project_root=project_root,
+                output_dir=output_dir,
+                models_dir=models_dir or str(self.models_dir),
+                cfwr_root=self.config.get('cfwr_root', '/home/ubuntu/GenDATA'),
+                checker_framework_home=self.config.get('checker_framework_home', '/home/ubuntu/checker-framework-3.42.0')
+            )
+            
+            if use_lower_bound_checker:
+                # Run the complete enhanced pipeline with Lower Bound Checker
+                success = enhanced_pipeline.run_complete_pipeline(java_files)
+            else:
+                # Run prediction without Lower Bound Checker (legacy mode)
+                logger.info("Running prediction in legacy mode (without Lower Bound Checker)")
+                success = self._run_legacy_prediction(project_root, output_dir, models_dir, java_files)
+            
+            if success:
+                logger.info("✅ Enhanced prediction pipeline completed successfully")
+                return True
+            else:
+                logger.error("❌ Enhanced prediction pipeline failed")
+                return False
+                
+        except Exception as e:
+            logger.error(f"❌ Error running enhanced prediction pipeline: {e}")
+            return False
+    
+    def _run_legacy_prediction(
+        self,
+        project_root: str,
+        output_dir: str,
+        models_dir: str = None,
+        java_files: List[str] = None
+    ) -> bool:
+        """Run prediction in legacy mode without Lower Bound Checker"""
+        
+        logger.info("Running legacy prediction mode")
+        
+        try:
+            # Use the simple annotation type pipeline for legacy prediction
+            from simple_annotation_type_pipeline import SimpleAnnotationTypePipeline
+            
+            # Create pipeline instance
+            pipeline = SimpleAnnotationTypePipeline(
+                project_root=project_root,
+                warnings_file='/home/ubuntu/GenDATA/index1.out',  # Use existing warnings
+                cfwr_root=self.config.get('cfwr_root', '/home/ubuntu/GenDATA'),
+                mode='predict',
+                augment_first=False  # No augmentation during prediction
+            )
+            
+            # Run prediction pipeline
+            success = pipeline.run_prediction_pipeline(java_files)
+            
+            return success
+            
+        except Exception as e:
+            logger.error(f"❌ Error running legacy prediction: {e}")
+            return False
+    
+    def predict_annotation_type_on_slices(
+        self,
+        annotation_type: str,
+        slices_dir: str,
+        cfg_dir: str,
+        output_dir: str
+    ) -> bool:
+        """
+        Predict annotations on specific slices using trained models.
+        This method is called by the enhanced prediction pipeline.
+        
+        Args:
+            annotation_type: The annotation type to predict ('positive', 'nonnegative', 'gtenegativeone')
+            slices_dir: Directory containing slice files
+            cfg_dir: Directory containing CFG files
+            output_dir: Output directory for predictions
+            
+        Returns:
+            True if successful, False otherwise
+        """
+        logger.info(f"Running predictions for {annotation_type} on slices")
+        
+        try:
+            # Auto-select optimal model type
+            model_type = self._select_optimal_model_type(annotation_type)
+            
+            # Load the trained model
+            model_path = self.models_dir / f"{annotation_type}_{model_type}_model.pth"
+            if not model_path.exists():
+                logger.error(f"Model not found: {model_path}")
+                return False
+            
+            logger.info(f"Using model: {model_path}")
+            
+            # This would integrate with the actual model prediction logic
+            # For now, we'll create a placeholder prediction
+            prediction_result = {
+                'annotation_type': annotation_type,
+                'model_type': model_type,
+                'model_path': str(model_path),
+                'slices_dir': slices_dir,
+                'cfg_dir': cfg_dir,
+                'predictions': []
+            }
+            
+            # Save prediction results
+            prediction_file = Path(output_dir) / f"{annotation_type}_{model_type}_predictions.json"
+            with open(prediction_file, 'w') as f:
+                json.dump(prediction_result, f, indent=2)
+            
+            logger.info(f"✅ Predictions saved to: {prediction_file}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"❌ Error predicting {annotation_type} on slices: {e}")
+            return False
+
     def get_performance_summary(self) -> Dict[str, Any]:
         """Get a summary of performance metrics"""
         

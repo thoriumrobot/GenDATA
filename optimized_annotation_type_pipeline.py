@@ -161,7 +161,6 @@ class OptimizedAnnotationTypePipeline:
         try:
             # GNN Policy
             learners['gnn'] = TransformationPolicyGNN(
-                device=self.device,
                 hidden_dim=self.config.get('gnn_hidden_dim', 256)
             )
         except Exception as e:
