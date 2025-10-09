@@ -162,3 +162,5 @@ def test_shell_script_interface():
 if __name__ == "__main__":
     test_soot_slicer_modes()
     test_shell_script_interface()
+
+

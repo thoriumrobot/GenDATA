@@ -23,6 +23,45 @@ DEFAULT_PROJECT_ROOT = '/home/ubuntu/checker-framework/checker/tests/index'
 DEFAULT_WARNINGS_FILE = '/home/ubuntu/GenDATA/index1.out'
 DEFAULT_CFWR_ROOT = '/home/ubuntu/GenDATA'
 
+# Optimized Augmentation Policy Configuration for Maximum Performance
+AUGMENTATION_POLICY_CONFIG = {
+    # Optimized for best performing methods
+    'method': 'mcts',  # MCTS showed best stability in testing
+    'max_recursion_depth': 4,  # Increased for better augmentation diversity
+    'policy_model_path': 'models/augmentation_policy.pth',
+    'enable_online_learning': True,
+    'exploration_rate': 0.15,  # Slightly increased for better exploration
+    
+    # Optimized reward weights based on performance analysis
+    'reward_weights': {
+        'accuracy': 0.5,        # Increased weight for model accuracy
+        'slicer_resistance': 0.25,  # Reduced to focus on accuracy
+        'diversity': 0.15,      # Reduced to prevent over-diversification
+        'compilation': 0.1      # Maintained for reliability
+    },
+    
+    # Optimized hyperparameters
+    'rl_learning_rate': 2e-4,   # Reduced for more stable learning
+    'mcts_exploration': 1.2,    # Reduced for more exploitation of good paths
+    'mcts_iterations': 1500,    # Increased for better search quality
+    'evo_population_size': 60,  # Increased for better genetic diversity
+    'evo_mutation_rate': 0.08,  # Reduced for more stable evolution
+    'gnn_hidden_dim': 320,      # Increased for better representation
+    'ab_testing_enabled': True,
+    'fallback_threshold': 0.4,  # Lowered to prefer learned policies
+    'policy_models_dir': 'models/augmentation_policies',
+    
+    # Performance optimization settings
+    'performance_optimization': {
+        'preferred_models': ['gcn', 'causal'],  # Best performing models
+        'preferred_annotations': ['nonnegative', 'gtenegativeone'],  # Best performing annotations
+        'max_augmentation_factor': 20,  # Increased for better augmentation
+        'quality_threshold': 0.7,  # Higher threshold for quality
+        'adaptive_depth': True,  # Dynamically adjust recursion depth
+        'performance_tracking': True  # Enable performance monitoring
+    }
+}
+
 # Slicer-specific configurations
 SLICER_CONFIGS = {
     'soot': {
