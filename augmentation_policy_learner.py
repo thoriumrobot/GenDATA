@@ -1213,13 +1213,15 @@ class RandomWalkOptimizer(AugmentationPolicyLearner):
     """Orchestrates all random walk-based optimization methods"""
     
     def __init__(self, methods: List[str] = None, device: str = 'cpu',
-                 registry: Optional[UnifiedAugmentationRegistry] = None):
+                 registry: Optional[UnifiedAugmentationRegistry] = None,
+                 enable_random_walk: bool = True):
         super().__init__(registry)
         if methods is None:
             methods = ['rl', 'mcts', 'graph', 'evolutionary']
         
         self.methods = methods
         self.device = device
+        self.enable_random_walk = enable_random_walk
         
         # Initialize components
         self.components = {}
@@ -1287,6 +1289,10 @@ class RandomWalkOptimizer(AugmentationPolicyLearner):
                                      max_iterations: int = 100,
                                      parallel: bool = True) -> Dict[str, Any]:
         """Find optimal sequence using ensemble of random walk methods"""
+        if not self.enable_random_walk:
+            logger.info("Random walk optimization disabled, using deterministic transformation selection")
+            return self._deterministic_optimization(initial_code, max_iterations)
+        
         logger.info(f"Starting random walk optimization with methods: {self.methods}")
         
         self.optimization_stats['total_optimizations'] += 1
@@ -1641,6 +1647,46 @@ class RandomWalkOptimizer(AugmentationPolicyLearner):
             stats['average_warning_reduction_std'] = np.std(stats['average_warning_reductions'])
         
         return stats
+    
+    def _deterministic_optimization(self, initial_code: str, max_iterations: int) -> Dict[str, Any]:
+        """Use deterministic transformation selection when random walk is disabled"""
+        logger.info("Using deterministic transformation selection")
+        
+        # Get available transformations from registry
+        available_transforms = self.registry.get_available_transformations()
+        
+        # Select transformations deterministically (first N transformations)
+        num_transforms = min(5, len(available_transforms))  # Use up to 5 transformations
+        selected_transforms = available_transforms[:num_transforms]
+        
+        # Apply transformations sequentially
+        current_code = initial_code
+        applied_transforms = []
+        
+        for transform_type in selected_transforms:
+            try:
+                # Apply transformation deterministically
+                result = self.engine.apply_transformation(current_code, transform_type, deterministic=True)
+                if result['success']:
+                    current_code = result['augmented_code']
+                    applied_transforms.append(transform_type)
+            except Exception as e:
+                logger.warning(f"Failed to apply transformation {transform_type}: {e}")
+        
+        # Return deterministic result
+        return {
+            'method': 'deterministic',
+            'success': True,
+            'augmented_code': current_code,
+            'applied_transformations': applied_transforms,
+            'warning_reduction': 0.0,  # Would need evaluation
+            'performance_score': 0.5,  # Neutral score
+            'metadata': {
+                'random_walk_disabled': True,
+                'deterministic_selection': True,
+                'transformations_applied': len(applied_transforms)
+            }
+        }
 
 
 def main():

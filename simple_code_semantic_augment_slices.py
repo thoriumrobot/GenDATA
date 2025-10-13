@@ -19,8 +19,12 @@ import re
 import argparse
 import random
 import ast
+import logging
 from pathlib import Path
 from typing import List, Tuple, Optional, Dict, Any
+
+# Set up logging
+logger = logging.getLogger(__name__)
 
 HEADER_COMMENT = """
 /*
@@ -31,9 +35,10 @@ HEADER_COMMENT = """
 class SimpleCodeSemanticTransformer:
     """Semantic transformer optimized for simple Checker Framework test cases."""
     
-    def __init__(self, seed: int = 42):
+    def __init__(self, seed: int = 42, disabled_transformations: List[str] = None):
         random.seed(seed)
         self.transformations_applied = []
+        self.disabled_transformations = disabled_transformations or []
     
     def transform_file(self, java_path: str, variant_idx: int) -> str:
         """Apply simple semantic transformations to a Java file."""
@@ -46,26 +51,38 @@ class SimpleCodeSemanticTransformer:
         # Apply transformations
         src = self._insert_header_comment(src)
         
-        # Simple transformation methods optimized for Checker Framework test cases
-        transformations = [
-            self._transform_simple_method_calls,
-            self._transform_simple_assignments,
-            self._transform_simple_conditionals,
-            self._transform_simple_array_access,
-            self._transform_simple_return_statements,
-            self._transform_simple_variable_declarations,
-            self._transform_simple_constructor_calls,
-            self._transform_simple_field_access,
-            self._transform_simple_string_operations,
-            self._transform_simple_numeric_operations,
-        ]
+        # Simple transformation methods with names
+        transformation_map = {
+            'simple_method_call': self._transform_simple_method_calls,
+            'simple_assignment': self._transform_simple_assignments,
+            'simple_conditional': self._transform_simple_conditionals,
+            'simple_array_access': self._transform_simple_array_access,
+            'simple_return_statement': self._transform_simple_return_statements,
+            'simple_variable_declaration': self._transform_simple_variable_declarations,
+            'simple_constructor_call': self._transform_simple_constructor_calls,
+            'simple_field_access': self._transform_simple_field_access,
+            'simple_string_operation': self._transform_simple_string_operations,
+            'simple_numeric_operation': self._transform_simple_numeric_operations,
+        }
+        
+        # Filter out disabled transformations
+        available_transformations = {
+            name: method for name, method in transformation_map.items()
+            if name not in self.disabled_transformations
+        }
+        
+        if not available_transformations:
+            logger.warning("All transformations disabled, returning original source")
+            return src
         
         # Apply 2-4 random transformations (conservative for simple code)
-        num_transforms = random.randint(2, 4)
-        selected_transforms = random.sample(transformations, num_transforms)
+        num_transforms = min(random.randint(2, 4), len(available_transformations))
+        selected_transform_names = random.sample(list(available_transformations.keys()), num_transforms)
         
-        for transform in selected_transforms:
-            src = transform(src)
+        for transform_name in selected_transform_names:
+            transform_method = available_transformations[transform_name]
+            src = transform_method(src)
+            self.transformations_applied.append(transform_name)
         
         return src
     

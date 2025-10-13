@@ -216,7 +216,7 @@ class CodeLocationAnalyzer:
                 TransformationType.STRING_CONCATENATION,
                 TransformationType.NUMERIC_LITERAL,
                 TransformationType.SIMPLE_ASSIGNMENT,
-                TransformationType.SIMPLE_NUMERIC_OPERATIONS,
+                TransformationType.SIMPLE_NUMERIC_OPERATION,
                 TransformationType.SIMPLE_STRING_OPERATION,
             }
             
@@ -470,7 +470,7 @@ class CodeLocationAnalyzer:
             applicable_transforms = {
                 TransformationType.NUMERIC_LITERAL,
                 TransformationType.MATHEMATICAL_EXPRESSION,
-                TransformationType.SIMPLE_NUMERIC_OPERATIONS,
+                TransformationType.SIMPLE_NUMERIC_OPERATION,
             }
             
             locations.append(CodeLocation(
@@ -573,7 +573,7 @@ class CodeLocationAnalyzer:
                 TransformationType.CONDITIONAL_EXPRESSION,
                 TransformationType.LOOP_CONVERSION,
                 TransformationType.SIMPLE_ASSIGNMENT,
-                TransformationType.SIMPLE_NUMERIC_OPERATIONS,
+                TransformationType.SIMPLE_NUMERIC_OPERATION,
                 TransformationType.SIMPLE_STRING_OPERATION,
                 TransformationType.SIMPLE_METHOD_CALL,
                 TransformationType.SIMPLE_CONDITIONAL,
@@ -592,7 +592,7 @@ class CodeLocationAnalyzer:
                 TransformationType.STRING_CONCATENATION,
                 TransformationType.SIMPLE_STRING_OPERATION,
                 TransformationType.NUMERIC_LITERAL,
-                TransformationType.SIMPLE_NUMERIC_OPERATIONS,
+                TransformationType.SIMPLE_NUMERIC_OPERATION,
             },
             LocationType.BLOCK_LEVEL: {
                 TransformationType.EXCEPTION_HANDLING,
@@ -601,3 +601,4 @@ class CodeLocationAnalyzer:
                 TransformationType.RANDOM_EXPRESSION_INSERTION,
             }
         }
+

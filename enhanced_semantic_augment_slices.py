@@ -24,8 +24,12 @@ import re
 import argparse
 import random
 import ast
+import logging
 from pathlib import Path
 from typing import List, Tuple, Optional, Dict, Any
+
+# Set up logging
+logger = logging.getLogger(__name__)
 
 HEADER_COMMENT = """
 /*
@@ -36,9 +40,10 @@ HEADER_COMMENT = """
 class EnhancedSemanticTransformer:
     """Enhanced semantic transformer with additional transformation methods."""
     
-    def __init__(self, seed: int = 42):
+    def __init__(self, seed: int = 42, disabled_transformations: List[str] = None):
         random.seed(seed)
         self.transformations_applied = []
+        self.disabled_transformations = disabled_transformations or []
     
     def transform_file(self, java_path: str, variant_idx: int) -> str:
         """Apply enhanced semantic transformations to a Java file."""
@@ -51,36 +56,48 @@ class EnhancedSemanticTransformer:
         # Apply transformations
         src = self._insert_header_comment(src)
         
-        # Enhanced transformation list
-        transformations = [
+        # Enhanced transformation list with names
+        transformation_map = {
             # Original transformations
-            self._transform_loops,
-            self._transform_guards,
-            self._transform_mathematical_expressions,
-            self._transform_logical_expressions,
-            self._transform_ternary_operators,
-            self._transform_switch_statements,
-            self._transform_variable_operations,
+            'loop_conversion': self._transform_loops,
+            'guard_reversal': self._transform_guards,
+            'mathematical_expression': self._transform_mathematical_expressions,
+            'logical_expression': self._transform_logical_expressions,
+            'ternary_operator': self._transform_ternary_operators,
+            'switch_statement': self._transform_switch_statements,
+            'variable_operation': self._transform_variable_operations,
             
             # New enhanced transformations
-            self._transform_method_extraction,
-            self._transform_conditional_expressions,
-            self._transform_array_access_patterns,
-            self._transform_string_concatenation,
-            self._transform_numeric_literals,
-            self._transform_exception_handling,
-            self._transform_lambda_expressions,
-            self._transform_stream_api,
-            self._transform_builder_patterns,
-            self._transform_functional_conversions,
-        ]
+            'method_extraction': self._transform_method_extraction,
+            'conditional_expression': self._transform_conditional_expressions,
+            'array_access_pattern': self._transform_array_access_patterns,
+            'string_concatenation': self._transform_string_concatenation,
+            'numeric_literal': self._transform_numeric_literals,
+            'exception_handling': self._transform_exception_handling,
+            'lambda_expression': self._transform_lambda_expressions,
+            'stream_api': self._transform_stream_api,
+            'builder_pattern': self._transform_builder_patterns,
+            'functional_conversion': self._transform_functional_conversions,
+        }
+        
+        # Filter out disabled transformations
+        available_transformations = {
+            name: method for name, method in transformation_map.items()
+            if name not in self.disabled_transformations
+        }
+        
+        if not available_transformations:
+            logger.warning("All transformations disabled, returning original source")
+            return src
         
         # Apply 3-6 random transformations (increased from 2-4)
-        num_transforms = random.randint(3, 6)
-        selected_transforms = random.sample(transformations, num_transforms)
+        num_transforms = min(random.randint(3, 6), len(available_transformations))
+        selected_transform_names = random.sample(list(available_transformations.keys()), num_transforms)
         
-        for transform in selected_transforms:
-            src = transform(src)
+        for transform_name in selected_transform_names:
+            transform_method = available_transformations[transform_name]
+            src = transform_method(src)
+            self.transformations_applied.append(transform_name)
         
         return src
     

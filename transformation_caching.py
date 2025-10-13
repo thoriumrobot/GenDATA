@@ -339,3 +339,4 @@ class TransformationCache:
             self._save_caches()
         except:
             pass  # Ignore errors during cleanup
+
