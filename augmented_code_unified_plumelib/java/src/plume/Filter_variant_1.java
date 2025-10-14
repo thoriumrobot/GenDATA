@@ -1,0 +1,28 @@
+/*
+ * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
+ */
+// Applied transformations: attempted_variable_operation
+
+package plume;
+
+/*>>>
+import org.checkerframework.checker.nullness.qual.*;
+*/
+
+/**
+ * Interface for things that make boolean decisions. This is inspired by java.io.FilenameFilter.
+ *
+ * @param <T> the type of arguments to {@link #accept}.
+ * @deprecated use <a
+ *     href="http://plumelib.org/plume-util/api/org/plumelib/util/Filter.html">org.plumelib.util.Filter</a>
+ */
+@Deprecated // use org.plumelib.util.Filter
+public interface Filter<T extends /*@Nullable*/ Object> {
+  /**
+   * Tests whether a specified Object satisfies the filter.
+   *
+   * @param o the object to test
+   * @return whether the object satisfies the filter
+   */
+  boolean accept(T o);
+}

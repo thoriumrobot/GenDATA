@@ -24,6 +24,8 @@ public class SemanticTransformer {
     
     private ASTParser parser;
     private Random random;
+    private final boolean debugEnabled = "1".equals(System.getenv("JDT_DEBUG"));
+    private final Map<String, Integer> debugCounters = new HashMap<>();
     
     public SemanticTransformer() {
         this.parser = createParser();
@@ -50,12 +52,31 @@ public class SemanticTransformer {
         
         return parser;
     }
+
+    private void debug(String key, String message) {
+        if (debugEnabled) {
+            if (key != null) {
+                debugCounters.put(key, debugCounters.getOrDefault(key, 0) + 1);
+            }
+            System.err.println("[JDT_DEBUG] " + message);
+        }
+    }
+
+    private void debugSummary() {
+        if (!debugEnabled) return;
+        System.err.println("[JDT_DEBUG] Summary counters:")
+        ;
+        for (Map.Entry<String, Integer> e : debugCounters.entrySet()) {
+            System.err.println("[JDT_DEBUG]   " + e.getKey() + " = " + e.getValue());
+        }
+    }
     
     public String transformCode(String javaCode, List<String> transformations, String mode) {
         parser.setSource(javaCode.toCharArray());
         CompilationUnit cu = (CompilationUnit) parser.createAST(null);
         
         if (cu == null || Arrays.stream(cu.getProblems()).anyMatch(IProblem::isError)) {
+            debug("parse_error", "Parsing failed or had errors; returning original code");
             return javaCode; // Return original if parsing failed
         }
         
@@ -63,13 +84,19 @@ public class SemanticTransformer {
         boolean hasChanges = false;
         
         for (String transformation : transformations) {
+            debug("consider_" + transformation, "Considering transformation: " + transformation);
             boolean changed = applyTransformation(cu, rewrite, transformation, mode);
             if (changed) {
+                debug("applied_" + transformation, "Applied transformation: " + transformation);
                 hasChanges = true;
+            } else {
+                debug("skipped_" + transformation, "No effect: " + transformation);
             }
         }
         
         if (!hasChanges) {
+            debug("no_changes", "No transformations produced changes; returning original");
+            debugSummary();
             return javaCode;
         }
         
@@ -77,9 +104,12 @@ public class SemanticTransformer {
             Document document = new Document(javaCode);
             TextEdit edits = rewrite.rewriteAST(document, null);
             edits.apply(document);
+            debug("changes_applied", "Edits applied successfully");
+            debugSummary();
             return document.get();
         } catch (Exception e) {
             System.err.println("Error applying transformations: " + e.getMessage());
+            debug("apply_error", "Exception applying edits: " + e.getMessage());
             return javaCode;
         }
     }
@@ -121,6 +151,8 @@ public class SemanticTransformer {
                 return applyBuilderPattern(cu, rewrite);
             case "functional_conversion":
                 return applyFunctionalConversion(cu, rewrite);
+            case "brace_normalization":
+                return applyBraceNormalization(cu, rewrite);
                 
             // Simple transformations (10 methods)
             case "simple_method_call":
@@ -191,9 +223,17 @@ public class SemanticTransformer {
         cu.accept(new ASTVisitor() {
             @Override
             public boolean visit(IfStatement node) {
-                if (random.nextDouble() < 1.0) { // 100% chance to reverse
-                    reverseGuard(node, rewrite);
-                    changed.set(true);
+                try {
+                    if (node.getElseStatement() != null && !containsMethodInvocation(node.getExpression())) {
+                        debug("guard_reversal_considered", "IfStatement eligible for guard reversal: " + node.getExpression());
+                        reverseGuard(node, rewrite);
+                        changed.set(true);
+                    } else {
+                        debug("guard_reversal_skipped", "Skipped guard reversal due to else==null or complex condition");
+                    }
+                } catch (Exception e) {
+                    // skip complex cases
+                    debug("guard_reversal_error", "Exception during guard reversal: " + e.getMessage());
                 }
                 return true;
             }
@@ -214,8 +254,10 @@ public class SemanticTransformer {
                     node.getOperator() == InfixExpression.Operator.DIVIDE) {
                     
                     if (random.nextDouble() < 1.0) { // 100% chance to transform
-                        transformMathematicalExpression(node, rewrite);
-                        changed.set(true);
+                        boolean local = transformMathematicalExpressionSafe(node, rewrite);
+                        if (local) {
+                            changed.set(true);
+                        }
                     }
                 }
                 return true;
@@ -261,9 +303,47 @@ public class SemanticTransformer {
             
             @Override
             public boolean visit(IfStatement node) {
-                if (random.nextDouble() < 1.0) { // 100% chance to convert to ternary
-                    convertIfElseToTernary(node, rewrite);
-                    changed.set(true);
+                try {
+                    if (node.getElseStatement() != null) {
+                        // Case 1: return in both branches -> return (cond) ? a : b;
+                        if (node.getThenStatement() instanceof ReturnStatement && node.getElseStatement() instanceof ReturnStatement) {
+                            AST ast = node.getAST();
+                            ConditionalExpression tern = ast.newConditionalExpression();
+                            tern.setExpression(parenthesize(ast, (Expression) ASTNode.copySubtree(ast, node.getExpression())));
+                            tern.setThenExpression((Expression) ASTNode.copySubtree(ast, ((ReturnStatement) node.getThenStatement()).getExpression()));
+                            tern.setElseExpression((Expression) ASTNode.copySubtree(ast, ((ReturnStatement) node.getElseStatement()).getExpression()));
+
+                            ReturnStatement ret = ast.newReturnStatement();
+                            ret.setExpression(tern);
+                            rewrite.replace(node, ret, null);
+                            changed.set(true);
+                        }
+                        // Case 2: assignments to same LHS -> lhs = (cond) ? rThen : rElse;
+                        else if (isAssignToSameLhs(node.getThenStatement(), node.getElseStatement())) {
+                            AST ast = node.getAST();
+                            Assignment thenAsg = (Assignment) ((ExpressionStatement) unwrapFirstStatement(node.getThenStatement())).getExpression();
+                            Assignment elseAsg = (Assignment) ((ExpressionStatement) unwrapFirstStatement(node.getElseStatement())).getExpression();
+
+                            ConditionalExpression tern = ast.newConditionalExpression();
+                            tern.setExpression(parenthesize(ast, (Expression) ASTNode.copySubtree(ast, node.getExpression())));
+                            tern.setThenExpression((Expression) ASTNode.copySubtree(ast, thenAsg.getRightHandSide()));
+                            tern.setElseExpression((Expression) ASTNode.copySubtree(ast, elseAsg.getRightHandSide()));
+
+                            Assignment newAsg = ast.newAssignment();
+                            newAsg.setLeftHandSide((Expression) ASTNode.copySubtree(ast, thenAsg.getLeftHandSide()));
+                            newAsg.setRightHandSide(tern);
+                            ExpressionStatement es = ast.newExpressionStatement(newAsg);
+                            rewrite.replace(node, es, null);
+                            changed.set(true);
+                        }
+                        // Fallback: simple branches
+                        else if (isSimpleBranch(node.getThenStatement()) && isSimpleBranch(node.getElseStatement())) {
+                            convertIfElseToTernary(node, rewrite);
+                            changed.set(true);
+                        }
+                    }
+                } catch (Exception e) {
+                    // skip complex cases
                 }
                 return true;
             }
@@ -296,8 +376,9 @@ public class SemanticTransformer {
         cu.accept(new ASTVisitor() {
             @Override
             public boolean visit(Assignment node) {
-                if (random.nextDouble() < 1.0) { // 100% chance to transform
-                    transformVariableOperation(node, rewrite);
+                // Prefer deterministic transformations that yield visible textual changes
+                boolean localChanged = transformVariableOperation(node, rewrite);
+                if (localChanged) {
                     changed.set(true);
                 }
                 return true;
@@ -450,7 +531,28 @@ public class SemanticTransformer {
         // Add initialization statements
         if (forStmt.initializers().size() > 0) {
             for (Object initializer : forStmt.initializers()) {
-                whileBody.statements().add(ASTNode.copySubtree(ast, (Expression) initializer));
+                if (initializer instanceof VariableDeclarationExpression) {
+                    VariableDeclarationExpression vde = (VariableDeclarationExpression) initializer;
+                    VariableDeclarationStatement vds = ast.newVariableDeclarationStatement(
+                        (VariableDeclarationFragment) ASTNode.copySubtree(ast, (ASTNode) vde.fragments().get(0))
+                    );
+                    vds.setType((Type) ASTNode.copySubtree(ast, vde.getType()));
+                    // If multiple fragments, add them as separate statements
+                    for (int i = 1; i < vde.fragments().size(); i++) {
+                        VariableDeclarationFragment frag = (VariableDeclarationFragment) vde.fragments().get(i);
+                        VariableDeclarationStatement extra = ast.newVariableDeclarationStatement(
+                            (VariableDeclarationFragment) ASTNode.copySubtree(ast, frag)
+                        );
+                        extra.setType((Type) ASTNode.copySubtree(ast, vde.getType()));
+                        whileBody.statements().add(extra);
+                    }
+                    whileBody.statements().add(vds);
+                } else if (initializer instanceof Expression) {
+                    ExpressionStatement es = ast.newExpressionStatement(
+                        (Expression) ASTNode.copySubtree(ast, (Expression) initializer)
+                    );
+                    whileBody.statements().add(es);
+                }
             }
         }
         
@@ -469,7 +571,12 @@ public class SemanticTransformer {
         // Add increment statements
         if (forStmt.updaters().size() > 0) {
             for (Object updater : forStmt.updaters()) {
-                whileBody.statements().add(ASTNode.copySubtree(ast, (Expression) updater));
+                if (updater instanceof Expression) {
+                    ExpressionStatement es = ast.newExpressionStatement(
+                        (Expression) ASTNode.copySubtree(ast, (Expression) updater)
+                    );
+                    whileBody.statements().add(es);
+                }
             }
         }
         
@@ -508,37 +615,85 @@ public class SemanticTransformer {
     private void reverseGuard(IfStatement ifStmt, ASTRewrite rewrite) {
         // Reverse the guard condition and swap if/else blocks
         AST ast = ifStmt.getAST();
-        
+        // Build a new IfStatement to avoid mutating the original node in-place
+        IfStatement newIf = ast.newIfStatement();
         PrefixExpression notExpr = ast.newPrefixExpression();
         notExpr.setOperator(PrefixExpression.Operator.NOT);
-        notExpr.setOperand((Expression) ASTNode.copySubtree(ast, ifStmt.getExpression()));
-        
-        ifStmt.setExpression(notExpr);
-        
-        // Swap then and else statements
+        notExpr.setOperand(parenthesize(ast, (Expression) ASTNode.copySubtree(ast, ifStmt.getExpression())));
+        newIf.setExpression(notExpr);
+
+        // Swap then and else statements (deep copies)
         Statement thenStmt = ifStmt.getThenStatement();
         Statement elseStmt = ifStmt.getElseStatement();
+        if (elseStmt != null) {
+            newIf.setThenStatement((Statement) ASTNode.copySubtree(ast, elseStmt));
+        }
+        if (thenStmt != null) {
+            newIf.setElseStatement((Statement) ASTNode.copySubtree(ast, thenStmt));
+        }
         
-        ifStmt.setThenStatement(elseStmt);
-        ifStmt.setElseStatement(thenStmt);
-        
-        rewrite.replace(ifStmt, ifStmt, null);
+        rewrite.replace(ifStmt, newIf, null);
+    }
+
+    // Helper: check if then/else assign to same LHS
+    private boolean isAssignToSameLhs(Statement thenStmt, Statement elseStmt) {
+        Statement t = unwrapFirstStatement(thenStmt);
+        Statement e = unwrapFirstStatement(elseStmt);
+        if (t instanceof ExpressionStatement && e instanceof ExpressionStatement) {
+            Expression te = ((ExpressionStatement) t).getExpression();
+            Expression ee = ((ExpressionStatement) e).getExpression();
+            if (te instanceof Assignment && ee instanceof Assignment) {
+                String l1 = ((Assignment) te).getLeftHandSide().toString();
+                String l2 = ((Assignment) ee).getLeftHandSide().toString();
+                return l1.equals(l2);
+            }
+        }
+        return false;
+    }
+
+    // Helper: unwrap one-statement blocks
+    private Statement unwrapFirstStatement(Statement stmt) {
+        if (stmt instanceof Block) {
+            Block b = (Block) stmt;
+            if (!b.statements().isEmpty() && b.statements().get(0) instanceof Statement) {
+                return (Statement) b.statements().get(0);
+            }
+        }
+        return stmt;
+    }
+
+    // Helper: parenthesize expression
+    private ParenthesizedExpression parenthesize(AST ast, Expression expr) {
+        ParenthesizedExpression p = ast.newParenthesizedExpression();
+        p.setExpression(expr);
+        return p;
     }
     
-    private void transformMathematicalExpression(InfixExpression expr, ASTRewrite rewrite) {
-        // Apply mathematical properties (commutativity, associativity, etc.)
+    private boolean isSimpleOperand(Expression e) {
+        return e instanceof SimpleName || e instanceof NumberLiteral || e instanceof QualifiedName
+                || (e instanceof ParenthesizedExpression && ((ParenthesizedExpression) e).getExpression() instanceof SimpleName)
+                || (e instanceof ParenthesizedExpression && ((ParenthesizedExpression) e).getExpression() instanceof NumberLiteral);
+    }
+
+    private boolean transformMathematicalExpressionSafe(InfixExpression expr, ASTRewrite rewrite) {
+        // Apply commutativity safely on simple operands only
         AST ast = expr.getAST();
-        
-        if (expr.getOperator() == InfixExpression.Operator.PLUS) {
-            // Apply commutativity: a + b -> b + a (always apply for deterministic behavior)
+        if (expr.getOperator() == InfixExpression.Operator.PLUS || expr.getOperator() == InfixExpression.Operator.TIMES) {
             Expression left = expr.getLeftOperand();
             Expression right = expr.getRightOperand();
-            
-            expr.setLeftOperand((Expression) ASTNode.copySubtree(ast, right));
-            expr.setRightOperand((Expression) ASTNode.copySubtree(ast, left));
-            
-            rewrite.replace(expr, expr, null);
+            if (isSimpleOperand(left) && isSimpleOperand(right)) {
+                InfixExpression newExpr = ast.newInfixExpression();
+                newExpr.setOperator(expr.getOperator());
+                newExpr.setLeftOperand((Expression) ASTNode.copySubtree(ast, right));
+                newExpr.setRightOperand((Expression) ASTNode.copySubtree(ast, left));
+                debug("math_commute", "Applied commutativity on simple operands: " + expr.toString());
+                rewrite.replace(expr, newExpr, null);
+                return true;
+            } else {
+                debug("math_skip_complex", "Skipped commutativity due to complex operands: " + expr.toString());
+            }
         }
+        return false;
     }
     
     private void applyDeMorganLaws(InfixExpression expr, ASTRewrite rewrite) {
@@ -593,21 +748,12 @@ public class SemanticTransformer {
     
     private void convertIfElseToTernary(IfStatement ifStmt, ASTRewrite rewrite) {
         // Convert simple if-else to ternary operator
-        if (ifStmt.getElseStatement() != null) {
+        if (ifStmt.getElseStatement() != null && isSimpleBranch(ifStmt.getThenStatement()) && isSimpleBranch(ifStmt.getElseStatement())) {
             AST ast = ifStmt.getAST();
-            
             ConditionalExpression ternary = ast.newConditionalExpression();
             ternary.setExpression((Expression) ASTNode.copySubtree(ast, ifStmt.getExpression()));
-            
-            // Extract expressions from blocks (simplified)
-            if (ifStmt.getThenStatement() instanceof ExpressionStatement) {
-                ternary.setThenExpression(((ExpressionStatement) ifStmt.getThenStatement()).getExpression());
-            }
-            
-            if (ifStmt.getElseStatement() instanceof ExpressionStatement) {
-                ternary.setElseExpression(((ExpressionStatement) ifStmt.getElseStatement()).getExpression());
-            }
-            
+            ternary.setThenExpression(extractExpressionFromBranch(ast, ifStmt.getThenStatement()));
+            ternary.setElseExpression(extractExpressionFromBranch(ast, ifStmt.getElseStatement()));
             rewrite.replace(ifStmt, ternary, null);
         }
     }
@@ -643,22 +789,57 @@ public class SemanticTransformer {
         rewrite.replace(switchStmt, ifStmt, null);
     }
     
-    private void transformVariableOperation(Assignment assignment, ASTRewrite rewrite) {
-        // Transform assignment operations (e.g., += to = ... + ...)
+    private boolean transformVariableOperation(Assignment assignment, ASTRewrite rewrite) {
+        // Bidirectional normalization between "+=" and "= x + y" when safe,
+        // to ensure a visible yet semantics-preserving textual change.
         AST ast = assignment.getAST();
-        
+
+        // Case 1: "+=" -> "= lhs + rhs"
         if (assignment.getOperator() == Assignment.Operator.PLUS_ASSIGN) {
             Assignment newAssignment = ast.newAssignment();
             newAssignment.setLeftHandSide((Expression) ASTNode.copySubtree(ast, assignment.getLeftHandSide()));
-            
+
             InfixExpression plusExpr = ast.newInfixExpression();
             plusExpr.setOperator(InfixExpression.Operator.PLUS);
             plusExpr.setLeftOperand((Expression) ASTNode.copySubtree(ast, assignment.getLeftHandSide()));
             plusExpr.setRightOperand((Expression) ASTNode.copySubtree(ast, assignment.getRightHandSide()));
-            
+
             newAssignment.setRightHandSide(plusExpr);
             rewrite.replace(assignment, newAssignment, null);
+            return true;
         }
+
+        // Case 2: "= lhs + rhs" where lhs repeats on RHS -> convert to "+="
+        if (assignment.getOperator() == Assignment.Operator.ASSIGN
+                && assignment.getRightHandSide() instanceof InfixExpression) {
+            InfixExpression rhs = (InfixExpression) assignment.getRightHandSide();
+            if (rhs.getOperator() == InfixExpression.Operator.PLUS) {
+                Expression lhs = assignment.getLeftHandSide();
+                Expression leftOp = rhs.getLeftOperand();
+                Expression rightOp = rhs.getRightOperand();
+                // Compare simple textual forms to avoid binding resolution complexity
+                String lhsStr = lhs.toString();
+                String leftStr = leftOp.toString();
+                String rightStr = rightOp.toString();
+                if (lhsStr.equals(leftStr)) {
+                    Assignment newAssignment = ast.newAssignment();
+                    newAssignment.setLeftHandSide((Expression) ASTNode.copySubtree(ast, lhs));
+                    newAssignment.setOperator(Assignment.Operator.PLUS_ASSIGN);
+                    newAssignment.setRightHandSide((Expression) ASTNode.copySubtree(ast, rhs.getRightOperand()));
+                    rewrite.replace(assignment, newAssignment, null);
+                    return true;
+                } else if (lhsStr.equals(rightStr)) {
+                    Assignment newAssignment = ast.newAssignment();
+                    newAssignment.setLeftHandSide((Expression) ASTNode.copySubtree(ast, lhs));
+                    newAssignment.setOperator(Assignment.Operator.PLUS_ASSIGN);
+                    newAssignment.setRightHandSide((Expression) ASTNode.copySubtree(ast, rhs.getLeftOperand()));
+                    rewrite.replace(assignment, newAssignment, null);
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
     
     private void transformStringConcatenation(InfixExpression expr, ASTRewrite rewrite) {
@@ -698,6 +879,142 @@ public class SemanticTransformer {
         } catch (NumberFormatException e) {
             // Ignore if not a valid number
         }
+    }
+
+    private boolean applyBraceNormalization(CompilationUnit cu, ASTRewrite rewrite) {
+        AtomicBoolean changed = new AtomicBoolean(false);
+        cu.accept(new ASTVisitor() {
+            @Override
+            public boolean visit(IfStatement node) {
+                try {
+                    AST ast = node.getAST();
+                    boolean local = false;
+                    IfStatement copy = (IfStatement) ASTNode.copySubtree(ast, node);
+                    // Then branch to block
+                    Block thenBlock;
+                    if (copy.getThenStatement() instanceof Block) {
+                        thenBlock = (Block) copy.getThenStatement();
+                    } else {
+                        thenBlock = ast.newBlock();
+                        thenBlock.statements().add(ASTNode.copySubtree(ast, copy.getThenStatement()));
+                        copy.setThenStatement(thenBlock);
+                        local = true;
+                    }
+                    // Insert no-op empty statement at top
+                    if (thenBlock.statements().isEmpty() || !(thenBlock.statements().get(0) instanceof EmptyStatement)) {
+                        thenBlock.statements().add(0, ast.newEmptyStatement());
+                        local = true;
+                    }
+                    // Else branch handling (skip else-if chain)
+                    Statement es = copy.getElseStatement();
+                    if (es != null && !(es instanceof IfStatement)) {
+                        Block elseBlock;
+                        if (es instanceof Block) {
+                            elseBlock = (Block) es;
+                        } else {
+                            elseBlock = ast.newBlock();
+                            elseBlock.statements().add(ASTNode.copySubtree(ast, es));
+                            copy.setElseStatement(elseBlock);
+                            local = true;
+                        }
+                        if (elseBlock.statements().isEmpty() || !(elseBlock.statements().get(0) instanceof EmptyStatement)) {
+                            elseBlock.statements().add(0, ast.newEmptyStatement());
+                            local = true;
+                        }
+                    }
+                    if (local) {
+                        rewrite.replace(node, copy, null);
+                        changed.set(true);
+                    }
+                } catch (Exception e) {}
+                return true;
+            }
+
+            @Override
+            public boolean visit(ForStatement node) {
+                try {
+                    AST ast = node.getAST();
+                    ForStatement copy = (ForStatement) ASTNode.copySubtree(ast, node);
+                    Block b;
+                    if (copy.getBody() instanceof Block) {
+                        b = (Block) copy.getBody();
+                    } else {
+                        b = ast.newBlock();
+                        b.statements().add(ASTNode.copySubtree(ast, copy.getBody()));
+                        copy.setBody(b);
+                    }
+                    if (b.statements().isEmpty() || !(b.statements().get(0) instanceof EmptyStatement)) {
+                        b.statements().add(0, ast.newEmptyStatement());
+                        rewrite.replace(node, copy, null);
+                        changed.set(true);
+                    }
+                } catch (Exception e) {}
+                return true;
+            }
+
+            @Override
+            public boolean visit(WhileStatement node) {
+                try {
+                    AST ast = node.getAST();
+                    WhileStatement copy = (WhileStatement) ASTNode.copySubtree(ast, node);
+                    Block b;
+                    if (copy.getBody() instanceof Block) {
+                        b = (Block) copy.getBody();
+                    } else {
+                        b = ast.newBlock();
+                        b.statements().add(ASTNode.copySubtree(ast, copy.getBody()));
+                        copy.setBody(b);
+                    }
+                    if (b.statements().isEmpty() || !(b.statements().get(0) instanceof EmptyStatement)) {
+                        b.statements().add(0, ast.newEmptyStatement());
+                        rewrite.replace(node, copy, null);
+                        changed.set(true);
+                    }
+                } catch (Exception e) {}
+                return true;
+            }
+        });
+        return changed.get();
+    }
+
+    private boolean isSimpleBranch(Statement stmt) {
+        if (stmt == null) return false;
+        if (stmt instanceof ExpressionStatement) return true;
+        if (stmt instanceof ReturnStatement) return true;
+        if (stmt instanceof Block) {
+            Block b = (Block) stmt;
+            return b.statements().size() == 1 && isSimpleBranch((Statement) b.statements().get(0));
+        }
+        return false;
+    }
+
+    private Expression extractExpressionFromBranch(AST ast, Statement stmt) {
+        if (stmt instanceof ExpressionStatement) {
+            return (Expression) ASTNode.copySubtree(ast, ((ExpressionStatement) stmt).getExpression());
+        }
+        if (stmt instanceof ReturnStatement) {
+            ReturnStatement rs = (ReturnStatement) stmt;
+            return (Expression) ASTNode.copySubtree(ast, rs.getExpression());
+        }
+        if (stmt instanceof Block) {
+            List<?> list = ((Block) stmt).statements();
+            if (!list.isEmpty() && list.get(0) instanceof Statement) {
+                return extractExpressionFromBranch(ast, (Statement) list.get(0));
+            }
+        }
+        return (Expression) ast.newSimpleName("x");
+    }
+
+    private boolean containsMethodInvocation(Expression expr) {
+        final AtomicBoolean found = new AtomicBoolean(false);
+        expr.accept(new ASTVisitor() {
+            @Override
+            public boolean visit(MethodInvocation node) {
+                found.set(true);
+                return false;
+            }
+        });
+        return found.get();
     }
     
     // CLI interface for the transformer service

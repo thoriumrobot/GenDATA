@@ -75,19 +75,57 @@ class EnhancedSemanticTransformer:
             # Set seed based on variant index for reproducible but different transformations
             variant_random = random.Random(self.seed + variant_idx * 1000)
             
-            # Select 1-3 transformations deterministically
+            # Prioritize transforms known to yield visible textual changes
+            priority = ['variable_operation', 'ternary_operator', 'mathematical_expression']
+            prioritized = [t for t in priority if t in enabled_transformations]
+            remaining = [t for t in enabled_transformations if t not in prioritized]
+            # Select 1–3 with priority first in a deterministic way
             num_transformations = min(variant_random.randint(1, 3), len(enabled_transformations))
-            selected_transformations = variant_random.sample(enabled_transformations, num_transformations)
+            selected_transformations = []
+            for t in prioritized:
+                if len(selected_transformations) < num_transformations:
+                    selected_transformations.append(t)
+            if len(selected_transformations) < num_transformations and remaining:
+                needed = num_transformations - len(selected_transformations)
+                selected_transformations.extend(variant_random.sample(remaining, min(needed, len(remaining))))
             
             logger.info(f"Applying transformations for variant {variant_idx}: {selected_transformations}")
             
-            # Apply transformations using JDT with forced transformation
+            # Apply transformations using JDT with forced transformation and bounded retries
             transformed_code = self.jdt_transformer.transform_code(
-                original_code, 
-                selected_transformations, 
+                original_code,
+                selected_transformations,
                 'enhanced',
                 force_transformation=True
             )
+
+            # Log body hash and size deltas
+            try:
+                import hashlib
+                ob = original_code.encode('utf-8')
+                nb = transformed_code.encode('utf-8')
+                o_hash = hashlib.md5(ob).hexdigest()
+                n_hash = hashlib.md5(nb).hexdigest()
+                logger.debug(f"variant {variant_idx} body hash: {o_hash} -> {n_hash}, len: {len(ob)} -> {len(nb)}")
+            except Exception:
+                pass
+
+            # Retry with alternates if unchanged
+            if transformed_code == original_code:
+                fallback_sets = [
+                    prioritized,
+                    ['variable_operation'],
+                    ['ternary_operator'],
+                    ['mathematical_expression'],
+                ]
+                for alt in fallback_sets:
+                    if not alt:
+                        continue
+                    alt_code = self.jdt_transformer.transform_code(original_code, alt, 'enhanced', force_transformation=False)
+                    if alt_code != original_code:
+                        logger.info(f"Fallback transformations succeeded for variant {variant_idx}: {alt}")
+                        transformed_code = alt_code
+                        break
             
             # Record applied transformations
             self.transformations_applied.extend(selected_transformations)
@@ -185,6 +223,7 @@ def main():
     parser.add_argument('--disabled', nargs='*', default=[], help='Disabled transformations')
     parser.add_argument('--jdt-jar', help='Path to JDT transformer JAR')
     parser.add_argument('--verbose', '-v', action='store_true', help='Verbose logging')
+    parser.add_argument('--require-change', action='store_true', help='Only emit variants whose body changes vs original')
     
     args = parser.parse_args()
     
@@ -204,6 +243,18 @@ def main():
         if os.path.isfile(args.input):
             # Single file
             transformed_code = transformer.transform_file(args.input, 0)
+            if args.require_change:
+                try:
+                    with open(args.input, 'r') as f:
+                        original_code = f.read()
+                    # Remove header from transformed only; original has no header
+                    tl = transformed_code.splitlines()
+                    transformed_body = "\n".join(tl[4:] if len(tl) >= 4 and tl[0].startswith('/*') else tl)
+                    if transformed_body == original_code:
+                        logger.info("No body change detected; --require-change set, skipping write")
+                        return 0
+                except Exception:
+                    pass
             
             with open(args.output, 'w') as f:
                 f.write(transformed_code)
@@ -212,7 +263,44 @@ def main():
             
         elif os.path.isdir(args.input):
             # Directory
-            results = transformer.transform_directory(args.input, args.output, args.variants)
+            if not args.require_change:
+                results = transformer.transform_directory(args.input, args.output, args.variants)
+            else:
+                # Require-change mode: write only when body changes
+                in_path = Path(args.input)
+                out_path = Path(args.output)
+                out_path.mkdir(parents=True, exist_ok=True)
+                files_processed = 0
+                variants_created = 0
+                errors = []
+                java_files = list(in_path.glob('**/*.java'))
+                logger.info(f"Found {len(java_files)} Java files to process (require-change mode)")
+                for jf in java_files:
+                    try:
+                        rel = jf.relative_to(in_path)
+                        with open(jf, 'r') as f:
+                            original = f.read()
+                        for vid in range(args.variants):
+                            transformed = transformer.transform_file(str(jf), vid)
+                            tl = transformed.splitlines()
+                            transformed_body = tl[4:] if len(tl) >= 4 and tl[0].startswith('/*') else tl
+                            # Compare transformed body against full original
+                            if transformed_body == original.splitlines():
+                                # If identical (ignoring header size heuristic), skip
+                                continue
+                            out_file = out_path / rel.parent / f"{jf.stem}_variant_{vid}{jf.suffix}"
+                            out_file.parent.mkdir(parents=True, exist_ok=True)
+                            with open(out_file, 'w') as f:
+                                f.write(transformed)
+                            variants_created += 1
+                        files_processed += 1
+                    except Exception as e:
+                        errors.append(f"{jf}: {e}")
+                results = {
+                    'files_processed': files_processed,
+                    'variants_created': variants_created,
+                    'errors': errors
+                }
             
             print(f"Processing complete:")
             print(f"  Files processed: {results['files_processed']}")

@@ -105,6 +105,11 @@ class UnifiedAugmentationRegistry:
             else:
                 self.transformation_stats['failed_transformations'] += 1
                 logger.debug(f"Transformation {transformation_type.value} had no effect")
+
+            # In require-change semantic mode, do not count attempted-only results
+            # If the result is identical, return the original code to upstream callers
+            if not success:
+                result = code
             
             # Cache the result if caching is enabled
             if self.cache:

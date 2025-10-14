@@ -9,6 +9,13 @@ repositories {
   mavenLocal()  // For local polyglot dependency
 }
 
+configurations.all {
+  resolutionStrategy {
+    force 'org.eclipse.jdt:ecj:3.36.0'
+    force 'org.eclipse.jdt:org.eclipse.jdt.core:3.36.0'
+  }
+}
+
 java { toolchain { languageVersion = JavaLanguageVersion.of(21) } }
 
 dependencies {
@@ -32,8 +39,8 @@ dependencies {
   implementation files('polyglot-2.8.0-src/lib/pth.jar')
   implementation files('polyglot-2.8.0-src/lib/efg.jar')
 
-  // Eclipse compiler (helps in some setups)
-  implementation 'org.eclipse.jdt:ecj:3.33.0'
+  // Eclipse compiler (align with JDT core to prevent linkage errors)
+  implementation 'org.eclipse.jdt:ecj:3.36.0'
 
   // Checker Framework jars (needed to compile CF test sources for WALA bytecode mode)
   implementation fileTree(dir: '/home/ubuntu/checker-framework-3.42.0/checker/dist', include: ['*.jar'])
@@ -53,7 +60,7 @@ dependencies {
   // Vineflower decompiler (optional)
   implementation 'org.vineflower:vineflower:1.10.1'
 
-  // Eclipse JDT core for AST parsing/rewrites used by semantic augmentation
+  // Eclipse JDT core for AST parsing/rewrites used by semantic augmentation (aligned with ecj)
   implementation 'org.eclipse.jdt:org.eclipse.jdt.core:3.36.0'
   
   // Jackson for JSON serialization in JDT services

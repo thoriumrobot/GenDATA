@@ -123,6 +123,17 @@ class JdtSemanticTransformer:
                 transformed_code = self._try_transformations(java_code, retry_transformations, mode)
         
         return transformed_code
+
+    def transform_code_with_flag(self, java_code: str, transformations: List[str],
+                                 mode: str = 'enhanced', force_transformation: bool = True) -> (str, bool):
+        """
+        Transform code and also report whether a textual change occurred.
+
+        Returns:
+            (transformed_code, mutated)
+        """
+        transformed = self.transform_code(java_code, transformations, mode, force_transformation)
+        return transformed, (transformed != java_code)
     
     def _try_transformations(self, java_code: str, transformations: List[str], mode: str) -> str:
         """Try applying transformations and return transformed code."""
@@ -191,6 +202,7 @@ class JdtSemanticTransformer:
                 'ternary_operator',
                 'switch_statement',
                 'variable_operation',
+                'brace_normalization',
                 'string_concatenation',
                 'numeric_literal'
             ]
