@@ -34,13 +34,14 @@ class AblationStudyPipeline:
     """Main ablation study pipeline that runs different ablation experiments"""
     
     def __init__(self, project_root: str, warnings_file: str, cfwr_root: str, 
-                 output_dir: str = 'ablation_studies', device: str = 'cuda', augmentation_mode: str = 'enhanced'):
+                 output_dir: str = 'ablation_studies', device: str = 'cuda', augmentation_mode: str = 'enhanced', run_checker_on_target: bool = True):
         self.project_root = project_root
         self.warnings_file = warnings_file
         self.cfwr_root = cfwr_root
         self.output_dir = Path(output_dir)
         self.device = device
         self.augmentation_mode = augmentation_mode
+        self.run_checker_on_target = run_checker_on_target
         # Create output directory
         self.output_dir.mkdir(exist_ok=True)
         
@@ -103,7 +104,8 @@ class AblationStudyPipeline:
             mode='train',
             device=self.device,
             augment_first=True,
-            disable_random_walk=False  # Enable random walk for baseline
+            disable_random_walk=False,  # Enable random walk for baseline
+            run_checker_on_target=self.run_checker_on_target
         )
         # Prefer parsing-based enhanced semantic augmentation in downstream pipeline
         try:
@@ -148,7 +150,8 @@ class AblationStudyPipeline:
             mode='train',
             device=self.device,
             augment_first=False,  # Disable augmentation entirely
-            disable_random_walk=True  # Disable random walk optimizer
+            disable_random_walk=True,  # Disable random walk optimizer
+            run_checker_on_target=self.run_checker_on_target
         )
         
         # Update directories
@@ -184,7 +187,8 @@ class AblationStudyPipeline:
             cfwr_root=str(ablation_dir),
             mode='train',
             device=self.device,
-            augment_first=True
+            augment_first=True,
+            run_checker_on_target=self.run_checker_on_target
         )
         try:
             pipeline.augmentation_mode = self.augmentation_mode
@@ -279,7 +283,8 @@ class AblationStudyPipeline:
             mode='train',
             device=self.device,
             augment_first=True,
-            disable_random_walk=True  # Disable random walk optimization
+            disable_random_walk=True,  # Disable random walk optimization
+            run_checker_on_target=self.run_checker_on_target
         )
         try:
             pipeline.augmentation_mode = self.augmentation_mode

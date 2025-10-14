@@ -240,15 +240,56 @@ python train_all_21_models.py
 
 ### 3. Run Predictions (ENHANCED PIPELINE)
 ```bash
-# Predict on all case studies using enhanced pipeline (no augmentation during prediction)
+# Predict on all case studies using enhanced pipeline (automatically runs Lower Bound Checker)
 python predict_with_enhanced_pipeline.py
 
 # Predict on specific file
 python predict_with_enhanced_pipeline.py --target_file /path/to/MyClass.java
 
+# Disable automatic Lower Bound Checker execution (use provided warnings file)
+python predict_with_enhanced_pipeline.py --no_run_checker
+
 # Use simple pipeline for prediction
 python simple_annotation_type_pipeline.py --mode predict --target_file /path/to/MyClass.java
+
+# Disable checker in simple pipeline
+python simple_annotation_type_pipeline.py --mode predict --no_run_checker
 ```
+
+## 🔍 **Lower Bound Checker Integration**
+
+The prediction pipeline now automatically integrates with the Checker Framework's Lower Bound Checker to provide more accurate predictions:
+
+### **Automatic Checker Execution**
+By default, the prediction pipeline:
+1. **Runs Lower Bound Checker** on the target project before prediction
+2. **Generates warnings** based on actual code analysis
+3. **Uses real warnings** to guide slicing and annotation placement
+4. **Produces accurate predictions** based on actual warning locations
+
+### **Benefits**
+- ✅ **Real Warning Detection**: Uses actual Checker Framework warnings instead of dummy data
+- ✅ **Accurate Slicing**: Slices based on real warning locations in the target code
+- ✅ **Better Predictions**: Models trained on real warning patterns
+- ✅ **Automatic Integration**: No manual warning file preparation needed
+
+### **Usage Examples**
+```bash
+# Automatic checker execution (default behavior)
+python predict_with_enhanced_pipeline.py --target_file /path/to/MyClass.java
+
+# Disable checker for backward compatibility
+python predict_with_enhanced_pipeline.py --target_file /path/to/MyClass.java --no_run_checker
+
+# Checker integration in ablation studies
+python run_comprehensive_ablation_studies.py --mode baseline --no_run_checker
+```
+
+### **Checker Framework Configuration**
+The system automatically detects Checker Framework installation:
+- **Default Location**: `/home/ubuntu/checker-framework-3.42.0`
+- **Environment Variables**: `CHECKERFRAMEWORK_HOME`, `CHECKERFRAMEWORK_CP`
+- **Processor**: `org.checkerframework.checker.index.IndexChecker`
 
 ## 🔬 **Running Evaluation**
 

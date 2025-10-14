@@ -35,10 +35,11 @@ See `JDT_IMPLEMENTATION_COMPLETE.md` for detailed documentation.
 
 ### **Step-by-Step Process**
 
-1. **Lower Bound Checker Execution**
-   - Automatically runs Checker Framework's Index Checker on target project
+1. **Lower Bound Checker Execution** ⚡ **NEW DEFAULT BEHAVIOR**
+   - **Automatically runs Checker Framework's Index Checker** on target project before prediction
    - Analyzes all Java files for potential out-of-bounds access issues
    - Generates comprehensive warning reports
+   - **Can be disabled** with `--no_run_checker` flag for backward compatibility
 
 2. **Warning Resolution**
    - Uses `CheckerFrameworkWarningResolver` to identify specific warning locations
@@ -65,6 +66,13 @@ See `JDT_IMPLEMENTATION_COMPLETE.md` for detailed documentation.
 - **Automated Workflow**: No manual intervention required
 - **Performance Optimized**: Uses best-performing models for each annotation type
 - **Comprehensive Coverage**: Analyzes all relevant code patterns
+
+### **Lower Bound Checker Integration Benefits** ⚡ **NEW**
+- ✅ **Real Warning Detection**: Uses actual Checker Framework warnings instead of dummy data
+- ✅ **Accurate Slicing**: Slices based on real warning locations in the target code  
+- ✅ **Better Predictions**: Models trained on real warning patterns
+- ✅ **Automatic Integration**: No manual warning file preparation needed
+- ✅ **Backward Compatible**: Can be disabled for legacy workflows
 
 ---
 

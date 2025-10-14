@@ -85,7 +85,7 @@ def verify_environment(project_root: str, warnings_file: str, cfwr_root: str) ->
     return True
 
 def run_baseline_study(project_root: str, warnings_file: str, cfwr_root: str, 
-                      output_dir: str, device: str, episodes: int) -> bool:
+                      output_dir: str, device: str, episodes: int, run_checker_on_target: bool = True) -> bool:
     """Run baseline study"""
     logger.info("=== Running Baseline Study ===")
     
@@ -94,14 +94,15 @@ def run_baseline_study(project_root: str, warnings_file: str, cfwr_root: str,
         warnings_file=warnings_file,
         cfwr_root=cfwr_root,
         output_dir=output_dir,
-        device=device
+        device=device,
+        run_checker_on_target=run_checker_on_target
     )
     
     results = pipeline.run_baseline_study(episodes=episodes)
     return bool(results)
 
 def run_no_augmentation_study(project_root: str, warnings_file: str, cfwr_root: str, 
-                             output_dir: str, device: str, episodes: int) -> bool:
+                             output_dir: str, device: str, episodes: int, run_checker_on_target: bool = True) -> bool:
     """Run no augmentation study"""
     logger.info("=== Running No Augmentation Study ===")
     
@@ -110,14 +111,15 @@ def run_no_augmentation_study(project_root: str, warnings_file: str, cfwr_root: 
         warnings_file=warnings_file,
         cfwr_root=cfwr_root,
         output_dir=output_dir,
-        device=device
+        device=device,
+        run_checker_on_target=run_checker_on_target
     )
     
     results = pipeline.run_no_augmentation_study(episodes=episodes)
     return bool(results)
 
 def run_no_random_walk_study(project_root: str, warnings_file: str, cfwr_root: str, 
-                            output_dir: str, device: str, episodes: int) -> bool:
+                            output_dir: str, device: str, episodes: int, run_checker_on_target: bool = True) -> bool:
     """Run no random walk study"""
     logger.info("=== Running No Random Walk Study ===")
     
@@ -126,7 +128,8 @@ def run_no_random_walk_study(project_root: str, warnings_file: str, cfwr_root: s
         warnings_file=warnings_file,
         cfwr_root=cfwr_root,
         output_dir=output_dir,
-        device=device
+        device=device,
+        run_checker_on_target=run_checker_on_target
     )
     
     results = pipeline.run_no_random_walk_study(episodes=episodes)
@@ -172,7 +175,7 @@ def run_transformation_ablations(project_root: str, warnings_file: str, cfwr_roo
     return success_count > 0
 
 def run_all_ablations(project_root: str, warnings_file: str, cfwr_root: str, 
-                     output_dir: str, device: str, episodes: int) -> bool:
+                     output_dir: str, device: str, episodes: int, run_checker_on_target: bool = True) -> bool:
     """Run all ablation studies"""
     logger.info("=== Running All Ablation Studies ===")
     
@@ -181,7 +184,8 @@ def run_all_ablations(project_root: str, warnings_file: str, cfwr_root: str,
         warnings_file=warnings_file,
         cfwr_root=cfwr_root,
         output_dir=output_dir,
-        device=device
+        device=device,
+        run_checker_on_target=run_checker_on_target
     )
     
     results = pipeline.run_all_ablations(episodes=episodes)
@@ -300,6 +304,8 @@ Examples:
     parser.add_argument('--fast_compare', 
                        action='store_true',
                        help='Speed up compare by disabling random walk in baseline')
+    parser.add_argument('--no_run_checker', action='store_true',
+                       help='Disable running Lower Bound Checker on target project (use provided warnings file)')
     
     # Transformation-specific parameters
     parser.add_argument('--transform_subset', 
@@ -367,25 +373,25 @@ Examples:
     if args.mode == 'all':
         success = run_all_ablations(
             args.project_root, subset_warnings_file or args.warnings_file, args.cfwr_root,
-            args.output_dir, args.device, args.episodes
+            args.output_dir, args.device, args.episodes, run_checker_on_target=not args.no_run_checker
         )
         
     elif args.mode == 'baseline':
         success = run_baseline_study(
             args.project_root, subset_warnings_file or args.warnings_file, args.cfwr_root,
-            args.output_dir, args.device, args.episodes
+            args.output_dir, args.device, args.episodes, run_checker_on_target=not args.no_run_checker
         )
         
     elif args.mode == 'no_aug':
         success = run_no_augmentation_study(
             args.project_root, subset_warnings_file or args.warnings_file, args.cfwr_root,
-            args.output_dir, args.device, args.episodes
+            args.output_dir, args.device, args.episodes, run_checker_on_target=not args.no_run_checker
         )
         
     elif args.mode == 'no_rw':
         success = run_no_random_walk_study(
             args.project_root, subset_warnings_file or args.warnings_file, args.cfwr_root,
-            args.output_dir, args.device, args.episodes
+            args.output_dir, args.device, args.episodes, run_checker_on_target=not args.no_run_checker
         )
         
     elif args.mode == 'transformations':

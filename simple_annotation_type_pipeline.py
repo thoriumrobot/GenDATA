@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 class SimpleAnnotationTypePipeline:
     """Simplified pipeline for training and testing annotation types"""
     
-    def __init__(self, project_root, warnings_file, cfwr_root, mode='train', no_auto_train=False, device='auto', augment_first=True, disable_random_walk=False):
+    def __init__(self, project_root, warnings_file, cfwr_root, mode='train', no_auto_train=False, device='auto', augment_first=True, disable_random_walk=False, run_checker_on_target=True):
         self.project_root = project_root
         self.warnings_file = warnings_file
         self.cfwr_root = cfwr_root
@@ -38,6 +38,7 @@ class SimpleAnnotationTypePipeline:
         self.device = device
         self.augment_first = augment_first
         self.disable_random_walk = disable_random_walk
+        self.run_checker_on_target = run_checker_on_target
         
         # Set up directories for adaptive semantic augmentation
         self.slices_dir = os.path.join(cfwr_root, 'slices_adaptive_specimin')
@@ -325,9 +326,64 @@ class SimpleAnnotationTypePipeline:
             logger.error(f"Error slicing variant {variant_path}: {e}")
             return False
     
+    def _run_checker_on_target_project(self, target_file=None):
+        """Run Lower Bound Checker on target project and generate warnings file"""
+        try:
+            from checker_framework_runner import run_checker_framework_on_project
+            
+            # Determine target project root
+            if target_file:
+                # If specific file provided, use its directory as project root
+                target_project_root = os.path.dirname(os.path.abspath(target_file))
+            else:
+                # Use case studies directory or project root
+                case_studies_root = os.path.join(self.cfwr_root, 'case_studies')
+                if os.path.isdir(case_studies_root):
+                    target_project_root = case_studies_root
+                else:
+                    target_project_root = self.project_root
+            
+            # Generate target warnings file
+            target_warnings_file = os.path.join(self.predictions_dir, 'target_warnings.out')
+            
+            logger.info(f"Running Lower Bound Checker on: {target_project_root}")
+            logger.info(f"Target warnings file: {target_warnings_file}")
+            
+            # Run the checker
+            success = run_checker_framework_on_project(
+                project_root=target_project_root,
+                output_file=target_warnings_file,
+                max_files=50  # Limit files for faster execution
+            )
+            
+            if success and os.path.exists(target_warnings_file):
+                # Update warnings file to use the generated one
+                original_warnings_file = self.warnings_file
+                self.warnings_file = target_warnings_file
+                logger.info(f"Updated warnings file from {original_warnings_file} to {target_warnings_file}")
+                return True
+            else:
+                logger.warning("Lower Bound Checker did not generate warnings file")
+                return False
+                
+        except ImportError as e:
+            logger.error(f"Failed to import checker_framework_runner: {e}")
+            return False
+        except Exception as e:
+            logger.error(f"Error running Lower Bound Checker on target project: {e}")
+            return False
+    
     def run_prediction_pipeline(self, target_file=None):
         """Run the prediction pipeline"""
         logger.info("Starting simplified annotation type prediction pipeline")
+        
+        # Step 0: Run Lower Bound Checker on target project (if enabled)
+        if self.run_checker_on_target and self.mode == 'predict':
+            logger.info("Step 0: Running Lower Bound Checker on target project")
+            if not self._run_checker_on_target_project(target_file):
+                logger.warning("Failed to run Lower Bound Checker, using provided warnings file")
+            else:
+                logger.info("Successfully generated warnings from target project")
         
         # Step 1: Generate slices for prediction files
         logger.info("Step 1: Generating slices for prediction")
@@ -1186,6 +1242,8 @@ def main():
                        help='Device to use for training/inference (default: auto)')
     parser.add_argument('--no_augment_first', action='store_true',
                        help='Disable augment-first approach (use traditional slice-first approach)')
+    parser.add_argument('--no_run_checker', action='store_true',
+                       help='Disable running Lower Bound Checker on target project (use provided warnings file)')
     
     args = parser.parse_args()
     
@@ -1197,7 +1255,8 @@ def main():
         mode=args.mode,
         no_auto_train=args.no_auto_train,
         device=args.device,
-        augment_first=not args.no_augment_first
+        augment_first=not args.no_augment_first,
+        run_checker_on_target=not args.no_run_checker
     )
     
     # Run pipeline
