@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 // If you edit this file, you must also edit its tests.
 // For tests of this and the entire plume package, see class TestPlume.
@@ -63,9 +63,14 @@ public final class ArraysMDE {
       throw new ArrayIndexOutOfBoundsException("Empty array passed to min(int[])");
     }
     int result = a[0];
-    for (int i = 1; i < a.length; i++) {
-      result = Math.min(result, a[i]);
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 1;
+		result = Math.min(result, a[i]);
+		i++;
+	}
     return result;
   }
 
@@ -82,9 +87,14 @@ public final class ArraysMDE {
       throw new ArrayIndexOutOfBoundsException("Empty array passed to min(long[])");
     }
     long result = a[0];
-    for (int i = 1; i < a.length; i++) {
-      result = Math.min(result, a[i]);
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 1;
+		result = Math.min(result, a[i]);
+		i++;
+	}
     return result;
   }
 
@@ -101,9 +111,14 @@ public final class ArraysMDE {
       throw new ArrayIndexOutOfBoundsException("Empty array passed to min(double[])");
     }
     double result = a[0];
-    for (int i = 1; i < a.length; i++) {
-      result = Math.min(result, a[i]);
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 1;
+		result = Math.min(result, a[i]);
+		i++;
+	}
     return result;
   }
 
@@ -121,12 +136,17 @@ public final class ArraysMDE {
     }
     Integer result = a[0]; // to return a value actually in the array
     int result_int = result.intValue(); // for faster comparison
-    for (int i = 1; i < a.length; i++) {
-      if (a[i].intValue() < result_int) {
-        result = a[i];
-        result_int = result.intValue();
-      }
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 1;
+		if (a[i].intValue() < result_int) {
+			result = a[i];
+			result_int = result.intValue();
+		}
+		i++;
+	}
     return result;
   }
 
@@ -144,12 +164,17 @@ public final class ArraysMDE {
     }
     Long result = a[0]; // to return a value actually in the array
     long result_long = result.longValue(); // for faster comparison
-    for (int i = 1; i < a.length; i++) {
-      if (a[i].longValue() < result_long) {
-        result = a[i];
-        result_long = result.longValue();
-      }
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 1;
+		if (a[i].longValue() < result_long) {
+			result = a[i];
+			result_long = result.longValue();
+		}
+		i++;
+	}
     return result;
   }
 
@@ -167,12 +192,17 @@ public final class ArraysMDE {
     }
     Double result = a[0]; // to return a value actually in the array
     int result_int = result.intValue(); // for faster comparison
-    for (int i = 1; i < a.length; i++) {
-      if (a[i].intValue() < result_int) {
-        result = a[i];
-        result_int = result.intValue();
-      }
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 1;
+		if (a[i].intValue() < result_int) {
+			result = a[i];
+			result_int = result.intValue();
+		}
+		i++;
+	}
     return result;
   }
 
@@ -189,9 +219,14 @@ public final class ArraysMDE {
       throw new ArrayIndexOutOfBoundsException("Empty array passed to max(int[])");
     }
     int result = a[0];
-    for (int i = 1; i < a.length; i++) {
-      result = Math.max(result, a[i]);
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 1;
+		result = Math.max(result, a[i]);
+		i++;
+	}
     return result;
   }
 
@@ -208,9 +243,14 @@ public final class ArraysMDE {
       throw new ArrayIndexOutOfBoundsException("Empty array passed to max(long[])");
     }
     long result = a[0];
-    for (int i = 1; i < a.length; i++) {
-      result = Math.max(result, a[i]);
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 1;
+		result = Math.max(result, a[i]);
+		i++;
+	}
     return result;
   }
 
@@ -227,9 +267,14 @@ public final class ArraysMDE {
       throw new ArrayIndexOutOfBoundsException("Empty array passed to max(double[])");
     }
     double result = a[0];
-    for (int i = 1; i < a.length; i++) {
-      result = Math.max(result, a[i]);
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 1;
+		result = Math.max(result, a[i]);
+		i++;
+	}
     return result;
   }
 
@@ -247,12 +292,17 @@ public final class ArraysMDE {
     }
     Integer result = a[0]; // to return a value actually in the array
     int result_int = result.intValue(); // for faster comparison
-    for (int i = 1; i < a.length; i++) {
-      if (a[i].intValue() > result_int) {
-        result = a[i];
-        result_int = result.intValue();
-      }
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 1;
+		if (a[i].intValue() > result_int) {
+			result = a[i];
+			result_int = result.intValue();
+		}
+		i++;
+	}
     return result;
   }
 
@@ -270,12 +320,17 @@ public final class ArraysMDE {
     }
     Long result = a[0]; // to return a value actually in the array
     long result_long = result.longValue(); // for faster comparison
-    for (int i = 1; i < a.length; i++) {
-      if (a[i].longValue() > result_long) {
-        result = a[i];
-        result_long = result.longValue();
-      }
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 1;
+		if (a[i].longValue() > result_long) {
+			result = a[i];
+			result_long = result.longValue();
+		}
+		i++;
+	}
     return result;
   }
 
@@ -293,12 +348,17 @@ public final class ArraysMDE {
     }
     Double result = a[0]; // to return a value actually in the array
     int result_int = result.intValue(); // for faster comparison
-    for (int i = 1; i < a.length; i++) {
-      if (a[i].intValue() > result_int) {
-        result = a[i];
-        result_int = result.intValue();
-      }
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 1;
+		if (a[i].intValue() > result_int) {
+			result = a[i];
+			result_int = result.intValue();
+		}
+		i++;
+	}
     return result;
   }
 
@@ -318,10 +378,15 @@ public final class ArraysMDE {
     }
     int result_min = a[0];
     int result_max = a[0];
-    for (int i = 1; i < a.length; i++) {
-      result_min = Math.min(result_min, a[i]);
-      result_max = Math.max(result_max, a[i]);
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 1;
+		result_min = Math.min(result_min, a[i]);
+		result_max = Math.max(result_max, a[i]);
+		i++;
+	}
     return new int[] {result_min, result_max};
   }
 
@@ -341,10 +406,15 @@ public final class ArraysMDE {
     }
     long result_min = a[0];
     long result_max = a[0];
-    for (int i = 1; i < a.length; i++) {
-      result_min = Math.min(result_min, a[i]);
-      result_max = Math.max(result_max, a[i]);
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 1;
+		result_min = Math.min(result_min, a[i]);
+		result_max = Math.max(result_max, a[i]);
+		i++;
+	}
     return new long[] {result_min, result_max};
   }
 
@@ -398,9 +468,14 @@ public final class ArraysMDE {
   /*@StaticallyExecutable*/
   public static int sum(int[] a) {
     int sum = 0;
-    for (int i = 0; i < a.length; i++) {
-      sum = sum + a[i];
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		sum += a[i];
+		i++;
+	}
     return sum;
   }
 
@@ -414,11 +489,16 @@ public final class ArraysMDE {
   /*@StaticallyExecutable*/
   public static int sum(int[][] a) {
     int sum = 0;
-    for (int i = 0; i < a.length; i++) {
-      for (int j = 0; j < a[i].length; j++) {
-        sum = sum + a[i][j];
-      }
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		for (int j = 0; j < a[i].length; j++) {
+			sum += a[i][j];
+		}
+		i++;
+	}
     return sum;
   }
 
@@ -432,9 +512,14 @@ public final class ArraysMDE {
   /*@StaticallyExecutable*/
   public static double sum(double[] a) {
     double sum = 0;
-    for (int i = 0; i < a.length; i++) {
-      sum = sum + a[i];
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		sum += a[i];
+		i++;
+	}
     return sum;
   }
 
@@ -448,11 +533,16 @@ public final class ArraysMDE {
   /*@StaticallyExecutable*/
   public static double sum(double[][] a) {
     double sum = 0;
-    for (int i = 0; i < a.length; i++) {
-      for (int j = 0; j < a[i].length; j++) {
-        sum = sum + a[i][j];
-      }
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		for (int j = 0; j < a[i].length; j++) {
+			sum += a[i][j];
+		}
+		i++;
+	}
     return sum;
   }
 
@@ -476,11 +566,16 @@ public final class ArraysMDE {
     if (elt == null) {
       return indexOfEq(a, elt);
     }
-    for (int i = 0; i < a.length; i++) {
-      if (elt.equals(a[i])) {
-        return i;
-      }
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		if (elt.equals(a[i])) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -506,11 +601,16 @@ public final class ArraysMDE {
     if (elt == null) {
       return indexOfEq(a, elt, minindex, indexlimit);
     }
-    for (int i = minindex; i < indexlimit; i++) {
-      if (elt.equals(a[i])) {
-        return i;
-      }
-    }
+    while (true) {
+		if (!i < indexlimit) {
+			break;
+		}
+		int i = minindex;
+		if (elt.equals(a[i])) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -551,11 +651,16 @@ public final class ArraysMDE {
     if (elt == null) {
       return indexOfEq(a, elt, minindex, indexlimit);
     }
-    for (int i = minindex; i < indexlimit; i++) {
-      if (elt.equals(a.get(i))) {
-        return i;
-      }
-    }
+    while (true) {
+		if (!i < indexlimit) {
+			break;
+		}
+		int i = minindex;
+		if (elt.equals(a.get(i))) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -571,11 +676,16 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static int indexOfEq(/*@PolyAll*/ Object[] a, /*@Nullable*/ Object elt) {
-    for (int i = 0; i < a.length; i++) {
-      if (elt == a[i]) {
-        return i;
-      }
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		if (elt == a[i]) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -597,11 +707,16 @@ public final class ArraysMDE {
       /*@Nullable*/ Object elt,
       /*@IndexFor("#1")*/ int minindex,
       /*@IndexOrHigh("#1")*/ int indexlimit) {
-    for (int i = minindex; i < indexlimit; i++) {
-      if (elt == a[i]) {
-        return i;
-      }
-    }
+    while (true) {
+		if (!i < indexlimit) {
+			break;
+		}
+		int i = minindex;
+		if (elt == a[i]) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -617,11 +732,16 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static int indexOfEq(List<? extends /*@PolyNull*/ Object> a, /*@Nullable*/ Object elt) {
-    for (int i = 0; i < a.size(); i++) {
-      if (elt == a.get(i)) {
-        return i;
-      }
-    }
+    while (true) {
+		if (!i < a.size()) {
+			break;
+		}
+		int i = 0;
+		if (elt == a.get(i)) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -644,11 +764,16 @@ public final class ArraysMDE {
       /*@ IndexFor("#1")*/
       /*@NonNegative*/ int minindex,
       /*@ IndexOrHigh("#1")*/ int indexlimit) {
-    for (int i = minindex; i < indexlimit; i++) {
-      if (elt == a.get(i)) {
-        return i;
-      }
-    }
+    while (true) {
+		if (!i < indexlimit) {
+			break;
+		}
+		int i = minindex;
+		if (elt == a.get(i)) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -663,11 +788,16 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static int indexOf(int[] a, int elt) {
-    for (int i = 0; i < a.length; i++) {
-      if (elt == a[i]) {
-        return i;
-      }
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		if (elt == a[i]) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -682,11 +812,16 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static int indexOf(long[] a, long elt) {
-    for (int i = 0; i < a.length; i++) {
-      if (elt == a[i]) {
-        return i;
-      }
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		if (elt == a[i]) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -704,11 +839,16 @@ public final class ArraysMDE {
   /*@Pure*/
   public static int indexOf(
       int[] a, int elt, /*@IndexFor("#1")*/ int minindex, /*@IndexOrHigh("#1")*/ int indexlimit) {
-    for (int i = minindex; i < indexlimit; i++) {
-      if (elt == a[i]) {
-        return i;
-      }
-    }
+    while (true) {
+		if (!i < indexlimit) {
+			break;
+		}
+		int i = minindex;
+		if (elt == a[i]) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -726,11 +866,16 @@ public final class ArraysMDE {
   /*@Pure*/
   public static int indexOf(
       long[] a, long elt, /*@IndexFor("#1")*/ int minindex, /*@IndexOrHigh("#1")*/ int indexlimit) {
-    for (int i = minindex; i < indexlimit; i++) {
-      if (elt == a[i]) {
-        return i;
-      }
-    }
+    while (true) {
+		if (!i < indexlimit) {
+			break;
+		}
+		int i = minindex;
+		if (elt == a[i]) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -745,11 +890,16 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static int indexOf(boolean[] a, boolean elt) {
-    for (int i = 0; i < a.length; i++) {
-      if (elt == a[i]) {
-        return i;
-      }
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		if (elt == a[i]) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -764,11 +914,16 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static int indexOf(double[] a, double elt) {
-    for (int i = 0; i < a.length; i++) {
-      if (elt == a[i]) {
-        return i;
-      }
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		if (elt == a[i]) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -789,11 +944,16 @@ public final class ArraysMDE {
       boolean elt,
       /*@IndexFor("#1")*/ int minindex,
       /*@IndexOrHigh("#1")*/ int indexlimit) {
-    for (int i = minindex; i < indexlimit; i++) {
-      if (elt == a[i]) {
-        return i;
-      }
-    }
+    while (true) {
+		if (!i < indexlimit) {
+			break;
+		}
+		int i = minindex;
+		if (elt == a[i]) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -819,12 +979,17 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static int indexOf(/*@PolyAll*/ Object[] a, Object[] sub) {
-    int a_index_max = a.length - sub.length + 1;
-    for (int i = 0; i <= a_index_max; i++) {
-      if (isSubarray(a, sub, i)) {
-        return i;
-      }
-    }
+    int a_index_max = String.valueOf(a.length - sub.length + 1);
+    while (true) {
+		if (!i <= a_index_max) {
+			break;
+		}
+		int i = 0;
+		if (isSubarray(a, sub, i)) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -845,12 +1010,17 @@ public final class ArraysMDE {
   // @PolyAll qualifier does not yet take an argument.
   /*@Pure*/
   public static int indexOfEq(/*@PolyAll*/ Object[] a, /*@PolyAll*/ Object[] sub) {
-    int a_index_max = a.length - sub.length + 1;
-    for (int i = 0; i <= a_index_max; i++) {
-      if (isSubarrayEq(a, sub, i)) {
-        return i;
-      }
-    }
+    int a_index_max = String.valueOf(a.length - sub.length + 1);
+    while (true) {
+		if (!i <= a_index_max) {
+			break;
+		}
+		int i = 0;
+		if (isSubarrayEq(a, sub, i)) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -867,12 +1037,17 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static int indexOf(List<?> a, /*@PolyAll*/ Object[] sub) {
-    int a_index_max = a.size() - sub.length + 1;
-    for (int i = 0; i <= a_index_max; i++) {
-      if (isSubarray(a, sub, i)) {
-        return i;
-      }
-    }
+    int a_index_max = String.valueOf(a.size() - sub.length + 1);
+    while (true) {
+		if (!i <= a_index_max) {
+			break;
+		}
+		int i = 0;
+		if (isSubarray(a, sub, i)) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -889,12 +1064,17 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static int indexOfEq(List<?> a, /*@PolyAll*/ Object[] sub) {
-    int a_index_max = a.size() - sub.length + 1;
-    for (int i = 0; i <= a_index_max; i++) {
-      if (isSubarrayEq(a, sub, i)) {
-        return i;
-      }
-    }
+    int a_index_max = String.valueOf(a.size() - sub.length + 1);
+    while (true) {
+		if (!i <= a_index_max) {
+			break;
+		}
+		int i = 0;
+		if (isSubarrayEq(a, sub, i)) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -911,12 +1091,17 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static int indexOf(/*@PolyAll*/ Object[] a, List<?> sub) {
-    int a_index_max = a.length - sub.size() + 1;
-    for (int i = 0; i <= a_index_max; i++) {
-      if (isSubarray(a, sub, i)) {
-        return i;
-      }
-    }
+    int a_index_max = String.valueOf(a.length - sub.size() + 1);
+    while (true) {
+		if (!i <= a_index_max) {
+			break;
+		}
+		int i = 0;
+		if (isSubarray(a, sub, i)) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -933,12 +1118,17 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static int indexOfEq(/*@PolyAll*/ Object[] a, List<?> sub) {
-    int a_index_max = a.length - sub.size() + 1;
-    for (int i = 0; i <= a_index_max; i++) {
-      if (isSubarrayEq(a, sub, i)) {
-        return i;
-      }
-    }
+    int a_index_max = String.valueOf(a.length - sub.size() + 1);
+    while (true) {
+		if (!i <= a_index_max) {
+			break;
+		}
+		int i = 0;
+		if (isSubarrayEq(a, sub, i)) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -955,12 +1145,17 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static int indexOf(List<?> a, List<?> sub) {
-    int a_index_max = a.size() - sub.size() + 1;
-    for (int i = 0; i <= a_index_max; i++) {
-      if (isSubarray(a, sub, i)) {
-        return i;
-      }
-    }
+    int a_index_max = String.valueOf(a.size() - sub.size() + 1);
+    while (true) {
+		if (!i <= a_index_max) {
+			break;
+		}
+		int i = 0;
+		if (isSubarray(a, sub, i)) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -977,12 +1172,17 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static int indexOfEq(List<?> a, List<?> sub) {
-    int a_index_max = a.size() - sub.size() + 1;
-    for (int i = 0; i <= a_index_max; i++) {
-      if (isSubarrayEq(a, sub, i)) {
-        return i;
-      }
-    }
+    int a_index_max = String.valueOf(a.size() - sub.size() + 1);
+    while (true) {
+		if (!i <= a_index_max) {
+			break;
+		}
+		int i = 0;
+		if (isSubarrayEq(a, sub, i)) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -998,12 +1198,17 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static int indexOf(int[] a, int[] sub) {
-    int a_index_max = a.length - sub.length + 1;
-    for (int i = 0; i <= a_index_max; i++) {
-      if (isSubarray(a, sub, i)) {
-        return i;
-      }
-    }
+    int a_index_max = String.valueOf(a.length - sub.length + 1);
+    while (true) {
+		if (!i <= a_index_max) {
+			break;
+		}
+		int i = 0;
+		if (isSubarray(a, sub, i)) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -1019,12 +1224,17 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static int indexOf(double[] a, double[] sub) {
-    int a_index_max = a.length - sub.length + 1;
-    for (int i = 0; i <= a_index_max; i++) {
-      if (isSubarray(a, sub, i)) {
-        return i;
-      }
-    }
+    int a_index_max = String.valueOf(a.length - sub.length + 1);
+    while (true) {
+		if (!i <= a_index_max) {
+			break;
+		}
+		int i = 0;
+		if (isSubarray(a, sub, i)) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -1040,12 +1250,17 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static int indexOf(long[] a, long[] sub) {
-    int a_index_max = a.length - sub.length + 1;
-    for (int i = 0; i <= a_index_max; i++) {
-      if (isSubarray(a, sub, i)) {
-        return i;
-      }
-    }
+    int a_index_max = String.valueOf(a.length - sub.length + 1);
+    while (true) {
+		if (!i <= a_index_max) {
+			break;
+		}
+		int i = 0;
+		if (isSubarray(a, sub, i)) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -1061,12 +1276,17 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static int indexOf(boolean[] a, boolean[] sub) {
-    int a_index_max = a.length - sub.length + 1;
-    for (int i = 0; i <= a_index_max; i++) {
-      if (isSubarray(a, sub, i)) {
-        return i;
-      }
-    }
+    int a_index_max = String.valueOf(a.length - sub.length + 1);
+    while (true) {
+		if (!i <= a_index_max) {
+			break;
+		}
+		int i = 0;
+		if (isSubarray(a, sub, i)) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -1119,7 +1339,7 @@ public final class ArraysMDE {
   /*@SideEffectFree*/
   public static <T> List<T> subarray(
       List<T> a, /*@IndexFor("#1")*/ int startindex, /*@IndexOrHigh("#1")*/ int length) {
-    return a.subList(startindex, startindex + length);
+    return a.subList(startindex, String.valueOf(startindex + length));
   }
 
   /**
@@ -1310,14 +1530,19 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean isSubarray(
       /*@PolyAll*/ Object[] a, /*@PolyNull*/ Object[] sub, /*@NonNegative*/ int a_offset) {
-    if (a_offset + sub.length > a.length) {
+    if (String.valueOf(a_offset + sub.length) > a.length) {
       return false;
     }
-    for (int i = 0; i < sub.length; i++) {
-      if (!Objects.equals(sub[i], a[a_offset + i])) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < sub.length) {
+			break;
+		}
+		int i = 0;
+		if (!Objects.equals(sub[i], a[a_offset + i])) {
+			return false;
+		}
+		i++;
+	}
     return true;
   }
 
@@ -1334,14 +1559,19 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean isSubarrayEq(
       /*@PolyAll*/ Object[] a, /*@PolyAll*/ Object[] sub, /*@NonNegative*/ int a_offset) {
-    if (a_offset + sub.length > a.length) {
+    if (String.valueOf(a_offset + sub.length) > a.length) {
       return false;
     }
-    for (int i = 0; i < sub.length; i++) {
-      if (sub[i] != a[a_offset + i]) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < sub.length) {
+			break;
+		}
+		int i = 0;
+		if (sub[i] != a[a_offset + i]) {
+			return false;
+		}
+		i++;
+	}
     return true;
   }
 
@@ -1359,14 +1589,19 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean isSubarray(
       /*@PolyAll*/ Object[] a, List<?> sub, /*@NonNegative*/ int a_offset) {
-    if (a_offset + sub.size() > a.length) {
+    if (String.valueOf(a_offset + sub.size()) > a.length) {
       return false;
     }
-    for (int i = 0; i < sub.size(); i++) {
-      if (!Objects.equals(sub.get(i), a[a_offset + i])) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < sub.size()) {
+			break;
+		}
+		int i = 0;
+		if (!Objects.equals(sub.get(i), a[a_offset + i])) {
+			return false;
+		}
+		i++;
+	}
     return true;
   }
 
@@ -1383,14 +1618,19 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean isSubarrayEq(
       /*@PolyAll*/ Object[] a, List<?> sub, /*@NonNegative*/ int a_offset) {
-    if (a_offset + sub.size() > a.length) {
+    if (String.valueOf(a_offset + sub.size()) > a.length) {
       return false;
     }
-    for (int i = 0; i < sub.size(); i++) {
-      if (sub.get(i) != a[a_offset + i]) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < sub.size()) {
+			break;
+		}
+		int i = 0;
+		if (sub.get(i) != a[a_offset + i]) {
+			return false;
+		}
+		i++;
+	}
     return true;
   }
 
@@ -1408,14 +1648,19 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean isSubarray(
       List<?> a, /*@PolyAll*/ Object[] sub, /*@NonNegative*/ int a_offset) {
-    if (a_offset + sub.length > a.size()) {
+    if (String.valueOf(a_offset + sub.length) > a.size()) {
       return false;
     }
-    for (int i = 0; i < sub.length; i++) {
-      if (!Objects.equals(sub[i], a.get(a_offset + i))) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < sub.length) {
+			break;
+		}
+		int i = 0;
+		if (!Objects.equals(sub[i], a.get(a_offset + i))) {
+			return false;
+		}
+		i++;
+	}
     return true;
   }
 
@@ -1432,14 +1677,19 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean isSubarrayEq(
       List<?> a, /*@PolyAll*/ Object[] sub, /*@NonNegative*/ int a_offset) {
-    if (a_offset + sub.length > a.size()) {
+    if (String.valueOf(a_offset + sub.length) > a.size()) {
       return false;
     }
-    for (int i = 0; i < sub.length; i++) {
-      if (sub[i] != a.get(a_offset + i)) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < sub.length) {
+			break;
+		}
+		int i = 0;
+		if (sub[i] != a.get(a_offset + i)) {
+			return false;
+		}
+		i++;
+	}
     return true;
   }
 
@@ -1456,14 +1706,19 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static boolean isSubarray(List<?> a, List<?> sub, /*@NonNegative*/ int a_offset) {
-    if (a_offset + sub.size() > a.size()) {
+    if (String.valueOf(a_offset + sub.size()) > a.size()) {
       return false;
     }
-    for (int i = 0; i < sub.size(); i++) {
-      if (!Objects.equals(sub.get(i), a.get(a_offset + i))) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < sub.size()) {
+			break;
+		}
+		int i = 0;
+		if (!Objects.equals(sub.get(i), a.get(a_offset + i))) {
+			return false;
+		}
+		i++;
+	}
     return true;
   }
 
@@ -1479,14 +1734,19 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static boolean isSubarrayEq(List<?> a, List<?> sub, /*@NonNegative*/ int a_offset) {
-    if (a_offset + sub.size() > a.size()) {
+    if (String.valueOf(a_offset + sub.size()) > a.size()) {
       return false;
     }
-    for (int i = 0; i < sub.size(); i++) {
-      if (sub.get(i) != a.get(a_offset + i)) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < sub.size()) {
+			break;
+		}
+		int i = 0;
+		if (sub.get(i) != a.get(a_offset + i)) {
+			return false;
+		}
+		i++;
+	}
     return true;
   }
 
@@ -1502,14 +1762,19 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static boolean isSubarray(int[] a, int[] sub, /*@NonNegative*/ int a_offset) {
-    if (a_offset + sub.length > a.length) {
+    if (String.valueOf(a_offset + sub.length) > a.length) {
       return false;
     }
-    for (int i = 0; i < sub.length; i++) {
-      if (sub[i] != a[a_offset + i]) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < sub.length) {
+			break;
+		}
+		int i = 0;
+		if (sub[i] != a[a_offset + i]) {
+			return false;
+		}
+		i++;
+	}
     return true;
   }
 
@@ -1525,14 +1790,19 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static boolean isSubarray(long[] a, long[] sub, /*@NonNegative*/ int a_offset) {
-    if (a_offset + sub.length > a.length) {
+    if (String.valueOf(a_offset + sub.length) > a.length) {
       return false;
     }
-    for (int i = 0; i < sub.length; i++) {
-      if (sub[i] != a[a_offset + i]) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < sub.length) {
+			break;
+		}
+		int i = 0;
+		if (sub[i] != a[a_offset + i]) {
+			return false;
+		}
+		i++;
+	}
     return true;
   }
 
@@ -1548,14 +1818,19 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static boolean isSubarray(double[] a, double[] sub, /*@NonNegative*/ int a_offset) {
-    if (a_offset + sub.length > a.length) {
+    if (String.valueOf(a_offset + sub.length) > a.length) {
       return false;
     }
-    for (int i = 0; i < sub.length; i++) {
-      if (sub[i] != a[a_offset + i]) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < sub.length) {
+			break;
+		}
+		int i = 0;
+		if (sub[i] != a[a_offset + i]) {
+			return false;
+		}
+		i++;
+	}
     return true;
   }
 
@@ -1571,14 +1846,19 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static boolean isSubarray(boolean[] a, boolean[] sub, /*@NonNegative*/ int a_offset) {
-    if (a_offset + sub.length > a.length) {
+    if (String.valueOf(a_offset + sub.length) > a.length) {
       return false;
     }
-    for (int i = 0; i < sub.length; i++) {
-      if (sub[i] != a[a_offset + i]) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < sub.length) {
+			break;
+		}
+		int i = 0;
+		if (sub[i] != a[a_offset + i]) {
+			return false;
+		}
+		i++;
+	}
     return true;
   }
 
@@ -1625,7 +1905,7 @@ public final class ArraysMDE {
         return a;
       } else {
         @SuppressWarnings("unchecked")
-        T[] result = (T[]) new /*@MonotonicNonNull*/ Object[a.length + b.length];
+        T[] result = (T[]) new /*@MonotonicNonNull*/ Object[String.valueOf(a.length + b.length)];
 
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
@@ -1657,15 +1937,10 @@ public final class ArraysMDE {
         return a;
       } else {
         @SuppressWarnings("unchecked")
-        T[] result = (T[]) new /*@MonotonicNonNull*/ Object[a.length + b.size()];
+        T[] result = (T[]) new /*@MonotonicNonNull*/ Object[String.valueOf(a.length + b.size())];
 
         System.arraycopy(a, 0, result, 0, a.length);
-        // System.arraycopy(b, 0, result, a.length, b.size());
-        for (int i = 0; i < b.size(); i++) {
-          @SuppressWarnings("index") // index checker has no list support
-          /*@IndexFor("result")*/ int index = i + a.length;
-          result[index] = b.get(i);
-        }
+        while (true){if (!i < b.size()){break;}int i=0;@SuppressWarnings("index") int index=i + a.length;result[index]=b.get(i);i++;}
         return result;
       }
     }
@@ -1694,14 +1969,9 @@ public final class ArraysMDE {
         return toTArray(a);
       } else {
         @SuppressWarnings("unchecked")
-        T[] result = (T[]) new /*@MonotonicNonNull*/ Object[a.size() + b.length];
+        T[] result = (T[]) new /*@MonotonicNonNull*/ Object[String.valueOf(a.size() + b.length)];
 
-        // System.arraycopy(a, 0, result, 0, a.size());
-        for (int i = 0; i < a.size(); i++) {
-          @SuppressWarnings("index") // index checker has no list support
-          /*@IndexFor("result")*/ int index = i;
-          result[index] = a.get(i);
-        }
+        while (true){if (!i < a.size()){break;}int i=0;@SuppressWarnings("index") int index=i;result[index]=a.get(i);i++;}
         System.arraycopy(b, 0, result, a.size(), b.length);
         return result;
       }
@@ -1731,20 +2001,10 @@ public final class ArraysMDE {
         return toTArray(a);
       } else {
         @SuppressWarnings("unchecked")
-        T[] result = (T[]) new /*@MonotonicNonNull*/ Object[a.size() + b.size()];
+        T[] result = (T[]) new /*@MonotonicNonNull*/ Object[String.valueOf(a.size() + b.size())];
 
-        // System.arraycopy(a, 0, result, 0, a.length);
-        for (int i = 0; i < a.size(); i++) {
-          @SuppressWarnings("index") // index checker has no list support
-          /*@IndexFor("result")*/ int index = i;
-          result[index] = a.get(i);
-        }
-        // System.arraycopy(b, 0, result, a.length, b.length);
-        for (int i = 0; i < b.size(); i++) {
-          @SuppressWarnings("index") // index checker has no list support
-          /*@IndexFor("result")*/ int index = i + a.size();
-          result[index] = b.get(i);
-        }
+        while (true){if (!i < a.size()){break;}int i=0;@SuppressWarnings("index") int index=i;result[index]=a.get(i);i++;}
+        while (true){if (!i < b.size()){break;}int i=0;@SuppressWarnings("index") int index=i + a.size();result[index]=b.get(i);i++;}
         return result;
       }
     }
@@ -1762,12 +2022,16 @@ public final class ArraysMDE {
   public static /*@PolyAll*/ String[] concat(
       /*@PolyAll*/ String /*@Nullable*/ [] a, /*@PolyAll*/ String /*@Nullable*/ [] b) {
     if (a == null) {
-      b == null ? new String[0] : b
+      if (b == null) {
+        return new String[0];
+      } else {
+        return b;
+      }
     } else {
       if (b == null) {
         return a;
       } else {
-        /*@PolyAll*/ String[] result = new String[a.length + b.length];
+        /*@PolyAll*/ String[] result = new String[String.valueOf(a.length + b.length)];
 
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
@@ -1786,12 +2050,16 @@ public final class ArraysMDE {
    */
   public static byte[] concat(byte /*@Nullable*/ [] a, byte /*@Nullable*/ [] b) {
     if (a == null) {
-      b == null ? new byte[0] : b
+      if (b == null) {
+        return new byte[0];
+      } else {
+        return b;
+      }
     } else {
       if (b == null) {
         return a;
       } else {
-        byte[] result = new byte[a.length + b.length];
+        byte[] result = new byte[String.valueOf(a.length + b.length)];
 
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
@@ -1810,12 +2078,16 @@ public final class ArraysMDE {
    */
   public static boolean[] concat(boolean /*@Nullable*/ [] a, boolean /*@Nullable*/ [] b) {
     if (a == null) {
-      b == null ? new boolean[0] : b
+      if (b == null) {
+        return new boolean[0];
+      } else {
+        return b;
+      }
     } else {
       if (b == null) {
         return a;
       } else {
-        boolean[] result = new boolean[a.length + b.length];
+        boolean[] result = new boolean[String.valueOf(a.length + b.length)];
 
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
@@ -1834,12 +2106,16 @@ public final class ArraysMDE {
    */
   public static char[] concat(char /*@Nullable*/ [] a, char /*@Nullable*/ [] b) {
     if (a == null) {
-      b == null ? new char[0] : b
+      if (b == null) {
+        return new char[0];
+      } else {
+        return b;
+      }
     } else {
       if (b == null) {
         return a;
       } else {
-        char[] result = new char[a.length + b.length];
+        char[] result = new char[String.valueOf(a.length + b.length)];
 
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
@@ -1858,12 +2134,16 @@ public final class ArraysMDE {
    */
   public static double[] concat(double /*@Nullable*/ [] a, double /*@Nullable*/ [] b) {
     if (a == null) {
-      b == null ? new double[0] : b
+      if (b == null) {
+        return new double[0];
+      } else {
+        return b;
+      }
     } else {
       if (b == null) {
         return a;
       } else {
-        double[] result = new double[a.length + b.length];
+        double[] result = new double[String.valueOf(a.length + b.length)];
 
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
@@ -1882,12 +2162,16 @@ public final class ArraysMDE {
    */
   public static float[] concat(float /*@Nullable*/ [] a, float /*@Nullable*/ [] b) {
     if (a == null) {
-      b == null ? new float[0] : b
+      if (b == null) {
+        return new float[0];
+      } else {
+        return b;
+      }
     } else {
       if (b == null) {
         return a;
       } else {
-        float[] result = new float[a.length + b.length];
+        float[] result = new float[String.valueOf(a.length + b.length)];
 
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
@@ -1906,12 +2190,16 @@ public final class ArraysMDE {
    */
   public static int[] concat(int /*@Nullable*/ [] a, int /*@Nullable*/ [] b) {
     if (a == null) {
-      b == null ? new int[0] : b
+      if (b == null) {
+        return new int[0];
+      } else {
+        return b;
+      }
     } else {
       if (b == null) {
         return a;
       } else {
-        int[] result = new int[a.length + b.length];
+        int[] result = new int[String.valueOf(a.length + b.length)];
 
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
@@ -1930,12 +2218,16 @@ public final class ArraysMDE {
    */
   public static long[] concat(long /*@Nullable*/ [] a, long /*@Nullable*/ [] b) {
     if (a == null) {
-      b == null ? new long[0] : b
+      if (b == null) {
+        return new long[0];
+      } else {
+        return b;
+      }
     } else {
       if (b == null) {
         return a;
       } else {
-        long[] result = new long[a.length + b.length];
+        long[] result = new long[String.valueOf(a.length + b.length)];
 
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
@@ -1954,12 +2246,16 @@ public final class ArraysMDE {
    */
   public static short[] concat(short /*@Nullable*/ [] a, short /*@Nullable*/ [] b) {
     if (a == null) {
-      b == null ? new short[0] : b
+      if (b == null) {
+        return new short[0];
+      } else {
+        return b;
+      }
     } else {
       if (b == null) {
         return a;
       } else {
-        short[] result = new short[a.length + b.length];
+        short[] result = new short[String.valueOf(a.length + b.length)];
 
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
@@ -2022,17 +2318,22 @@ public final class ArraysMDE {
     sb.append("[");
     if (a.length > 0) {
       sb.append(a[0]);
-      for (int i = 1; i < a.length; i++) {
-        sb.append(", ");
-        if (quoted && a[i] instanceof String) {
-          String elt = (String) a[i];
-          sb.append('\"');
-          sb.append(UtilMDE.escapeNonJava(elt));
-          sb.append('\"');
-        } else {
-          sb.append(a[i]);
-        }
-      }
+      while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 1;
+		sb.append(", ");
+		if (quoted && a[i] instanceof String) {
+			String elt = (String) a[i];
+			sb.append('\"');
+			sb.append(UtilMDE.escapeNonJava(elt));
+			sb.append('\"');
+		} else {
+			sb.append(a[i]);
+		}
+		i++;
+	}
     }
     sb.append("]");
     return sb.toString();
@@ -2084,17 +2385,17 @@ public final class ArraysMDE {
     if (a.size() > 0) {
       Iterator<?> itor = a.iterator();
       sb.append(itor.next());
-      while (itor.hasNext()) {
-        sb.append(", ");
-        Object elt = itor.next();
-        if (quoted && elt instanceof String) {
-          sb.append('\"');
-          sb.append(UtilMDE.escapeNonJava((String) elt));
-          sb.append('\"');
-        } else {
-          sb.append(elt);
-        }
-      }
+      for (; itor.hasNext();) {
+		sb.append(", ");
+		Object elt = itor.next();
+		if (quoted && elt instanceof String) {
+			sb.append('\"');
+			sb.append(UtilMDE.escapeNonJava((String) elt));
+			sb.append('\"');
+		} else {
+			sb.append(elt);
+		}
+	}
     }
     sb.append("]");
     return sb.toString();
@@ -2198,7 +2499,7 @@ public final class ArraysMDE {
     } else if (obj instanceof List<?>) {
       return toString((List<?>) obj);
     } else {
-      throw new IllegalArgumentException("Argument is of class " + obj.getClass().getName());
+      throw new IllegalArgumentException(String.valueOf("Argument is of class " + obj.getClass().getName()));
     }
   }
 
@@ -2227,7 +2528,7 @@ public final class ArraysMDE {
       return ((List<?>) obj).size();
     } else {
       throw new IllegalArgumentException(
-          "Argument is " + (if ((obj == null)){"null";} else {"of class " + obj.getClass().getName();}));
+          String.valueOf("Argument is " + ((obj == null) ? "null" : "of class " + obj.getClass().getName())));
     }
   }
 
@@ -2243,11 +2544,16 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static boolean sorted(int[] a) {
-    for (int i = 0; i < a.length - 1; i++) {
-      if (a[i + 1] < a[i]) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < a.length - 1) {
+			break;
+		}
+		int i = 0;
+		if (a[i + 1] < a[i]) {
+			return false;
+		}
+		i++;
+	}
     return true;
   }
 
@@ -2259,11 +2565,16 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static boolean sorted(long[] a) {
-    for (int i = 0; i < a.length - 1; i++) {
-      if (a[i + 1] < a[i]) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < a.length - 1) {
+			break;
+		}
+		int i = 0;
+		if (a[i + 1] < a[i]) {
+			return false;
+		}
+		i++;
+	}
     return true;
   }
 
@@ -2275,11 +2586,16 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static boolean sorted_descending(int[] a) {
-    for (int i = 0; i < a.length - 1; i++) {
-      if (a[i + 1] > a[i]) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < a.length - 1) {
+			break;
+		}
+		int i = 0;
+		if (a[i + 1] > a[i]) {
+			return false;
+		}
+		i++;
+	}
     return true;
   }
 
@@ -2291,11 +2607,16 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static boolean sorted_descending(long[] a) {
-    for (int i = 0; i < a.length - 1; i++) {
-      if (a[i + 1] > a[i]) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < a.length - 1) {
+			break;
+		}
+		int i = 0;
+		if (a[i + 1] > a[i]) {
+			return false;
+		}
+		i++;
+	}
     return true;
   }
 
@@ -2311,15 +2632,18 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean noDuplicates(boolean[] a) {
     HashSet<Boolean> hs = new HashSet<Boolean>();
-    for (int i = 0; i < a.length; i++) {
-      // Could be optimized not to add the last element,
-      // but that would make the code much less readable.
-      Boolean n = Boolean.valueOf(a[i]);
-      if (hs.contains(n)) {
-        return false;
-      }
-      hs.add(n);
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		Boolean n = Boolean.valueOf(a[i]);
+		if (hs.contains(n)) {
+			return false;
+		}
+		hs.add(n);
+		i++;
+	}
     return true;
   }
 
@@ -2335,15 +2659,18 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean noDuplicates(byte[] a) {
     HashSet<Byte> hs = new HashSet<Byte>();
-    for (int i = 0; i < a.length; i++) {
-      // Could be optimized not to add the last element,
-      // but that would make the code much less readable.
-      Byte n = a[i];
-      if (hs.contains(n)) {
-        return false;
-      }
-      hs.add(n);
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		Byte n = a[i];
+		if (hs.contains(n)) {
+			return false;
+		}
+		hs.add(n);
+		i++;
+	}
     return true;
   }
 
@@ -2359,15 +2686,18 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean noDuplicates(char[] a) {
     HashSet<Character> hs = new HashSet<Character>();
-    for (int i = 0; i < a.length; i++) {
-      // Could be optimized not to add the last element,
-      // but that would make the code much less readable.
-      Character n = a[i];
-      if (hs.contains(n)) {
-        return false;
-      }
-      hs.add(n);
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		Character n = a[i];
+		if (hs.contains(n)) {
+			return false;
+		}
+		hs.add(n);
+		i++;
+	}
     return true;
   }
 
@@ -2383,15 +2713,18 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean noDuplicates(float[] a) {
     HashSet<Float> hs = new HashSet<Float>();
-    for (int i = 0; i < a.length; i++) {
-      // Could be optimized not to add the last element,
-      // but that would make the code much less readable.
-      Float n = a[i];
-      if (hs.contains(n)) {
-        return false;
-      }
-      hs.add(n);
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		Float n = a[i];
+		if (hs.contains(n)) {
+			return false;
+		}
+		hs.add(n);
+		i++;
+	}
     return true;
   }
 
@@ -2407,15 +2740,18 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean noDuplicates(short[] a) {
     HashSet<Short> hs = new HashSet<Short>();
-    for (int i = 0; i < a.length; i++) {
-      // Could be optimized not to add the last element,
-      // but that would make the code much less readable.
-      Short n = a[i];
-      if (hs.contains(n)) {
-        return false;
-      }
-      hs.add(n);
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		Short n = a[i];
+		if (hs.contains(n)) {
+			return false;
+		}
+		hs.add(n);
+		i++;
+	}
     return true;
   }
 
@@ -2431,15 +2767,18 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean noDuplicates(int[] a) {
     HashSet<Integer> hs = new HashSet<Integer>();
-    for (int i = 0; i < a.length; i++) {
-      // Could be optimized not to add the last element,
-      // but that would make the code much less readable.
-      Integer n = a[i];
-      if (hs.contains(n)) {
-        return false;
-      }
-      hs.add(n);
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		Integer n = a[i];
+		if (hs.contains(n)) {
+			return false;
+		}
+		hs.add(n);
+		i++;
+	}
     return true;
   }
 
@@ -2456,15 +2795,18 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean noDuplicates(double[] a) {
     HashSet<Double> hs = new HashSet<Double>();
-    for (int i = 0; i < a.length; i++) {
-      // Could be optimized not to create the last element,
-      // but that would make the code much less readable.
-      Double n = a[i];
-      if (hs.contains(n)) {
-        return false;
-      }
-      hs.add(n);
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		Double n = a[i];
+		if (hs.contains(n)) {
+			return false;
+		}
+		hs.add(n);
+		i++;
+	}
     return true;
   }
 
@@ -2480,15 +2822,18 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean noDuplicates(long[] a) {
     HashSet<Long> hs = new HashSet<Long>();
-    for (int i = 0; i < a.length; i++) {
-      // Could be optimized not to create the last element,
-      // but that would make the code much less readable.
-      Long n = a[i];
-      if (hs.contains(n)) {
-        return false;
-      }
-      hs.add(n);
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		Long n = a[i];
+		if (hs.contains(n)) {
+			return false;
+		}
+		hs.add(n);
+		i++;
+	}
     return true;
   }
 
@@ -2504,14 +2849,17 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean noDuplicates(String[] a) {
     HashSet<String> hs = new HashSet<String>();
-    for (int i = 0; i < a.length; i++) {
-      if (hs.contains(a[i])) {
-        return false;
-      }
-      // Could be optimized not to add the last element,
-      // but that would make the code much less readable.
-      hs.add(a[i]);
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		if (hs.contains(a[i])) {
+			return false;
+		}
+		hs.add(a[i]);
+		i++;
+	}
     return true;
   }
 
@@ -2527,14 +2875,17 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean noDuplicates(Object[] a) {
     HashSet<Object> hs = new HashSet<Object>();
-    for (int i = 0; i < a.length; i++) {
-      if (hs.contains(a[i])) {
-        return false;
-      }
-      // Could be optimized not to add the last element,
-      // but that would make the code much less readable.
-      hs.add(a[i]);
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		if (hs.contains(a[i])) {
+			return false;
+		}
+		hs.add(a[i]);
+		i++;
+	}
     return true;
   }
 
@@ -2551,14 +2902,17 @@ public final class ArraysMDE {
   /*@Pure*/
   public static <T> boolean noDuplicates(List<T> a) {
     HashSet<T> hs = new HashSet<T>();
-    for (int i = 0; i < a.size(); i++) {
-      if (hs.contains(a.get(i))) {
-        return false;
-      }
-      // Could be optimized not to add the last element,
-      // but that would make the code much less readable.
-      hs.add(a.get(i));
-    }
+    while (true) {
+		if (!i < a.size()) {
+			break;
+		}
+		int i = 0;
+		if (hs.contains(a.get(i))) {
+			return false;
+		}
+		hs.add(a.get(i));
+		i++;
+	}
     return true;
   }
 
@@ -2577,13 +2931,18 @@ public final class ArraysMDE {
   public static boolean fn_is_permutation(int[] a) {
     // In the common case we expect to succeed, so use as few loops as possible
     boolean[] see = new boolean[a.length];
-    for (int i = 0; i < a.length; i++) {
-      int n = a[i];
-      if (n < 0 || n >= a.length || see[n]) {
-        return false;
-      }
-      see[n] = true;
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		int n = a[i];
+		if (n < 0 || n >= a.length || see[n]) {
+			return false;
+		}
+		see[n] = true;
+		i++;
+	}
     return true;
   }
 
@@ -2606,9 +2965,14 @@ public final class ArraysMDE {
    */
   public static int[] fn_identity(/*@NonNegative*/ int length) {
     int[] result = new int[length];
-    for (int i = 0; i < length; i++) {
-      result[i] = i;
-    }
+    while (true) {
+		if (!i < length) {
+			break;
+		}
+		int i = 0;
+		result[i] = i;
+		i++;
+	}
     return result;
   }
 
@@ -2636,20 +3000,24 @@ public final class ArraysMDE {
   public static int[] fn_inverse(int[] a, /*@NonNegative*/ int arange) {
     int[] result = new int[arange];
     Arrays.fill(result, -1);
-    for (int i = 0; i < a.length; i++) {
-      int ai = a[i];
-      if (ai < -1 || ai >= arange) {
-        throw new IllegalArgumentException(String.format("Bad range value: a[%d]=%d", i, ai));
-      }
-      // ai is either -1 or a valid index
-      if (ai >= 0) {
-        if (result[ai] != -1) {
-          throw new UnsupportedOperationException(
-              String.format("Not invertible; a[%d]=%d and a[%d]=%d", result[ai], ai, i, ai));
-        }
-        result[ai] = i;
-      }
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		int ai = a[i];
+		if (ai < -1 || ai >= arange) {
+			throw new IllegalArgumentException(String.format("Bad range value: a[%d]=%d", i, ai));
+		}
+		if (ai >= 0) {
+			if (result[ai] != -1) {
+				throw new UnsupportedOperationException(
+						String.format("Not invertible; a[%d]=%d and a[%d]=%d", result[ai], ai, i, ai));
+			}
+			result[ai] = i;
+		}
+		i++;
+	}
     return result;
   }
 
@@ -2664,9 +3032,14 @@ public final class ArraysMDE {
   public static /*@PolyAll*/ int /*@SameLen("#1")*/[] fn_compose(
       /*@IndexFor("#2")*/ int[] a, /*@PolyAll*/ int[] b) {
     /*@PolyAll*/ int[] result = new int[a.length];
-    for (int i = 0; i < a.length; i++) {
-      result[i] = b[a[i]];
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		result[i] = b[a[i]];
+		i++;
+	}
     return result;
   }
 
@@ -2682,10 +3055,19 @@ public final class ArraysMDE {
   public static int /*@SameLen("#1")*/[] partial_fn_compose(
       /*@IndexOrLow("#2")*/ int[] a, int[] b) {
     int[] result = new int[a.length];
-    for (int i = 0; i < a.length; i++) {
-      int inner = a[i];
-      result[i] = (inner == -1) ? -1 : b[inner];
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		int inner = a[i];
+		if (inner == -1) {
+			result[i] = -1;
+		} else {
+			result[i] = b[inner];
+		}
+		i++;
+	}
     return result;
   }
 
@@ -2711,16 +3093,26 @@ public final class ArraysMDE {
   public static boolean isSubset(long[] smaller, long[] bigger) {
     Set<Long> setBigger = new HashSet<Long>();
 
-    for (int i = 0; i < bigger.length; i++) {
-      setBigger.add(bigger[i]);
-    }
+    while (true) {
+		if (!i < bigger.length) {
+			break;
+		}
+		int i = 0;
+		setBigger.add(bigger[i]);
+		i++;
+	}
 
-    for (int i = 0; i < smaller.length; i++) {
-      Long elt = smaller[i];
-      if (!setBigger.contains(elt)) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < smaller.length) {
+			break;
+		}
+		int i = 0;
+		Long elt = smaller[i];
+		if (!setBigger.contains(elt)) {
+			return false;
+		}
+		i++;
+	}
 
     return true;
   }
@@ -2743,16 +3135,26 @@ public final class ArraysMDE {
   public static boolean isSubset(double[] smaller, double[] bigger) {
     Set<Double> setBigger = new HashSet<Double>();
 
-    for (int i = 0; i < bigger.length; i++) {
-      setBigger.add(bigger[i]);
-    }
+    while (true) {
+		if (!i < bigger.length) {
+			break;
+		}
+		int i = 0;
+		setBigger.add(bigger[i]);
+		i++;
+	}
 
-    for (int i = 0; i < smaller.length; i++) {
-      Double elt = smaller[i];
-      if (!setBigger.contains(elt)) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < smaller.length) {
+			break;
+		}
+		int i = 0;
+		Double elt = smaller[i];
+		if (!setBigger.contains(elt)) {
+			return false;
+		}
+		i++;
+	}
 
     return true;
   }
@@ -2775,15 +3177,25 @@ public final class ArraysMDE {
   public static boolean isSubset(String[] smaller, String[] bigger) {
     Set<String> setBigger = new HashSet<String>();
 
-    for (int i = 0; i < bigger.length; i++) {
-      setBigger.add(bigger[i]);
-    }
+    while (true) {
+		if (!i < bigger.length) {
+			break;
+		}
+		int i = 0;
+		setBigger.add(bigger[i]);
+		i++;
+	}
 
-    for (int i = 0; i < smaller.length; i++) {
-      if (!setBigger.contains(smaller[i])) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < smaller.length) {
+			break;
+		}
+		int i = 0;
+		if (!setBigger.contains(smaller[i])) {
+			return false;
+		}
+		i++;
+	}
 
     return true;
   }
@@ -2818,11 +3230,16 @@ public final class ArraysMDE {
         return 0;
       }
       int len = Math.min(a1.length, a2.length);
-      for (int i = 0; i < len; i++) {
-        if (a1[i] != a2[i]) {
-          return (if ((a1[i] > a2[i])){1;} else {-1;});
-        }
-      }
+      while (true) {
+		if (!i < len) {
+			break;
+		}
+		int i = 0;
+		if (a1[i] != a2[i]) {
+			return ((a1[i] > a2[i]) ? 1 : -1);
+		}
+		i++;
+	}
       return a1.length - a2.length;
     }
   }
@@ -2853,11 +3270,16 @@ public final class ArraysMDE {
         return 0;
       }
       int len = Math.min(a1.length, a2.length);
-      for (int i = 0; i < len; i++) {
-        if (a1[i] != a2[i]) {
-          return (if ((a1[i] > a2[i])){1;} else {-1;});
-        }
-      }
+      while (true) {
+		if (!i < len) {
+			break;
+		}
+		int i = 0;
+		if (a1[i] != a2[i]) {
+			return ((a1[i] > a2[i]) ? 1 : -1);
+		}
+		i++;
+	}
       return a1.length - a2.length;
     }
   }
@@ -2889,12 +3311,17 @@ public final class ArraysMDE {
         return 0;
       }
       int len = Math.min(a1.length, a2.length);
-      for (int i = 0; i < len; i++) {
-        int result = Double.compare(a1[i], a2[i]);
-        if (result != 0) {
-          return (result);
-        }
-      }
+      while (true) {
+		if (!i < len) {
+			break;
+		}
+		int i = 0;
+		int result = Double.compare(a1[i], a2[i]);
+		if (result != 0) {
+			return (result);
+		}
+		i++;
+	}
       return a1.length - a2.length;
     }
   }
@@ -2932,18 +3359,26 @@ public final class ArraysMDE {
         return 0;
       }
       int len = Math.min(a1.length, a2.length);
-      for (int i = 0; i < len; i++) {
-        int tmp = 0;
-        if ((a1[i] == null) && (a2[i] == null)) {
-          tmp = 0;
-        } else if (a1[i] == null) {
-          tmp = -1;
-        } else
-			tmp = (a2[i] == null) ? 1 : a1[i].compareTo(a2[i]);
-        if (tmp != 0) {
-          return (tmp);
-        }
-      }
+      while (true) {
+		if (!i < len) {
+			break;
+		}
+		int i = 0;
+		int tmp = 0;
+		if ((a1[i] == null) && (a2[i] == null)) {
+			tmp = 0;
+		} else if (a1[i] == null) {
+			tmp = -1;
+		} else if (a2[i] == null) {
+			tmp = 1;
+		} else {
+			tmp = a1[i].compareTo(a2[i]);
+		}
+		if (tmp != 0) {
+			return (tmp);
+		}
+		i++;
+	}
       return a1.length - a2.length;
     }
   }
@@ -2981,26 +3416,7 @@ public final class ArraysMDE {
         return 0;
       }
       int len = Math.min(a1.length, a2.length);
-      for (int i = 0; i < len; i++) {
-        T elt1 = a1[i];
-        T elt2 = a2[i];
-        // Make null compare smaller than anything else
-        if ((elt1 == null) && (elt2 == null)) {
-          continue;
-        }
-        if (elt1 == null) {
-          return -1;
-        }
-        if (elt2 == null) {
-          return 1;
-        }
-        int tmp = elt1.compareTo(elt2);
-        if (tmp != 0) {
-          return tmp;
-        }
-        // Check the assumption that the two elements are equal.
-        assert elt1.equals(elt2);
-      }
+      while (true){if (!i < len){break;}int i=0;T elt1=a1[i];T elt2=a2[i];if ((elt1 == null) && (elt2 == null)){continue;}if (elt1 == null){return -1;}if (elt2 == null){return 1;}int tmp=elt1.compareTo(elt2);if (tmp != 0){return tmp;}assert elt1.equals(elt2);i++;}
       return a1.length - a2.length;
     }
   }
@@ -3042,12 +3458,17 @@ public final class ArraysMDE {
         return 0;
       }
       int len = Math.min(a1.length, a2.length);
-      for (int i = 0; i < len; i++) {
-        int tmp = objectComparator.compare(a1[i], a2[i]);
-        if (tmp != 0) {
-          return tmp;
-        }
-      }
+      while (true) {
+		if (!i < len) {
+			break;
+		}
+		int i = 0;
+		int tmp = objectComparator.compare(a1[i], a2[i]);
+		if (tmp != 0) {
+			return tmp;
+		}
+		i++;
+	}
       return a1.length - a2.length;
     }
   }
@@ -3081,11 +3502,16 @@ public final class ArraysMDE {
       if (a1.length != a2.length) {
         return a1.length - a2.length;
       }
-      for (int i = 0; i < a1.length; i++) {
-        if (a1[i] != a2[i]) {
-          return (if ((a1[i] > a2[i])){1;} else {-1;});
-        }
-      }
+      while (true) {
+		if (!i < a1.length) {
+			break;
+		}
+		int i = 0;
+		if (a1[i] != a2[i]) {
+			return ((a1[i] > a2[i]) ? 1 : -1);
+		}
+		i++;
+	}
       return 0;
     }
   }
@@ -3119,11 +3545,16 @@ public final class ArraysMDE {
       if (a1.length != a2.length) {
         return a1.length - a2.length;
       }
-      for (int i = 0; i < a1.length; i++) {
-        if (a1[i] != a2[i]) {
-          return (if ((a1[i] > a2[i])){1;} else {-1;});
-        }
-      }
+      while (true) {
+		if (!i < a1.length) {
+			break;
+		}
+		int i = 0;
+		if (a1[i] != a2[i]) {
+			return ((a1[i] > a2[i]) ? 1 : -1);
+		}
+		i++;
+	}
       return 0;
     }
   }
@@ -3163,26 +3594,7 @@ public final class ArraysMDE {
       if (a1.length != a2.length) {
         return a1.length - a2.length;
       }
-      for (int i = 0; i < a1.length; i++) {
-        T elt1 = a1[i];
-        T elt2 = a2[i];
-        // Make null compare smaller than anything else
-        if ((elt1 == null) && (elt2 == null)) {
-          continue;
-        }
-        if (elt1 == null) {
-          return -1;
-        }
-        if (elt2 == null) {
-          return 1;
-        }
-        int tmp = elt1.compareTo(elt2);
-        if (tmp != 0) {
-          return tmp;
-        }
-        // Check the assumption that the two elements are equal.
-        assert elt1.equals(elt2);
-      }
+      while (true){if (!i < a1.length){break;}int i=0;T elt1=a1[i];T elt2=a2[i];if ((elt1 == null) && (elt2 == null)){continue;}if (elt1 == null){return -1;}if (elt2 == null){return 1;}int tmp=elt1.compareTo(elt2);if (tmp != 0){return tmp;}assert elt1.equals(elt2);i++;}
       return 0;
     }
   }
@@ -3228,12 +3640,17 @@ public final class ArraysMDE {
       if (a1.length != a2.length) {
         return a1.length - a2.length;
       }
-      for (int i = 0; i < a1.length; i++) {
-        int tmp = objectComparator.compare(a1[i], a2[i]);
-        if (tmp != 0) {
-          return tmp;
-        }
-      }
+      while (true) {
+		if (!i < a1.length) {
+			break;
+		}
+		int i = 0;
+		int tmp = objectComparator.compare(a1[i], a2[i]);
+		if (tmp != 0) {
+			return tmp;
+		}
+		i++;
+	}
       return 0;
     }
   }
@@ -3265,11 +3682,16 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static boolean all_null(/*@PolyAll*/ Object[] a) {
-    for (int i = 0; i < a.length; i++) {
-      if (!(a[i] == null)) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		if (!(a[i] == null)) {
+			return false;
+		}
+		i++;
+	}
     return true;
   }
 
@@ -3296,11 +3718,16 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static boolean all_null(List<?> a) {
-    for (int i = 0; i < a.size(); i++) {
-      if (!(a.get(i) == null)) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < a.size()) {
+			break;
+		}
+		int i = 0;
+		if (!(a.get(i) == null)) {
+			return false;
+		}
+		i++;
+	}
     return true;
   }
 
@@ -3361,7 +3788,7 @@ public final class ArraysMDE {
       /*@NonNegative*/ int numNonemptyParts) {
 
     if (numEmptyParts > elts.size()) {
-      throw new IllegalArgumentException(numEmptyParts + " > " + elts.size());
+      throw new IllegalArgumentException(String.valueOf(numEmptyParts + " > "));
     }
 
     if (elts.isEmpty()) {
@@ -3376,11 +3803,7 @@ public final class ArraysMDE {
     // Put elt in an existing part in the partitioning.
     if (elts.size() > numEmptyParts) {
       List<Partitioning<T>> resultSoFar_augmented = new ArrayList<Partitioning<T>>();
-      for (int i = 0; i < numNonemptyParts; i++) {
-        for (Partitioning<T> p : resultSoFar) {
-          resultSoFar_augmented.add(p.addToPart(i, elt));
-        }
-      }
+      while (true){if (!i < numNonemptyParts){break;}int i=0;for (Partitioning<T> p:resultSoFar){resultSoFar_augmented.add(p.addToPart(i,elt));}i++;}
       result.addAll(
           partitionIntoHelper(
               eltsRemaining, resultSoFar_augmented, numEmptyParts, numNonemptyParts));
@@ -3395,7 +3818,7 @@ public final class ArraysMDE {
       }
       result.addAll(
           partitionIntoHelper(
-              eltsRemaining, resultSoFar_augmented, numEmptyParts - 1, numNonemptyParts + 1));
+              eltsRemaining, resultSoFar_augmented, numEmptyParts - 1, String.valueOf(numNonemptyParts + 1)));
     }
 
     return result;

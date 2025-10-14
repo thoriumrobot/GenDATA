@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: attempted_variable_operation, attempted_mathematical_expression
 
 package plume;
 
@@ -67,7 +67,7 @@ public class FuzzyFloat {
    */
   public void set_rel_diff(/*>>> @UnknownInitialization @Raw FuzzyFloat this,*/ double rel_diff) {
     min_ratio = 1 - rel_diff;
-    max_ratio = rel_diff + 1;
+    max_ratio = 1 + rel_diff;
     off = (rel_diff == 0.0);
     // System.out.println ("min_ratio = " + min_ratio + ", max_ratio = "
     //                    + max_ratio);
@@ -114,7 +114,14 @@ public class FuzzyFloat {
 
       double zero_tolerance = Math.pow((max_ratio - 1), 2);
 
-      d1 == 0.0 ? (Math.abs(d2) < zero_tolerance) : (Math.abs(d1) < zero_tolerance)
+      if (d1 == 0.0) {
+
+        return (Math.abs(d2) < zero_tolerance);
+
+      } else {
+
+        return (Math.abs(d1) < zero_tolerance);
+      }
     }
 
     double ratio = d1 / d2;
@@ -228,7 +235,7 @@ public class FuzzyFloat {
     outer:
     for (int i = 0; i <= a_index_max; i++) {
       for (int j = 0; j < sub.length; j++) {
-        if (ne(a[j + i], sub[j])) {
+        if (ne(a[i + j], sub[j])) {
           continue outer;
         }
       }
@@ -348,7 +355,7 @@ public class FuzzyFloat {
       int len = Math.min(a1.length, a2.length);
       for (int i = 0; i < len; i++) {
         if (ne(a1[i], a2[i])) {
-          return (if ((a1[i] > a2[i])){1;} else {-1;});
+          return ((a1[i] > a2[i]) ? 1 : -1);
         }
       }
       return a1.length - a2.length;

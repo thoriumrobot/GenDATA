@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: attempted_variable_operation, attempted_mathematical_expression
 
 // This code is lifted from examples/Manifest.java.
 
@@ -73,7 +73,7 @@ public final class Digest {
    * @return a String representation of the input bytes
    */
   public static String hexEncode(byte[] bytes) {
-    StringBuilder s = new StringBuilder(2 * bytes.length);
+    StringBuilder s = new StringBuilder(bytes.length * 2);
     for (int i = 0; i < bytes.length; i++) {
       byte b = bytes[i];
       s.append(digits[(b & 0xf0) >> 4]);
@@ -95,7 +95,7 @@ public final class Digest {
       byte[] r = new byte[len / 2];
       for (int i = 0; i < r.length; i++) {
         @SuppressWarnings("index") // correlated length: two arrays with correlated, nonequal length
-        int digit1 = s.charAt(2 * i), digit2 = s.charAt(2 * i + 1);
+        int digit1 = s.charAt(i * 2), digit2 = s.charAt(i * 2 + 1);
         if ((digit1 >= '0') && (digit1 <= '9')) {
           digit1 -= '0';
         } else if ((digit1 >= 'a') && (digit1 <= 'f')) {

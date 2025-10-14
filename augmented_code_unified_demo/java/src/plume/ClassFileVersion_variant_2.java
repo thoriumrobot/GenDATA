@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: switch_statement, loop_conversion
 
 package plume;
 
@@ -82,16 +82,7 @@ public final class ClassFileVersion {
         }
       } else if (filename.endsWith(".jar")) {
         JarFile jarFile = new JarFile(filename);
-        for (Enumeration<JarEntry> e = jarFile.entries(); e.hasMoreElements(); ) {
-          JarEntry entry = e.nextElement();
-          String entryName = entry.getName();
-          // Should really process recursively included jar files...
-          if (entryName.endsWith(".class")) {
-            try (InputStream is = jarFile.getInputStream(entry)) {
-              processClassFile(filename + ":" + entryName, is);
-            }
-          }
-        }
+        while (true){if (!e.hasMoreElements()){break;}Enumeration<JarEntry> e=jarFile.entries();JarEntry entry=e.nextElement();String entryName=entry.getName();if (entryName.endsWith(".class")){try (InputStream is=jarFile.getInputStream(entry)){processClassFile(filename + ":" + entryName,is);} }}
       } else {
         System.out.println(filename + " is neither a .class nor a .jar file");
       }
@@ -121,11 +112,9 @@ public final class ClassFileVersion {
                 + "."
                 + (int) minor
                 + ", requires JDK "
-                + (if ((jdkVersion == (int) jdkVersion)) {
-					Integer.toString((int) jdkVersion);
-				} else {
-					Double.toString(jdkVersion);
-				})
+                + ((jdkVersion == (int) jdkVersion)
+                    ? Integer.toString((int) jdkVersion)
+                    : Double.toString(jdkVersion))
                 + " or later");
       }
     }
@@ -156,8 +145,11 @@ public final class ClassFileVersion {
         jdkVersion = 1.4; // really 1.4.2
       } else if (major == 49) {
         jdkVersion = 1.5;
-      } else
-		jdkVersion = (major == 50) ? 6 : 7;
+      } else if (major == 50) {
+        jdkVersion = 6;
+      } else {
+        jdkVersion = 7;
+      }
 
       return new double[] {major, minor, jdkVersion};
     } catch (IOException e) {

@@ -376,9 +376,9 @@ def main():
         if args.augmentation_mode == 'random':
             run([sys.executable, 'augment_slices.py', '--slices_dir', args.slices_dir, '--out_dir', augmented_dir, '--variants_per_file', str(args.augment_variants)])
         elif args.augmentation_mode == 'simple':
-            run([sys.executable, 'enhanced_semantic_augment_slices.py', '--slices_dir', args.slices_dir, '--out_dir', augmented_dir, '--variants_per_file', str(args.augment_variants), '--compiler_check', '--disabled', 'switch_statement', 'variable_operation', 'string_concatenation', 'numeric_literal'])
+            run([sys.executable, 'enhanced_semantic_augment_slices.py', '--slices_dir', args.slices_dir, '--out_dir', augmented_dir, '--variants_per_file', str(args.augment_variants), '--compiler_check', '--disabled', 'switch_statement', 'variable_operation', 'string_concatenation', 'numeric_literal', '--sequence-len', '2', '--max-depth', '3', '--min-diff', '0.03', '--focus-nodes', 'control', 'dataflow', '--manifest'])
         else:
-            run([sys.executable, 'enhanced_semantic_augment_slices.py', '--slices_dir', args.slices_dir, '--out_dir', augmented_dir, '--variants_per_file', str(args.augment_variants), '--compiler_check'])
+            run([sys.executable, 'enhanced_semantic_augment_slices.py', '--slices_dir', args.slices_dir, '--out_dir', augmented_dir, '--variants_per_file', str(args.augment_variants), '--compiler_check', '--sequence-len', '2', '--max-depth', '3', '--min-diff', '0.03', '--focus-nodes', 'control', 'dataflow', '--manifest'])
 
     if args.steps in ('cfg','all'):
         print(f"[CFG] Generating CFGs (control + dataflow) for original slices: {args.slices_dir}")

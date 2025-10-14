@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: ternary_operator, variable_operation
 
 package plume;
 
@@ -643,7 +643,7 @@ public final class BCELUtil {
    * @return a new array, with new_type at the end
    */
   public static Type[] postpendToArray(Type[] types, Type new_type) {
-    Type[] new_types = new Type[1 + types.length];
+    Type[] new_types = new Type[types.length + 1];
     System.arraycopy(types, 0, new_types, 0, types.length);
     new_types[types.length] = new_type;
     Type[] new_types_cast = new_types;
@@ -677,7 +677,7 @@ public final class BCELUtil {
       "value" // new_types is @MinLen(1) except in the presence of overflow,
       // which the Value Checker accounts for, but the Index Checker does not.
     })
-    Type /*@MinLen(1)*/[] new_types = new Type[1 + types.length];
+    Type /*@MinLen(1)*/[] new_types = new Type[types.length + 1];
     System.arraycopy(types, 0, new_types, 1, types.length);
     new_types[0] = new_type;
     Type[] new_types_cast = new_types;

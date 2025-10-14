@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: ternary_operator, variable_operation
 
 // This class is deprecated.  Use Apache Commons Exec instead.
 

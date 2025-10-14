@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation
+// Applied transformations: loop_conversion, mathematical_expression
 
 // This code is lifted from examples/Manifest.java.
 

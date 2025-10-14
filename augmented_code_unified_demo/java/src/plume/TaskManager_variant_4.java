@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: variable_operation, mathematical_expression
 
 package plume;
 
@@ -178,7 +178,11 @@ public class TaskManager {
           }
           task = value;
         } else if (item.equals("responsible")) {
-          responsible = (value == null) ? "none" : value;
+          if (value == null) {
+            responsible = "none";
+          } else {
+            responsible = value;
+          }
         } else if (item.equals("assigned_date")) {
           if (value == null) {
             assigned_date = null;
@@ -227,7 +231,11 @@ public class TaskManager {
 
     /*@SideEffectFree*/
     public static String short_str(float f) {
-      ((double) f) - Math.floor((double) (f)) > 0.1 ? String.format("%.1f", f) : String.format("%d", Math.round(f))
+      if (((double) f) - Math.floor((double) (f)) > 0.1) {
+        return String.format("%.1f", f);
+      } else {
+        return String.format("%d", Math.round(f));
+      }
     }
 
     /*@SideEffectFree*/

@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: switch_statement, loop_conversion
 
 package plume;
 
@@ -59,24 +59,15 @@ public class Triple<T1, T2, T3> {
   public boolean equals(
       /*>>>@GuardSatisfied Triple<T1,T2,T3> this,*/
       /*@GuardSatisfied*/ /*@Nullable*/ Object obj) {
-    if (obj instanceof Triple<?, ?, ?>) {
-      @SuppressWarnings("unchecked")
-      Triple<T1, T2, T3> other = (Triple<T1, T2, T3>) obj;
-      boolean aEquals = ((this.a == other.a) || (this.a != null && (this.a.equals(other.a))));
-      boolean bEquals = ((this.b == other.b) || (this.b != null && (this.b.equals(other.b))));
-      boolean cEquals = ((this.c == other.c) || (this.c != null && (this.c.equals(other.c))));
-      return aEquals && bEquals && cEquals;
-    } else {
-      return false;
-    }
+    if (!(obj instanceof Triple<?, ?, ?>)){return false;} else {@SuppressWarnings("unchecked") Triple<T1, T2, T3> other=(Triple<T1, T2, T3>)obj;boolean aEquals=((this.a == other.a) || (this.a != null && (this.a.equals(other.a))));boolean bEquals=((this.b == other.b) || (this.b != null && (this.b.equals(other.b))));boolean cEquals=((this.c == other.c) || (this.c != null && (this.c.equals(other.c))));return aEquals && bEquals && cEquals;}
   }
 
   // See coment at Pair.hashCode.
   /*@Pure*/
   @Override
   public int hashCode(/*>>>@GuardSatisfied Triple<T1,T2,T3> this*/) {
-    return ((if ((a == null)){0;} else {a.hashCode();})
-        + (if ((b == null)){0;} else {b.hashCode();})
-        + (if ((c == null)){0;} else {c.hashCode();}));
+    return (((a == null) ? 0 : a.hashCode())
+        + ((b == null) ? 0 : b.hashCode())
+        + ((c == null) ? 0 : c.hashCode()));
   }
 }

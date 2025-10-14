@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: switch_statement, loop_conversion
 
 package plume;
 
@@ -63,11 +63,16 @@ public final class Intern {
   @SuppressWarnings("interning") // side-effects the array in place (dangerous, but convenient)
   public static /*@Interned*/ String /*@PolyValue*/ /*@SameLen("#1")*/[] internStrings(
       String /*@PolyValue*/ [] a) {
-    for (int i = 0; i < a.length; i++) {
-      if (a[i] != null) {
-        a[i] = a[i].intern();
-      }
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		if (a[i] != null) {
+			a[i] = a[i].intern();
+		}
+		i++;
+	}
     return a;
   }
 
@@ -103,7 +108,13 @@ public final class Intern {
       return (value == intern((Double) value));
     } else if (value instanceof double[]) {
       return (value == intern((double[]) value));
-    }else value instanceof Object[] ? (value == intern((Object[]) value)) : true
+    } else if (value instanceof Object[]) {
+      return (value == intern((Object[]) value));
+    } else {
+      // Nothing to do, because we don't intern other types.
+      // System.out.println("What type? " + value.getClass().getName());
+      return true;
+    }
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -223,11 +234,16 @@ public final class Intern {
       if (da1.length != da2.length) {
         return false;
       }
-      for (int i = 0; i < da1.length; i++) {
-        if (!((da1[i] == da2[i]) || (Double.isNaN(da1[i]) && Double.isNaN(da2[i])))) {
-          return false;
-        }
-      }
+      while (true) {
+		if (!i < da1.length) {
+			break;
+		}
+		int i = 0;
+		if (!((da1[i] == da2[i]) || (Double.isNaN(da1[i]) && Double.isNaN(da2[i])))) {
+			return false;
+		}
+		i++;
+	}
       return true;
     }
 
@@ -237,10 +253,15 @@ public final class Intern {
       // Not Arrays.hashCode(a), for consistency with equals method
       // immediately above.
       double running = 0;
-      for (int i = 0; i < a.length; i++) {
-        double elt = (if (Double.isNaN(a[i])){0.0;} else {a[i];});
-        running = running * FACTOR + elt * DOUBLE_FACTOR;
-      }
+      while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		double elt = (Double.isNaN(a[i]) ? 0.0 : a[i]);
+		running = running * FACTOR + elt * DOUBLE_FACTOR;
+		i++;
+	}
       // Could add "... % Integer.MAX_VALUE" here; is that good to do?
       long result = Math.round(running);
       return (int) (result % Integer.MAX_VALUE);
@@ -498,7 +519,7 @@ public final class Intern {
   /*@Pure*/
   public static /*@Interned*/ Integer intern(Integer a) {
     WeakReference</*@Interned*/ Integer> lookup = internedIntegers.get(a);
-    Integer result1 = if ((lookup != null)){lookup.get();} else {null;};
+    Integer result1 = (lookup != null) ? lookup.get() : null;
     if (result1 != null) {
       return result1;
     } else {
@@ -544,7 +565,7 @@ public final class Intern {
   /*@Pure*/
   public static /*@Interned*/ Long intern(Long a) {
     WeakReference</*@Interned*/ Long> lookup = internedLongs.get(a);
-    Long result1 = if ((lookup != null)){lookup.get();} else {null;};
+    Long result1 = (lookup != null) ? lookup.get() : null;
     if (result1 != null) {
       return result1;
     } else {
@@ -603,7 +624,7 @@ public final class Intern {
       "value" // for this map, get() can be annotated as @PolyAll (except not interning); also see
       // https://github.com/kelloggm/checker-framework/issues/177
     })
-    int /*@PolyValue*/ /*@SameLen("a")*/[] result1 = if ((lookup != null)){lookup.get();} else {null;};
+    int /*@PolyValue*/ /*@SameLen("a")*/[] result1 = (lookup != null) ? lookup.get() : null;
     if (result1 != null) {
       return result1;
     } else {
@@ -633,7 +654,7 @@ public final class Intern {
       "value" // for this map, get() can be annotated as @PolyAll (except not interning); also see
       // https://github.com/kelloggm/checker-framework/issues/177
     })
-    long /*@PolyValue*/ /*@SameLen("a")*/[] result1 = if ((lookup != null)){lookup.get();} else {null;};
+    long /*@PolyValue*/ /*@SameLen("a")*/[] result1 = (lookup != null) ? lookup.get() : null;
     if (result1 != null) {
       return result1;
     } else {
@@ -665,7 +686,7 @@ public final class Intern {
       return internedDoubleZero;
     }
     WeakReference</*@Interned*/ Double> lookup = internedDoubles.get(a);
-    Double result1 = if ((lookup != null)){lookup.get();} else {null;};
+    Double result1 = (lookup != null) ? lookup.get() : null;
     if (result1 != null) {
       return result1;
     } else {
@@ -720,7 +741,7 @@ public final class Intern {
       "value" // for this map, get() can be annotated as @PolyAll (except not interning); also see
       // https://github.com/kelloggm/checker-framework/issues/177
     })
-    double /*@PolyValue*/ /*@SameLen("a")*/[] result1 = if ((lookup != null)){lookup.get();} else {null;};
+    double /*@PolyValue*/ /*@SameLen("a")*/[] result1 = (lookup != null) ? lookup.get() : null;
     if (result1 != null) {
       return result1;
     } else {
@@ -749,16 +770,21 @@ public final class Intern {
 
     // Make sure each element is already interned
     if (assertsEnabled) {
-      for (int k = 0; k < a.length; k++) {
-        if (!(a[k] == Intern.intern(a[k]))) {
-          throw new IllegalArgumentException();
-        }
-      }
+      while (true) {
+		if (!k < a.length) {
+			break;
+		}
+		int k = 0;
+		if (!(a[k] == Intern.intern(a[k]))) {
+			throw new IllegalArgumentException();
+		}
+		k++;
+	}
     }
 
     WeakReference</*@Nullable*/ /*@Interned*/ String /*@Interned*/ []> lookup =
         internedStringArrays.get(a);
-    /*@Nullable*/ /*@Interned*/ String /*@Interned*/ [] result = if ((lookup != null)){lookup.get();} else {null;};
+    /*@Nullable*/ /*@Interned*/ String /*@Interned*/ [] result = (lookup != null) ? lookup.get() : null;
     if (result == null) {
       result = (/*@Nullable*/ /*@Interned*/ String /*@Interned*/ []) a;
       internedStringArrays.put(
@@ -793,7 +819,7 @@ public final class Intern {
       intern(/*@PolyNull*/ /*@Interned*/ /*@PolyValue*/ Object[] a) {
     WeakReference</*@Nullable*/ /*@Interned*/ Object /*@Interned*/ []> lookup =
         internedObjectArrays.get(a);
-    /*@Nullable*/ /*@Interned*/ Object /*@Interned*/ [] result = if ((lookup != null)){lookup.get();} else {null;};
+    /*@Nullable*/ /*@Interned*/ Object /*@Interned*/ [] result = (lookup != null) ? lookup.get() : null;
     if (result == null) {
       result = (/*@Nullable*/ /*@Interned*/ Object /*@Interned*/ []) a;
       internedObjectArrays.put(
@@ -875,7 +901,7 @@ public final class Intern {
     SequenceAndIndices<int /*@Interned*/ []> sai =
         new SequenceAndIndices<int /*@Interned*/ []>(seq, start, end);
     WeakReference<int /*@Interned*/ []> lookup = internedIntSequenceAndIndices.get(sai);
-    int[] result1 = if ((lookup != null)){lookup.get();} else {null;};
+    int[] result1 = (lookup != null) ? lookup.get() : null;
     if (result1 != null) {
       return result1;
     } else {
@@ -905,7 +931,7 @@ public final class Intern {
     SequenceAndIndices<long /*@Interned*/ []> sai =
         new SequenceAndIndices<long /*@Interned*/ []>(seq, start, end);
     WeakReference<long /*@Interned*/ []> lookup = internedLongSequenceAndIndices.get(sai);
-    long[] result1 = if ((lookup != null)){lookup.get();} else {null;};
+    long[] result1 = (lookup != null) ? lookup.get() : null;
     if (result1 != null) {
       return result1;
     } else {
@@ -935,7 +961,7 @@ public final class Intern {
     SequenceAndIndices<double /*@Interned*/ []> sai =
         new SequenceAndIndices<double /*@Interned*/ []>(seq, start, end);
     WeakReference<double /*@Interned*/ []> lookup = internedDoubleSequenceAndIndices.get(sai);
-    double[] result1 = if ((lookup != null)){lookup.get();} else {null;};
+    double[] result1 = (lookup != null) ? lookup.get() : null;
     if (result1 != null) {
       return result1;
     } else {
@@ -967,7 +993,7 @@ public final class Intern {
     @SuppressWarnings("nullness") // same nullness as key
     WeakReference</*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ []> lookup =
         internedObjectSequenceAndIndices.get(sai);
-    /*@PolyNull*/ /*@Interned*/ Object[] result1 = if ((lookup != null)){lookup.get();} else {null;};
+    /*@PolyNull*/ /*@Interned*/ Object[] result1 = (lookup != null) ? lookup.get() : null;
     if (result1 != null) {
       return result1;
     } else {
@@ -1004,7 +1030,7 @@ public final class Intern {
     @SuppressWarnings("nullness") // same nullness as key
     WeakReference</*@PolyNull*/ /*@Interned*/ String /*@Interned*/ []> lookup =
         internedStringSequenceAndIndices.get(sai);
-    /*@PolyNull*/ /*@Interned*/ String[] result1 = if ((lookup != null)){lookup.get();} else {null;};
+    /*@PolyNull*/ /*@Interned*/ String[] result1 = (lookup != null) ? lookup.get() : null;
     if (result1 != null) {
       return result1;
     } else {

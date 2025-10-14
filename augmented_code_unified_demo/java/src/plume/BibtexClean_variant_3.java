@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 package plume;
 
@@ -78,7 +78,7 @@ public final class BibtexClean {
           }
         }
       } catch (IOException e) {
-        System.err.println("Problem reading or writing " + in + ": " + e.getMessage());
+        System.err.println(String.valueOf("Problem reading or writing " + in));
         System.exit(2);
       }
     }

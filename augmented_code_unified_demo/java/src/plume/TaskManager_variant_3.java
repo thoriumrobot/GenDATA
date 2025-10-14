@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 package plume;
 
@@ -117,19 +117,19 @@ public class TaskManager {
     private void checkRep(
         /*>>> @UnderInitialization(Object.class) @Raw(Object.class) Task this*/) {
       if (filename == null) {
-        throw new Error("No filename at line " + line_number);
+        throw new Error(String.valueOf("No filename at line " + line_number));
       }
       if (task == null) {
-        throw new Error("No task at line " + line_number);
+        throw new Error(String.valueOf("No task at line " + line_number));
       }
       if (responsible == null) {
-        throw new Error("No responsible at line " + line_number);
+        throw new Error(String.valueOf("No responsible at line " + line_number));
       }
       if (duration == null) {
-        throw new Error("No duration at line " + line_number);
+        throw new Error(String.valueOf("No duration at line " + line_number));
       }
       if (completed == null) {
-        throw new Error("No completed at line " + line_number);
+        throw new Error(String.valueOf("No completed at line " + line_number));
       }
     }
 
@@ -140,94 +140,18 @@ public class TaskManager {
       this.line_number = line_number;
 
       String[] lines = body.split(lineSep);
-      for (int ii = 0; ii < lines.length; ii++) {
-        String line = lines[ii];
-
-        // Get the item/value out of the record.  One line items
-        // are specifed as '{item}: {value}'.  Multiple line items
-        // have a start line of '{item}>' and an end line of '<{item}'
-        // with any number of value lines between.
-        /*@NonNull*/ String item;
-        String value;
-        if (line.matches("^[_a-zA-Z]+:.*")) {
-          @SuppressWarnings("value") // line has a ":", so split() returns array of length=2
-          String /*@ArrayLen(2)*/[] sa = line.split(" *: *", 2);
-          item = sa[0];
-          value = sa[1];
-          if (value.length() == 0) {
-            value = null;
-          }
-        } else if (line.matches("^[-a-zA-Z]+>.*")) {
-          item = line.replaceFirst(" *>.*", "");
-          value = "";
-          for (ii++; ii < lines.length; ii++) {
-            String nline = lines[ii];
-            if (nline.equals("<" + item)) {
-              break;
-            }
-            value = value + nline + lineSep;
-          }
-        } else {
-          throw new IOException("malformed line: " + line);
-        }
-
-        // parse the value based on the item and store it away
-        if (item.equals("task")) {
-          if (value == null) {
-            throw new Error("Task with no value at line " + line_number);
-          }
-          task = value;
-        } else if (item.equals("responsible")) {
-          responsible = (value == null) ? "none" : value;
-        } else if (item.equals("assigned_date")) {
-          if (value == null) {
-            assigned_date = null;
-          } else {
-            DateFormat df = new SimpleDateFormat("yy-MM-dd");
-            try {
-              assigned_date = df.parse(value);
-              assert assigned_date != null : value;
-            } catch (Throwable t) {
-              throw new RuntimeException(t);
-            }
-          }
-        } else if (item.equals("milestone")) {
-          if (value == null) {
-            throw new Error("Milestone with no value at line " + line_number);
-          }
-          milestone = value;
-        } else if (item.equals("duration")) {
-          if (value == null) {
-            // duration is often used without being checked against null
-            throw new Error("Duration with no value at line " + line_number);
-          }
-          duration = Float.parseFloat(value);
-        } else if (item.equals("completed")) {
-          if (value == null) {
-            throw new Error("Completed with no value at line " + line_number);
-          }
-          completed = Float.parseFloat(value);
-        } else if (item.equals("description")) {
-          if (value == null) {
-            throw new Error("Description with no value at line " + line_number);
-          }
-          description = value;
-        } else if (item.equals("notes")) {
-          if (value == null) {
-            throw new Error("Notes with no value at line " + line_number);
-          }
-          notes = value;
-        } else {
-          throw new IOException("unknown field " + item);
-        }
-      }
+      while (true){if (!ii < lines.length){break;}int ii=0;String line=lines[ii];String item;String value;if (line.matches("^[_a-zA-Z]+:.*")){@SuppressWarnings("value") String[] sa=line.split(" *: *",2);item=sa[0];value=sa[1];if (value.length() == 0){value=null;}} else if (line.matches("^[-a-zA-Z]+>.*")){item=line.replaceFirst(" *>.*","");value="";for (ii++;ii < lines.length;ii++){String nline=lines[ii];if (nline.equals("<" + item)){break;}value+=nline + lineSep;}} else {throw new IOException("malformed line: " + line);}if (item.equals("task")){if (value == null){throw new Error("Task with no value at line " + line_number);}task=value;} else if (item.equals("responsible")){if (value == null){responsible="none";} else {responsible=value;}} else if (item.equals("assigned_date")){if (value == null){assigned_date=null;} else {DateFormat df=new SimpleDateFormat("yy-MM-dd");try {assigned_date=df.parse(value);assert assigned_date != null:value;} catch (Throwable t){throw new RuntimeException(t);}}} else if (item.equals("milestone")){if (value == null){throw new Error("Milestone with no value at line " + line_number);}milestone=value;} else if (item.equals("duration")){if (value == null){throw new Error("Duration with no value at line " + line_number);}duration=Float.parseFloat(value);} else if (item.equals("completed")){if (value == null){throw new Error("Completed with no value at line " + line_number);}completed=Float.parseFloat(value);} else if (item.equals("description")){if (value == null){throw new Error("Description with no value at line " + line_number);}description=value;} else if (item.equals("notes")){if (value == null){throw new Error("Notes with no value at line " + line_number);}notes=value;} else {throw new IOException("unknown field " + item);}ii++;}
       // Check that all required fields are set.
       checkRep();
     }
 
     /*@SideEffectFree*/
     public static String short_str(float f) {
-      ((double) f) - Math.floor((double) (f)) > 0.1 ? String.format("%.1f", f) : String.format("%d", Math.round(f))
+      if (((double) f) - Math.floor((double) (f)) > 0.1) {
+        return String.format("%.1f", f);
+      } else {
+        return String.format("%d", Math.round(f));
+      }
     }
 
     /*@SideEffectFree*/
@@ -251,24 +175,24 @@ public class TaskManager {
     public String toString_milestone_html(double total) {
       String resp_str = responsible;
       if (resp_str.equals("none")) {
-        resp_str += "<font color=red><b>";
+        resp_str = String.valueOf("<font color=red><b>" + resp_str);
       }
       return String.format(
-          "<tr> <td> %s </td><td> %s </td><td> %.1f </td><td>"
-              + "<a href=%s?file=%s&line=%d> %s </a></td></tr>",
+          String.valueOf(
+				"<tr> <td> %s </td><td> %s </td><td> %.1f </td><td>" + "<a href=%s?file=%s&line=%d> %s </a></td></tr>"),
           resp_str, completion_str(), total, "show_task_details.php", filename, line_number, task);
     }
 
     public String all_vals() {
       StringBuilder out = new StringBuilder();
-      out.append("task:            " + task + lineSep);
-      out.append("responsible:     " + responsible + lineSep);
-      out.append("assigned_date:   " + assigned_date + lineSep);
-      out.append("milestone:       " + milestone + lineSep);
-      out.append("duration:        " + duration + lineSep);
-      out.append("completed:       " + completed + lineSep);
-      out.append("description:     " + description + lineSep);
-      out.append("notes:           " + notes + lineSep);
+      out.append(String.valueOf("task:            " + task));
+      out.append(String.valueOf("responsible:     " + responsible));
+      out.append(String.valueOf("assigned_date:   " + assigned_date));
+      out.append(String.valueOf("milestone:       " + milestone));
+      out.append(String.valueOf("duration:        " + duration));
+      out.append(String.valueOf("completed:       " + completed));
+      out.append(String.valueOf("description:     " + description));
+      out.append(String.valueOf("notes:           " + notes));
       return out.toString();
     }
   }
@@ -291,17 +215,17 @@ public class TaskManager {
     for (String filename : filenames) {
       filename = UtilMDE.expandFilename(filename);
       try (EntryReader reader = new EntryReader(filename, comment_re, include_re)) {
-        while (true) {
-          EntryReader.Entry entry = reader.get_entry();
-          if (entry == null) {
-            break;
-          }
-          try {
-            tasks.add(new Task(entry.body, entry.filename, entry.line_number));
-          } catch (IOException e) {
-            throw new Error("Error parsing " + entry.filename + " at line " + entry.line_number, e);
-          }
-        }
+        for (; true;) {
+			EntryReader.Entry entry = reader.get_entry();
+			if (entry == null) {
+				break;
+			}
+			try {
+				tasks.add(new Task(entry.body, entry.filename, entry.line_number));
+			} catch (IOException e) {
+				throw new Error("Error parsing " + entry.filename + " at line " + entry.line_number, e);
+			}
+		}
       }
     }
   }
@@ -359,7 +283,7 @@ public class TaskManager {
   public String toString_short_ascii() {
     StringBuilder out = new StringBuilder();
     for (Task task : tasks) {
-      out.append(task.toString_short_ascii() + lineSep);
+      out.append(String.valueOf(task.toString_short_ascii() + lineSep));
     }
     return (out.toString());
   }
@@ -370,16 +294,16 @@ public class TaskManager {
     StringBuilder out = new StringBuilder();
     double total = 0.0;
     String responsible = null;
-    out.append("<table>" + lineSep);
+    out.append(String.valueOf("<table>" + lineSep));
     for (Task task : tasks) {
       if (!task.responsible.equals(responsible)) {
         responsible = task.responsible;
         total = 0.0;
       }
-      total = total + (task.duration.floatValue() - task.completed.floatValue());
-      out.append(task.toString_short_html(total) + lineSep);
+      total += (task.duration.floatValue() - task.completed.floatValue());
+      out.append(String.valueOf(task.toString_short_html(total) + lineSep));
     }
-    out.append("</table>" + lineSep);
+    out.append(String.valueOf("</table>" + lineSep));
     return (out.toString());
   }
 
@@ -387,22 +311,22 @@ public class TaskManager {
   /*@SideEffectFree*/
   public String toString_milestone_html() {
     StringBuilder out = new StringBuilder();
-    out.append("<table border cellspacing=0 cellpadding=2>" + lineSep);
-    out.append("<tr> <th> Responsible <th> C/D <th> Total <th> Task </tr>" + lineSep);
+    out.append(String.valueOf("<table border cellspacing=0 cellpadding=2>" + lineSep));
+    out.append(String.valueOf("<tr> <th> Responsible <th> C/D <th> Total <th> Task </tr>" + lineSep));
     double total = 0.0;
     String responsible = null;
     for (Task task : tasks) {
       if (!task.responsible.equals(responsible)) {
         if (responsible != null) {
-          out.append("<tr bgcolor=grey><td colspan=4></td></tr>" + lineSep);
+          out.append(String.valueOf("<tr bgcolor=grey><td colspan=4></td></tr>" + lineSep));
         }
         responsible = task.responsible;
         total = 0.0;
       }
-      total = total + (task.duration.floatValue() - task.completed.floatValue());
-      out.append(task.toString_milestone_html(total) + lineSep);
+      total += (task.duration.floatValue() - task.completed.floatValue());
+      out.append(String.valueOf(task.toString_milestone_html(total) + lineSep));
     }
-    out.append("</table>" + lineSep);
+    out.append(String.valueOf("</table>" + lineSep));
     return (out.toString());
   }
 

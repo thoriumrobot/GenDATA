@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: switch_statement, loop_conversion
 
 package plume;
 
@@ -140,94 +140,18 @@ public class TaskManager {
       this.line_number = line_number;
 
       String[] lines = body.split(lineSep);
-      for (int ii = 0; ii < lines.length; ii++) {
-        String line = lines[ii];
-
-        // Get the item/value out of the record.  One line items
-        // are specifed as '{item}: {value}'.  Multiple line items
-        // have a start line of '{item}>' and an end line of '<{item}'
-        // with any number of value lines between.
-        /*@NonNull*/ String item;
-        String value;
-        if (line.matches("^[_a-zA-Z]+:.*")) {
-          @SuppressWarnings("value") // line has a ":", so split() returns array of length=2
-          String /*@ArrayLen(2)*/[] sa = line.split(" *: *", 2);
-          item = sa[0];
-          value = sa[1];
-          if (value.length() == 0) {
-            value = null;
-          }
-        } else if (line.matches("^[-a-zA-Z]+>.*")) {
-          item = line.replaceFirst(" *>.*", "");
-          value = "";
-          for (ii++; ii < lines.length; ii++) {
-            String nline = lines[ii];
-            if (nline.equals("<" + item)) {
-              break;
-            }
-            value = value + nline + lineSep;
-          }
-        } else {
-          throw new IOException("malformed line: " + line);
-        }
-
-        // parse the value based on the item and store it away
-        if (item.equals("task")) {
-          if (value == null) {
-            throw new Error("Task with no value at line " + line_number);
-          }
-          task = value;
-        } else if (item.equals("responsible")) {
-          responsible = (value == null) ? "none" : value;
-        } else if (item.equals("assigned_date")) {
-          if (value == null) {
-            assigned_date = null;
-          } else {
-            DateFormat df = new SimpleDateFormat("yy-MM-dd");
-            try {
-              assigned_date = df.parse(value);
-              assert assigned_date != null : value;
-            } catch (Throwable t) {
-              throw new RuntimeException(t);
-            }
-          }
-        } else if (item.equals("milestone")) {
-          if (value == null) {
-            throw new Error("Milestone with no value at line " + line_number);
-          }
-          milestone = value;
-        } else if (item.equals("duration")) {
-          if (value == null) {
-            // duration is often used without being checked against null
-            throw new Error("Duration with no value at line " + line_number);
-          }
-          duration = Float.parseFloat(value);
-        } else if (item.equals("completed")) {
-          if (value == null) {
-            throw new Error("Completed with no value at line " + line_number);
-          }
-          completed = Float.parseFloat(value);
-        } else if (item.equals("description")) {
-          if (value == null) {
-            throw new Error("Description with no value at line " + line_number);
-          }
-          description = value;
-        } else if (item.equals("notes")) {
-          if (value == null) {
-            throw new Error("Notes with no value at line " + line_number);
-          }
-          notes = value;
-        } else {
-          throw new IOException("unknown field " + item);
-        }
-      }
+      while (true){if (!ii < lines.length){break;}int ii=0;String line=lines[ii];String item;String value;if (line.matches("^[_a-zA-Z]+:.*")){@SuppressWarnings("value") String[] sa=line.split(" *: *",2);item=sa[0];value=sa[1];if (value.length() == 0){value=null;}} else if (line.matches("^[-a-zA-Z]+>.*")){item=line.replaceFirst(" *>.*","");value="";for (ii++;ii < lines.length;ii++){String nline=lines[ii];if (nline.equals("<" + item)){break;}value+=nline + lineSep;}} else {throw new IOException("malformed line: " + line);}if (item.equals("task")){if (value == null){throw new Error("Task with no value at line " + line_number);}task=value;} else if (item.equals("responsible")){if (value == null){responsible="none";} else {responsible=value;}} else if (item.equals("assigned_date")){if (value == null){assigned_date=null;} else {DateFormat df=new SimpleDateFormat("yy-MM-dd");try {assigned_date=df.parse(value);assert assigned_date != null:value;} catch (Throwable t){throw new RuntimeException(t);}}} else if (item.equals("milestone")){if (value == null){throw new Error("Milestone with no value at line " + line_number);}milestone=value;} else if (item.equals("duration")){if (value == null){throw new Error("Duration with no value at line " + line_number);}duration=Float.parseFloat(value);} else if (item.equals("completed")){if (value == null){throw new Error("Completed with no value at line " + line_number);}completed=Float.parseFloat(value);} else if (item.equals("description")){if (value == null){throw new Error("Description with no value at line " + line_number);}description=value;} else if (item.equals("notes")){if (value == null){throw new Error("Notes with no value at line " + line_number);}notes=value;} else {throw new IOException("unknown field " + item);}ii++;}
       // Check that all required fields are set.
       checkRep();
     }
 
     /*@SideEffectFree*/
     public static String short_str(float f) {
-      ((double) f) - Math.floor((double) (f)) > 0.1 ? String.format("%.1f", f) : String.format("%d", Math.round(f))
+      if (((double) f) - Math.floor((double) (f)) > 0.1) {
+        return String.format("%.1f", f);
+      } else {
+        return String.format("%d", Math.round(f));
+      }
     }
 
     /*@SideEffectFree*/
@@ -251,7 +175,7 @@ public class TaskManager {
     public String toString_milestone_html(double total) {
       String resp_str = responsible;
       if (resp_str.equals("none")) {
-        resp_str += "<font color=red><b>";
+        resp_str = "<font color=red><b>" + resp_str + "</b></font>";
       }
       return String.format(
           "<tr> <td> %s </td><td> %s </td><td> %.1f </td><td>"
@@ -291,17 +215,17 @@ public class TaskManager {
     for (String filename : filenames) {
       filename = UtilMDE.expandFilename(filename);
       try (EntryReader reader = new EntryReader(filename, comment_re, include_re)) {
-        while (true) {
-          EntryReader.Entry entry = reader.get_entry();
-          if (entry == null) {
-            break;
-          }
-          try {
-            tasks.add(new Task(entry.body, entry.filename, entry.line_number));
-          } catch (IOException e) {
-            throw new Error("Error parsing " + entry.filename + " at line " + entry.line_number, e);
-          }
-        }
+        for (; true;) {
+			EntryReader.Entry entry = reader.get_entry();
+			if (entry == null) {
+				break;
+			}
+			try {
+				tasks.add(new Task(entry.body, entry.filename, entry.line_number));
+			} catch (IOException e) {
+				throw new Error("Error parsing " + entry.filename + " at line " + entry.line_number, e);
+			}
+		}
       }
     }
   }
@@ -341,17 +265,11 @@ public class TaskManager {
     if (completed) {
       matches = matches.completed_only();
     }
-    switch (format) {
-      case short_ascii:
-        System.out.println(matches.toString_short_ascii());
-        break;
-      case short_html:
-        System.out.println(matches.toString_short_html());
-        break;
-      case milestone_html:
-        System.out.println(matches.toString_milestone_html());
-        break;
-    }
+    if (MISSING) {
+	} else if (MISSING) {
+	} else if (MISSING) {
+	} else if (MISSING) {
+	}
   }
 
   @SuppressWarnings("purity") // side effect to local state (string creation)
@@ -376,7 +294,7 @@ public class TaskManager {
         responsible = task.responsible;
         total = 0.0;
       }
-      total = total + (task.duration.floatValue() - task.completed.floatValue());
+      total += (task.duration.floatValue() - task.completed.floatValue());
       out.append(task.toString_short_html(total) + lineSep);
     }
     out.append("</table>" + lineSep);
@@ -399,7 +317,7 @@ public class TaskManager {
         responsible = task.responsible;
         total = 0.0;
       }
-      total = total + (task.duration.floatValue() - task.completed.floatValue());
+      total += (task.duration.floatValue() - task.completed.floatValue());
       out.append(task.toString_milestone_html(total) + lineSep);
     }
     out.append("</table>" + lineSep);

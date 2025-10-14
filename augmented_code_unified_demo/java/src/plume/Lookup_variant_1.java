@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation
+// Applied transformations: loop_conversion, mathematical_expression
 
 package plume;
 
@@ -320,7 +320,50 @@ public final class Lookup {
       }
       System.out.print(e.body);
     } else { // there must be multiple matches
-      if (!(item_num != null)){int i=0;if (print_all){System.out.printf("%d matches found (separated by dashes below)%n",matching_entries.size());} else {System.out.printf("%d matches found. Use -i to print a specific match or -a to see them all%n",matching_entries.size());}for (EntryReader.Entry e:matching_entries){i++;if (print_all){if (show_location){System.out.printf("%n-------------------------%n%s:%d:%n",e.filename,e.line_number);} else {System.out.printf("%n-------------------------%n");}System.out.print(e.body);} else {if (show_location){System.out.printf("  -i=%d %s:%d: %s%n",i,e.filename,e.line_number,e.first_line);} else {System.out.printf("  -i=%d %s%n",i,e.get_description(description_re));}}}} else {if (item_num < 1){System.out.printf("Illegal --item-num %d, should be positive%n",item_num);System.exit(1);}if (item_num > matching_entries.size()){System.out.printf("Illegal --item-num %d, should be <= %d%n",item_num,matching_entries.size());System.exit(1);}EntryReader.Entry e=matching_entries.get(item_num - 1);if (show_location){System.out.printf("%s:%d:%n",e.filename,e.line_number);}System.out.print(e.body);}
+      if (item_num != null) {
+        if (item_num < 1) {
+          System.out.printf("Illegal --item-num %d, should be positive%n", item_num);
+          System.exit(1);
+        }
+        if (item_num > matching_entries.size()) {
+          System.out.printf(
+              "Illegal --item-num %d, should be <= %d%n", item_num, matching_entries.size());
+          System.exit(1);
+        }
+        EntryReader.Entry e = matching_entries.get(item_num - 1);
+        if (show_location) {
+          System.out.printf("%s:%d:%n", e.filename, e.line_number);
+        }
+        System.out.print(e.body);
+      } else {
+        int i = 0;
+        if (print_all) {
+          System.out.printf(
+              "%d matches found (separated by dashes below)%n", matching_entries.size());
+        } else {
+          System.out.printf(
+              "%d matches found. Use -i to print a specific match or -a to see them all%n",
+              matching_entries.size());
+        }
+
+        for (EntryReader.Entry e : matching_entries) {
+          i++;
+          if (print_all) {
+            if (show_location) {
+              System.out.printf("%n-------------------------%n%s:%d:%n", e.filename, e.line_number);
+            } else {
+              System.out.printf("%n-------------------------%n");
+            }
+            System.out.print(e.body);
+          } else {
+            if (show_location) {
+              System.out.printf("  -i=%d %s:%d: %s%n", i, e.filename, e.line_number, e.first_line);
+            } else {
+              System.out.printf("  -i=%d %s%n", i, e.get_description(description_re));
+            }
+          }
+        }
+      }
     }
   }
 

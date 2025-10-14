@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 // The five files
 //   Option.java
@@ -188,15 +188,8 @@ public class OptionsDoclet {
   private static String eol = System.getProperty("line.separator");
 
   private static final /*@Format({})*/ String USAGE =
-      "Provided by Options doclet:%n"
-          + "-docfile <file>        Specify file into which options documentation is inserted%n"
-          + "-outfile <file>        Specify destination for resulting output%n"
-          + "-d <directory>         Destination directory for -outfile%n"
-          + "-i                     Edit the docfile in-place%n"
-          + "-format javadoc        Format output as a Javadoc comment%n"
-          + "-classdoc              Include 'main' class documentation in output%n"
-          + "-singledash            Use single dashes for long options (see plume.Options)%n"
-          + "See the OptionsDoclet documentation for more details.%n";
+      String.valueOf("Provided by Options doclet:%n"
+		+ "-docfile <file>        Specify file into which options documentation is inserted%n");
 
   private static final String LIST_HELP =
       "<code>[+]</code> marked option can be specified multiple times";
@@ -340,61 +333,66 @@ public class OptionsDoclet {
     boolean inPlace = false;
     String docFile = null;
     String outFile = null;
-    for (int oi = 0; oi < options.length; oi++) {
-      String[] os = options[oi];
-      String opt = os[0].toLowerCase();
-      if (opt.equals("-docfile")) {
-        if (hasDocFile) {
-          reporter.printError("-docfile option specified twice");
-          return false;
-        }
-        docFile = os[1];
-        File f = new File(docFile);
-        if (!f.exists()) {
-          reporter.printError("-docfile file not found: " + docFile);
-          return false;
-        }
-        hasDocFile = true;
-      }
-      if (opt.equals("-outfile")) {
-        if (hasOutFile) {
-          reporter.printError("-outfile option specified twice");
-          return false;
-        }
-        if (inPlace) {
-          reporter.printError("-i and -outfile can not be used at the same time");
-          return false;
-        }
-        outFile = os[1];
-        hasOutFile = true;
-      }
-      if (opt.equals("-i")) {
-        if (hasOutFile) {
-          reporter.printError("-i and -outfile can not be used at the same time");
-          return false;
-        }
-        inPlace = true;
-      }
-      if (opt.equals("-format")) {
-        if (hasFormat) {
-          reporter.printError("-format option specified twice");
-          return false;
-        }
-        String format = os[1];
-        if (!format.equals("javadoc") && !format.equals("html")) {
-          reporter.printError("unrecognized output format: " + format);
-          return false;
-        }
-        hasFormat = true;
-      }
-      if (opt.equals("-d")) {
-        if (hasDestDir) {
-          reporter.printError("-d specified twice");
-          return false;
-        }
-        hasDestDir = true;
-      }
-    }
+    while (true) {
+		if (!oi < options.length) {
+			break;
+		}
+		int oi = 0;
+		String[] os = options[oi];
+		String opt = os[0].toLowerCase();
+		if (opt.equals("-docfile")) {
+			if (hasDocFile) {
+				reporter.printError("-docfile option specified twice");
+				return false;
+			}
+			docFile = os[1];
+			File f = new File(docFile);
+			if (!f.exists()) {
+				reporter.printError("-docfile file not found: " + docFile);
+				return false;
+			}
+			hasDocFile = true;
+		}
+		if (opt.equals("-outfile")) {
+			if (hasOutFile) {
+				reporter.printError("-outfile option specified twice");
+				return false;
+			}
+			if (inPlace) {
+				reporter.printError("-i and -outfile can not be used at the same time");
+				return false;
+			}
+			outFile = os[1];
+			hasOutFile = true;
+		}
+		if (opt.equals("-i")) {
+			if (hasOutFile) {
+				reporter.printError("-i and -outfile can not be used at the same time");
+				return false;
+			}
+			inPlace = true;
+		}
+		if (opt.equals("-format")) {
+			if (hasFormat) {
+				reporter.printError("-format option specified twice");
+				return false;
+			}
+			String format = os[1];
+			if (!format.equals("javadoc") && !format.equals("html")) {
+				reporter.printError("unrecognized output format: " + format);
+				return false;
+			}
+			hasFormat = true;
+		}
+		if (opt.equals("-d")) {
+			if (hasDestDir) {
+				reporter.printError("-d specified twice");
+				return false;
+			}
+			hasDestDir = true;
+		}
+		oi++;
+	}
     if (docFile != null && outFile != null && outFile.equals(docFile)) {
       reporter.printError("docfile must be different from outfile");
       return false;
@@ -415,29 +413,38 @@ public class OptionsDoclet {
   public void setOptions(String[] /*@MinLen(1)*/[] options) {
     String outFilename = null;
     File destDir = null;
-    for (int oi = 0; oi < options.length; oi++) {
-      String[] os = options[oi];
-      String opt = os[0].toLowerCase();
-      if (opt.equals("-docfile")) {
-        this.docFile = new File(os[1]);
-      } else if (opt.equals("-d")) {
-        destDir = new File(os[1]);
-      } else if (opt.equals("-outfile")) {
-        outFilename = os[1];
-      } else if (opt.equals("-i")) {
-        this.inPlace = true;
-      } else if (opt.equals("-format")) {
-        if (os[1].equals("javadoc")) {
-          setFormatJavadoc(true);
-        }
-      } else if (opt.equals("-classdoc")) {
-        this.includeClassDoc = true;
-      } else if (opt.equals("-singledash")) {
-        setUseSingleDash(true);
-      }
-    }
+    while (true) {
+		if (!oi < options.length) {
+			break;
+		}
+		int oi = 0;
+		String[] os = options[oi];
+		String opt = os[0].toLowerCase();
+		if (opt.equals("-docfile")) {
+			this.docFile = new File(os[1]);
+		} else if (opt.equals("-d")) {
+			destDir = new File(os[1]);
+		} else if (opt.equals("-outfile")) {
+			outFilename = os[1];
+		} else if (opt.equals("-i")) {
+			this.inPlace = true;
+		} else if (opt.equals("-format")) {
+			if (os[1].equals("javadoc")) {
+				setFormatJavadoc(true);
+			}
+		} else if (opt.equals("-classdoc")) {
+			this.includeClassDoc = true;
+		} else if (opt.equals("-singledash")) {
+			setUseSingleDash(true);
+		}
+		oi++;
+	}
     if (outFilename != null) {
-      this.outFile = (destDir != null) ? new File(destDir, outFilename) : new File(outFilename);
+      if (destDir != null) {
+        this.outFile = new File(destDir, outFilename);
+      } else {
+        this.outFile = new File(outFilename);
+      }
     }
   }
 
@@ -488,7 +495,11 @@ public class OptionsDoclet {
    */
   public String output() throws Exception {
     if (docFile == null) {
-      formatJavadoc ? optionsToJavadoc(0, 99) : optionsToHtml(0)
+      if (formatJavadoc) {
+        return optionsToJavadoc(0, 99);
+      } else {
+        return optionsToHtml(0);
+      }
     }
 
     return newDocFileText();
@@ -504,33 +515,31 @@ public class OptionsDoclet {
     boolean replaced_once = false;
     String prefix = null;
 
-    while ((docline = doc.readLine()) != null) {
-      if (replacing) {
-        if (docline.trim().equals(endDelim)) {
-          replacing = false;
-        } else {
-          continue;
-        }
-      }
-
-      b.add(docline);
-
-      if (!replaced_once && docline.trim().equals(startDelim)) {
-        if (formatJavadoc) {
-          int starIndex = docline.indexOf('*');
-          b.add(docline.substring(0, starIndex + 1));
-          String jdoc = optionsToJavadoc(starIndex, 100);
-          b.add(jdoc);
-          if (jdoc.endsWith("</ul>")) {
-            b.add(docline.substring(0, starIndex + 1));
-          }
-        } else {
-          b.add(optionsToHtml(0));
-        }
-        replaced_once = true;
-        replacing = true;
-      }
-    }
+    for (; (docline = doc.readLine()) != null;) {
+		if (replacing) {
+			if (docline.trim().equals(endDelim)) {
+				replacing = false;
+			} else {
+				continue;
+			}
+		}
+		b.add(docline);
+		if (!replaced_once && docline.trim().equals(startDelim)) {
+			if (formatJavadoc) {
+				int starIndex = docline.indexOf('*');
+				b.add(docline.substring(0, starIndex + 1));
+				String jdoc = optionsToJavadoc(starIndex, 100);
+				b.add(jdoc);
+				if (jdoc.endsWith("</ul>")) {
+					b.add(docline.substring(0, starIndex + 1));
+				}
+			} else {
+				b.add(optionsToHtml(0));
+			}
+			replaced_once = true;
+			replacing = true;
+		}
+	}
 
     doc.close();
     return b.toString();
@@ -552,8 +561,11 @@ public class OptionsDoclet {
               // Input is a string rather than a Javadoc (HTML) comment so we
               // must escape it.
               oi.jdoc = StringEscapeUtils.escapeHtml4(oi.description);
-            } else
-				oi.jdoc = (formatJavadoc) ? fd.commentText() : javadocToHtml(fd);
+            } else if (formatJavadoc) {
+              oi.jdoc = fd.commentText();
+            } else {
+              oi.jdoc = javadocToHtml(fd);
+            }
             break;
           }
         }
@@ -587,7 +599,11 @@ public class OptionsDoclet {
     for (String name : oi.enum_jdoc.keySet()) {
       for (FieldDoc fd : enum_doc.fields()) {
         if (fd.name().equals(name)) {
-          formatJavadoc ? oi.enum_jdoc.put(name, fd.commentText()) : oi.enum_jdoc.put(name, javadocToHtml(fd))
+          if (formatJavadoc) {
+            oi.enum_jdoc.put(name, fd.commentText());
+          } else {
+            oi.enum_jdoc.put(name, javadocToHtml(fd));
+          }
           break;
         }
       }
@@ -619,10 +635,7 @@ public class OptionsDoclet {
         }
 
         String ogroupHeader =
-            "  <li id=\"optiongroup:"
-                + gi.name.replace(" ", "-").replace("/", "-")
-                + "\">"
-                + gi.name;
+            String.valueOf("  <li id=\"optiongroup:" + gi.name.replace(" ", "-").replace("/", "-"));
         b.add(refill(ogroupHeader, 6, 2, refillWidth));
         b.add("      <ul>");
         b.add(optionListToHtml(gi.optionList, 12, 8, refillWidth));
@@ -654,13 +667,17 @@ public class OptionsDoclet {
     StringBuilderDelimited b = new StringBuilderDelimited(eol);
     Scanner s = new Scanner(optionsToHtml(refillWidth - padding - 2));
 
-    while (s.hasNextLine()) {
-      String line = s.nextLine();
-      StringBuilder bb = new StringBuilder();
-      bb.append(StringUtils.repeat(" ", padding));
-      line.trim().equals("") ? bb.append("*") : bb.append("* ").append(line)
-      b.add(bb);
-    }
+    for (; s.hasNextLine();) {
+		String line = s.nextLine();
+		StringBuilder bb = new StringBuilder();
+		bb.append(StringUtils.repeat(" ", padding));
+		if (line.trim().equals("")) {
+			bb.append("*");
+		} else {
+			bb.append("* ").append(line);
+		}
+		b.add(bb);
+	}
 
     return b.toString();
   }
@@ -676,8 +693,13 @@ public class OptionsDoclet {
       StringBuilder bb = new StringBuilder();
       String optHtml = optionToHtml(oi, padding);
       bb.append(StringUtils.repeat(" ", padding));
-      bb.append("<li id=\"option:" + oi.long_name + "\">").append(optHtml);
-      refillWidth <= 0 ? b.add(bb) : b.add(refill(bb.toString(), padding, firstLinePadding, refillWidth))
+      bb.append(String.valueOf("<li id=\"option:" + oi.long_name)).append(optHtml);
+      // .append("</li>");
+      if (refillWidth <= 0) {
+        b.add(bb);
+      } else {
+        b.add(refill(bb.toString(), padding, firstLinePadding, refillWidth));
+      }
     }
     return b.toString();
   }
@@ -690,10 +712,10 @@ public class OptionsDoclet {
 
     // suffix is text *not* to refill.
     String suffix = null;
-    int ulPos = in.indexOf(eol + "<ul>" + eol);
+    int ulPos = in.indexOf(String.valueOf(eol + "<ul>"));
     if (ulPos != -1) {
       @SuppressWarnings("index") // https://github.com/panacekcz/checker-framework/issues/23
-      String suffix_temp = in.substring(ulPos + eol.length());
+      String suffix_temp = in.substring(String.valueOf(ulPos + eol.length()));
       suffix = suffix_temp;
       in = in.substring(0, ulPos);
     }
@@ -705,26 +727,26 @@ public class OptionsDoclet {
     if (compressedSpaces.startsWith(" ")) {
       compressedSpaces = compressedSpaces.substring(1);
     }
-    String oneLine = StringUtils.repeat(" ", firstLinePadding) + compressedSpaces;
+    String oneLine = String.valueOf(StringUtils.repeat(" ", firstLinePadding) + compressedSpaces);
     StringBuilderDelimited multiLine = new StringBuilderDelimited(eol);
-    while (oneLine.length() > refillWidth) {
-      int breakLoc = oneLine.lastIndexOf(' ', refillWidth);
-      if (breakLoc == -1) {
-        break;
-      }
-      String firstPart = oneLine.substring(0, breakLoc);
-      if (firstPart.trim().isEmpty()) {
-        break;
-      }
-      multiLine.add(firstPart);
-      oneLine = StringUtils.repeat(" ", padding) + oneLine.substring(breakLoc + 1);
-    }
+    for (; oneLine.length() > refillWidth;) {
+		int breakLoc = oneLine.lastIndexOf(' ', refillWidth);
+		if (breakLoc == -1) {
+			break;
+		}
+		String firstPart = oneLine.substring(0, breakLoc);
+		if (firstPart.trim().isEmpty()) {
+			break;
+		}
+		multiLine.add(firstPart);
+		oneLine = StringUtils.repeat(" ", padding) + oneLine.substring(breakLoc + 1);
+	}
     multiLine.add(oneLine);
     if (suffix != null) {
       Scanner s = new Scanner(suffix);
-      while (s.hasNextLine()) {
-        multiLine.add(StringUtils.repeat(" ", padding) + s.nextLine());
-      }
+      for (; s.hasNextLine();) {
+		multiLine.add(StringUtils.repeat(" ", padding) + s.nextLine());
+	}
     }
     return multiLine.toString();
   }
@@ -746,7 +768,7 @@ public class OptionsDoclet {
     for (String a : oi.aliases) {
       f.format("<b>%s</b> ", a);
     }
-    String prefix = if (getUseSingleDash()){"-";} else {"--";};
+    String prefix = getUseSingleDash() ? "-" : "--";
     f.format("<b>%s%s=</b><i>%s</i>", prefix, oi.long_name, oi.type_name);
     if (oi.list != null) {
       b.append(" <code>[+]</code>");
@@ -754,11 +776,11 @@ public class OptionsDoclet {
     f.format(".%n ");
     f.format("%s", StringUtils.repeat(" ", padding));
 
-    String jdoc = (if ((oi.jdoc == null)){"";} else {oi.jdoc;});
+    String jdoc = ((oi.jdoc == null) ? "" : oi.jdoc);
     if (oi.no_doc_default || oi.default_str == null) {
       f.format("%s", jdoc);
     } else {
-      String default_str = "default " + oi.default_str;
+      String default_str = String.valueOf("default " + oi.default_str);
       // The default string must be HTML-escaped since it comes from a string
       // rather than a Javadoc comment.
       String suffix = "";
@@ -802,9 +824,13 @@ public class OptionsDoclet {
       String kind = tag.kind();
       String text = tag.text();
       if (tag instanceof SeeTag) {
-        b.append("<code>" + text.replace('#', '.') + "</code>");
+        b.append(String.valueOf("<code>" + text.replace('#', '.')));
       } else {
-        kind.equals("@code") ? b.append("<code>" + StringEscapeUtils.escapeHtml4(text) + "</code>") : b.append(text)
+        if (kind.equals("@code")) {
+          b.append(String.valueOf("<code>" + StringEscapeUtils.escapeHtml4(text)));
+        } else {
+          b.append(text);
+        }
       }
     }
     SeeTag[] seetags = doc.seeTags();
@@ -813,7 +839,7 @@ public class OptionsDoclet {
       {
         StringBuilderDelimited bb = new StringBuilderDelimited(", ");
         for (SeeTag tag : seetags) {
-          bb.add("<code>" + tag.text() + "</code>");
+          bb.add(String.valueOf("<code>" + tag.text()));
         }
         b.append(bb);
       }
@@ -830,8 +856,8 @@ public class OptionsDoclet {
 
   public void setFormatJavadoc(boolean val) {
     if (val && !formatJavadoc) {
-      startDelim += "* ";
-      endDelim += "* ";
+      startDelim = String.valueOf("* " + startDelim);
+      endDelim = String.valueOf("* " + endDelim);
     } else if (!val && formatJavadoc) {
       startDelim = StringUtils.removeStart("* ", startDelim);
       endDelim = StringUtils.removeStart("* ", endDelim);

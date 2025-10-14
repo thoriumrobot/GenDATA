@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: switch_statement, loop_conversion
 
 package plume;
 
@@ -103,16 +103,25 @@ public final class BCELUtil {
     int flags = m.getAccessFlags();
 
     StringBuilder buf = new StringBuilder();
-    for (int i = 0, pow = 1; i <= Const.MAX_ACC_FLAG; i++) {
-      if ((flags & pow) != 0) {
-        if (buf.length() > 0) {
-          buf.append(" ");
-        }
-        i < Const.ACCESS_NAMES_LENGTH ? buf.append(Const.getAccessName(i))
-				: buf.append(String.format("ACC_BIT %x", pow))
-      }
-      pow <<= 1;
-    }
+    while (true) {
+		if (!i <= Const.MAX_ACC_FLAG) {
+			break;
+		}
+		int pow = 1;
+		int i = 0;
+		if ((flags & pow) != 0) {
+			if (buf.length() > 0) {
+				buf.append(" ");
+			}
+			if (i < Const.ACCESS_NAMES_LENGTH) {
+				buf.append(Const.getAccessName(i));
+			} else {
+				buf.append(String.format("ACC_BIT %x", pow));
+			}
+		}
+		pow <<= 1;
+		i++;
+	}
 
     return (buf.toString());
   }
@@ -309,12 +318,15 @@ public final class BCELUtil {
     }
 
     Method[] methods = gen.getMethods();
-    for (int i = 0; i < methods.length; i++) {
-      Method method = methods[i];
-      // System.out.println ("Checking method " + method + " in class "
-      // + gen.getClassName());
-      checkMgen(new MethodGen(method, gen.getClassName(), gen.getConstantPool()));
-    }
+    while (true) {
+		if (!i < methods.length) {
+			break;
+		}
+		int i = 0;
+		Method method = methods[i];
+		checkMgen(new MethodGen(method, gen.getClassName(), gen.getConstantPool()));
+		i++;
+	}
 
     if (false) {
       Throwable t = new Throwable();
@@ -330,9 +342,14 @@ public final class BCELUtil {
             caller.getMethodName(),
             caller.getFileName(),
             caller.getLineNumber());
-        for (int ii = 2; ii < ste.length; ii++) {
-          System.out.printf(" [%s line %d]", ste[ii].getFileName(), ste[ii].getLineNumber());
-        }
+        while (true) {
+			if (!ii < ste.length) {
+				break;
+			}
+			int ii = 2;
+			System.out.printf(" [%s line %d]", ste[ii].getFileName(), ste[ii].getLineNumber());
+			ii++;
+		}
         System.out.printf("%n");
       }
       dump_methods(gen);
@@ -435,9 +452,14 @@ public final class BCELUtil {
       p.printf("Constant Pool:%n");
       ConstantPool cp = jc.getConstantPool();
       Constant[] constants = cp.getConstantPool();
-      for (int ii = 0; ii < constants.length; ii++) {
-        p.printf("  %d %s%n", ii, constants[ii]);
-      }
+      while (true) {
+		if (!ii < constants.length) {
+			break;
+		}
+		int ii = 0;
+		p.printf("  %d %s%n", ii, constants[ii]);
+		ii++;
+	}
 
       p.close();
 
@@ -451,11 +473,14 @@ public final class BCELUtil {
   public static String instruction_descr(InstructionList il, ConstantPoolGen pool) {
 
     StringBuilder out = new StringBuilder();
-    // not generic because BCEL is not generic
-    for (Iterator i = il.iterator(); i.hasNext(); ) {
-      InstructionHandle handle = (InstructionHandle) i.next();
-      out.append(handle.getInstruction().toString(pool.getConstantPool()) + "\n");
-    }
+    while (true) {
+		if (!i.hasNext()) {
+			break;
+		}
+		Iterator i = il.iterator();
+		InstructionHandle handle = (InstructionHandle) i.next();
+		out.append(handle.getInstruction().toString(pool.getConstantPool()) + "\n");
+	}
     return (out.toString());
   }
 
@@ -522,10 +547,14 @@ public final class BCELUtil {
       mg.addLocalVariable("this", new ObjectType(mg.getClassName()), null, null);
     }
 
-    // Add a local for each parameter
-    for (int ii = 0; ii < arg_names.length; ii++) {
-      mg.addLocalVariable(arg_names[ii], arg_types[ii], null, null);
-    }
+    while (true) {
+		if (!ii < arg_names.length) {
+			break;
+		}
+		int ii = 0;
+		mg.addLocalVariable(arg_names[ii], arg_types[ii], null, null);
+		ii++;
+	}
 
     // Reset the current number of locals so that when other locals
     // are added they get added at the correct offset
@@ -708,10 +737,10 @@ public final class BCELUtil {
 
     // Get the array depth (if any)
     int array_depth = 0;
-    while (classname.endsWith("[]")) {
-      classname = classname.substring(0, classname.length() - 2);
-      array_depth++;
-    }
+    for (; classname.endsWith("[]");) {
+		classname = classname.substring(0, classname.length() - 2);
+		array_depth++;
+	}
     classname = classname.intern();
 
     // Get the base type
@@ -730,8 +759,11 @@ public final class BCELUtil {
       t = Type.FLOAT;
     } else if (classname == "long") { // interned
       t = Type.LONG;
-    } else
-		t = (classname == "short") ? Type.SHORT : new ObjectType(classname);
+    } else if (classname == "short") { // interned
+      t = Type.SHORT;
+    } else { // must be a non-primitive
+      t = new ObjectType(classname);
+    }
 
     // If there was an array, build the array type
     if (array_depth > 0) {

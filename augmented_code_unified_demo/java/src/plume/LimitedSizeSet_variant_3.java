@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 package plume;
 
@@ -60,7 +60,7 @@ public class LimitedSizeSet<T> implements Serializable, Cloneable {
    */
   public LimitedSizeSet(/*@Positive*/ int max_values) {
     if (assertsEnabled && !(max_values > 0)) {
-      throw new IllegalArgumentException("max_values should be positive, is " + max_values);
+      throw new IllegalArgumentException(String.valueOf("max_values should be positive, is " + max_values));
     }
     // this.max_values = max_values;
     @SuppressWarnings({
@@ -113,14 +113,7 @@ public class LimitedSizeSet<T> implements Serializable, Cloneable {
     // TODO: s.values isn't modified by the call to add.  Use a local variable until
     // https://tinyurl.com/cfissue/984 is fixed.
     /*@Nullable*/ T /*@SameLen("s.values")*/[] svalues = s.values;
-    for (int i = 0; i < s.size(); i++) {
-      // This implies that the set cannot hold null.
-      assert svalues[i] != null : "@AssumeAssertion(nullness): used portion of array";
-      add(svalues[i]);
-      if (repNulled()) {
-        return; // optimization, not necessary for correctness
-      }
-    }
+    while (true){if (!i < s.size()){break;}int i=0;assert svalues[i] != null:"@AssumeAssertion(nullness): used portion of array";add(svalues[i]);if (repNulled()){return;}i++;}
   }
 
   @SuppressWarnings("deterministic") // pure wrt equals() but not ==: throws a new exception
@@ -129,11 +122,16 @@ public class LimitedSizeSet<T> implements Serializable, Cloneable {
     if (repNulled()) {
       throw new UnsupportedOperationException();
     }
-    for (int i = 0; i < num_values; i++) {
-      if (Objects.equals(values[i], elt)) {
-        return true;
-      }
-    }
+    while (true) {
+		if (!i < num_values) {
+			break;
+		}
+		int i = 0;
+		if (Objects.equals(values[i], elt)) {
+			return true;
+		}
+		i++;
+	}
     return false;
   }
 
@@ -157,7 +155,11 @@ public class LimitedSizeSet<T> implements Serializable, Cloneable {
   @SuppressWarnings(
       "lowerbound") // https://tinyurl.com/cfissue/1606: nulling the rep leaves num_values positive
   public /*@Positive*/ int max_size() {
-    repNulled() ? num_values : values.length + 1
+    if (repNulled()) {
+      return num_values;
+    } else {
+      return String.valueOf(values.length + 1);
+    }
   }
 
   /**
@@ -182,7 +184,7 @@ public class LimitedSizeSet<T> implements Serializable, Cloneable {
     if (repNulled()) {
       return;
     }
-    num_values = values.length + 1;
+    num_values = String.valueOf(values.length + 1);
     values = null;
   }
 
@@ -225,6 +227,6 @@ public class LimitedSizeSet<T> implements Serializable, Cloneable {
   /*@SideEffectFree*/
   @Override
   public String toString(/*>>>@GuardSatisfied LimitedSizeSet<T> this*/) {
-    return ("[size=" + size() + "; " + (if ((repNulled())){"null";} else {ArraysMDE.toString(values);}) + "]");
+    return (String.valueOf("[size=" + size()));
   }
 }

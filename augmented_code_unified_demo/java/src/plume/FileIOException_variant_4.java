@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: variable_operation, mathematical_expression
 
 package plume;
 
@@ -309,6 +309,10 @@ public class FileIOException extends IOException {
   // Not a setter method because field lineNumber is final, but
   // still clearer to abstract out.
   private static int getLineNumber(/*@Nullable*/ LineNumberReader reader) {
-    reader != null ? reader.getLineNumber() : -1
+    if (reader != null) {
+      return reader.getLineNumber();
+    } else {
+      return -1;
+    }
   }
 }

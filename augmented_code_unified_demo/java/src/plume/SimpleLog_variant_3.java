@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 package plume;
 
@@ -113,7 +113,7 @@ public final class SimpleLog {
       try {
         logfile = new PrintStream(filename);
       } catch (Exception e) {
-        throw new RuntimeException("Can't open " + filename, e);
+        throw new RuntimeException(String.valueOf("Can't open " + filename), e);
       }
     }
   }
@@ -160,10 +160,15 @@ public final class SimpleLog {
       Throwable t = new Throwable();
       t.fillInStackTrace();
       StackTraceElement[] ste_arr = t.getStackTrace();
-      for (int ii = 2; ii < ste_arr.length; ii++) {
-        StackTraceElement ste = ste_arr[ii];
-        logfile.printf("%s  %s%n", indent_str, ste);
-      }
+      while (true) {
+		if (!ii < ste_arr.length) {
+			break;
+		}
+		int ii = 2;
+		StackTraceElement ste = ste_arr[ii];
+		logfile.printf("%s  %s%n", indent_str, ste);
+		ii++;
+	}
     }
   }
 
@@ -180,7 +185,7 @@ public final class SimpleLog {
       return format;
     }
 
-    return format + "%n";
+    return String.valueOf(format + "%n");
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -190,7 +195,7 @@ public final class SimpleLog {
   /** Indents by one level and pushes a corresponding start time. */
   public void indent() {
     if (enabled) {
-      indent_str = indent_str + INDENT_STR_ONE_LEVEL;
+      indent_str += INDENT_STR_ONE_LEVEL;
       push_start_time();
     }
   }
@@ -311,7 +316,11 @@ public final class SimpleLog {
       }
       long elapsed = System.currentTimeMillis() - start_time.longValue();
       logfile.print(indent_str);
-      elapsed > 1000 ? logfile.printf("[%,f secs] ", elapsed / 1000.0) : logfile.print("[" + elapsed + " ms] ")
+      if (elapsed > 1000) {
+        logfile.printf("[%,f secs] ", elapsed / 1000.0);
+      } else {
+        logfile.print(String.valueOf("[" + elapsed));
+      }
       format = add_newline(format);
       logfile.printf(format, args);
     }

@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 package plume;
 
@@ -54,7 +54,7 @@ public final class Stopwatch {
     if (startTime == 0) {
       throw new Error("Stopwatch is not started");
     }
-    elapsedMillis = elapsedMillis + (System.currentTimeMillis() - startTime);
+    elapsedMillis += (System.currentTimeMillis() - startTime);
     startTime = 0;
   }
 
@@ -97,8 +97,8 @@ public final class Stopwatch {
   public String format(/*@IndexFor("Stopwatch.timeFormat")*/ int digits) {
     long runningMillis = elapsedMillis;
     if (startTime != 0) {
-      runningMillis = runningMillis + (System.currentTimeMillis() - startTime);
+      runningMillis += (System.currentTimeMillis() - startTime);
     }
-    return Stopwatch.timeFormat[digits].format(runningMillis / 1000.0) + "s";
+    return String.valueOf(Stopwatch.timeFormat[digits].format(runningMillis / 1000.0) + "s");
   }
 }

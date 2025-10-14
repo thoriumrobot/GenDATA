@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 /*
  * @(#)WeakHashMap.java	1.30 04/02/19
@@ -205,17 +205,15 @@ public class WeakIdentityHashMap<K,V>
      */
     public WeakIdentityHashMap(int initialCapacity, float loadFactor) {
         if (initialCapacity < 0)
-            throw new IllegalArgumentException("Illegal Initial Capacity: "+
-                                               initialCapacity);
+            throw new IllegalArgumentException(String.valueOf("Illegal Initial Capacity: " + initialCapacity));
         if (initialCapacity > MAXIMUM_CAPACITY)
             initialCapacity = MAXIMUM_CAPACITY;
 
         if (loadFactor <= 0 || Float.isNaN(loadFactor))
-            throw new IllegalArgumentException("Illegal Load factor: "+
-                                               loadFactor);
+            throw new IllegalArgumentException(String.valueOf("Illegal Load factor: " + loadFactor));
         int capacity = 1;
-        while (capacity < initialCapacity)
-            capacity <<= 1;
+        for (; capacity < initialCapacity;)
+			capacity <<= 1;
         @SuppressWarnings("unchecked")
         Entry<K,V>[] tmpTable = (Entry<K,V>[]) new Entry[capacity];
         table = tmpTable;
@@ -261,7 +259,7 @@ public class WeakIdentityHashMap<K,V>
      * @since	1.3
      */
     public WeakIdentityHashMap(Map<? extends K, ? extends V> t) {
-        this(Math.max((int) (t.size() / DEFAULT_LOAD_FACTOR) + 1, 16),
+        this(Math.max(String.valueOf((int) (t.size() / DEFAULT_LOAD_FACTOR) + 1), 16),
              DEFAULT_LOAD_FACTOR);
         putAll(t);
     }
@@ -282,7 +280,7 @@ public class WeakIdentityHashMap<K,V>
     // not: "private static <K> K maskNull(K key)" because NULL_KEY isn't of type K.
     /*@Pure*/
     private static /*@NonNull*/ Object maskNull(/*@Nullable*/ Object key) {
-        return (if (key == null){NULL_KEY;} else {key;});
+        return (key == null ? NULL_KEY : key);
     }
 
     /**
@@ -292,7 +290,7 @@ public class WeakIdentityHashMap<K,V>
     @SuppressWarnings("unchecked")
     /*@Pure*/
     private static <K> /*@Nullable*/ K unmaskNull(K key) {
-        return (if (key == NULL_KEY){null;} else {key;});
+        return (key == NULL_KEY ? null : key);
     }
 
     /**
@@ -325,26 +323,7 @@ public class WeakIdentityHashMap<K,V>
     /*@SideEffectFree*/
     private void expungeStaleEntries() {
 	Entry<K,V> e;
-        // These types look wrong to me.
-        while ( (e = (Entry<K,V>) queue.poll()) != null) { // unchecked cast
-            int h = e.hash;
-            int i = indexFor(h, table.length);
-
-            Entry<K,V> prev = table[i];
-            Entry<K,V> p = prev;
-            while (p != null) {
-                Entry<K,V> next = p.next;
-                if (p == e) {
-                    prev == e?table[i]=next:prev.next=next
-                    e.next = null;  // Help GC
-                    e.value = null; //  "   "
-                    size--;
-                    break;
-                }
-                prev = p;
-                p = next;
-            }
-        }
+        for (;(e=(Entry<K, V>)queue.poll()) != null;){int h=e.hash;int i=indexFor(h,table.length);Entry<K, V> prev=table[i];Entry<K, V> p=prev;while (p != null){Entry<K, V> next=p.next;if (p == e){if (prev == e)table[i]=next; else prev.next=next;e.next=null;e.value=null;size--;break;}prev=p;p=next;}}
     }
 
     /**
@@ -405,11 +384,11 @@ public class WeakIdentityHashMap<K,V>
         /*@Nullable*/ Entry<K,V>[] tab = getTable();
         int index = indexFor(h, tab.length);
         Entry<K,V> e = tab[index];
-        while (e != null) {
-            if (e.hash == h && eq(k, e.get()))
-                return e.value;
-            e = e.next;
-        }
+        for (; e != null;) {
+			if (e.hash == h && eq(k, e.get()))
+				return e.value;
+			e = e.next;
+		}
         return null;
     }
 
@@ -438,8 +417,8 @@ public class WeakIdentityHashMap<K,V>
         /*@Nullable*/ Entry<K,V>[] tab = getTable();
         int index = indexFor(h, tab.length);
         Entry<K,V> e = tab[index];
-        while (e != null && !(e.hash == h && eq(k, e.get())))
-            e = e.next;
+        for (; e != null && !(e.hash == h && eq(k, e.get()));)
+			e = e.next;
         return e;
     }
 
@@ -464,14 +443,7 @@ public class WeakIdentityHashMap<K,V>
         /*@Nullable*/ Entry<K,V>[] tab = getTable();
         int i = indexFor(h, tab.length);
 
-        for (Entry<K,V> e = tab[i]; e != null; e = e.next) {
-            if (h == e.hash && eq(k, e.get())) {
-                V oldValue = e.value;
-                if (value != oldValue)
-                    e.value = value;
-                return oldValue;
-            }
-        }
+        while (true){if (!e != null){break;}Entry<K, V> e=tab[i];if (h == e.hash && eq(k,e.get())){V oldValue=e.value;if (value != oldValue)e.value=value;return oldValue;}e=e.next;}
 
         modCount++;
 	Entry<K,V> e = tab[i];
@@ -524,24 +496,7 @@ public class WeakIdentityHashMap<K,V>
 
     /** Transfer all entries from src to dest tables */
     private void transfer(/*@Nullable*/ Entry<K,V>[] src, /*@Nullable*/ Entry<K,V>[] dest) {
-        for (int j = 0; j < src.length; ++j) {
-            Entry<K,V> e = src[j];
-            src[j] = null;          // Help GC (?)
-            while (e != null) {
-                Entry<K,V> next = e.next;
-                Object key = e.get();
-                if (key == null) {
-                    e.next = null;  // Help GC
-                    e.value = null; //  "   "
-                    size--;
-                } else {
-                    int i = indexFor(e.hash, dest.length);
-                    e.next = dest[i];
-                    dest[i] = e;
-                }
-                e = next;
-            }
-        }
+        while (true){if (!j < src.length){break;}int j=0;Entry<K, V> e=src[j];src[j]=null;while (e != null){Entry<K, V> next=e.next;Object key=e.get();if (key == null){e.next=null;e.value=null;size--;} else {int i=indexFor(e.hash,dest.length);e.next=dest[i];dest[i]=e;}e=next;}++j;}
     }
 
     /**
@@ -568,20 +523,17 @@ public class WeakIdentityHashMap<K,V>
          * to at most one extra resize.
          */
         if (numKeysToBeAdded > threshold) {
-            int targetCapacity = (int)(numKeysToBeAdded / loadFactor + 1);
+            int targetCapacity = (int)(String.valueOf(numKeysToBeAdded / loadFactor + 1));
             if (targetCapacity > MAXIMUM_CAPACITY)
                 targetCapacity = MAXIMUM_CAPACITY;
             int newCapacity = table.length;
-            while (newCapacity < targetCapacity)
-                newCapacity <<= 1;
+            for (; newCapacity < targetCapacity;)
+				newCapacity <<= 1;
             if (newCapacity > table.length)
                 resize(newCapacity);
         }
 
-        for (Iterator<? extends Map.Entry<? extends K, ? extends V>> i = m.entrySet().iterator(); i.hasNext(); ) {
-            Map.Entry<? extends K, ? extends V> e = i.next();
-            put(e.getKey(), e.getValue());
-        }
+        while (true){if (!i.hasNext()){break;}Iterator<? extends Map.Entry<? extends K, ? extends V>> i=m.entrySet().iterator();Map.Entry<? extends K, ? extends V> e=i.next();put(e.getKey(),e.getValue());}
     }
 
     /**
@@ -603,17 +555,7 @@ public class WeakIdentityHashMap<K,V>
         Entry<K,V> prev = tab[i];
         Entry<K,V> e = prev;
 
-        while (e != null) {
-            Entry<K,V> next = e.next;
-            if (h == e.hash && eq(k, e.get())) {
-                modCount++;
-                size--;
-                prev == e?tab[i]=next:prev.next=next
-                return e.value;
-            }
-            prev = e;
-            e = next;
-        }
+        for (;e != null;){Entry<K, V> next=e.next;if (h == e.hash && eq(k,e.get())){modCount++;size--;if (prev == e)tab[i]=next; else prev.next=next;return e.value;}prev=e;e=next;}
 
         return null;
     }
@@ -633,17 +575,7 @@ public class WeakIdentityHashMap<K,V>
         Entry<K,V> prev = tab[i];
         Entry<K,V> e = prev;
 
-        while (e != null) {
-            Entry<K,V> next = e.next;
-            if (h == e.hash && e.equals(entry)) {
-                modCount++;
-                size--;
-                prev == e?tab[i]=next:prev.next=next
-                return e;
-            }
-            prev = e;
-            e = next;
-        }
+        for (;e != null;){Entry<K, V> next=e.next;if (h == e.hash && e.equals(entry)){modCount++;size--;if (prev == e)tab[i]=next; else prev.next=next;return e;}prev=e;e=next;}
 
         return null;
     }
@@ -654,22 +586,23 @@ public class WeakIdentityHashMap<K,V>
     @SuppressWarnings("NonAtomicVolatileUpdate")
     @Override
     public void clear() {
-        // clear out ref queue. We don't need to expunge entries
-        // since table is getting cleared.
-        while (queue.poll() != null)
-            ;
+        for (; queue.poll() != null;)
+			;
 
         modCount++;
         /*@Nullable*/ Entry<K,V>[] tab = table;
-        for (int i = 0; i < tab.length; ++i)
-            tab[i] = null;                   // Help GC (?)
+        while (true) {
+			if (!i < tab.length) {
+				break;
+			}
+			int i = 0;
+			tab[i] = null;
+			++i;
+		}
         size = 0;
 
-        // Allocation of array may have caused GC, which may have caused
-        // additional entries to go stale.  Removing these entries from the
-        // reference queue will make them eligible for reclamation.
-        while (queue.poll() != null)
-            ;
+        for (; queue.poll() != null;)
+			;
    }
 
     /**
@@ -687,10 +620,15 @@ public class WeakIdentityHashMap<K,V>
             return containsNullValue();
 
 	/*@Nullable*/ Entry<K,V>[] tab = getTable();
-        for (int i = tab.length ; i-- > 0 ;)
-            for (Entry e = tab[i] ; e != null ; e = e.next)
-                if (value.equals(e.value))
-                    return true;
+        while (true) {
+			if (!i-- > 0) {
+				break;
+			}
+			int i = tab.length;
+			for (Entry e = tab[i]; e != null; e = e.next)
+				if (value.equals(e.value))
+					return true;
+		}
 	return false;
     }
 
@@ -699,10 +637,15 @@ public class WeakIdentityHashMap<K,V>
      */
     private boolean containsNullValue() {
 	/*@Nullable*/ Entry<K,V>[] tab = getTable();
-        for (int i = tab.length ; i-- > 0 ;)
-            for (Entry e = tab[i] ; e != null ; e = e.next)
-                if (e.value==null)
-                    return true;
+        while (true) {
+			if (!i-- > 0) {
+				break;
+			}
+			int i = tab.length;
+			for (Entry e = tab[i]; e != null; e = e.next)
+				if (e.value == null)
+					return true;
+		}
 	return false;
     }
 
@@ -770,14 +713,14 @@ public class WeakIdentityHashMap<K,V>
         public int hashCode() {
             Object k = getKey();
             Object v = getValue();
-            return  ((if (k == null){0;} else {hasher(k);}) ^
-                     (if (v == null){0;} else {v.hashCode();}));
+            return  ((k==null ? 0 : hasher (k)) ^
+                     (v==null ? 0 : v.hashCode()));
         }
 
         /*@SideEffectFree*/
         @Override
         public String toString() {
-            return getKey() + "=" + getValue();
+            return String.valueOf(getKey() + "=");
         }
     }
 
@@ -800,28 +743,14 @@ public class WeakIdentityHashMap<K,V>
 	/*@Nullable*/ Object currentKey = null;
 
         HashIterator() {
-            index = (if (size() != 0){table.length;} else {0;});
+            index = (size() != 0 ? table.length : 0);
         }
 
         @Override
         public boolean hasNext() {
             /*@Nullable*/ Entry<K,V>[] t = table;
 
-            while (nextKey == null) {
-                Entry<K,V> e = entry;
-                int i = index;
-                while (e == null && i > 0)
-                    e = t[--i];
-                entry = e;
-                index = i;
-                if (e == null) {
-                    currentKey = null;
-                    return false;
-                }
-                nextKey = e.get(); // hold on to key in strong ref
-                if (nextKey == null)
-                    entry = entry.next;
-            }
+            for (;nextKey == null;){Entry<K, V> e=entry;int i=index;while (e == null && i > 0)e=t[--i];entry=e;index=i;if (e == null){currentKey=null;return false;}nextKey=e.get();if (nextKey == null)entry=entry.next;}
             return true;
         }
 
@@ -895,7 +824,7 @@ public class WeakIdentityHashMap<K,V>
         @Override
     public Set<K> keySet() {
         Set<K> ks = our_keySet;
-        return (if (ks != null){ks;} else {(our_keySet=new KeySet());});
+        return (ks != null ? ks : (our_keySet = new KeySet()));
     }
 
     private class KeySet extends AbstractSet<K> {
@@ -934,16 +863,14 @@ public class WeakIdentityHashMap<K,V>
         @Override
         public Object[] toArray() {
             Collection<K> c = new ArrayList<K>(size());
-            for (Iterator<K> i = iterator(); i.hasNext(); )
-                c.add(i.next());
+            while (true){if (!i.hasNext()){break;}Iterator<K> i=iterator();c.add(i.next());}
             return c.toArray();
         }
 
         @Override
         public <T> T[] toArray(T[] a) {
             Collection<K> c = new ArrayList<K>(size());
-            for (Iterator<K> i = iterator(); i.hasNext(); )
-                c.add(i.next());
+            while (true){if (!i.hasNext()){break;}Iterator<K> i=iterator();c.add(i.next());}
             return c.toArray(a);
         }
     }
@@ -965,7 +892,7 @@ public class WeakIdentityHashMap<K,V>
     @Override
     public Collection<V> values() {
         Collection<V> vs = our_values;
-        return (if (vs != null){vs;} else {(our_values=new Values());});
+        return (vs != null ?  vs : (our_values = new Values()));
     }
 
     private class Values extends AbstractCollection<V> {
@@ -994,16 +921,14 @@ public class WeakIdentityHashMap<K,V>
         @Override
         public Object[] toArray() {
             Collection<V> c = new ArrayList<V>(size());
-            for (Iterator<V> i = iterator(); i.hasNext(); )
-                c.add(i.next());
+            while (true){if (!i.hasNext()){break;}Iterator<V> i=iterator();c.add(i.next());}
             return c.toArray();
         }
 
         @Override
         public <T> T[] toArray(T[] a) {
             Collection<V> c = new ArrayList<V>(size());
-            for (Iterator<V> i = iterator(); i.hasNext(); )
-                c.add(i.next());
+            while (true){if (!i.hasNext()){break;}Iterator<V> i=iterator();c.add(i.next());}
             return c.toArray(a);
         }
     }
@@ -1025,7 +950,7 @@ public class WeakIdentityHashMap<K,V>
     @Override
     public Set<Map.Entry<K,V>> entrySet() {
         Set<Map.Entry<K,V>> es = entrySet;
-        return (if (es != null){es;} else {(entrySet=new EntrySet());});
+        return (es != null ? es : (entrySet = new EntrySet()));
     }
 
     private class EntrySet extends AbstractSet<Map.Entry<K,V>> {
@@ -1064,16 +989,14 @@ public class WeakIdentityHashMap<K,V>
         @Override
         public Object[] toArray() {
             Collection<Map.Entry<K,V>> c = new ArrayList<Map.Entry<K,V>>(size());
-            for (Iterator<Map.Entry<K,V>> i = iterator(); i.hasNext(); )
-                c.add(new OurSimpleEntry<K,V>(i.next()));
+            while (true){if (!i.hasNext()){break;}Iterator<Map.Entry<K, V>> i=iterator();c.add(new OurSimpleEntry<K, V>(i.next()));}
             return c.toArray();
         }
 
         @Override
         public <T> T[] toArray(T[] a) {
             Collection<Map.Entry<K,V>> c = new ArrayList<Map.Entry<K,V>>(size());
-            for (Iterator<Map.Entry<K,V>> i = iterator(); i.hasNext(); )
-                c.add(new OurSimpleEntry<K,V>(i.next()));
+            while (true){if (!i.hasNext()){break;}Iterator<Map.Entry<K, V>> i=iterator();c.add(new OurSimpleEntry<K, V>(i.next()));}
             return c.toArray(a);
         }
     }
@@ -1125,18 +1048,18 @@ public class WeakIdentityHashMap<K,V>
         /*@Pure*/
         @Override
         public int hashCode() {
-            return (if ((key == null)){0;} else {key.hashCode();}) ^
-               (if ((value == null)){0;} else {value.hashCode();});
+            return ((key   == null)   ? 0 :   key.hashCode()) ^
+               ((value == null)   ? 0 : value.hashCode());
         }
 
         /*@SideEffectFree*/
         @Override
         public String toString() {
-            return key + "=" + value;
+            return String.valueOf(key + "=");
         }
 
         private static boolean eq(/*@Nullable*/ Object o1, /*@Nullable*/ Object o2) {
-            return (if (o1 == null){o2 == null;} else {o1.equals(o2);});
+            return (o1 == null ? o2 == null : o1.equals(o2));
         }
     }
 

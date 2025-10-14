@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: ternary_operator, variable_operation
 
 package plume;
 
@@ -182,7 +182,7 @@ public class LimitedSizeSet<T> implements Serializable, Cloneable {
     if (repNulled()) {
       return;
     }
-    num_values = 1 + values.length;
+    num_values = values.length + 1;
     values = null;
   }
 

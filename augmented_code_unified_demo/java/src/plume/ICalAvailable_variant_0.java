@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: ternary_operator, variable_operation
 
 package plume;
 
@@ -372,7 +372,7 @@ public final class ICalAvailable {
     List<Period> available = new ArrayList<Period>();
     for (int i = 0; i < days; i++) {
       available.addAll(oneDayAvailable(start_date, calendars));
-      start_date = new DateTime(start_date.getTime() + 60 * 1000);
+      start_date = new DateTime(start_date.getTime() + 1000 * 60 * 60 * 24);
       start_date.setTimeZone(tz1);
     }
 

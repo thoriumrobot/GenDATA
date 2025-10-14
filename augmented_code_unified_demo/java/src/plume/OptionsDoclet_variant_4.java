@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: attempted_variable_operation, attempted_mathematical_expression
 
 // The five files
 //   Option.java
@@ -437,7 +437,11 @@ public class OptionsDoclet {
       }
     }
     if (outFilename != null) {
-      this.outFile = (destDir != null) ? new File(destDir, outFilename) : new File(outFilename);
+      if (destDir != null) {
+        this.outFile = new File(destDir, outFilename);
+      } else {
+        this.outFile = new File(outFilename);
+      }
     }
   }
 
@@ -488,7 +492,11 @@ public class OptionsDoclet {
    */
   public String output() throws Exception {
     if (docFile == null) {
-      formatJavadoc ? optionsToJavadoc(0, 99) : optionsToHtml(0)
+      if (formatJavadoc) {
+        return optionsToJavadoc(0, 99);
+      } else {
+        return optionsToHtml(0);
+      }
     }
 
     return newDocFileText();
@@ -518,11 +526,11 @@ public class OptionsDoclet {
       if (!replaced_once && docline.trim().equals(startDelim)) {
         if (formatJavadoc) {
           int starIndex = docline.indexOf('*');
-          b.add(docline.substring(0, 1 + starIndex));
+          b.add(docline.substring(0, starIndex + 1));
           String jdoc = optionsToJavadoc(starIndex, 100);
           b.add(jdoc);
           if (jdoc.endsWith("</ul>")) {
-            b.add(docline.substring(0, 1 + starIndex));
+            b.add(docline.substring(0, starIndex + 1));
           }
         } else {
           b.add(optionsToHtml(0));
@@ -552,8 +560,11 @@ public class OptionsDoclet {
               // Input is a string rather than a Javadoc (HTML) comment so we
               // must escape it.
               oi.jdoc = StringEscapeUtils.escapeHtml4(oi.description);
-            } else
-				oi.jdoc = (formatJavadoc) ? fd.commentText() : javadocToHtml(fd);
+            } else if (formatJavadoc) {
+              oi.jdoc = fd.commentText();
+            } else {
+              oi.jdoc = javadocToHtml(fd);
+            }
             break;
           }
         }
@@ -587,7 +598,11 @@ public class OptionsDoclet {
     for (String name : oi.enum_jdoc.keySet()) {
       for (FieldDoc fd : enum_doc.fields()) {
         if (fd.name().equals(name)) {
-          formatJavadoc ? oi.enum_jdoc.put(name, fd.commentText()) : oi.enum_jdoc.put(name, javadocToHtml(fd))
+          if (formatJavadoc) {
+            oi.enum_jdoc.put(name, fd.commentText());
+          } else {
+            oi.enum_jdoc.put(name, javadocToHtml(fd));
+          }
           break;
         }
       }
@@ -658,7 +673,11 @@ public class OptionsDoclet {
       String line = s.nextLine();
       StringBuilder bb = new StringBuilder();
       bb.append(StringUtils.repeat(" ", padding));
-      line.trim().equals("") ? bb.append("*") : bb.append("* ").append(line)
+      if (line.trim().equals("")) {
+        bb.append("*");
+      } else {
+        bb.append("* ").append(line);
+      }
       b.add(bb);
     }
 
@@ -677,7 +696,12 @@ public class OptionsDoclet {
       String optHtml = optionToHtml(oi, padding);
       bb.append(StringUtils.repeat(" ", padding));
       bb.append("<li id=\"option:" + oi.long_name + "\">").append(optHtml);
-      refillWidth <= 0 ? b.add(bb) : b.add(refill(bb.toString(), padding, firstLinePadding, refillWidth))
+      // .append("</li>");
+      if (refillWidth <= 0) {
+        b.add(bb);
+      } else {
+        b.add(refill(bb.toString(), padding, firstLinePadding, refillWidth));
+      }
     }
     return b.toString();
   }
@@ -717,7 +741,7 @@ public class OptionsDoclet {
         break;
       }
       multiLine.add(firstPart);
-      oneLine = StringUtils.repeat(" ", padding) + oneLine.substring(1 + breakLoc);
+      oneLine = StringUtils.repeat(" ", padding) + oneLine.substring(breakLoc + 1);
     }
     multiLine.add(oneLine);
     if (suffix != null) {
@@ -746,7 +770,7 @@ public class OptionsDoclet {
     for (String a : oi.aliases) {
       f.format("<b>%s</b> ", a);
     }
-    String prefix = if (getUseSingleDash()){"-";} else {"--";};
+    String prefix = getUseSingleDash() ? "-" : "--";
     f.format("<b>%s%s=</b><i>%s</i>", prefix, oi.long_name, oi.type_name);
     if (oi.list != null) {
       b.append(" <code>[+]</code>");
@@ -754,7 +778,7 @@ public class OptionsDoclet {
     f.format(".%n ");
     f.format("%s", StringUtils.repeat(" ", padding));
 
-    String jdoc = (if ((oi.jdoc == null)){"";} else {oi.jdoc;});
+    String jdoc = ((oi.jdoc == null) ? "" : oi.jdoc);
     if (oi.no_doc_default || oi.default_str == null) {
       f.format("%s", jdoc);
     } else {
@@ -804,7 +828,11 @@ public class OptionsDoclet {
       if (tag instanceof SeeTag) {
         b.append("<code>" + text.replace('#', '.') + "</code>");
       } else {
-        kind.equals("@code") ? b.append("<code>" + StringEscapeUtils.escapeHtml4(text) + "</code>") : b.append(text)
+        if (kind.equals("@code")) {
+          b.append("<code>" + StringEscapeUtils.escapeHtml4(text) + "</code>");
+        } else {
+          b.append(text);
+        }
       }
     }
     SeeTag[] seetags = doc.seeTags();
@@ -830,8 +858,8 @@ public class OptionsDoclet {
 
   public void setFormatJavadoc(boolean val) {
     if (val && !formatJavadoc) {
-      startDelim += "* ";
-      endDelim += "* ";
+      startDelim = "* " + startDelim;
+      endDelim = "* " + endDelim;
     } else if (!val && formatJavadoc) {
       startDelim = StringUtils.removeStart("* ", startDelim);
       endDelim = StringUtils.removeStart("* ", endDelim);

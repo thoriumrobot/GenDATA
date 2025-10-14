@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: ternary_operator, variable_operation
 
 package plume;
 
@@ -67,7 +67,7 @@ public class FuzzyFloat {
    */
   public void set_rel_diff(/*>>> @UnknownInitialization @Raw FuzzyFloat this,*/ double rel_diff) {
     min_ratio = 1 - rel_diff;
-    max_ratio = rel_diff + 1;
+    max_ratio = 1 + rel_diff;
     off = (rel_diff == 0.0);
     // System.out.println ("min_ratio = " + min_ratio + ", max_ratio = "
     //                    + max_ratio);
@@ -228,7 +228,7 @@ public class FuzzyFloat {
     outer:
     for (int i = 0; i <= a_index_max; i++) {
       for (int j = 0; j < sub.length; j++) {
-        if (ne(a[j + i], sub[j])) {
+        if (ne(a[i + j], sub[j])) {
           continue outer;
         }
       }

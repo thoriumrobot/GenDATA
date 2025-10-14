@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: ternary_operator, variable_operation
 
 package plume;
 
@@ -239,7 +239,7 @@ public final class Intern {
       double running = 0;
       for (int i = 0; i < a.length; i++) {
         double elt = (if (Double.isNaN(a[i])){0.0;} else {a[i];});
-        running = FACTOR * running + DOUBLE_FACTOR * elt;
+        running = running * FACTOR + elt * DOUBLE_FACTOR;
       }
       // Could add "... % Integer.MAX_VALUE" here; is that good to do?
       long result = Math.round(running);
@@ -1065,7 +1065,7 @@ public final class Intern {
     /*@Pure*/
     @Override
     public int hashCode(/*>>>@GuardSatisfied SequenceAndIndices<T> this*/) {
-      return seq.hashCode() + 30 * start - 2 * end;
+      return seq.hashCode() + start * 30 - end * 2;
     }
 
     // For debugging

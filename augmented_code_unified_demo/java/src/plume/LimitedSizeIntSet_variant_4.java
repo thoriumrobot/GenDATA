@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: attempted_variable_operation, attempted_mathematical_expression
 
 package plume;
 
@@ -158,7 +158,11 @@ public class LimitedSizeIntSet implements Serializable, Cloneable {
   @SuppressWarnings(
       "lowerbound") // https://tinyurl.com/cfissue/1606: nulling the rep leaves num_values positive
   public /*@Positive*/ int max_size() {
-    repNulled() ? num_values : values.length + 1
+    if (repNulled()) {
+      return num_values;
+    } else {
+      return values.length + 1;
+    }
   }
 
   /**
@@ -183,7 +187,7 @@ public class LimitedSizeIntSet implements Serializable, Cloneable {
     if (repNulled()) {
       return;
     }
-    num_values = 1 + values.length;
+    num_values = values.length + 1;
     values = null;
   }
 

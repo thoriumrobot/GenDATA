@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: switch_statement, loop_conversion
 
 // The five files
 //   Option.java
@@ -377,7 +377,7 @@ public class Options {
         this.list = default_obj_as_list;
         // System.out.printf ("list default = %s%n", list);
         Type[] listTypeArgs = pt.getActualTypeArguments();
-        this.base_type = (Class<?>) (if (listTypeArgs.length == 0){Object.class;} else {listTypeArgs[0];});
+        this.base_type = (Class<?>) (listTypeArgs.length == 0 ? Object.class : listTypeArgs[0]);
 
         // System.out.printf ("Param type for %s = %s%n", field, pt);
         // System.out.printf ("raw type = %s, type = %s%n", pt.getRawType(),
@@ -393,13 +393,21 @@ public class Options {
             "Error while processing @Option(\"" + option.value() + "\") on '" + field + "'", e);
       }
       short_name = pr.short_name;
-      type_name = (pr.type_name != null) ? pr.type_name : type_short_name(base_type);
+      if (pr.type_name != null) {
+        type_name = pr.type_name;
+      } else {
+        type_name = type_short_name(base_type);
+      }
       description = pr.description;
 
       // Get a constructor for non-primitive base types
       if (!base_type.isPrimitive() && !base_type.isEnum()) {
         try {
-          base_type == Pattern.class?factory=Pattern.class.getMethod("compile",String.class):constructor=base_type.getConstructor(String.class)
+          if (base_type == Pattern.class) {
+            factory = Pattern.class.getMethod("compile", String.class);
+          } else { // look for a string constructor
+            constructor = base_type.getConstructor(String.class);
+          }
         } catch (Exception e) {
           throw new Error(
               "@Option does not support type "
@@ -427,14 +435,14 @@ public class Options {
      * <strong>or</strong> (if use_single_dash is true) {@code-s -long=<type>} .
      */
     public String synopsis() {
-      String prefix = if (use_single_dash){"-";} else {"--";};
+      String prefix = use_single_dash ? "-" : "--";
       String name = prefix + long_name;
       if (short_name != null) {
         name = String.format("-%s %s", short_name, name);
       }
-      name = name + String.format("=<%s>", type_name);
+      name += String.format("=<%s>", type_name);
       if (list != null) {
-        name = name + " [+]";
+        name += " [+]";
       }
       return (name);
     }
@@ -447,7 +455,7 @@ public class Options {
     @Override
     /*@SideEffectFree*/
     public String toString(/*>>>@GuardSatisfied OptionInfo this*/) {
-      String prefix = if (use_single_dash){"-";} else {"--";};
+      String prefix = use_single_dash ? "-" : "--";
       String short_name_str = "";
       if (short_name != null) {
         short_name_str = "-" + short_name + " ";
@@ -635,7 +643,7 @@ public class Options {
         "initialization" // if is_class is true, obj is a non-null initialized Class
       })
       /*@Initialized*/ /*@NonRaw*/ /*@NonNull*/ Class<?> clazz =
-          (if (is_class){(Class<?>)obj;} else {obj.getClass();});
+          (is_class ? (/*@Initialized*/ /*@NonRaw*/ /*@NonNull*/ Class<?>) obj : obj.getClass());
       if (main_class == Void.TYPE) {
         main_class = clazz;
       }
@@ -675,7 +683,7 @@ public class Options {
         @SuppressWarnings(
             "initialization") // new C(underInit) yields @UnderInitialization; @Initialized is safe
         /*@Initialized*/ OptionInfo oi =
-            new OptionInfo(f, option, if (is_class){null;} else {obj;}, unpublicized);
+            new OptionInfo(f, option, is_class ? null : obj, unpublicized);
         options.add(oi);
 
         // FIXME: should also check that the option does not belong to an
@@ -737,7 +745,7 @@ public class Options {
       } // loop through fields
     } // loop through args
 
-    String prefix = if (use_single_dash){"-";} else {"--";};
+    String prefix = use_single_dash ? "-" : "--";
 
     // Add each option to the option name map
     for (OptionInfo oi : options) {
@@ -839,65 +847,7 @@ public class Options {
     // Loop through each argument
     String tail = "";
     String arg;
-    for (int ii = 0; ii < args.length; ) {
-      arg = (tail.length() > 0) ? tail : args[ii];
-
-      if (arg.equals("--")) {
-        ignore_options = true;
-      } else if ((arg.startsWith("--") || arg.startsWith("-")) && !ignore_options) {
-        String arg_name;
-        String arg_value;
-
-        // Allow ',' as an argument separator to get around
-        // some command line quoting problems.  (markro)
-        int split_pos = arg.indexOf(",-");
-        if (split_pos == 0) {
-          // Just discard the ',' if ",-" occurs at begining of string
-          arg = arg.substring(1);
-          split_pos = arg.indexOf(",-");
-        }
-        if (split_pos > 0) {
-          tail = arg.substring(split_pos + 1);
-          arg = arg.substring(0, split_pos);
-        }
-
-        int eq_pos = arg.indexOf('=');
-        arg_name = (eq_pos == -1) ? arg : arg.substring(0, eq_pos);
-        OptionInfo oi = name_map.get(arg_name);
-        if (oi == null) {
-          StringBuilder msg = new StringBuilder();
-          msg.append(String.format("unknown option name '%s' in arg '%s'", arg_name, arg));
-          if (false) { // for debugging
-            msg.append("; known options:");
-            for (String option_name : UtilMDE.sortedKeySet(name_map)) {
-              msg.append(" ");
-              msg.append(option_name);
-            }
-          }
-          throw new ArgException(msg.toString());
-        }
-        if (oi.argument_required() && (arg_value == null)) {
-          ii++;
-          if (ii >= args.length) {
-            throw new ArgException("option %s requires an argument", arg);
-          }
-          arg_value = args[ii];
-        }
-        // System.out.printf ("arg_name = '%s', arg_value='%s'%n", arg_name,
-        //                    arg_value);
-        set_arg(oi, arg_name, arg_value);
-      } else { // not an option
-        if (!parse_options_after_arg) {
-          ignore_options = true;
-        }
-        non_options.add(arg);
-      }
-
-      // If no ',' tail, advance to next args option
-      if (tail.length() == 0) {
-        ii++;
-      }
-    }
+    while (true){if (!ii < args.length){break;}int ii=0;if (tail.length() > 0){arg=tail;tail="";} else {arg=args[ii];}if (arg.equals("--")){ignore_options=true;} else if ((arg.startsWith("--") || arg.startsWith("-")) && !ignore_options){String arg_name;String arg_value;int split_pos=arg.indexOf(",-");if (split_pos == 0){arg=arg.substring(1);split_pos=arg.indexOf(",-");}if (split_pos > 0){tail=arg.substring(split_pos + 1);arg=arg.substring(0,split_pos);}int eq_pos=arg.indexOf('=');if (eq_pos == -1){arg_name=arg;arg_value=null;} else {arg_name=arg.substring(0,eq_pos);arg_value=arg.substring(eq_pos + 1);}OptionInfo oi=name_map.get(arg_name);if (oi == null){StringBuilder msg=new StringBuilder();msg.append(String.format("unknown option name '%s' in arg '%s'",arg_name,arg));if (false){msg.append("; known options:");for (String option_name:UtilMDE.sortedKeySet(name_map)){msg.append(" ");msg.append(option_name);}}throw new ArgException(msg.toString());}if (oi.argument_required() && (arg_value == null)){ii++;if (ii >= args.length){throw new ArgException("option %s requires an argument",arg);}arg_value=args[ii];}set_arg(oi,arg_name,arg_value);} else {if (!parse_options_after_arg){ignore_options=true;}non_options.add(arg);}if (tail.length() == 0){ii++;}}
     String[] result = non_options.toArray(new String[non_options.size()]);
     return result;
   }
@@ -925,31 +875,33 @@ public class Options {
     List<String> arg_list = new ArrayList<String>();
     String arg = "";
     char active_quote = 0;
-    for (int ii = 0; ii < args.length(); ii++) {
-      char ch = args.charAt(ii);
-      if ((ch == '\'') || (ch == '"')) {
-        arg = arg + ch;
-        ii++;
-        while ((ii < args.length()) && (args.charAt(ii) != ch)) {
-          arg = arg + args.charAt(ii++);
-        }
-        arg = arg + ch;
-      } else if (Character.isWhitespace(ch)) {
-        // System.out.printf ("adding argument '%s'%n", arg);
-        arg_list.add(arg);
-        arg = "";
-        while ((ii < args.length()) && Character.isWhitespace(args.charAt(ii))) {
-          ii++;
-        }
-        if (ii < args.length()) {
-          // Encountered a non-whitespace character.
-          // Back up to process it on the next loop iteration.
-          ii--;
-        }
-      } else { // must be part of current argument
-        arg = arg + ch;
-      }
-    }
+    while (true) {
+		if (!ii < args.length()) {
+			break;
+		}
+		int ii = 0;
+		char ch = args.charAt(ii);
+		if ((ch == '\'') || (ch == '"')) {
+			arg += ch;
+			ii++;
+			while ((ii < args.length()) && (args.charAt(ii) != ch)) {
+				arg += args.charAt(ii++);
+			}
+			arg += ch;
+		} else if (Character.isWhitespace(ch)) {
+			arg_list.add(arg);
+			arg = "";
+			while ((ii < args.length()) && Character.isWhitespace(args.charAt(ii))) {
+				ii++;
+			}
+			if (ii < args.length()) {
+				ii--;
+			}
+		} else {
+			arg += ch;
+		}
+		ii++;
+	}
     if (!arg.equals("")) {
       arg_list.add(arg);
     }
@@ -1046,7 +998,11 @@ public class Options {
       non_options = parse(args);
     } catch (ArgException ae) {
       String message = ae.getMessage();
-      message != null ? print_usage(message) : print_usage()
+      if (message != null) {
+        print_usage(message);
+      } else {
+        print_usage();
+      }
       System.exit(-1);
       // throw new Error ("usage error: ", ae);
     }
@@ -1078,7 +1034,11 @@ public class Options {
       non_options = parse(args);
     } catch (ArgException ae) {
       String message = ae.getMessage();
-      message != null ? print_usage(message) : print_usage()
+      if (message != null) {
+        print_usage(message);
+      } else {
+        print_usage();
+      }
       System.exit(-1);
       // throw new Error ("usage error: ", ae);
     }
@@ -1310,16 +1270,16 @@ public class Options {
 
     // Keep track of all of the options specified
     if (options_str.length() > 0) {
-      options_str = options_str + " ";
+      options_str += " ";
     }
-    options_str = options_str + arg_name;
+    options_str += arg_name;
     if (arg_value != null) {
       if (!arg_value.contains(" ")) {
-        options_str = options_str + "=" + arg_value;
+        options_str += "=" + arg_value;
       } else if (!arg_value.contains("'")) {
-        options_str = options_str + "='" + arg_value + "'";
+        options_str += "='" + arg_value + "'";
       } else if (!arg_value.contains("\"")) {
-        options_str = options_str + "=\"" + arg_value + "\"";
+        options_str += "=\"" + arg_value + "\"";
       } else {
         throw new ArgException("Can't quote for internal debugging: " + arg_value);
       }
@@ -1346,7 +1306,7 @@ public class Options {
             throw new ArgException(
                 "Value \"%s\" for argument %s is not a boolean", arg_value, arg_name);
           }
-          arg_value = if ((val)){"true";} else {"false";};
+          arg_value = (val) ? "true" : "false";
           // System.out.printf ("Setting %s to %s%n", arg_name, val);
           f.setBoolean(oi.obj, val);
         } else if (type == Integer.TYPE) {
@@ -1481,7 +1441,11 @@ public class Options {
       return "filename";
     } else if (type == Pattern.class) {
       return "regex";
-    }else type.isEnum() ? ("enum") : type.getSimpleName().toLowerCase()
+    } else if (type.isEnum()) {
+      return ("enum");
+    } else {
+      return type.getSimpleName().toLowerCase();
+    }
   }
 
   /**
@@ -1528,7 +1492,7 @@ public class Options {
       @SuppressWarnings("formatter") // format string computed from max_len
       String use = String.format("%-" + max_len + "s = ", oi.long_name);
       try {
-        use = use + oi.field.get(oi.obj);
+        use += oi.field.get(oi.obj);
       } catch (Exception e) {
         throw new Error("unexpected exception reading field " + oi.field, e);
       }
@@ -1613,7 +1577,13 @@ public class Options {
       description = val;
     }
 
-    type_name = (description.startsWith("<")) ? description.substring(1).replaceFirst(">.*", "") : null;
+    // Get the type name (if any)
+    if (description.startsWith("<")) {
+      type_name = description.substring(1).replaceFirst(">.*", "");
+      description = description.replaceFirst("<.*> ", "");
+    } else {
+      type_name = null;
+    }
 
     // Return the result
     return new ParseResult(short_name, type_name, description);

@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation
+// Applied transformations: loop_conversion, mathematical_expression
 
 /*
  * @(#)WeakHashMap.java	1.30 04/02/19
@@ -482,13 +482,18 @@ public class WeakIdentityHashMap<K,V>
         transfer(oldTable, newTable);
         table = newTable;
 
-        if (!(size >= threshold / 2)) {
-			expungeStaleEntries();
-			transfer(newTable, oldTable);
-			table = oldTable;
-		} else {
-			threshold = (int) (newCapacity * loadFactor);
-		}
+        /*
+         * If ignoring null elements and processing ref queue caused massive
+         * shrinkage, then restore old table.  This should be rare, but avoids
+         * unbounded expansion of garbage-filled tables.
+         */
+        if (size >= threshold / 2) {
+            threshold = (int)(loadFactor * newCapacity);
+        } else {
+            expungeStaleEntries();
+            transfer(newTable, oldTable);
+            table = oldTable;
+        }
     }
 
     /** Transfer all entries from src to dest tables */

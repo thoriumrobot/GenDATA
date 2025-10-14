@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: variable_operation, mathematical_expression
 
 // If you edit this file, you must also edit its tests.
 // For tests of this and the entire plume package, see class TestPlume.
@@ -284,7 +284,11 @@ public final class UtilMDE {
       throws FileNotFoundException, IOException {
     InputStream in = new FileInputStream(file);
     InputStreamReader file_reader;
-    file_reader = (charsetName == null) ? new InputStreamReader(in, UTF_8) : new InputStreamReader(in, charsetName);
+    if (charsetName == null) {
+      file_reader = new InputStreamReader(in, UTF_8);
+    } else {
+      file_reader = new InputStreamReader(in, charsetName);
+    }
     return file_reader;
   }
 
@@ -443,11 +447,16 @@ public final class UtilMDE {
   // Question:  should this be rewritten as a wrapper around bufferedFileOutputStream?
   public static BufferedWriter bufferedFileWriter(String filename, boolean append)
       throws IOException {
-    filename.endsWith(".gz")
-			? new BufferedWriter(
-					new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(filename, append)), UTF_8))
-			: Files.newBufferedWriter(Paths.get(filename), UTF_8,
-					append ? new StandardOpenOption[] { CREATE, APPEND } : new StandardOpenOption[] { CREATE })
+    if (filename.endsWith(".gz")) {
+      return new BufferedWriter(
+          new OutputStreamWriter(
+              new GZIPOutputStream(new FileOutputStream(filename, append)), UTF_8));
+    } else {
+      return Files.newBufferedWriter(
+          Paths.get(filename),
+          UTF_8,
+          append ? new StandardOpenOption[] {CREATE, APPEND} : new StandardOpenOption[] {CREATE});
+    }
   }
 
   /**
@@ -645,7 +654,11 @@ public final class UtilMDE {
   @Deprecated
   @SuppressWarnings("signature") // conversion routine
   public static /*@ClassGetName*/ String binaryNameToClassGetName(/*BinaryName*/ String bn) {
-    bn.endsWith("[]") ? binaryNameToFieldDescriptor(bn).replace('/', '.') : bn
+    if (bn.endsWith("[]")) {
+      return binaryNameToFieldDescriptor(bn).replace('/', '.');
+    } else {
+      return bn;
+    }
   }
 
   /**
@@ -660,7 +673,11 @@ public final class UtilMDE {
   @SuppressWarnings("signature") // conversion routine
   public static /*@ClassGetName*/ String fieldDescriptorToClassGetName(
       /*FieldDescriptor*/ String fd) {
-    fd.startsWith("[") ? fd.replace('/', '.') : fieldDescriptorToBinaryName(fd)
+    if (fd.startsWith("[")) {
+      return fd.replace('/', '.');
+    } else {
+      return fieldDescriptorToBinaryName(fd);
+    }
   }
 
   /**
@@ -727,8 +744,14 @@ public final class UtilMDE {
       classname = classname.substring(1);
     }
     String result;
-    result = (classname.startsWith("L") && classname.endsWith(";")) ? classname.substring(1, classname.length() - 1)
-			: primitiveClassesFromJvm.get(classname);
+    if (classname.startsWith("L") && classname.endsWith(";")) {
+      result = classname.substring(1, classname.length() - 1);
+    } else {
+      result = primitiveClassesFromJvm.get(classname);
+      if (result == null) {
+        throw new Error("Malformed base class: " + classname);
+      }
+    }
     for (int i = 0; i < dims; i++) {
       result = result + "[]";
     }
@@ -1154,7 +1177,11 @@ public final class UtilMDE {
     String newname = expandFilename(path);
     @SuppressWarnings("interning")
     boolean changed = (newname != path);
-    changed ? new File(newname) : name
+    if (changed) {
+      return new File(newname);
+    } else {
+      return name;
+    }
   }
 
   /**
@@ -1164,7 +1191,11 @@ public final class UtilMDE {
    * @return expanded filename
    */
   public static String expandFilename(String name) {
-    name.contains("~") ? (name.replace("~", userHome)) : name
+    if (name.contains("~")) {
+      return (name.replace("~", userHome));
+    } else {
+      return name;
+    }
   }
 
   /**
@@ -1478,7 +1509,7 @@ public final class UtilMDE {
    * @return a hash of the arguments
    */
   public static int hash(/*@Nullable*/ String a) {
-    return if ((a == null)){0;} else {a.hashCode();};
+    return (a == null) ? 0 : a.hashCode();
   }
 
   /**
@@ -1867,7 +1898,11 @@ public final class UtilMDE {
   public static <T> /*@Nullable*/ Integer incrementMap(Map<T, Integer> m, T key, int count) {
     Integer old = m.get(key);
     int new_total;
-    new_total = (old == null) ? count : old.intValue() + count;
+    if (old == null) {
+      new_total = count;
+    } else {
+      new_total = old.intValue() + count;
+    }
     return m.put(key, new_total);
   }
 
@@ -1999,7 +2034,11 @@ public final class UtilMDE {
     Class<?>[] argclasses = args_seen.get(all_argnames);
     if (argclasses == null) {
       String[] argnames;
-      argnames = (all_argnames.equals("")) ? new String[0] : split(all_argnames, ',');
+      if (all_argnames.equals("")) {
+        argnames = new String[0];
+      } else {
+        argnames = split(all_argnames, ',');
+      }
 
       /*@MonotonicNonNull*/ Class<?>[] argclasses_tmp = new Class<?>[argnames.length];
       for (int i = 0; i < argnames.length; i++) {
@@ -2430,7 +2469,11 @@ public final class UtilMDE {
     boolean first = true;
     Iterator<?> itor = v.iterator();
     while (itor.hasNext()) {
-      first ? first = false : sb.append(delim)
+      if (first) {
+        first = false;
+      } else {
+        sb.append(delim);
+      }
       sb.append(itor.next());
     }
     return sb.toString();
@@ -2745,8 +2788,14 @@ public final class UtilMDE {
   public static String nplural(int n, String noun) {
     if (n == 1) {
       return n + " " + noun;
-    }else noun.endsWith("ch") || noun.endsWith("s") || noun.endsWith("sh") || noun.endsWith("x") ? n + " " + noun + "es"
-			: n + " " + noun + "s"
+    } else if (noun.endsWith("ch")
+        || noun.endsWith("s")
+        || noun.endsWith("sh")
+        || noun.endsWith("x")) {
+      return n + " " + noun + "es";
+    } else {
+      return n + " " + noun + "s";
+    }
   }
 
   /**
@@ -3281,8 +3330,13 @@ public final class UtilMDE {
     } else if (val < 1000000) {
       dval = val / 1000.0;
       mag = "K";
-    } else
-		dval = (val < 1000000000) ? val / 1000000.0 : val / 1000000000.0;
+    } else if (val < 1000000000) {
+      dval = val / 1000000.0;
+      mag = "M";
+    } else {
+      dval = val / 1000000000.0;
+      mag = "G";
+    }
 
     String precision = "0";
     if (dval < 10) {

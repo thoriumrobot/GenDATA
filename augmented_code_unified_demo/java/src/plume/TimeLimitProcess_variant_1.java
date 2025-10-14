@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation
+// Applied transformations: loop_conversion, mathematical_expression
 
 // This class is deprecated.  Use Apache Commons Exec instead.
 
@@ -152,13 +152,7 @@ public class TimeLimitProcess extends Process {
    */
   @Override
   public int exitValue() {
-    // I'm not sure whether this is necessary; the Process.destroy()
-    // documentation doesn't specify the effect on the exit value.
-    if ((p.exitValue() == 0) && timed_out) {
-      return 255;
-    } else {
-      return p.exitValue();
-    }
+    (p.exitValue() == 0) && timed_out ? 255 : p.exitValue()
   }
 
   /**
@@ -190,11 +184,7 @@ public class TimeLimitProcess extends Process {
    */
   @Override
   public InputStream getInputStream() {
-    if (!(cached_stdout == null)) {
-		return stringToInputStream(cached_stdout.toString());
-	} else {
-		return p.getInputStream();
-	}
+    cached_stdout == null ? p.getInputStream() : stringToInputStream(cached_stdout.toString())
   }
 
   // Convert a String to an InputStream

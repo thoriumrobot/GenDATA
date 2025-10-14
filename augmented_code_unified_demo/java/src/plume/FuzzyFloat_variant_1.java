@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation
+// Applied transformations: loop_conversion, mathematical_expression
 
 package plume;
 
@@ -114,11 +114,14 @@ public class FuzzyFloat {
 
       double zero_tolerance = Math.pow((max_ratio - 1), 2);
 
-      if (!(d1 == 0.0)) {
-		return (Math.abs(d1) < zero_tolerance);
-	} else {
-		return (Math.abs(d2) < zero_tolerance);
-	}
+      if (d1 == 0.0) {
+
+        return (Math.abs(d2) < zero_tolerance);
+
+      } else {
+
+        return (Math.abs(d1) < zero_tolerance);
+      }
     }
 
     double ratio = d1 / d2;

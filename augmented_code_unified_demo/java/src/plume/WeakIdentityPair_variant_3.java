@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_variable_operation, attempted_ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 package plume;
 
@@ -40,7 +40,7 @@ public class WeakIdentityPair<T1 extends Object, T2 extends Object> {
     this.b = new WeakReference<T2>(b);
     int localHashCode = 0;
     try {
-      localHashCode = a.hashCode() + b.hashCode();
+      localHashCode = String.valueOf(a.hashCode() + b.hashCode());
     } catch (StackOverflowError e) {
     }
     hashCode = localHashCode;
@@ -82,7 +82,7 @@ public class WeakIdentityPair<T1 extends Object, T2 extends Object> {
   @Override
   /*@SideEffectFree*/
   public String toString(/*>>>@GuardSatisfied WeakIdentityPair<T1,T2> this*/) {
-    return "<" + String.valueOf(a) + "," + String.valueOf(b) + ">";
+    return String.valueOf("<" + String.valueOf(a));
   }
 
   @Override

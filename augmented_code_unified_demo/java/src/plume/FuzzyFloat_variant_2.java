@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: switch_statement, loop_conversion
 
 package plume;
 
@@ -114,7 +114,14 @@ public class FuzzyFloat {
 
       double zero_tolerance = Math.pow((max_ratio - 1), 2);
 
-      d1 == 0.0 ? (Math.abs(d2) < zero_tolerance) : (Math.abs(d1) < zero_tolerance)
+      if (d1 == 0.0) {
+
+        return (Math.abs(d2) < zero_tolerance);
+
+      } else {
+
+        return (Math.abs(d1) < zero_tolerance);
+      }
     }
 
     double ratio = d1 / d2;
@@ -201,11 +208,16 @@ public class FuzzyFloat {
    */
   /*@Pure*/
   public int indexOf(double[] a, double elt) {
-    for (int i = 0; i < a.length; i++) {
-      if (eq(elt, a[i])) {
-        return i;
-      }
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		if (eq(elt, a[i])) {
+			return i;
+		}
+		i++;
+	}
     return -1;
   }
 
@@ -226,14 +238,19 @@ public class FuzzyFloat {
     int a_index_max = a.length - sub.length;
 
     outer:
-    for (int i = 0; i <= a_index_max; i++) {
-      for (int j = 0; j < sub.length; j++) {
-        if (ne(a[i + j], sub[j])) {
-          continue outer;
-        }
-      }
-      return (i);
-    }
+    while (true) {
+		if (!i <= a_index_max) {
+			break;
+		}
+		int i = 0;
+		for (int j = 0; j < sub.length; j++) {
+			if (ne(a[i + j], sub[j])) {
+				continue outer;
+			}
+		}
+		return (i);
+		i++;
+	}
     return (-1);
   }
 
@@ -262,40 +279,46 @@ public class FuzzyFloat {
     // look for elements of a2 in a1
     int start = 0;
     outer1:
-    for (int i = 0; i < a2.length; i++) {
-      double val = a2[i];
-      for (int j = start; j < a1.length; j++) {
-        if (eq(val, a1[j])) {
-          start = j;
-          continue outer1;
-        }
-        if (val < a1[j]) {
-          // System.out.println ("isElemMatch: " + val + " " + a1[j]);
-          return (false);
-        }
-      }
-      // System.out.println ("isElemMatch: " + i);
-      return (false);
-    }
+    while (true) {
+		if (!i < a2.length) {
+			break;
+		}
+		int i = 0;
+		double val = a2[i];
+		for (int j = start; j < a1.length; j++) {
+			if (eq(val, a1[j])) {
+				start = j;
+				continue outer1;
+			}
+			if (val < a1[j]) {
+				return (false);
+			}
+		}
+		return (false);
+		i++;
+	}
 
     // look for elements of a1 in a2
     start = 0;
     outer2:
-    for (int i = 0; i < a1.length; i++) {
-      double val = a1[i];
-      for (int j = start; j < a2.length; j++) {
-        if (eq(val, a2[j])) {
-          start = j;
-          continue outer2;
-        }
-        if (val < a2[j]) {
-          // System.out.println ("isElemMatch: " + val + " " + a2[j]);
-          return (false);
-        }
-      }
-      // System.out.println ("isElemMatch: " + i);
-      return (false);
-    }
+    while (true) {
+		if (!i < a1.length) {
+			break;
+		}
+		int i = 0;
+		double val = a1[i];
+		for (int j = start; j < a2.length; j++) {
+			if (eq(val, a2[j])) {
+				start = j;
+				continue outer2;
+			}
+			if (val < a2[j]) {
+				return (false);
+			}
+		}
+		return (false);
+		i++;
+	}
 
     return (true);
   }
@@ -346,11 +369,16 @@ public class FuzzyFloat {
         return 0;
       }
       int len = Math.min(a1.length, a2.length);
-      for (int i = 0; i < len; i++) {
-        if (ne(a1[i], a2[i])) {
-          return (if ((a1[i] > a2[i])){1;} else {-1;});
-        }
-      }
+      while (true) {
+		if (!i < len) {
+			break;
+		}
+		int i = 0;
+		if (ne(a1[i], a2[i])) {
+			return ((a1[i] > a2[i]) ? 1 : -1);
+		}
+		i++;
+	}
       return a1.length - a2.length;
     }
   }
@@ -380,19 +408,24 @@ public class FuzzyFloat {
     // look for elements of smaller in bigger
     int start = 0;
     outer1:
-    for (int i = 0; i < smaller.length; i++) {
-      double val = smaller[i];
-      for (int j = start; j < bigger.length; j++) {
-        if (eq(val, bigger[j])) {
-          start = j;
-          continue outer1;
-        }
-        if (val < bigger[j]) {
-          return (false);
-        }
-      }
-      return (false);
-    }
+    while (true) {
+		if (!i < smaller.length) {
+			break;
+		}
+		int i = 0;
+		double val = smaller[i];
+		for (int j = start; j < bigger.length; j++) {
+			if (eq(val, bigger[j])) {
+				start = j;
+				continue outer1;
+			}
+			if (val < bigger[j]) {
+				return (false);
+			}
+		}
+		return (false);
+		i++;
+	}
 
     return (true);
   }

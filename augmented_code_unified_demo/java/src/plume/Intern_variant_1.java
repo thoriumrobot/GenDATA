@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation
+// Applied transformations: loop_conversion, mathematical_expression
 
 package plume;
 
@@ -89,31 +89,32 @@ public final class Intern {
   @SuppressWarnings("interning") // interning implementation
   /*@Pure*/
   public static boolean isInterned(/*@Nullable*/ Object value) {
-    if (!(value == null))
-		if (value instanceof String) {
-			return (value == ((String) value).intern());
-		} else if (value instanceof String[]) {
-			return (value == intern((String[]) value));
-		} else if (value instanceof Integer) {
-			return (value == intern((Integer) value));
-		} else if (value instanceof Long) {
-			return (value == intern((Long) value));
-		} else if (value instanceof int[]) {
-			return (value == intern((int[]) value));
-		} else if (value instanceof long[]) {
-			return (value == intern((long[]) value));
-		} else if (value instanceof Double) {
-			return (value == intern((Double) value));
-		} else if (value instanceof double[]) {
-			return (value == intern((double[]) value));
-		} else if (value instanceof Object[]) {
-			return (value == intern((Object[]) value));
-		} else {
-			return true;
-		}
-	else {
-		return true;
-	}
+    if (value == null) {
+      // nothing to do
+      return true;
+    } else if (value instanceof String) {
+      return (value == ((String) value).intern());
+    } else if (value instanceof String[]) {
+      return (value == intern((String[]) value));
+    } else if (value instanceof Integer) {
+      return (value == intern((Integer) value));
+    } else if (value instanceof Long) {
+      return (value == intern((Long) value));
+    } else if (value instanceof int[]) {
+      return (value == intern((int[]) value));
+    } else if (value instanceof long[]) {
+      return (value == intern((long[]) value));
+    } else if (value instanceof Double) {
+      return (value == intern((Double) value));
+    } else if (value instanceof double[]) {
+      return (value == intern((double[]) value));
+    } else if (value instanceof Object[]) {
+      return (value == intern((Object[]) value));
+    } else {
+      // Nothing to do, because we don't intern other types.
+      // System.out.println("What type? " + value.getClass().getName());
+      return true;
+    }
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -519,7 +520,14 @@ public final class Intern {
   public static /*@Interned*/ Integer intern(Integer a) {
     WeakReference</*@Interned*/ Integer> lookup = internedIntegers.get(a);
     Integer result1 = (lookup != null) ? lookup.get() : null;
-    if (!(result1 != null)){@SuppressWarnings("cast") Integer result=(Integer)a;internedIntegers.put(result,new WeakReference<Integer>(result));return result;} else {return result1;}
+    if (result1 != null) {
+      return result1;
+    } else {
+      @SuppressWarnings("cast") // cast is redundant (except in JSR 308)
+      /*@Interned*/ Integer result = (/*@Interned*/ Integer) a;
+      internedIntegers.put(result, new WeakReference</*@Interned*/ Integer>(result));
+      return result;
+    }
   }
 
   // Not sure whether this convenience method is really worth it.
@@ -558,7 +566,14 @@ public final class Intern {
   public static /*@Interned*/ Long intern(Long a) {
     WeakReference</*@Interned*/ Long> lookup = internedLongs.get(a);
     Long result1 = (lookup != null) ? lookup.get() : null;
-    if (!(result1 != null)){@SuppressWarnings("cast") Long result=(Long)a;internedLongs.put(result,new WeakReference<Long>(result));return result;} else {return result1;}
+    if (result1 != null) {
+      return result1;
+    } else {
+      @SuppressWarnings("cast") // cast is redundant (except in JSR 308)
+      /*@Interned*/ Long result = (/*@Interned*/ Long) a;
+      internedLongs.put(result, new WeakReference</*@Interned*/ Long>(result));
+      return result;
+    }
   }
 
   // Not sure whether this convenience method is really worth it.
@@ -610,7 +625,14 @@ public final class Intern {
       // https://github.com/kelloggm/checker-framework/issues/177
     })
     int /*@PolyValue*/ /*@SameLen("a")*/[] result1 = (lookup != null) ? lookup.get() : null;
-    if (!(result1 != null)){@SuppressWarnings("cast") int[] result=(int[])a;internedIntArrays.put(result,new WeakReference<int[]>(result));return result;} else {return result1;}
+    if (result1 != null) {
+      return result1;
+    } else {
+      @SuppressWarnings("cast") // cast is redundant (except in JSR 308)
+      /*@Interned*/ int[] result = (int /*@Interned*/ /*@PolyValue*/ []) a;
+      internedIntArrays.put(result, new WeakReference<int /*@Interned*/ []>(result));
+      return result;
+    }
   }
 
   /**
@@ -633,7 +655,14 @@ public final class Intern {
       // https://github.com/kelloggm/checker-framework/issues/177
     })
     long /*@PolyValue*/ /*@SameLen("a")*/[] result1 = (lookup != null) ? lookup.get() : null;
-    if (!(result1 != null)){@SuppressWarnings("cast") long[] result=(long[])a;internedLongArrays.put(result,new WeakReference<long[]>(result));return result;} else {return result1;}
+    if (result1 != null) {
+      return result1;
+    } else {
+      @SuppressWarnings("cast") // cast is redundant (except in JSR 308)
+      /*@Interned*/ long[] result = (long /*@Interned*/ /*@PolyValue*/ []) a;
+      internedLongArrays.put(result, new WeakReference<long /*@Interned*/ []>(result));
+      return result;
+    }
   }
 
   /**
@@ -658,7 +687,14 @@ public final class Intern {
     }
     WeakReference</*@Interned*/ Double> lookup = internedDoubles.get(a);
     Double result1 = (lookup != null) ? lookup.get() : null;
-    if (!(result1 != null)){@SuppressWarnings("cast") Double result=(Double)a;internedDoubles.put(result,new WeakReference<Double>(result));return result;} else {return result1;}
+    if (result1 != null) {
+      return result1;
+    } else {
+      @SuppressWarnings("cast") // cast is redundant (except in JSR 308)
+      /*@Interned*/ Double result = (/*@Interned*/ Double) a;
+      internedDoubles.put(result, new WeakReference</*@Interned*/ Double>(result));
+      return result;
+    }
   }
 
   // Not sure whether this convenience method is really worth it.
@@ -706,7 +742,14 @@ public final class Intern {
       // https://github.com/kelloggm/checker-framework/issues/177
     })
     double /*@PolyValue*/ /*@SameLen("a")*/[] result1 = (lookup != null) ? lookup.get() : null;
-    if (!(result1 != null)){@SuppressWarnings("cast") double[] result=(double[])a;internedDoubleArrays.put(result,new WeakReference<double[]>(result));return result;} else {return result1;}
+    if (result1 != null) {
+      return result1;
+    } else {
+      @SuppressWarnings("cast") // cast is redundant (except in JSR 308)
+      /*@Interned*/ double[] result = (double /*@Interned*/ /*@PolyValue*/ []) a;
+      internedDoubleArrays.put(result, new WeakReference<double /*@Interned*/ []>(result));
+      return result;
+    }
   }
 
   /**
@@ -804,33 +847,32 @@ public final class Intern {
   @SuppressWarnings("purity") // defensive coding: throw exception when argument is invalid
   /*@Pure*/
   public static /*@Interned*/ /*@PolyNull*/ Object intern(/*@PolyNull*/ Object a) {
-    if (!(a == null))
-		if (a instanceof String) {
-			return intern((String) a);
-		} else if (a instanceof String[]) {
-			String[] asArray = (String[]) a;
-			return intern(asArray);
-		} else if (a instanceof Integer) {
-			return intern((Integer) a);
-		} else if (a instanceof Long) {
-			return intern((Long) a);
-		} else if (a instanceof int[]) {
-			return intern((int[]) a);
-		} else if (a instanceof long[]) {
-			return intern((long[]) a);
-		} else if (a instanceof Double) {
-			return intern((Double) a);
-		} else if (a instanceof double[]) {
-			return intern((double[]) a);
-		} else if (a instanceof Object[]) {
-			Object[] asArray = (Object[]) a;
-			return intern(asArray);
-		} else {
-			throw new IllegalArgumentException("Arguments of type " + a.getClass() + " cannot be interned");
-		}
-	else {
-		return null;
-	}
+    if (a == null) {
+      return null;
+    } else if (a instanceof String) {
+      return intern((String) a);
+    } else if (a instanceof String[]) {
+      /*@Interned*/ String[] asArray = (/*@Interned*/ String[]) a;
+      return intern(asArray);
+    } else if (a instanceof Integer) {
+      return intern((Integer) a);
+    } else if (a instanceof Long) {
+      return intern((Long) a);
+    } else if (a instanceof int[]) {
+      return intern((int[]) a);
+    } else if (a instanceof long[]) {
+      return intern((long[]) a);
+    } else if (a instanceof Double) {
+      return intern((Double) a);
+    } else if (a instanceof double[]) {
+      return intern((double[]) a);
+    } else if (a instanceof Object[]) {
+      /*@Interned*/ Object[] asArray = (/*@Interned*/ Object[]) a;
+      return intern(asArray);
+    } else {
+      throw new IllegalArgumentException(
+          "Arguments of type " + a.getClass() + " cannot be interned");
+    }
   }
 
   /**
@@ -860,7 +902,14 @@ public final class Intern {
         new SequenceAndIndices<int /*@Interned*/ []>(seq, start, end);
     WeakReference<int /*@Interned*/ []> lookup = internedIntSequenceAndIndices.get(sai);
     int[] result1 = (lookup != null) ? lookup.get() : null;
-    if (!(result1 != null)){int[] subseqUninterned=ArraysMDE.subarray(seq,start,end - start);int[] subseq=Intern.intern(subseqUninterned);internedIntSequenceAndIndices.put(sai,new WeakReference<int[]>(subseq));return subseq;} else {return result1;}
+    if (result1 != null) {
+      return result1;
+    } else {
+      int[] subseqUninterned = ArraysMDE.subarray(seq, start, end - start);
+      int /*@Interned*/ [] subseq = Intern.intern(subseqUninterned);
+      internedIntSequenceAndIndices.put(sai, new WeakReference<int /*@Interned*/ []>(subseq));
+      return subseq;
+    }
   }
 
   /**
@@ -883,7 +932,14 @@ public final class Intern {
         new SequenceAndIndices<long /*@Interned*/ []>(seq, start, end);
     WeakReference<long /*@Interned*/ []> lookup = internedLongSequenceAndIndices.get(sai);
     long[] result1 = (lookup != null) ? lookup.get() : null;
-    if (!(result1 != null)){long[] subseq_uninterned=ArraysMDE.subarray(seq,start,end - start);long[] subseq=Intern.intern(subseq_uninterned);internedLongSequenceAndIndices.put(sai,new WeakReference<long[]>(subseq));return subseq;} else {return result1;}
+    if (result1 != null) {
+      return result1;
+    } else {
+      long[] subseq_uninterned = ArraysMDE.subarray(seq, start, end - start);
+      long /*@Interned*/ [] subseq = Intern.intern(subseq_uninterned);
+      internedLongSequenceAndIndices.put(sai, new WeakReference<long /*@Interned*/ []>(subseq));
+      return subseq;
+    }
   }
 
   /**
@@ -906,7 +962,14 @@ public final class Intern {
         new SequenceAndIndices<double /*@Interned*/ []>(seq, start, end);
     WeakReference<double /*@Interned*/ []> lookup = internedDoubleSequenceAndIndices.get(sai);
     double[] result1 = (lookup != null) ? lookup.get() : null;
-    if (!(result1 != null)){double[] subseq_uninterned=ArraysMDE.subarray(seq,start,end - start);double[] subseq=Intern.intern(subseq_uninterned);internedDoubleSequenceAndIndices.put(sai,new WeakReference<double[]>(subseq));return subseq;} else {return result1;}
+    if (result1 != null) {
+      return result1;
+    } else {
+      double[] subseq_uninterned = ArraysMDE.subarray(seq, start, end - start);
+      double /*@Interned*/ [] subseq = Intern.intern(subseq_uninterned);
+      internedDoubleSequenceAndIndices.put(sai, new WeakReference<double /*@Interned*/ []>(subseq));
+      return subseq;
+    }
   }
 
   /**
@@ -931,7 +994,19 @@ public final class Intern {
     WeakReference</*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ []> lookup =
         internedObjectSequenceAndIndices.get(sai);
     /*@PolyNull*/ /*@Interned*/ Object[] result1 = (lookup != null) ? lookup.get() : null;
-    if (!(result1 != null)){Object[] subseq_uninterned=ArraysMDE.subarray(seq,start,end - start);Object[] subseq=Intern.intern(subseq_uninterned);@SuppressWarnings("nullness") Object ignore=internedObjectSequenceAndIndices.put(sai,new WeakReference<Object[]>(subseq));return subseq;} else {return result1;}
+    if (result1 != null) {
+      return result1;
+    } else {
+      /*@PolyNull*/ /*@Interned*/ Object[] subseq_uninterned = ArraysMDE.subarray(seq, start, end - start);
+      /*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ [] subseq = Intern.intern(subseq_uninterned);
+      @SuppressWarnings("nullness") // safe because map does no side effects
+      Object
+          ignore = // assignment just so there is a place to hang the @SuppressWarnings annotation
+          internedObjectSequenceAndIndices.put(
+                  sai,
+                  new WeakReference</*@PolyNull*/ /*@Interned*/ Object /*@Interned*/ []>(subseq));
+      return subseq;
+    }
   }
 
   /**
@@ -956,7 +1031,19 @@ public final class Intern {
     WeakReference</*@PolyNull*/ /*@Interned*/ String /*@Interned*/ []> lookup =
         internedStringSequenceAndIndices.get(sai);
     /*@PolyNull*/ /*@Interned*/ String[] result1 = (lookup != null) ? lookup.get() : null;
-    if (!(result1 != null)){String[] subseq_uninterned=ArraysMDE.subarray(seq,start,end - start);String[] subseq=Intern.intern(subseq_uninterned);@SuppressWarnings("nullness") Object ignore=internedStringSequenceAndIndices.put(sai,new WeakReference<String[]>(subseq));return subseq;} else {return result1;}
+    if (result1 != null) {
+      return result1;
+    } else {
+      /*@PolyNull*/ /*@Interned*/ String[] subseq_uninterned = ArraysMDE.subarray(seq, start, end - start);
+      /*@PolyNull*/ /*@Interned*/ String /*@Interned*/ [] subseq = Intern.intern(subseq_uninterned);
+      @SuppressWarnings("nullness") // safe because map does no side effects
+      Object
+          ignore = // assignment just so there is a place to hang the @SuppressWarnings annotation
+          internedStringSequenceAndIndices.put(
+                  sai,
+                  new WeakReference</*@PolyNull*/ /*@Interned*/ String /*@Interned*/ []>(subseq));
+      return subseq;
+    }
   }
 
   /**
@@ -985,7 +1072,13 @@ public final class Intern {
     public boolean equals(
         /*>>>@GuardSatisfied SequenceAndIndices<T> this,*/
         /*@GuardSatisfied*/ /*@Nullable*/ Object other) {
-      if (!(other instanceof SequenceAndIndices<?>)){return false;} else {@SuppressWarnings("unchecked") SequenceAndIndices<T> other_sai=(SequenceAndIndices<T>)other;return equalsSequenceAndIndices(other_sai);}
+      if (other instanceof SequenceAndIndices<?>) {
+        @SuppressWarnings("unchecked")
+        SequenceAndIndices<T> other_sai = (SequenceAndIndices<T>) other;
+        return equalsSequenceAndIndices(other_sai);
+      } else {
+        return false;
+      }
     }
 
     /*@Pure*/

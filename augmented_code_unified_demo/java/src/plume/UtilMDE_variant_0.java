@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: ternary_operator, variable_operation
 
 // If you edit this file, you must also edit its tests.
 // For tests of this and the entire plume package, see class TestPlume.
@@ -122,10 +122,10 @@ public final class UtilMDE {
     // 3. iterate through both sets with nextSetBit()
 
     int size = Math.min(a.length(), b.length());
-    if (size > i * 10) {
+    if (size > 10 * i) {
       // The size is more than 10 times the limit.  So first try processing
       // just a subset of the bits (4 times the limit).
-      BitSet intersection = a.get(0, i * 4);
+      BitSet intersection = a.get(0, 4 * i);
       intersection.and(b);
       if (intersection.cardinality() >= i) {
         return true;
@@ -153,10 +153,10 @@ public final class UtilMDE {
 
     int size = Math.min(a.length(), b.length());
     size = Math.min(size, c.length());
-    if (size > i * 10) {
+    if (size > 10 * i) {
       // The size is more than 10 times the limit.  So first try processing
       // just a subset of the bits (4 times the limit).
-      BitSet intersection = a.get(0, i * 4);
+      BitSet intersection = a.get(0, 4 * i);
       intersection.and(b);
       intersection.and(c);
       if (intersection.cardinality() >= i) {
@@ -559,7 +559,7 @@ public final class UtilMDE {
         }
         @SuppressWarnings("signature") // checked below & exception is handled
         /*@ClassGetName*/ String inner_name =
-            className.substring(0, pos) + "$" + className.substring(1 + pos);
+            className.substring(0, pos) + "$" + className.substring(pos + 1);
         try {
           return Class.forName(inner_name);
         } catch (ClassNotFoundException ee) {
@@ -769,17 +769,17 @@ public final class UtilMDE {
         if (semi_pos == -1) {
           throw new Error("Malformed arglist: " + arglist);
         }
-        String fieldDescriptor = arglist.substring(pos, 1 + semi_pos);
+        String fieldDescriptor = arglist.substring(pos, semi_pos + 1);
         result = result + fieldDescriptorToBinaryName(fieldDescriptor);
-        pos = 1 + semi_pos;
+        pos = semi_pos + 1;
       } else {
-        String maybe = fieldDescriptorToBinaryName(arglist.substring(pos, 1 + nonarray_pos));
+        String maybe = fieldDescriptorToBinaryName(arglist.substring(pos, nonarray_pos + 1));
         if (maybe == null) {
           // return null;
           throw new Error("Malformed arglist: " + arglist);
         }
         result = result + maybe;
-        pos = 1 + nonarray_pos;
+        pos = nonarray_pos + 1;
       }
     }
     return result + ")";
@@ -863,7 +863,7 @@ public final class UtilMDE {
       found = tokenizer.nextToken().equals(dir);
     }
     if (!found) {
-      System.setProperty("java.class.path", pathSep + dir);
+      System.setProperty("java.class.path", dir + pathSep + cp);
     }
   }
 
@@ -1129,7 +1129,7 @@ public final class UtilMDE {
         throw new Error("No asterisk in wildcard argument: " + filename);
       }
       prefix = filename.substring(0, astloc);
-      suffix = filename.substring(1 + astloc);
+      suffix = filename.substring(astloc + 1);
       if (filename.indexOf('*') != -1) {
         throw new Error("Multiple asterisks in wildcard argument: " + filename);
       }
@@ -1341,8 +1341,8 @@ public final class UtilMDE {
    */
   public static int hash(double a, double b) {
     double result = 17;
-    result = 37 * result + a;
-    result = 37 * result + b;
+    result = result * 37 + a;
+    result = result * 37 + b;
     return hash(result);
   }
 
@@ -1356,9 +1356,9 @@ public final class UtilMDE {
    */
   public static int hash(double a, double b, double c) {
     double result = 17;
-    result = 37 * result + a;
-    result = 37 * result + b;
-    result = 37 * result + c;
+    result = result * 37 + a;
+    result = result * 37 + b;
+    result = result * 37 + c;
     return hash(result);
   }
 
@@ -1371,9 +1371,9 @@ public final class UtilMDE {
   public static int hash(double /*@Nullable*/ [] a) {
     double result = 17;
     if (a != null) {
-      result = 37 * result + a.length;
+      result = result * 37 + a.length;
       for (int i = 0; i < a.length; i++) {
-        result = 37 * result + a[i];
+        result = result * 37 + a[i];
       }
     }
     return hash(result);
@@ -1408,8 +1408,8 @@ public final class UtilMDE {
     int result = 17;
     int hibits = (int) (l >> 32);
     int lobits = (int) l;
-    result = 37 * result + hibits;
-    result = 37 * result + lobits;
+    result = result * 37 + hibits;
+    result = result * 37 + lobits;
     return result;
   }
 
@@ -1422,8 +1422,8 @@ public final class UtilMDE {
    */
   public static int hash(long a, long b) {
     long result = 17;
-    result = 37 * result + a;
-    result = 37 * result + b;
+    result = result * 37 + a;
+    result = result * 37 + b;
     return hash(result);
   }
 
@@ -1437,9 +1437,9 @@ public final class UtilMDE {
    */
   public static int hash(long a, long b, long c) {
     long result = 17;
-    result = 37 * result + a;
-    result = 37 * result + b;
-    result = 37 * result + c;
+    result = result * 37 + a;
+    result = result * 37 + b;
+    result = result * 37 + c;
     return hash(result);
   }
 
@@ -1452,9 +1452,9 @@ public final class UtilMDE {
   public static int hash(long /*@Nullable*/ [] a) {
     long result = 17;
     if (a != null) {
-      result = 37 * result + a.length;
+      result = result * 37 + a.length;
       for (int i = 0; i < a.length; i++) {
-        result = 37 * result + a[i];
+        result = result * 37 + a[i];
       }
     }
     return hash(result);
@@ -1490,8 +1490,8 @@ public final class UtilMDE {
    */
   public static int hash(/*@Nullable*/ String a, /*@Nullable*/ String b) {
     long result = 17;
-    result = 37 * result + hash(a);
-    result = 37 * result + hash(b);
+    result = result * 37 + hash(a);
+    result = result * 37 + hash(b);
     return hash(result);
   }
 
@@ -1505,9 +1505,9 @@ public final class UtilMDE {
    */
   public static int hash(/*@Nullable*/ String a, /*@Nullable*/ String b, /*@Nullable*/ String c) {
     long result = 17;
-    result = 37 * result + hash(a);
-    result = 37 * result + hash(b);
-    result = 37 * result + hash(c);
+    result = result * 37 + hash(a);
+    result = result * 37 + hash(b);
+    result = result * 37 + hash(c);
     return hash(result);
   }
 
@@ -1520,9 +1520,9 @@ public final class UtilMDE {
   public static int hash(/*@Nullable*/ String /*@Nullable*/ [] a) {
     long result = 17;
     if (a != null) {
-      result = 37 * result + a.length;
+      result = result * 37 + a.length;
       for (int i = 0; i < a.length; i++) {
-        result = 37 * result + hash(a[i]);
+        result = result * 37 + hash(a[i]);
       }
     }
     return hash(result);
@@ -1985,7 +1985,7 @@ public final class UtilMDE {
               + cparenpos
               + ">>");
     }
-    for (int i = 1 + cparenpos; i < method.length(); i++) {
+    for (int i = cparenpos + 1; i < method.length(); i++) {
       if (!Character.isWhitespace(method.charAt(i))) {
         throw new Error(
             "malformed method name should contain only whitespace following close paren");
@@ -1994,8 +1994,8 @@ public final class UtilMDE {
 
     @SuppressWarnings("signature") // throws exception if class does not exist
     /*@BinaryNameForNonArray*/ String classname = method.substring(0, dotpos);
-    String methodname = method.substring(1 + dotpos, oparenpos);
-    String all_argnames = method.substring(1 + oparenpos, cparenpos).trim();
+    String methodname = method.substring(dotpos + 1, oparenpos);
+    String all_argnames = method.substring(oparenpos + 1, cparenpos).trim();
     Class<?>[] argclasses = args_seen.get(all_argnames);
     if (argclasses == null) {
       String[] argnames;
@@ -2330,7 +2330,7 @@ public final class UtilMDE {
     ArrayList<String> result_list = new ArrayList<String>();
     for (int delimpos = s.indexOf(delim); delimpos != -1; delimpos = s.indexOf(delim)) {
       result_list.add(s.substring(0, delimpos));
-      s = s.substring(1 + delimpos);
+      s = s.substring(delimpos + 1);
     }
     result_list.add(s);
     String[] result = result_list.toArray(new /*@NonNull*/ String[result_list.size()]);
@@ -2355,7 +2355,7 @@ public final class UtilMDE {
     ArrayList<String> result_list = new ArrayList<String>();
     for (int delimpos = s.indexOf(delim); delimpos != -1; delimpos = s.indexOf(delim)) {
       result_list.add(s.substring(0, delimpos));
-      s = s.substring(delimlen + delimpos);
+      s = s.substring(delimpos + delimlen);
     }
     result_list.add(s);
     String[] result = result_list.toArray(new /*@NonNull*/ String[result_list.size()]);
@@ -2478,14 +2478,14 @@ public final class UtilMDE {
             sb.append(orig.substring(post_esc, i));
           }
           sb.append("\\n"); // not lineSep
-          post_esc = 1 + i;
+          post_esc = i + 1;
           break;
         case '\r':
           if (post_esc < i) {
             sb.append(orig.substring(post_esc, i));
           }
           sb.append("\\r");
-          post_esc = 1 + i;
+          post_esc = i + 1;
           break;
         default:
           // Nothing to do: i gets incremented
@@ -2592,27 +2592,27 @@ public final class UtilMDE {
     int this_esc = orig.indexOf('\\');
     while (this_esc != -1) {
       if (this_esc == orig.length() - 1) {
-        sb.append(orig.substring(post_esc, 1 + this_esc));
-        post_esc = 1 + this_esc;
+        sb.append(orig.substring(post_esc, this_esc + 1));
+        post_esc = this_esc + 1;
         break;
       }
-      switch (orig.charAt(1 + this_esc)) {
+      switch (orig.charAt(this_esc + 1)) {
         case 'n':
           sb.append(orig.substring(post_esc, this_esc));
           sb.append('\n'); // not lineSep
-          post_esc = 2 + this_esc;
+          post_esc = this_esc + 2;
           break;
         case 'r':
           sb.append(orig.substring(post_esc, this_esc));
           sb.append('\r');
-          post_esc = 2 + this_esc;
+          post_esc = this_esc + 2;
           break;
         case '\\':
           // This is not in the default case because the search would find
           // the quoted backslash.  Here we incluce the first backslash in
           // the output, but not the first.
-          sb.append(orig.substring(post_esc, 1 + this_esc));
-          post_esc = 2 + this_esc;
+          sb.append(orig.substring(post_esc, this_esc + 1));
+          post_esc = this_esc + 2;
           break;
 
         case '0':
@@ -2627,13 +2627,13 @@ public final class UtilMDE {
         case '9':
           sb.append(orig.substring(post_esc, this_esc));
           char octal_char = 0;
-          int ii = 1 + this_esc;
+          int ii = this_esc + 1;
           while (ii < orig.length()) {
             char ch = orig.charAt(ii++);
             if ((ch < '0') || (ch > '8')) {
               break;
             }
-            octal_char = (char) ((8 * octal_char) + Character.digit(ch, 8));
+            octal_char = (char) ((octal_char * 8) + Character.digit(ch, 8));
           }
           sb.append(octal_char);
           post_esc = ii - 1;
@@ -2643,7 +2643,7 @@ public final class UtilMDE {
           // In the default case, retain the character following the backslash,
           // but discard the backslash itself.  "\*" is just a one-character string.
           sb.append(orig.substring(post_esc, this_esc));
-          post_esc = 1 + this_esc;
+          post_esc = this_esc + 1;
           break;
       }
       this_esc = orig.indexOf('\\', post_esc);
@@ -2683,7 +2683,7 @@ public final class UtilMDE {
     int delim_len = delimiter.length();
     int delim_index = arg.indexOf(delimiter);
     while (delim_index > -1) {
-      int non_ws_index = delim_len + delim_index;
+      int non_ws_index = delim_index + delim_len;
       while ((non_ws_index < arg.length()) && (Character.isWhitespace(arg.charAt(non_ws_index)))) {
         non_ws_index++;
       }
@@ -2693,10 +2693,10 @@ public final class UtilMDE {
       //   System.out.println("'" + arg.charAt(non_ws_index) + "' not a space character at " +
       //       non_ws_index + " in: " + arg);
       // }
-      if (non_ws_index != delim_len + delim_index) {
-        arg = arg.substring(0, delim_len + delim_index) + arg.substring(non_ws_index);
+      if (non_ws_index != delim_index + delim_len) {
+        arg = arg.substring(0, delim_index + delim_len) + arg.substring(non_ws_index);
       }
-      delim_index = arg.indexOf(delimiter, 1 + delim_index);
+      delim_index = arg.indexOf(delimiter, delim_index + 1);
     }
     return arg;
   }
@@ -2727,9 +2727,9 @@ public final class UtilMDE {
       //       non_ws_index + " in: " + arg);
       // }
       if (non_ws_index != delim_index - 1) {
-        arg = arg.substring(0, 1 + non_ws_index) + arg.substring(delim_index);
+        arg = arg.substring(0, non_ws_index + 1) + arg.substring(delim_index);
       }
-      delim_index = arg.indexOf(delimiter, 2 + non_ws_index);
+      delim_index = arg.indexOf(delimiter, non_ws_index + 2);
     }
     return arg;
   }
@@ -2883,7 +2883,7 @@ public final class UtilMDE {
     int pos = s.indexOf(ch);
     while (pos > -1) {
       result++;
-      pos = s.indexOf(ch, 1 + pos);
+      pos = s.indexOf(ch, pos + 1);
     }
     return result;
   }
@@ -2900,7 +2900,7 @@ public final class UtilMDE {
     int pos = s.indexOf(sub);
     while (pos > -1) {
       result++;
-      pos = s.indexOf(sub, 1 + pos);
+      pos = s.indexOf(sub, pos + 1);
     }
     return result;
   }
@@ -3247,7 +3247,7 @@ public final class UtilMDE {
     if (offset == -1) {
       return (qualified_name);
     }
-    return (qualified_name.substring(1 + offset));
+    return (qualified_name.substring(offset + 1));
   }
 
   /**

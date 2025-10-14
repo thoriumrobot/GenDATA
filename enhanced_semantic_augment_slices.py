@@ -54,7 +54,12 @@ class EnhancedSemanticTransformer:
             logger.error(f"Failed to initialize JDT transformer: {e}")
             raise RuntimeError(f"JDT transformer initialization failed: {e}")
     
-    def transform_file(self, java_path: str, variant_idx: int) -> str:
+    def transform_file(self, java_path: str, variant_idx: int,
+                       sequence_len: int = 2,
+                       max_depth: int = 3,
+                       avoid: Optional[List[str]] = None,
+                       min_diff: float = 0.03,
+                       focus_nodes: Optional[List[str]] = None) -> str:
         """Apply enhanced semantic transformations to a Java file using JDT."""
         try:
             with open(java_path, 'r') as f:
@@ -62,10 +67,12 @@ class EnhancedSemanticTransformer:
             
             # Get available enhanced transformations
             available_transformations = self.jdt_transformer.get_available_transformations('enhanced')
+            avoid = avoid or []
+            focus_nodes = focus_nodes or ['control','dataflow']
             
-            # Filter out disabled transformations
-            enabled_transformations = [t for t in available_transformations 
-                                     if t not in self.disabled_transformations]
+            # Filter out disabled and avoided transformations
+            enabled_transformations = [t for t in available_transformations
+                                       if t not in self.disabled_transformations and t not in avoid]
             
             if not enabled_transformations:
                 logger.warning("No transformations available after filtering disabled ones")
@@ -75,19 +82,19 @@ class EnhancedSemanticTransformer:
             # Set seed based on variant index for reproducible but different transformations
             variant_random = random.Random(self.seed + variant_idx * 1000)
             
-            # Prioritize transforms known to yield visible textual changes
-            priority = ['variable_operation', 'ternary_operator', 'mathematical_expression']
-            prioritized = [t for t in priority if t in enabled_transformations]
-            remaining = [t for t in enabled_transformations if t not in prioritized]
-            # Select 1–3 with priority first in a deterministic way
-            num_transformations = min(variant_random.randint(1, 3), len(enabled_transformations))
-            selected_transformations = []
-            for t in prioritized:
-                if len(selected_transformations) < num_transformations:
-                    selected_transformations.append(t)
-            if len(selected_transformations) < num_transformations and remaining:
-                needed = num_transformations - len(selected_transformations)
-                selected_transformations.extend(variant_random.sample(remaining, min(needed, len(remaining))))
+            # Build a diverse pool and deterministically sample to increase variety across variants
+            diversity_pool = [
+                'variable_operation','ternary_operator','mathematical_expression','loop_conversion',
+                'guard_reversal','switch_statement','logical_expression','conditional_expression',
+                'stream_api','builder_pattern','functional_conversion','simple_field_access',
+                'string_concatenation','numeric_literal'
+            ]
+            diversity_pool = [t for t in diversity_pool if t in enabled_transformations]
+            if not diversity_pool:
+                diversity_pool = enabled_transformations
+            num_transformations = max(1, min(sequence_len, len(diversity_pool)))
+            # Deterministic but varied per variant
+            selected_transformations = variant_random.sample(diversity_pool, num_transformations)
             
             logger.info(f"Applying transformations for variant {variant_idx}: {selected_transformations}")
             
@@ -96,8 +103,13 @@ class EnhancedSemanticTransformer:
                 original_code,
                 selected_transformations,
                 'enhanced',
-                force_transformation=True
+                force_transformation=True,
+                sequence_len=sequence_len,
+                max_depth=max_depth,
+                avoid=avoid,
+                focus_nodes=focus_nodes
             )
+            used_transformations = list(selected_transformations)
 
             # Log body hash and size deltas
             try:
@@ -121,14 +133,34 @@ class EnhancedSemanticTransformer:
                 for alt in fallback_sets:
                     if not alt:
                         continue
-                    alt_code = self.jdt_transformer.transform_code(original_code, alt, 'enhanced', force_transformation=False)
+                    alt_code = self.jdt_transformer.transform_code(
+                        original_code, alt, 'enhanced', force_transformation=False,
+                        sequence_len=sequence_len, max_depth=max_depth, avoid=avoid, focus_nodes=focus_nodes)
                     if alt_code != original_code:
                         logger.info(f"Fallback transformations succeeded for variant {variant_idx}: {alt}")
                         transformed_code = alt_code
+                        used_transformations = list(alt)
                         break
+
+            # Enforce minimal diff threshold (approx by token-level ratio)
+            try:
+                import re
+                def tokenize(s: str) -> List[str]:
+                    return re.findall(r"[A-Za-z_][A-Za-z0-9_]*|\S", s)
+                o_tokens = tokenize(original_code)
+                n_tokens = tokenize(transformed_code)
+                # simple diff: proportion of tokens that differ by position, clipped by min length
+                L = min(len(o_tokens), len(n_tokens))
+                diffs = sum(1 for i in range(L) if o_tokens[i] != n_tokens[i]) + abs(len(o_tokens) - len(n_tokens))
+                diff_ratio = (diffs / max(1, max(len(o_tokens), len(n_tokens))))
+                if diff_ratio < min_diff:
+                    logger.debug(f"Variant {variant_idx} diff_ratio {diff_ratio:.3f} < min_diff {min_diff:.3f}; keeping original")
+                    transformed_code = original_code
+            except Exception:
+                pass
             
-            # Record applied transformations
-            self.transformations_applied.extend(selected_transformations)
+            # Record applied transformations (selected or fallback used)
+            self.transformations_applied.extend(used_transformations)
             
             # Always add header comment to indicate transformation attempt
             if transformed_code != original_code:
@@ -149,7 +181,10 @@ class EnhancedSemanticTransformer:
         header = f"{HEADER_COMMENT}\n// Applied transformations: {transformation_list}\n\n"
         return header + code
     
-    def transform_directory(self, input_dir: str, output_dir: str, num_variants: int = 3) -> Dict[str, Any]:
+    def transform_directory(self, input_dir: str, output_dir: str, num_variants: int = 3,
+                            sequence_len: int = 2, max_depth: int = 3, avoid: Optional[List[str]] = None,
+                            min_diff: float = 0.03, focus_nodes: Optional[List[str]] = None,
+                            write_manifest: bool = True) -> Dict[str, Any]:
         """Transform all Java files in a directory."""
         input_path = Path(input_dir)
         output_path = Path(output_dir)
@@ -175,7 +210,10 @@ class EnhancedSemanticTransformer:
                 
                 # Create variants
                 for variant_idx in range(num_variants):
-                    transformed_code = self.transform_file(str(java_file), variant_idx)
+                    transformed_code = self.transform_file(
+                        str(java_file), variant_idx,
+                        sequence_len=sequence_len, max_depth=max_depth, avoid=avoid,
+                        min_diff=min_diff, focus_nodes=focus_nodes)
                     
                     # Create output path
                     variant_name = f"{java_file.stem}_variant_{variant_idx}{java_file.suffix}"
@@ -185,6 +223,26 @@ class EnhancedSemanticTransformer:
                     # Write transformed file
                     with open(output_file, 'w') as f:
                         f.write(transformed_code)
+
+                    # Write per-variant manifest
+                    if write_manifest:
+                        manifest = {
+                            'source': str(java_file),
+                            'output': str(output_file),
+                            'seed': self.seed,
+                            'variant_index': variant_idx,
+                            'sequence_len': sequence_len,
+                            'max_depth': max_depth,
+                            'avoid': avoid or [],
+                            'min_diff': min_diff,
+                            'focus_nodes': focus_nodes or ['control','dataflow']
+                        }
+                        try:
+                            import json
+                            with open(str(output_file) + '.manifest.json', 'w') as mf:
+                                json.dump(manifest, mf, indent=2)
+                        except Exception:
+                            pass
                     
                     results['variants_created'] += 1
                     logger.info(f"Created variant: {output_file}")
@@ -197,6 +255,15 @@ class EnhancedSemanticTransformer:
                 logger.error(error_msg)
                 results['errors'].append(error_msg)
         
+        # Write index
+        if write_manifest:
+            try:
+                import json
+                index_path = Path(output_dir) / 'augmentation_index.json'
+                with open(index_path, 'w') as idx:
+                    json.dump(results, idx, indent=2)
+            except Exception:
+                pass
         return results
     
     def get_transformation_stats(self) -> Dict[str, Any]:
@@ -219,6 +286,12 @@ def main():
     parser.add_argument('input', help='Input Java file or directory')
     parser.add_argument('output', help='Output file or directory')
     parser.add_argument('--variants', type=int, default=3, help='Number of variants to create')
+    parser.add_argument('--sequence-len', type=int, default=2, help='Transformations per variant sequence')
+    parser.add_argument('--max-depth', type=int, default=3, help='Max transformation depth per file')
+    parser.add_argument('--avoid', nargs='*', default=[], help='Transformations to avoid')
+    parser.add_argument('--min-diff', type=float, default=0.03, help='Minimal token diff ratio to accept a variant')
+    parser.add_argument('--focus-nodes', nargs='*', default=['control','dataflow'], help='Bias toward nodes impacting these aspects')
+    parser.add_argument('--manifest', action='store_true', default=True, help='Write per-variant manifests and index')
     parser.add_argument('--seed', type=int, default=42, help='Random seed')
     parser.add_argument('--disabled', nargs='*', default=[], help='Disabled transformations')
     parser.add_argument('--jdt-jar', help='Path to JDT transformer JAR')
@@ -264,7 +337,11 @@ def main():
         elif os.path.isdir(args.input):
             # Directory
             if not args.require_change:
-                results = transformer.transform_directory(args.input, args.output, args.variants)
+                results = transformer.transform_directory(
+                    args.input, args.output, args.variants,
+                    sequence_len=args.sequence_len, max_depth=args.max_depth,
+                    avoid=args.avoid, min_diff=args.min_diff,
+                    focus_nodes=args.focus_nodes, write_manifest=args.manifest)
             else:
                 # Require-change mode: write only when body changes
                 in_path = Path(args.input)
@@ -281,7 +358,10 @@ def main():
                         with open(jf, 'r') as f:
                             original = f.read()
                         for vid in range(args.variants):
-                            transformed = transformer.transform_file(str(jf), vid)
+                            transformed = transformer.transform_file(
+                                str(jf), vid,
+                                sequence_len=args.sequence_len, max_depth=args.max_depth,
+                                avoid=args.avoid, min_diff=args.min_diff, focus_nodes=args.focus_nodes)
                             tl = transformed.splitlines()
                             transformed_body = tl[4:] if len(tl) >= 4 and tl[0].startswith('/*') else tl
                             # Compare transformed body against full original

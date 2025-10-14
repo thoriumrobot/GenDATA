@@ -1,8 +1,3 @@
-/*
- * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
- */
-// Applied transformations: attempted_variable_operation, attempted_ternary_operator
-
 // Lists all declaration annotations (more specifically, non-type
 // annotations) reachable from the classpath.  Only lists the simple name.
 

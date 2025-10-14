@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: ternary_operator, variable_operation
 
 // The five files
 //   Option.java
@@ -518,11 +518,11 @@ public class OptionsDoclet {
       if (!replaced_once && docline.trim().equals(startDelim)) {
         if (formatJavadoc) {
           int starIndex = docline.indexOf('*');
-          b.add(docline.substring(0, 1 + starIndex));
+          b.add(docline.substring(0, starIndex + 1));
           String jdoc = optionsToJavadoc(starIndex, 100);
           b.add(jdoc);
           if (jdoc.endsWith("</ul>")) {
-            b.add(docline.substring(0, 1 + starIndex));
+            b.add(docline.substring(0, starIndex + 1));
           }
         } else {
           b.add(optionsToHtml(0));
@@ -717,7 +717,7 @@ public class OptionsDoclet {
         break;
       }
       multiLine.add(firstPart);
-      oneLine = StringUtils.repeat(" ", padding) + oneLine.substring(1 + breakLoc);
+      oneLine = StringUtils.repeat(" ", padding) + oneLine.substring(breakLoc + 1);
     }
     multiLine.add(oneLine);
     if (suffix != null) {

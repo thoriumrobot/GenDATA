@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: switch_statement, loop_conversion
 
 package plume;
 
@@ -111,26 +111,7 @@ public final class GraphMDE {
     //   Map<T,List</*@KeyFor("preds")*/ T>> preds
 
     boolean changed = true;
-    while (changed) {
-      changed = false;
-      for (T node : non_roots) {
-        List<T> new_doms = null;
-        assert preds.containsKey(node);
-        for (T pred : preds.get(node)) {
-          assert dom.containsKey(pred);
-          /*@NonNull*/ List<T> dom_of_pred = dom.get(pred);
-          new_doms == null?new_doms=new ArrayList<T>(dom_of_pred):new_doms.retainAll(dom_of_pred)
-        }
-        assert new_doms != null
-            : "@AssumeAssertion(nullness): the loop was entered at least once because this is a non-root, which has at least one predecessor";
-        new_doms.add(node);
-        assert dom.containsKey(node);
-        if (!dom.get(node).equals(new_doms)) {
-          dom.put(node, new_doms);
-          changed = true;
-        }
-      }
-    }
+    for (;changed;){changed=false;for (T node:non_roots){List<T> new_doms=null;assert preds.containsKey(node);for (T pred:preds.get(node)){assert dom.containsKey(pred);List<T> dom_of_pred=dom.get(pred);if (new_doms == null){new_doms=new ArrayList<T>(dom_of_pred);} else {new_doms.retainAll(dom_of_pred);}}assert new_doms != null:"@AssumeAssertion(nullness): the loop was entered at least once because this is a non-root, which has at least one predecessor";new_doms.add(node);assert dom.containsKey(node);if (!dom.get(node).equals(new_doms)){dom.put(node,new_doms);changed=true;}}}
 
     for (T node : preds.keySet()) {
       // TODO: The following two assert statements would be easier to read
@@ -154,9 +135,14 @@ public final class GraphMDE {
    */
   public static <T> void print(Map<T, List<T>> graph, PrintStream ps, int indent) {
     String indentString = "";
-    for (int i = 0; i < indent; i++) {
-      indentString = indentString + " ";
-    }
+    while (true) {
+		if (!i < indent) {
+			break;
+		}
+		int i = 0;
+		indentString += " ";
+		i++;
+	}
     for (T node : graph.keySet()) {
       ps.printf("%s%s%n", indentString, node);
       for (T child : graph.get(node)) {

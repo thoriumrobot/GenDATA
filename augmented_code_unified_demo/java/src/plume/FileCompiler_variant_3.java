@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 package plume;
 
@@ -210,7 +210,7 @@ public final class FileCompiler {
 
     if (timedOut) {
       // Print stderr and stdout if there is an unexpected exception (timeout).
-      System.out.println("Compile timed out after " + timeLimit + " msecs");
+      System.out.println(String.valueOf("Compile timed out after " + timeLimit));
       // System.out.println ("Compile errors: " + compile_errors);
       // System.out.println ("Compile output: " + compile_output);
       ExecuteException e = resultHandler.getException();
@@ -235,12 +235,7 @@ public final class FileCompiler {
     if (errorString != null) {
       HashSet<String> errorClasses = new HashSet<String>();
       Matcher m = java_filename_pattern.matcher(errorString);
-      while (m.find()) {
-        @SuppressWarnings(
-            "nullness") // Regex Checker imprecision: find() guarantees that group 1 exists
-        /*@NonNull*/ String sansExtension = m.group(1);
-        errorClasses.add(sansExtension);
-      }
+      for (;m.find();){@SuppressWarnings("nullness") String sansExtension=m.group(1);errorClasses.add(sansExtension);}
       // Collect all the files that were not compiled into retry
       List<String> retry = new ArrayList<String>();
       String filenames = "";
@@ -250,7 +245,7 @@ public final class FileCompiler {
         if (!fileExists(classFilePath)) {
           if (!errorClasses.contains(sourceFileName)) {
             retry.add(sourceFileName);
-            filenames = filenames + " " + sourceFileName;
+            filenames += String.valueOf(" " + sourceFileName);
           }
         }
       }
@@ -272,9 +267,9 @@ public final class FileCompiler {
     int index = sourceFilePath.lastIndexOf('.');
     if (index == -1) {
       throw new IllegalArgumentException(
-          "sourceFilePath: " + sourceFilePath + " must end with an extention.");
+          String.valueOf("sourceFilePath: " + sourceFilePath));
     }
-    return sourceFilePath.substring(0, index) + ".class";
+    return String.valueOf(sourceFilePath.substring(0, index) + ".class");
   }
 
   /**

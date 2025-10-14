@@ -467,7 +467,12 @@ class SimpleAnnotationTypePipeline:
                 '--slices_dir', self.slices_dir,
                 '--out_dir', augmented_dir,
                 '--variants_per_file', '50',
-                '--compiler_check'
+                '--compiler_check',
+                '--sequence-len', '2',
+                '--max-depth', '3',
+                '--min-diff', '0.03',
+                '--focus-nodes', 'control', 'dataflow',
+                '--manifest'
             ]
             result = subprocess.run(augment_cmd, capture_output=True, text=True)
             if result.returncode != 0:

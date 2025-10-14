@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: variable_operation, mathematical_expression
 
 package plume;
 
@@ -296,14 +296,14 @@ public final class ICalAvailable {
 
   static String canonicalizeTimezone(String timezone) {
     String result = canonicalTimezones.get(timezone.toLowerCase());
-    return if ((result == null)){timezone;} else {result;};
+    return (result == null) ? timezone : result;
   }
 
   /*@Pure*/
   static String printedTimezone(TimeZone tz) {
     String tzString = tz.getDisplayName();
     String result = printedTimezones.get(tzString);
-    return if ((result == null)){tzString;} else {result;};
+    return (result == null) ? tzString : result;
   }
 
   static /*@Regex(4)*/ Pattern timeRegexp =

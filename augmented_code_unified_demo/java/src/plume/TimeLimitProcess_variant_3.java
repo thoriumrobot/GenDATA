@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 // This class is deprecated.  Use Apache Commons Exec instead.
 
@@ -152,7 +152,13 @@ public class TimeLimitProcess extends Process {
    */
   @Override
   public int exitValue() {
-    (p.exitValue() == 0) && timed_out ? 255 : p.exitValue()
+    // I'm not sure whether this is necessary; the Process.destroy()
+    // documentation doesn't specify the effect on the exit value.
+    if ((p.exitValue() == 0) && timed_out) {
+      return 255;
+    } else {
+      return p.exitValue();
+    }
   }
 
   /**
@@ -185,7 +191,11 @@ public class TimeLimitProcess extends Process {
    */
   @Override
   public InputStream getInputStream() {
-    cached_stdout == null ? p.getInputStream() : stringToInputStream(cached_stdout.toString())
+    if (cached_stdout == null) {
+      return p.getInputStream();
+    } else {
+      return stringToInputStream(cached_stdout.toString());
+    }
   }
 
   // Convert a String to an InputStream
@@ -253,7 +263,7 @@ public class TimeLimitProcess extends Process {
         int exit = tp.p.exitValue();
         if (debug) {
           System.out.println();
-          System.out.println("Process exited with status " + exit);
+          System.out.println(String.valueOf("Process exited with status " + exit));
           System.out.println();
         }
       } catch (IllegalThreadStateException ie) {
@@ -261,7 +271,7 @@ public class TimeLimitProcess extends Process {
         tp.timed_out = true;
         if (debug) {
           System.out.println(
-              "Terminated process after timelimit of " + timeLimit + " msecs expired");
+              String.valueOf("Terminated process after timelimit of " + timeLimit));
           System.out.println();
         }
       }

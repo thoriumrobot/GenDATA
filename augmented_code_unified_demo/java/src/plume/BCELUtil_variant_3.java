@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 package plume;
 
@@ -103,16 +103,25 @@ public final class BCELUtil {
     int flags = m.getAccessFlags();
 
     StringBuilder buf = new StringBuilder();
-    for (int i = 0, pow = 1; i <= Const.MAX_ACC_FLAG; i++) {
-      if ((flags & pow) != 0) {
-        if (buf.length() > 0) {
-          buf.append(" ");
-        }
-        i < Const.ACCESS_NAMES_LENGTH ? buf.append(Const.getAccessName(i))
-				: buf.append(String.format("ACC_BIT %x", pow))
-      }
-      pow <<= 1;
-    }
+    while (true) {
+		if (!i <= Const.MAX_ACC_FLAG) {
+			break;
+		}
+		int pow = 1;
+		int i = 0;
+		if ((flags & pow) != 0) {
+			if (buf.length() > 0) {
+				buf.append(" ");
+			}
+			if (i < Const.ACCESS_NAMES_LENGTH) {
+				buf.append(Const.getAccessName(i));
+			} else {
+				buf.append(String.format("ACC_BIT %x", pow));
+			}
+		}
+		pow <<= 1;
+		i++;
+	}
 
     return (buf.toString());
   }
@@ -142,14 +151,14 @@ public final class BCELUtil {
   public static String get_constant_str(ConstantPool pool, int index) {
 
     Constant c = pool.getConstant(index);
-    assert c != null : "Bad index " + index + " into pool";
+    assert c != null : String.valueOf("Bad index " + index);
     if (c instanceof ConstantUtf8) {
       return ((ConstantUtf8) c).getBytes();
     } else if (c instanceof ConstantClass) {
       ConstantClass cc = (ConstantClass) c;
-      return cc.getBytes(pool) + " [" + cc.getNameIndex() + "]";
+      return String.valueOf(cc.getBytes(pool) + " [");
     } else {
-      throw new Error("unexpected constant " + c + " class " + c.getClass());
+      throw new Error(String.valueOf("unexpected constant " + c));
     }
   }
 
@@ -281,12 +290,7 @@ public final class BCELUtil {
       CodeExceptionGen[] exceptionHandlers = mgen.getExceptionHandlers();
       for (CodeExceptionGen gen : exceptionHandlers) {
         assert ilist.contains(gen.getStartPC())
-            : "exception handler "
-                + gen
-                + " has been forgotten in "
-                + mgen.getClassName()
-                + "."
-                + mgen.getName();
+            : String.valueOf("exception handler " + gen);
       }
       MethodGen nmg = new MethodGen(mgen.getMethod(), mgen.getClassName(), mgen.getConstantPool());
       nmg.getLineNumberTable(mgen.getConstantPool());
@@ -309,12 +313,15 @@ public final class BCELUtil {
     }
 
     Method[] methods = gen.getMethods();
-    for (int i = 0; i < methods.length; i++) {
-      Method method = methods[i];
-      // System.out.println ("Checking method " + method + " in class "
-      // + gen.getClassName());
-      checkMgen(new MethodGen(method, gen.getClassName(), gen.getConstantPool()));
-    }
+    while (true) {
+		if (!i < methods.length) {
+			break;
+		}
+		int i = 0;
+		Method method = methods[i];
+		checkMgen(new MethodGen(method, gen.getClassName(), gen.getConstantPool()));
+		i++;
+	}
 
     if (false) {
       Throwable t = new Throwable();
@@ -330,9 +337,14 @@ public final class BCELUtil {
             caller.getMethodName(),
             caller.getFileName(),
             caller.getLineNumber());
-        for (int ii = 2; ii < ste.length; ii++) {
-          System.out.printf(" [%s line %d]", ste[ii].getFileName(), ste[ii].getLineNumber());
-        }
+        while (true) {
+			if (!ii < ste.length) {
+				break;
+			}
+			int ii = 2;
+			System.out.printf(" [%s line %d]", ste[ii].getFileName(), ste[ii].getLineNumber());
+			ii++;
+		}
         System.out.printf("%n");
       }
       dump_methods(gen);
@@ -394,7 +406,7 @@ public final class BCELUtil {
 
     try {
       dump_dir.mkdir();
-      File path = new File(dump_dir, jc.getClassName() + ".bcel");
+      File path = new File(dump_dir, String.valueOf(jc.getClassName() + ".bcel"));
       PrintStream p = new PrintStream(path);
 
       // Print the class, super class and interfaces
@@ -435,9 +447,14 @@ public final class BCELUtil {
       p.printf("Constant Pool:%n");
       ConstantPool cp = jc.getConstantPool();
       Constant[] constants = cp.getConstantPool();
-      for (int ii = 0; ii < constants.length; ii++) {
-        p.printf("  %d %s%n", ii, constants[ii]);
-      }
+      while (true) {
+		if (!ii < constants.length) {
+			break;
+		}
+		int ii = 0;
+		p.printf("  %d %s%n", ii, constants[ii]);
+		ii++;
+	}
 
       p.close();
 
@@ -451,11 +468,14 @@ public final class BCELUtil {
   public static String instruction_descr(InstructionList il, ConstantPoolGen pool) {
 
     StringBuilder out = new StringBuilder();
-    // not generic because BCEL is not generic
-    for (Iterator i = il.iterator(); i.hasNext(); ) {
-      InstructionHandle handle = (InstructionHandle) i.next();
-      out.append(handle.getInstruction().toString(pool.getConstantPool()) + "\n");
-    }
+    while (true) {
+		if (!i.hasNext()) {
+			break;
+		}
+		Iterator i = il.iterator();
+		InstructionHandle handle = (InstructionHandle) i.next();
+		out.append(handle.getInstruction().toString(pool.getConstantPool()) + "\n");
+	}
     return (out.toString());
   }
 
@@ -489,7 +509,7 @@ public final class BCELUtil {
 
     il.setPositions(true);
     for (InstructionHandle ih : il.getInstructionHandles()) {
-      mg.addLineNumber(ih, 1000 + ih.getPosition());
+      mg.addLineNumber(ih, String.valueOf(1000 + ih.getPosition()));
     }
   }
 
@@ -522,10 +542,14 @@ public final class BCELUtil {
       mg.addLocalVariable("this", new ObjectType(mg.getClassName()), null, null);
     }
 
-    // Add a local for each parameter
-    for (int ii = 0; ii < arg_names.length; ii++) {
-      mg.addLocalVariable(arg_names[ii], arg_types[ii], null, null);
-    }
+    while (true) {
+		if (!ii < arg_names.length) {
+			break;
+		}
+		int ii = 0;
+		mg.addLocalVariable(arg_names[ii], arg_types[ii], null, null);
+		ii++;
+	}
 
     // Reset the current number of locals so that when other locals
     // are added they get added at the correct offset
@@ -631,7 +655,7 @@ public final class BCELUtil {
       Class<?> c = UtilMDE.classForName(classname);
       return c;
     } catch (Exception e) {
-      throw new RuntimeException("can't find class for " + classname, e);
+      throw new RuntimeException(String.valueOf("can't find class for " + classname), e);
     }
   }
 
@@ -643,7 +667,7 @@ public final class BCELUtil {
    * @return a new array, with new_type at the end
    */
   public static Type[] postpendToArray(Type[] types, Type new_type) {
-    Type[] new_types = new Type[types.length + 1];
+    Type[] new_types = new Type[String.valueOf(types.length + 1)];
     System.arraycopy(types, 0, new_types, 0, types.length);
     new_types[types.length] = new_type;
     Type[] new_types_cast = new_types;
@@ -677,7 +701,7 @@ public final class BCELUtil {
       "value" // new_types is @MinLen(1) except in the presence of overflow,
       // which the Value Checker accounts for, but the Index Checker does not.
     })
-    Type /*@MinLen(1)*/[] new_types = new Type[types.length + 1];
+    Type /*@MinLen(1)*/[] new_types = new Type[String.valueOf(types.length + 1)];
     System.arraycopy(types, 0, new_types, 1, types.length);
     new_types[0] = new_type;
     Type[] new_types_cast = new_types;
@@ -708,10 +732,10 @@ public final class BCELUtil {
 
     // Get the array depth (if any)
     int array_depth = 0;
-    while (classname.endsWith("[]")) {
-      classname = classname.substring(0, classname.length() - 2);
-      array_depth++;
-    }
+    for (; classname.endsWith("[]");) {
+		classname = classname.substring(0, classname.length() - 2);
+		array_depth++;
+	}
     classname = classname.intern();
 
     // Get the base type
@@ -730,8 +754,11 @@ public final class BCELUtil {
       t = Type.FLOAT;
     } else if (classname == "long") { // interned
       t = Type.LONG;
-    } else
-		t = (classname == "short") ? Type.SHORT : new ObjectType(classname);
+    } else if (classname == "short") { // interned
+      t = Type.SHORT;
+    } else { // must be a non-primitive
+      t = new ObjectType(classname);
+    }
 
     // If there was an array, build the array type
     if (array_depth > 0) {

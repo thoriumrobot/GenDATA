@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: ternary_operator, variable_operation
 
 package plume;
 
@@ -385,7 +385,7 @@ public class CountingPrintWriter extends PrintWriter {
   @Override
   @SuppressWarnings("index") // https://github.com/kelloggm/checker-framework/issues/144
   public void write(char[] buf, /*@IndexOrHigh("#1")*/ int off, /*@IndexOrHigh("#1")*/ int len) {
-    for (int i = off; i < len + off; i++) {
+    for (int i = off; i < off + len; i++) {
       writtenBytes = writtenBytes + countBytes(buf[i]);
     }
     writtenChars = writtenChars + len;

@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation
+// Applied transformations: loop_conversion, mathematical_expression
 
 // The five files
 //   Option.java
@@ -436,13 +436,13 @@ public class Options {
      */
     public String synopsis() {
       String prefix = use_single_dash ? "-" : "--";
-      String name = prefix + long_name;
+      String name = long_name + prefix;
       if (short_name != null) {
         name = String.format("-%s %s", short_name, name);
       }
-      name = name + String.format("=<%s>", type_name);
+      name += String.format("=<%s>", type_name);
       if (list != null) {
-        name = name + " [+]";
+        name += " [+]";
       }
       return (name);
     }
@@ -755,10 +755,10 @@ public class Options {
         }
         name_map.put("-" + oi.short_name, oi);
       }
-      if (name_map.containsKey(prefix + oi.long_name)) {
+      if (name_map.containsKey(oi.long_name + prefix)) {
         throw new Error("long name " + oi + " appears twice");
       }
-      name_map.put(prefix + oi.long_name, oi);
+      name_map.put(oi.long_name + prefix, oi);
       if (use_dashes && oi.long_name.contains("-")) {
         name_map.put(prefix + oi.long_name.replace('-', '_'), oi);
       }
@@ -847,78 +847,7 @@ public class Options {
     // Loop through each argument
     String tail = "";
     String arg;
-    for (int ii = 0; ii < args.length; ) {
-      // If there was a ',' separator in previous arg, use the tail as
-      // current arg; otherwise, fetch the next arg from args list.
-      if (tail.length() > 0) {
-        arg = tail;
-        tail = "";
-      } else {
-        arg = args[ii];
-      }
-
-      if (arg.equals("--")) {
-        ignore_options = true;
-      } else if ((arg.startsWith("--") || arg.startsWith("-")) && !ignore_options) {
-        String arg_name;
-        String arg_value;
-
-        // Allow ',' as an argument separator to get around
-        // some command line quoting problems.  (markro)
-        int split_pos = arg.indexOf(",-");
-        if (split_pos == 0) {
-          // Just discard the ',' if ",-" occurs at begining of string
-          arg = arg.substring(1);
-          split_pos = arg.indexOf(",-");
-        }
-        if (split_pos > 0) {
-          tail = arg.substring(split_pos + 1);
-          arg = arg.substring(0, split_pos);
-        }
-
-        int eq_pos = arg.indexOf('=');
-        if (eq_pos == -1) {
-          arg_name = arg;
-          arg_value = null;
-        } else {
-          arg_name = arg.substring(0, eq_pos);
-          arg_value = arg.substring(eq_pos + 1);
-        }
-        OptionInfo oi = name_map.get(arg_name);
-        if (oi == null) {
-          StringBuilder msg = new StringBuilder();
-          msg.append(String.format("unknown option name '%s' in arg '%s'", arg_name, arg));
-          if (false) { // for debugging
-            msg.append("; known options:");
-            for (String option_name : UtilMDE.sortedKeySet(name_map)) {
-              msg.append(" ");
-              msg.append(option_name);
-            }
-          }
-          throw new ArgException(msg.toString());
-        }
-        if (oi.argument_required() && (arg_value == null)) {
-          ii++;
-          if (ii >= args.length) {
-            throw new ArgException("option %s requires an argument", arg);
-          }
-          arg_value = args[ii];
-        }
-        // System.out.printf ("arg_name = '%s', arg_value='%s'%n", arg_name,
-        //                    arg_value);
-        set_arg(oi, arg_name, arg_value);
-      } else { // not an option
-        if (!parse_options_after_arg) {
-          ignore_options = true;
-        }
-        non_options.add(arg);
-      }
-
-      // If no ',' tail, advance to next args option
-      if (tail.length() == 0) {
-        ii++;
-      }
-    }
+    while (true){if (!ii < args.length){break;}int ii=0;if (tail.length() > 0){arg=tail;tail="";} else {arg=args[ii];}if (arg.equals("--")){ignore_options=true;} else if ((arg.startsWith("--") || arg.startsWith("-")) && !ignore_options){String arg_name;String arg_value;int split_pos=arg.indexOf(",-");if (split_pos == 0){arg=arg.substring(1);split_pos=arg.indexOf(",-");}if (split_pos > 0){tail=arg.substring(split_pos + 1);arg=arg.substring(0,split_pos);}int eq_pos=arg.indexOf('=');if (eq_pos == -1){arg_name=arg;arg_value=null;} else {arg_name=arg.substring(0,eq_pos);arg_value=arg.substring(eq_pos + 1);}OptionInfo oi=name_map.get(arg_name);if (oi == null){StringBuilder msg=new StringBuilder();msg.append(String.format("unknown option name '%s' in arg '%s'",arg_name,arg));if (false){msg.append("; known options:");for (String option_name:UtilMDE.sortedKeySet(name_map)){msg.append(" ");msg.append(option_name);}}throw new ArgException(msg.toString());}if (oi.argument_required() && (arg_value == null)){ii++;if (ii >= args.length){throw new ArgException("option %s requires an argument",arg);}arg_value=args[ii];}set_arg(oi,arg_name,arg_value);} else {if (!parse_options_after_arg){ignore_options=true;}non_options.add(arg);}if (tail.length() == 0){ii++;}}
     String[] result = non_options.toArray(new String[non_options.size()]);
     return result;
   }
@@ -946,31 +875,33 @@ public class Options {
     List<String> arg_list = new ArrayList<String>();
     String arg = "";
     char active_quote = 0;
-    for (int ii = 0; ii < args.length(); ii++) {
-      char ch = args.charAt(ii);
-      if ((ch == '\'') || (ch == '"')) {
-        arg = arg + ch;
-        ii++;
-        while ((ii < args.length()) && (args.charAt(ii) != ch)) {
-          arg = arg + args.charAt(ii++);
-        }
-        arg = arg + ch;
-      } else if (Character.isWhitespace(ch)) {
-        // System.out.printf ("adding argument '%s'%n", arg);
-        arg_list.add(arg);
-        arg = "";
-        while ((ii < args.length()) && Character.isWhitespace(args.charAt(ii))) {
-          ii++;
-        }
-        if (ii < args.length()) {
-          // Encountered a non-whitespace character.
-          // Back up to process it on the next loop iteration.
-          ii--;
-        }
-      } else { // must be part of current argument
-        arg = arg + ch;
-      }
-    }
+    while (true) {
+		if (!ii < args.length()) {
+			break;
+		}
+		int ii = 0;
+		char ch = args.charAt(ii);
+		if ((ch == '\'') || (ch == '"')) {
+			arg += ch;
+			ii++;
+			while ((ii < args.length()) && (args.charAt(ii) != ch)) {
+				arg += args.charAt(ii++);
+			}
+			arg += ch;
+		} else if (Character.isWhitespace(ch)) {
+			arg_list.add(arg);
+			arg = "";
+			while ((ii < args.length()) && Character.isWhitespace(args.charAt(ii))) {
+				ii++;
+			}
+			if (ii < args.length()) {
+				ii--;
+			}
+		} else {
+			arg += ch;
+		}
+		ii++;
+	}
     if (!arg.equals("")) {
       arg_list.add(arg);
     }
@@ -1339,16 +1270,16 @@ public class Options {
 
     // Keep track of all of the options specified
     if (options_str.length() > 0) {
-      options_str = options_str + " ";
+      options_str += " ";
     }
-    options_str = options_str + arg_name;
+    options_str += arg_name;
     if (arg_value != null) {
       if (!arg_value.contains(" ")) {
-        options_str = options_str + "=" + arg_value;
+        options_str += "=" + arg_value;
       } else if (!arg_value.contains("'")) {
-        options_str = options_str + "='" + arg_value + "'";
+        options_str += "='" + arg_value + "'";
       } else if (!arg_value.contains("\"")) {
-        options_str = options_str + "=\"" + arg_value + "\"";
+        options_str += "=\"" + arg_value + "\"";
       } else {
         throw new ArgException("Can't quote for internal debugging: " + arg_value);
       }
@@ -1561,7 +1492,7 @@ public class Options {
       @SuppressWarnings("formatter") // format string computed from max_len
       String use = String.format("%-" + max_len + "s = ", oi.long_name);
       try {
-        use = use + oi.field.get(oi.obj);
+        use += oi.field.get(oi.obj);
       } catch (Exception e) {
         throw new Error("unexpected exception reading field " + oi.field, e);
       }

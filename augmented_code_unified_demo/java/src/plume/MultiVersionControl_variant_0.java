@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: ternary_operator, variable_operation
 
 package plume;
 
@@ -490,7 +490,7 @@ public class MultiVersionControl {
       search = false;
       show = true;
       // Checkouts can be much slower than other operations.
-      timeout = 10 * timeout;
+      timeout = timeout * 10;
 
       // Set dry_run to true unless it was explicitly specified
       boolean explicit_run_dry = false;
@@ -1573,7 +1573,7 @@ public class MultiVersionControl {
     /*@NonNull*/ File defaultDirectory = pb.directory();
     executor.setWorkingDirectory(defaultDirectory);
 
-    ExecuteWatchdog watchdog = new ExecuteWatchdog(1000 * timeout);
+    ExecuteWatchdog watchdog = new ExecuteWatchdog(timeout * 1000);
     executor.setWatchdog(watchdog);
 
     final ByteArrayOutputStream outStream = new ByteArrayOutputStream();

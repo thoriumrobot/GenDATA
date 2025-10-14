@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: attempted_variable_operation, attempted_mathematical_expression
 
 /*
  * @(#)WeakHashMap.java	1.30 04/02/19
@@ -220,7 +220,7 @@ public class WeakIdentityHashMap<K,V>
         Entry<K,V>[] tmpTable = (Entry<K,V>[]) new Entry[capacity];
         table = tmpTable;
         this.loadFactor = loadFactor;
-        threshold = (int)(loadFactor * capacity);
+        threshold = (int)(capacity * loadFactor);
     }
 
     /**
@@ -282,7 +282,7 @@ public class WeakIdentityHashMap<K,V>
     // not: "private static <K> K maskNull(K key)" because NULL_KEY isn't of type K.
     /*@Pure*/
     private static /*@NonNull*/ Object maskNull(/*@Nullable*/ Object key) {
-        return (if (key == null){NULL_KEY;} else {key;});
+        return (key == null ? NULL_KEY : key);
     }
 
     /**
@@ -292,7 +292,7 @@ public class WeakIdentityHashMap<K,V>
     @SuppressWarnings("unchecked")
     /*@Pure*/
     private static <K> /*@Nullable*/ K unmaskNull(K key) {
-        return (if (key == NULL_KEY){null;} else {key;});
+        return (key == NULL_KEY ? null : key);
     }
 
     /**
@@ -335,7 +335,10 @@ public class WeakIdentityHashMap<K,V>
             while (p != null) {
                 Entry<K,V> next = p.next;
                 if (p == e) {
-                    prev == e?table[i]=next:prev.next=next
+                    if (prev == e)
+                        table[i] = next;
+                    else
+                        prev.next = next;
                     e.next = null;  // Help GC
                     e.value = null; //  "   "
                     size--;
@@ -477,7 +480,7 @@ public class WeakIdentityHashMap<K,V>
 	Entry<K,V> e = tab[i];
         tab[i] = new Entry<K,V>(k, value, queue, h, e);
         if (++size >= threshold)
-            resize(2 * tab.length);
+            resize(tab.length * 2);
         return null;
     }
 
@@ -514,7 +517,7 @@ public class WeakIdentityHashMap<K,V>
          * unbounded expansion of garbage-filled tables.
          */
         if (size >= threshold / 2) {
-            threshold = (int)(loadFactor * newCapacity);
+            threshold = (int)(newCapacity * loadFactor);
         } else {
             expungeStaleEntries();
             transfer(newTable, oldTable);
@@ -608,7 +611,10 @@ public class WeakIdentityHashMap<K,V>
             if (h == e.hash && eq(k, e.get())) {
                 modCount++;
                 size--;
-                prev == e?tab[i]=next:prev.next=next
+                if (prev == e)
+                    tab[i] = next;
+                else
+                    prev.next = next;
                 return e.value;
             }
             prev = e;
@@ -638,7 +644,10 @@ public class WeakIdentityHashMap<K,V>
             if (h == e.hash && e.equals(entry)) {
                 modCount++;
                 size--;
-                prev == e?tab[i]=next:prev.next=next
+                if (prev == e)
+                    tab[i] = next;
+                else
+                    prev.next = next;
                 return e;
             }
             prev = e;
@@ -770,8 +779,8 @@ public class WeakIdentityHashMap<K,V>
         public int hashCode() {
             Object k = getKey();
             Object v = getValue();
-            return  ((if (k == null){0;} else {hasher(k);}) ^
-                     (if (v == null){0;} else {v.hashCode();}));
+            return  ((k==null ? 0 : hasher (k)) ^
+                     (v==null ? 0 : v.hashCode()));
         }
 
         /*@SideEffectFree*/
@@ -800,7 +809,7 @@ public class WeakIdentityHashMap<K,V>
 	/*@Nullable*/ Object currentKey = null;
 
         HashIterator() {
-            index = (if (size() != 0){table.length;} else {0;});
+            index = (size() != 0 ? table.length : 0);
         }
 
         @Override
@@ -895,7 +904,7 @@ public class WeakIdentityHashMap<K,V>
         @Override
     public Set<K> keySet() {
         Set<K> ks = our_keySet;
-        return (if (ks != null){ks;} else {(our_keySet=new KeySet());});
+        return (ks != null ? ks : (our_keySet = new KeySet()));
     }
 
     private class KeySet extends AbstractSet<K> {
@@ -965,7 +974,7 @@ public class WeakIdentityHashMap<K,V>
     @Override
     public Collection<V> values() {
         Collection<V> vs = our_values;
-        return (if (vs != null){vs;} else {(our_values=new Values());});
+        return (vs != null ?  vs : (our_values = new Values()));
     }
 
     private class Values extends AbstractCollection<V> {
@@ -1025,7 +1034,7 @@ public class WeakIdentityHashMap<K,V>
     @Override
     public Set<Map.Entry<K,V>> entrySet() {
         Set<Map.Entry<K,V>> es = entrySet;
-        return (if (es != null){es;} else {(entrySet=new EntrySet());});
+        return (es != null ? es : (entrySet = new EntrySet()));
     }
 
     private class EntrySet extends AbstractSet<Map.Entry<K,V>> {
@@ -1125,8 +1134,8 @@ public class WeakIdentityHashMap<K,V>
         /*@Pure*/
         @Override
         public int hashCode() {
-            return (if ((key == null)){0;} else {key.hashCode();}) ^
-               (if ((value == null)){0;} else {value.hashCode();});
+            return ((key   == null)   ? 0 :   key.hashCode()) ^
+               ((value == null)   ? 0 : value.hashCode());
         }
 
         /*@SideEffectFree*/
@@ -1136,7 +1145,7 @@ public class WeakIdentityHashMap<K,V>
         }
 
         private static boolean eq(/*@Nullable*/ Object o1, /*@Nullable*/ Object o2) {
-            return (if (o1 == null){o2 == null;} else {o1.equals(o2);});
+            return (o1 == null ? o2 == null : o1.equals(o2));
         }
     }
 

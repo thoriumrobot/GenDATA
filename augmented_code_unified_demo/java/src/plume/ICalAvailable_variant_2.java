@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: switch_statement, loop_conversion
 
 package plume;
 
@@ -237,10 +237,10 @@ public final class ICalAvailable {
             System.out.println("Contents:");
             byte[] buffer = new byte[1024];
             int len = url_is.read(buffer);
-            while (len != -1) {
-              System.out.write(buffer, 0, len);
-              len = url_is.read(buffer);
-            }
+            for (; len != -1;) {
+				System.out.write(buffer, 0, len);
+				len = url_is.read(buffer);
+			}
             System.out.println();
           }
           throw pe;
@@ -296,14 +296,14 @@ public final class ICalAvailable {
 
   static String canonicalizeTimezone(String timezone) {
     String result = canonicalTimezones.get(timezone.toLowerCase());
-    return if ((result == null)){timezone;} else {result;};
+    return (result == null) ? timezone : result;
   }
 
   /*@Pure*/
   static String printedTimezone(TimeZone tz) {
     String tzString = tz.getDisplayName();
     String result = printedTimezones.get(tzString);
-    return if ((result == null)){tzString;} else {result;};
+    return (result == null) ? tzString : result;
   }
 
   static /*@Regex(4)*/ Pattern timeRegexp =
@@ -328,7 +328,7 @@ public final class ICalAvailable {
 
     int hour = Integer.parseInt(hourString);
     if ((ampmString != null) && ampmString.toLowerCase().equals("pm")) {
-      hour = hour + 12;
+      hour += 12;
     }
     int minute = 0;
     if (minuteString != null) {
@@ -370,11 +370,16 @@ public final class ICalAvailable {
     }
 
     List<Period> available = new ArrayList<Period>();
-    for (int i = 0; i < days; i++) {
-      available.addAll(oneDayAvailable(start_date, calendars));
-      start_date = new DateTime(start_date.getTime() + 1000 * 60 * 60 * 24);
-      start_date.setTimeZone(tz1);
-    }
+    while (true) {
+		if (!i < days) {
+			break;
+		}
+		int i = 0;
+		available.addAll(oneDayAvailable(start_date, calendars));
+		start_date = new DateTime(start_date.getTime() + 1000 * 60 * 60 * 24);
+		start_date.setTimeZone(tz1);
+		i++;
+	}
 
     if (tz2 != null) {
       System.out.printf(
@@ -530,7 +535,7 @@ public final class ICalAvailable {
     if (Pattern.matches("^[0-9][0-9]?/[0-9][0-9]?$", date)) {
       @SuppressWarnings("deprecation") // for iCal4j
       int year = new Date().getYear() + 1900;
-      strDate += "/";
+      strDate = strDate + "/" + year;
     }
     for (DateFormat this_df : dateFormats) {
       this_df.setLenient(false);

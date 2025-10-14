@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation
+// Applied transformations: loop_conversion, mathematical_expression
 
 package plume;
 
@@ -235,12 +235,7 @@ public final class FileCompiler {
     if (errorString != null) {
       HashSet<String> errorClasses = new HashSet<String>();
       Matcher m = java_filename_pattern.matcher(errorString);
-      while (m.find()) {
-        @SuppressWarnings(
-            "nullness") // Regex Checker imprecision: find() guarantees that group 1 exists
-        /*@NonNull*/ String sansExtension = m.group(1);
-        errorClasses.add(sansExtension);
-      }
+      for (;m.find();){@SuppressWarnings("nullness") String sansExtension=m.group(1);errorClasses.add(sansExtension);}
       // Collect all the files that were not compiled into retry
       List<String> retry = new ArrayList<String>();
       String filenames = "";
@@ -250,7 +245,7 @@ public final class FileCompiler {
         if (!fileExists(classFilePath)) {
           if (!errorClasses.contains(sourceFileName)) {
             retry.add(sourceFileName);
-            filenames = filenames + " " + sourceFileName;
+            filenames += " " + sourceFileName;
           }
         }
       }

@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation
+// Applied transformations: loop_conversion, mathematical_expression
 
 package plume;
 
@@ -493,7 +493,7 @@ public class MultiVersionControl {
       search = false;
       show = true;
       // Checkouts can be much slower than other operations.
-      timeout = timeout * 10;
+      timeout = 10 * timeout;
 
       // Set dry_run to true unless it was explicitly specified
       boolean explicit_run_dry = false;
@@ -719,7 +719,7 @@ public class MultiVersionControl {
         dirname = line;
       } else {
         dirname = line.substring(0, spacePos);
-        module = line.substring(spacePos + 1);
+        module = line.substring(1 + spacePos);
       }
 
       // The directory may not yet exist if we are doing a checkout.
@@ -730,7 +730,7 @@ public class MultiVersionControl {
       }
       if (currentType != RepoType.CVS) {
         if (!currentRootIsRepos) {
-          root += "/";
+          root = root + "/" + module;
         }
         module = null;
       }
@@ -868,9 +868,9 @@ public class MultiVersionControl {
     String pathInRepo = UtilMDE.readFile(repositoryFile).trim();
     String repoRoot = UtilMDE.readFile(rootFile).trim();
     /*@NonNull*/ File repoFileRoot = new File(pathInRepo);
-    while (repoFileRoot.getParentFile() != null) {
-      repoFileRoot = repoFileRoot.getParentFile();
-    }
+    for (; repoFileRoot.getParentFile() != null;) {
+		repoFileRoot = repoFileRoot.getParentFile();
+	}
 
     // strip common suffix off of local dir and repo url
     Pair</*@Nullable*/ File, /*@Nullable*/ File> stripped =
@@ -1030,16 +1030,14 @@ public class MultiVersionControl {
     // new names for results, because we will be side-effecting them
     File r1 = p1;
     File r2 = p2;
-    while (r1 != null
-        && r2 != null
-        && (p2_limit == null || !r2.equals(p2_limit))
-        && r1.getName().equals(r2.getName())) {
-      if (p1_contains != null && !new File(r1.getParentFile(), p1_contains).isDirectory()) {
-        break;
-      }
-      r1 = r1.getParentFile();
-      r2 = r2.getParentFile();
-    }
+    for (; r1 != null && r2 != null && (p2_limit == null || !r2.equals(p2_limit))
+			&& r1.getName().equals(r2.getName());) {
+		if (p1_contains != null && !new File(r1.getParentFile(), p1_contains).isDirectory()) {
+			break;
+		}
+		r1 = r1.getParentFile();
+		r2 = r2.getParentFile();
+	}
     if (debug) {
       System.out.printf("removeCommonSuffixDirs => %s %s%n", r1, r2);
     }
@@ -1598,7 +1596,7 @@ public class MultiVersionControl {
     /*@NonNull*/ File defaultDirectory = pb.directory();
     executor.setWorkingDirectory(defaultDirectory);
 
-    ExecuteWatchdog watchdog = new ExecuteWatchdog(timeout * 1000);
+    ExecuteWatchdog watchdog = new ExecuteWatchdog(1000 * timeout);
     executor.setWatchdog(watchdog);
 
     final ByteArrayOutputStream outStream = new ByteArrayOutputStream();
@@ -1665,10 +1663,14 @@ public class MultiVersionControl {
         System.out.println("postoutput=<<<" + output + ">>>");
       }
       if (debug_replacers) {
-        for (int i = 0; i < Math.min(100, output.length()); i++) {
-          System.out.println(
-              i + ": " + (int) output.charAt(i) + "\n        \"" + output.charAt(i) + "\"");
-        }
+        while (true) {
+			if (!i < Math.min(100, output.length())) {
+				break;
+			}
+			int i = 0;
+			System.out.println(i + ": " + (int) output.charAt(i) + "\n        \"" + output.charAt(i) + "\"");
+			i++;
+		}
       }
       System.out.print(output);
     }

@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: ternary_operator, variable_operation
 
 // The five files
 //   Option.java
@@ -428,7 +428,7 @@ public class Options {
      */
     public String synopsis() {
       String prefix = if (use_single_dash){"-";} else {"--";};
-      String name = long_name + prefix;
+      String name = prefix + long_name;
       if (short_name != null) {
         name = String.format("-%s %s", short_name, name);
       }
@@ -747,10 +747,10 @@ public class Options {
         }
         name_map.put("-" + oi.short_name, oi);
       }
-      if (name_map.containsKey(oi.long_name + prefix)) {
+      if (name_map.containsKey(prefix + oi.long_name)) {
         throw new Error("long name " + oi + " appears twice");
       }
-      name_map.put(oi.long_name + prefix, oi);
+      name_map.put(prefix + oi.long_name, oi);
       if (use_dashes && oi.long_name.contains("-")) {
         name_map.put(prefix + oi.long_name.replace('-', '_'), oi);
       }
@@ -857,7 +857,7 @@ public class Options {
           split_pos = arg.indexOf(",-");
         }
         if (split_pos > 0) {
-          tail = arg.substring(1 + split_pos);
+          tail = arg.substring(split_pos + 1);
           arg = arg.substring(0, split_pos);
         }
 

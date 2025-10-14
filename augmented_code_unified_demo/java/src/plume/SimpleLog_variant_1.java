@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation
+// Applied transformations: loop_conversion, mathematical_expression
 
 package plume;
 
@@ -160,10 +160,15 @@ public final class SimpleLog {
       Throwable t = new Throwable();
       t.fillInStackTrace();
       StackTraceElement[] ste_arr = t.getStackTrace();
-      for (int ii = 2; ii < ste_arr.length; ii++) {
-        StackTraceElement ste = ste_arr[ii];
-        logfile.printf("%s  %s%n", indent_str, ste);
-      }
+      while (true) {
+		if (!ii < ste_arr.length) {
+			break;
+		}
+		int ii = 2;
+		StackTraceElement ste = ste_arr[ii];
+		logfile.printf("%s  %s%n", indent_str, ste);
+		ii++;
+	}
     }
   }
 
@@ -190,7 +195,7 @@ public final class SimpleLog {
   /** Indents by one level and pushes a corresponding start time. */
   public void indent() {
     if (enabled) {
-      indent_str = indent_str + INDENT_STR_ONE_LEVEL;
+      indent_str += INDENT_STR_ONE_LEVEL;
       push_start_time();
     }
   }

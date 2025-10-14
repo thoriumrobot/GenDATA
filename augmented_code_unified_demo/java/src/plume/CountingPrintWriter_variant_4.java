@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: variable_operation, mathematical_expression
 
 package plume;
 
@@ -128,7 +128,11 @@ public class CountingPrintWriter extends PrintWriter {
   public int countBytes(char c) {
     if ((c >= 0x0001) && (c <= 0x007F)) {
       return 1;
-    }else c > 0x07FF ? 3 : 2
+    } else if (c > 0x07FF) {
+      return 3;
+    } else {
+      return 2;
+    }
   }
 
   // Accessor Methods
@@ -183,7 +187,13 @@ public class CountingPrintWriter extends PrintWriter {
    */
   @Override
   public void print(/*@Nullable*/ String s) {
-    printedBytes = (s == null) ? countBytes("null") : countBytes(s);
+    if (s == null) {
+      printedBytes = printedBytes + countBytes("null");
+      printedChars = printedChars + 4;
+    } else {
+      printedBytes = printedBytes + countBytes(s);
+      printedChars = printedChars + s.length();
+    }
     super.print(s);
   }
 

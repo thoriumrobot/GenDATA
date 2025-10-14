@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: ternary_operator, variable_operation
 
 /*
  * @(#)WeakHashMap.java	1.30 04/02/19
@@ -220,7 +220,7 @@ public class WeakIdentityHashMap<K,V>
         Entry<K,V>[] tmpTable = (Entry<K,V>[]) new Entry[capacity];
         table = tmpTable;
         this.loadFactor = loadFactor;
-        threshold = (int)(loadFactor * capacity);
+        threshold = (int)(capacity * loadFactor);
     }
 
     /**
@@ -477,7 +477,7 @@ public class WeakIdentityHashMap<K,V>
 	Entry<K,V> e = tab[i];
         tab[i] = new Entry<K,V>(k, value, queue, h, e);
         if (++size >= threshold)
-            resize(2 * tab.length);
+            resize(tab.length * 2);
         return null;
     }
 
@@ -514,7 +514,7 @@ public class WeakIdentityHashMap<K,V>
          * unbounded expansion of garbage-filled tables.
          */
         if (size >= threshold / 2) {
-            threshold = (int)(loadFactor * newCapacity);
+            threshold = (int)(newCapacity * loadFactor);
         } else {
             expungeStaleEntries();
             transfer(newTable, oldTable);

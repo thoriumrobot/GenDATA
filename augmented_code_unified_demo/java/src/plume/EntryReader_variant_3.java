@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 package plume;
 
@@ -194,7 +194,11 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
       }
 
       Matcher descr = re.matcher(body);
-      descr.find() ? descr.group() : first_line
+      if (descr.find()) {
+        return descr.group();
+      } else {
+        return first_line;
+      }
     }
   }
 
@@ -358,8 +362,16 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
     // leads to a NullPointerException.
     super(new DummyReader());
     readers.addFirst(new FlnReader(reader, filename));
-    comment_re = (comment_re_string == null) ? null : Pattern.compile(comment_re_string);
-    include_re = (include_re_string == null) ? null : Pattern.compile(include_re_string);
+    if (comment_re_string == null) {
+      comment_re = null;
+    } else {
+      comment_re = Pattern.compile(comment_re_string);
+    }
+    if (include_re_string == null) {
+      include_re = null;
+    } else {
+      include_re = Pattern.compile(include_re_string);
+    }
   }
 
   /**
@@ -484,19 +496,18 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
 
     String line = get_next_line();
     if (comment_re != null) {
-      while (line != null) {
-        Matcher cmatch = comment_re.matcher(line);
-        if (cmatch.find()) {
-          line = cmatch.replaceFirst("");
-          if (line.length() > 0) {
-            break;
-          }
-        } else {
-          break;
-        }
-        line = get_next_line();
-        // System.out.printf ("get_next_line = %s%n", line);
-      }
+      for (; line != null;) {
+		Matcher cmatch = comment_re.matcher(line);
+		if (cmatch.find()) {
+			line = cmatch.replaceFirst("");
+			if (line.length() > 0) {
+				break;
+			}
+		} else {
+			break;
+		}
+		line = get_next_line();
+	}
     }
 
     if (line == null) {
@@ -612,9 +623,9 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
 
     // Skip any preceding blank lines
     String line = readLine();
-    while ((line != null) && (line.trim().length() == 0)) {
-      line = readLine();
-    }
+    for (; (line != null) && (line.trim().length() == 0);) {
+		line = readLine();
+	}
     if (line == null) {
       return (null);
     }
@@ -647,19 +658,16 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
 
       // Read until we find the termination of the entry
       Matcher end_entry_match = entry_stop_re.matcher(line);
-      while ((line != null)
-          && !entry_match.find()
-          && !end_entry_match.find()
-          && filename.equals(getFileName())) {
-        body.append(line);
-        body.append(lineSep);
-        line = readLine();
-        if (line == null) {
-          break; // end of file serves as entry terminator
-        }
-        entry_match = entry_start_re.matcher(line);
-        end_entry_match = entry_stop_re.matcher(line);
-      }
+      for (; (line != null) && !entry_match.find() && !end_entry_match.find() && filename.equals(getFileName());) {
+		body.append(line);
+		body.append(lineSep);
+		line = readLine();
+		if (line == null) {
+			break;
+		}
+		entry_match = entry_start_re.matcher(line);
+		end_entry_match = entry_stop_re.matcher(line);
+	}
 
       // If this entry was terminated by the start of the next one,
       // put that line back
@@ -673,12 +681,11 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
 
       String description = line;
 
-      // Read until we find another blank line
-      while ((line != null) && (line.trim().length() != 0) && filename.equals(getFileName())) {
-        body.append(line);
-        body.append(lineSep);
-        line = readLine();
-      }
+      for (; (line != null) && (line.trim().length() != 0) && filename.equals(getFileName());) {
+		body.append(line);
+		body.append(lineSep);
+		line = readLine();
+	}
 
       // If this entry was terminated by the start of a new input file
       // put that line back
@@ -707,14 +714,14 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
 
     FlnReader ri1 = readers.getFirst();
     String line = ri1.readLine();
-    while (line == null) {
-      readers.removeFirst();
-      if (readers.isEmpty()) {
-        return (null);
-      }
-      FlnReader ri2 = readers.peekFirst();
-      line = ri2.readLine();
-    }
+    for (; line == null;) {
+		readers.removeFirst();
+		if (readers.isEmpty()) {
+			return (null);
+		}
+		FlnReader ri2 = readers.peekFirst();
+		line = ri2.readLine();
+	}
     return (line);
   }
 
@@ -798,7 +805,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
   // of BufferedReader (which is also in LineNumberReader and FlnReader).
   public void putback(/*>>>@GuardSatisfied EntryReader this, */ String line) {
     assert pushback_line == null
-        : "push back '" + line + "' when '" + pushback_line + "' already back";
+        : String.valueOf("push back '" + line);
     pushback_line = line;
   }
 
@@ -849,10 +856,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
       comment_re = args[1];
       if (!RegexUtil.isRegex(comment_re)) {
         System.err.println(
-            "Error parsing comment regex \""
-                + comment_re
-                + "\": "
-                + RegexUtil.regexError(comment_re));
+            String.valueOf("Error parsing comment regex \"" + comment_re));
         System.exit(1);
       }
     }
@@ -860,19 +864,16 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
       include_re = args[2];
       if (!RegexUtil.isRegex(include_re, 1)) {
         System.err.println(
-            "Error parsing include regex \""
-                + include_re
-                + "\": "
-                + RegexUtil.regexError(include_re));
+            String.valueOf("Error parsing include regex \"" + include_re));
         System.exit(1);
       }
     }
     EntryReader reader = new EntryReader(filename, comment_re, include_re);
 
     String line = reader.readLine();
-    while (line != null) {
-      System.out.printf("%s: %d: %s%n", reader.getFileName(), reader.getLineNumber(), line);
-      line = reader.readLine();
-    }
+    for (; line != null;) {
+		System.out.printf("%s: %d: %s%n", reader.getFileName(), reader.getLineNumber(), line);
+		line = reader.readLine();
+	}
   }
 }

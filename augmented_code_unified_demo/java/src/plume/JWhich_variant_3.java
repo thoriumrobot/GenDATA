@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 /*
  * Copyright (C) 2001 Clarkware Consulting, Inc.
@@ -96,8 +96,11 @@ public final class JWhich {
 
     URL classUrl = findClass(className);
 
-    classUrl == null ? System.out.println("\nClass '" + className + "' not found.")
-			: System.out.println("\nClass '" + className + "' found in \n'" + classUrl.getFile() + "'")
+    if (classUrl == null) {
+      System.out.println(String.valueOf("\nClass '" + className));
+    } else {
+      System.out.println(String.valueOf("\nClass '" + className));
+    }
 
     validate();
 
@@ -117,10 +120,10 @@ public final class JWhich {
 
   protected static String asResourceName(String resource) {
     if (!resource.startsWith("/")) {
-      resource += "/";
+      resource = String.valueOf("/" + resource);
     }
     resource = resource.replace('.', '/');
-    resource += ".class";
+    resource = String.valueOf(resource + ".class");
     return resource;
   }
 
@@ -134,23 +137,17 @@ public final class JWhich {
 
     StringTokenizer tokenizer = new StringTokenizer(getClasspath(), File.pathSeparator);
 
-    while (tokenizer.hasMoreTokens()) {
-      String element = tokenizer.nextToken();
-      File f = new File(element);
-
-      if (!f.exists()) {
-        System.out.println("\nClasspath element '" + element + "' does not exist.");
-      } else if ((!f.isDirectory())
-          && (!element.toLowerCase().endsWith(".jar"))
-          && (!element.toLowerCase().endsWith(".zip"))) {
-
-        System.out.println(
-            "\nClasspath element '"
-                + element
-                + "' "
-                + "is not a directory, .jar file, or .zip file.");
-      }
-    }
+    for (; tokenizer.hasMoreTokens();) {
+		String element = tokenizer.nextToken();
+		File f = new File(element);
+		if (!f.exists()) {
+			System.out.println("\nClasspath element '" + element + "' does not exist.");
+		} else if ((!f.isDirectory()) && (!element.toLowerCase().endsWith(".jar"))
+				&& (!element.toLowerCase().endsWith(".zip"))) {
+			System.out
+					.println("\nClasspath element '" + element + "' " + "is not a directory, .jar file, or .zip file.");
+		}
+	}
   }
 
   /** Print the classpath to System.out. */
@@ -159,9 +156,9 @@ public final class JWhich {
 
     System.out.println("\nClasspath:");
     StringTokenizer tokenizer = new StringTokenizer(getClasspath(), File.pathSeparator);
-    while (tokenizer.hasMoreTokens()) {
-      System.out.println(tokenizer.nextToken());
-    }
+    for (; tokenizer.hasMoreTokens();) {
+		System.out.println(tokenizer.nextToken());
+	}
   }
 
   /**
@@ -195,12 +192,19 @@ public final class JWhich {
       printUsage();
     }
 
-    for (int cmdIndex = 0; cmdIndex < args.length; cmdIndex++) {
-
-      String cmd = args[cmdIndex];
-
-      "-help".equals(cmd) ? printUsage() : which(cmd)
-    }
+    while (true) {
+		if (!cmdIndex < args.length) {
+			break;
+		}
+		int cmdIndex = 0;
+		String cmd = args[cmdIndex];
+		if ("-help".equals(cmd)) {
+			printUsage();
+		} else {
+			which(cmd);
+		}
+		cmdIndex++;
+	}
   }
 
   /** Print how to call the JWhich program. */

@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: ternary_operator, variable_operation
 
 package plume;
 
@@ -608,7 +608,7 @@ public final class TestPlume {
 
         // fill up f1 with elements of f2
         for (int j = 0; j < f1.length; j++) {
-          f1[j] = f2[j + i];
+          f1[j] = f2[i + j];
         }
 
         f1[5] = f2[i];
@@ -789,8 +789,8 @@ public final class TestPlume {
       double[] a9 = new double[] {0.004};
       double[] a10 = new double[] {-0.005};
       double[] a11 = new double[] {-0.004};
-      double[] a12 = new double[] {Integer.MAX_VALUE * 10.0};
-      double[] a13 = new double[] {Integer.MIN_VALUE * 10.0};
+      double[] a12 = new double[] {10.0 * Integer.MAX_VALUE};
+      double[] a13 = new double[] {10.0 * Integer.MIN_VALUE};
 
       assert dacl.compare(a0, a1) == 0;
       assert dacl.compare(a1, a0) == 0;
@@ -1071,7 +1071,7 @@ public final class TestPlume {
         }
         System.gc();
         if (Intern.numIntArrays() != size2) {
-          if (Intern.numIntArrays() < 10 + size2) {
+          if (Intern.numIntArrays() < size2 + 10) {
             System.out.println(
                 "Is JIT disabled?  Size should have been "
                     + size2
@@ -1187,7 +1187,7 @@ public final class TestPlume {
     Double diIntern = Intern.intern(diOrig);
     Object diObjIntern = Intern.intern((Object) diOrig);
     assert diIntern == diObjIntern;
-    Object diOtherIntern = Intern.intern((Object) new Double(Double.MAX_VALUE * 2));
+    Object diOtherIntern = Intern.intern((Object) new Double(2 * Double.MAX_VALUE));
     assert diIntern == diOtherIntern;
 
     double positive_zero = +0.0;
@@ -1245,7 +1245,7 @@ public final class TestPlume {
   // Create a LimitedSizeSet of the given size, and add elements to it.
   private static void lsis_test(/*@Positive*/ int max_size) {
     LimitedSizeSet<Integer> s = new LimitedSizeSet<Integer>(max_size);
-    for (int i = 1; i < max_size * 2; i++) {
+    for (int i = 1; i < 2 * max_size; i++) {
       lsis_add_elts(i, s);
       int size = s.size();
       assert (if ((i <= max_size)){(size == i);} else {(size == max_size + 1);})
@@ -2013,7 +2013,7 @@ public final class TestPlume {
           List</*@IndexFor("totals")*/ Integer> chosen =
               UtilMDE.randomElements(new IotaIterator(itor_size), i, r);
           for (int m = 0; m < chosen.size(); m++) {
-            for (int n = 1 + m; n < chosen.size(); n++) {
+            for (int n = m + 1; n < chosen.size(); n++) {
               if (chosen.get(m).intValue() == chosen.get(n).intValue()) {
                 throw new Error("Duplicate at " + m + "," + n);
               }
@@ -2024,12 +2024,12 @@ public final class TestPlume {
           }
         }
         int i_truncated = Math.min(itor_size, i);
-        int grand_total = i_truncated * tries;
+        int grand_total = tries * i_truncated;
         assert ArraysMDE.sum(totals) == grand_total : "Totals = " + ArraysMDE.sum(totals);
         // System.out.print("chosen:\t");
         for (int k = 0; k < num_elts_limit; k++) {
           int this_total = totals[k];
-          int expected = i_truncated * tries / itor_size;
+          int expected = tries * i_truncated / itor_size;
           double ratio = (double) this_total / (double) expected;
           // System.out.print(((k<10) ? " " : "") + k + " " + this_total + "\t");
           // System.out.print("\nExp=" + expected + "\tratio=" + ratio + "\t");
@@ -2459,9 +2459,9 @@ public final class TestPlume {
     c1.println("a b");
     String lineSep = System.getProperty("line.separator");
     int ls_len = lineSep.length();
-    assert c1.getNumberOfPrintedBytes() == (ls_len + 12);
+    assert c1.getNumberOfPrintedBytes() == (12 + ls_len);
     assert c1.getNumberOfWrittenBytes() == (38);
-    assert c1.getNumberOfPrintedChars() == (ls_len + 12);
+    assert c1.getNumberOfPrintedChars() == (12 + ls_len);
     c1.print((String) null);
     c1.print((Object) null);
     c1.println((String) null);
@@ -2510,21 +2510,21 @@ public final class TestPlume {
 
     FuzzyFloat ff = new FuzzyFloat(0.0001);
     double offset = 0.00007;
-    double offhigh = offset + 1;
+    double offhigh = 1 + offset;
     double offlow = 1 - offset;
-    double offhigh2 = 1 + offset * 2;
-    double offlow2 = 1 - offset * 2;
+    double offhigh2 = 1 + 2 * offset;
+    double offlow2 = 1 - 2 * offset;
 
     // test equality for a variety of postive and negative numbers
     for (double d = -20000; d < 20000; d = d + 1000.36) {
-      assert ff.eq(d, offhigh * d);
-      assert ff.eq(d, offlow * d);
-      assert !ff.eq(d, offhigh2 * d);
-      assert !ff.eq(d, offlow2 * d);
-      assert !ff.ne(d, offhigh * d);
-      assert !ff.ne(d, offlow * d);
-      assert ff.ne(d, offhigh2 * d);
-      assert ff.ne(d, offlow2 * d);
+      assert ff.eq(d, d * offhigh);
+      assert ff.eq(d, d * offlow);
+      assert !ff.eq(d, d * offhigh2);
+      assert !ff.eq(d, d * offlow2);
+      assert !ff.ne(d, d * offhigh);
+      assert !ff.ne(d, d * offlow);
+      assert ff.ne(d, d * offhigh2);
+      assert ff.ne(d, d * offlow2);
     }
 
     // make sure nothing is equal to zero
@@ -2548,14 +2548,14 @@ public final class TestPlume {
     // use eq and ne anyway)
     {
       double d = 2563.789;
-      assert !ff.gt(d, offlow * d);
-      assert !ff.lt(d, offhigh * d);
-      assert ff.gt(d, offlow2 * d);
-      assert ff.lt(d, offhigh2 * d);
-      assert ff.gte(d, offhigh * d);
-      assert ff.lte(d, offlow * d);
-      assert !ff.gte(d, offhigh2 * d);
-      assert !ff.lte(d, offlow2 * d);
+      assert !ff.gt(d, d * offlow);
+      assert !ff.lt(d, d * offhigh);
+      assert ff.gt(d, d * offlow2);
+      assert ff.lt(d, d * offhigh2);
+      assert ff.gte(d, d * offhigh);
+      assert ff.lte(d, d * offlow);
+      assert !ff.gte(d, d * offhigh2);
+      assert !ff.lte(d, d * offlow2);
     }
 
     // public int indexOf (double[] a, double elt)
@@ -2572,10 +2572,10 @@ public final class TestPlume {
       assert ff.indexOf(a, 10) == -1;
       assert ff.indexOf(a, 20) == -1;
       assert ff.indexOf(a, Double.MIN_VALUE) == 0;
-      assert ff.indexOf(a, offhigh * 7) == 7;
-      assert ff.indexOf(a, offlow * 9) == 9;
-      assert ff.indexOf(a, offhigh2 * 7) == -1;
-      assert ff.indexOf(a, offlow2 * 9) == -1;
+      assert ff.indexOf(a, 7 * offhigh) == 7;
+      assert ff.indexOf(a, 9 * offlow) == 9;
+      assert ff.indexOf(a, 7 * offhigh2) == -1;
+      assert ff.indexOf(a, 9 * offlow2) == -1;
       assert_arrays_equals(a, a_copy);
     }
 
@@ -2650,7 +2650,7 @@ public final class TestPlume {
         initialize_f1_and_f2(j, f1, f2);
 
         // make two elements off just a little
-        f2[7] = f2[7] * (offset + 1);
+        f2[7] = f2[7] * (1 + offset);
         f2[8] = f2[8] * (1 - offset);
 
         // test with each array the bigger one
@@ -2665,8 +2665,8 @@ public final class TestPlume {
         initialize_f1_and_f2(j, f1, f2);
 
         // make two elements off just a little
-        f2[7] = f2[7] * (1 + offset * 2);
-        f2[8] = f2[8] * (1 - offset * 2);
+        f2[7] = f2[7] * (1 + 2 * offset);
+        f2[8] = f2[8] * (1 - 2 * offset);
 
         // test with each array the bigger one
         double[] f1_copy = f1.clone();
@@ -2758,7 +2758,7 @@ public final class TestPlume {
 
         // fill up f1 with elements of f2
         for (int j = 0; j < f1.length; j++) {
-          f1[j] = f2[j + i];
+          f1[j] = f2[i + j];
         }
 
         f1[5] = f2[i] * offhigh;
@@ -2793,8 +2793,8 @@ public final class TestPlume {
 
     // start two arrays out exactly equal
     for (int i = 0; i < f1.length; i++) {
-      f1[i] = j + 10 * i;
-      f2[i] = j + 10 * i;
+      f1[i] = j + i * 10;
+      f2[i] = j + i * 10;
     }
 
     // fill out the second half of f2 with dup of f1

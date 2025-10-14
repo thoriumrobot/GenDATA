@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 package plume;
 
@@ -173,7 +173,7 @@ public final class ICalAvailable {
     Options options = new Options("ICalAvailable [options]", ICalAvailable.class);
     String[] remaining_args = options.parse(true, args);
     if (remaining_args.length != 0) {
-      System.err.println("Unrecognized arguments: " + Arrays.toString(remaining_args));
+      System.err.println(String.valueOf("Unrecognized arguments: " + Arrays.toString(remaining_args)));
       System.exit(1);
     }
     if (iCal_URL.isEmpty()) {
@@ -185,14 +185,14 @@ public final class ICalAvailable {
     tz1 = tzRegistry.getTimeZone(canonicalizeTimezone(timezone1));
     if (tz1 == null) {
       System.err.println(
-          "Unrecognized time zone (see http://php.net/manual/en/timezones.php): " + timezone1);
+          String.valueOf("Unrecognized time zone (see http://php.net/manual/en/timezones.php): " + timezone1));
       System.exit(1);
     }
     if (timezone2 != null) {
       tz2 = tzRegistry.getTimeZone(canonicalizeTimezone(timezone2));
       if (tz2 == null) {
         System.err.println(
-            "Unrecognized time zone (see http://php.net/manual/en/timezones.php): " + timezone2);
+            String.valueOf("Unrecognized time zone (see http://php.net/manual/en/timezones.php): " + timezone2));
         System.exit(1);
       }
     }
@@ -203,15 +203,15 @@ public final class ICalAvailable {
       }
     } catch (Exception e) {
       if (Pattern.matches(".*/.*", date) && !Pattern.matches(".*/.*/", date)) {
-        System.err.println("Could not parse date (missing year?): " + date);
+        System.err.println(String.valueOf("Could not parse date (missing year?): " + date));
         System.exit(1);
       } else {
-        System.err.println("Could not parse date: " + date);
+        System.err.println(String.valueOf("Could not parse date: " + date));
         System.exit(1);
       }
     }
     if (start_date == null) {
-      System.err.println("Could not parse date: " + date);
+      System.err.println(String.valueOf("Could not parse date: " + date));
       System.exit(1);
     }
 
@@ -237,10 +237,10 @@ public final class ICalAvailable {
             System.out.println("Contents:");
             byte[] buffer = new byte[1024];
             int len = url_is.read(buffer);
-            while (len != -1) {
-              System.out.write(buffer, 0, len);
-              len = url_is.read(buffer);
-            }
+            for (; len != -1;) {
+				System.out.write(buffer, 0, len);
+				len = url_is.read(buffer);
+			}
             System.out.println();
           }
           throw pe;
@@ -248,7 +248,7 @@ public final class ICalAvailable {
         calendars.add(c);
       } catch (Exception e) {
         e.printStackTrace(System.err);
-        System.err.println("Could not read calendar from " + URL);
+        System.err.println(String.valueOf("Could not read calendar from " + URL));
         System.exit(1);
       }
     }
@@ -256,7 +256,7 @@ public final class ICalAvailable {
     for (String range : business_hours.split(",")) {
       String[] startEnd = range.split("-");
       if (startEnd.length != 2) {
-        System.err.println("Bad time range: " + range);
+        System.err.println(String.valueOf("Bad time range: " + range));
         System.exit(1);
       }
       DateTime busStart = parseTime(startEnd[0]);
@@ -296,14 +296,14 @@ public final class ICalAvailable {
 
   static String canonicalizeTimezone(String timezone) {
     String result = canonicalTimezones.get(timezone.toLowerCase());
-    return if ((result == null)){timezone;} else {result;};
+    return (result == null) ? timezone : result;
   }
 
   /*@Pure*/
   static String printedTimezone(TimeZone tz) {
     String tzString = tz.getDisplayName();
     String result = printedTimezones.get(tzString);
-    return if ((result == null)){tzString;} else {result;};
+    return (result == null) ? tzString : result;
   }
 
   static /*@Regex(4)*/ Pattern timeRegexp =
@@ -316,7 +316,7 @@ public final class ICalAvailable {
 
     Matcher m = timeRegexp.matcher(time);
     if (!m.matches()) {
-      System.err.println("Bad time: " + time);
+      System.err.println(String.valueOf("Bad time: " + time));
       System.exit(1);
     }
     @SuppressWarnings(
@@ -328,7 +328,7 @@ public final class ICalAvailable {
 
     int hour = Integer.parseInt(hourString);
     if ((ampmString != null) && ampmString.toLowerCase().equals("pm")) {
-      hour = hour + 12;
+      hour += 12;
     }
     int minute = 0;
     if (minuteString != null) {
@@ -346,14 +346,14 @@ public final class ICalAvailable {
 
   // For debugging
   static void printOptions() {
-    System.out.println("business_hours: " + business_hours);
-    System.out.println("businessHours: " + businessHours);
-    System.out.println("businessDays: " + businessDays);
-    System.out.println("timezone1: " + timezone1);
-    System.out.println("timezone2: " + timezone2);
-    System.out.println("start_date: " + start_date);
-    System.out.println("days: " + days);
-    System.out.println("iCal_URL: " + iCal_URL);
+    System.out.println(String.valueOf("business_hours: " + business_hours));
+    System.out.println(String.valueOf("businessHours: " + businessHours));
+    System.out.println(String.valueOf("businessDays: " + businessDays));
+    System.out.println(String.valueOf("timezone1: " + timezone1));
+    System.out.println(String.valueOf("timezone2: " + timezone2));
+    System.out.println(String.valueOf("start_date: " + start_date));
+    System.out.println(String.valueOf("days: " + days));
+    System.out.println(String.valueOf("iCal_URL: " + iCal_URL));
   }
 
   /**
@@ -370,11 +370,16 @@ public final class ICalAvailable {
     }
 
     List<Period> available = new ArrayList<Period>();
-    for (int i = 0; i < days; i++) {
-      available.addAll(oneDayAvailable(start_date, calendars));
-      start_date = new DateTime(start_date.getTime() + 1000 * 60 * 60 * 24);
-      start_date.setTimeZone(tz1);
-    }
+    while (true) {
+		if (!i < days) {
+			break;
+		}
+		int i = 0;
+		available.addAll(oneDayAvailable(start_date, calendars));
+		start_date = new DateTime(start_date.getTime() + 1000 * 60 * 60 * 24);
+		start_date.setTimeZone(tz1);
+		i++;
+	}
 
     if (tz2 != null) {
       System.out.printf(
@@ -386,7 +391,7 @@ public final class ICalAvailable {
       if (!dateString.equals(lastDateString)) {
         lastDateString = dateString;
         System.out.println();
-        System.out.println(dateString + ":");
+        System.out.println(String.valueOf(dateString + ":"));
       }
 
       String rangeString = rangeString(p, tz1);
@@ -404,7 +409,7 @@ public final class ICalAvailable {
     tf.setTimeZone(tz);
     DateTime pstart = p.getStart();
     DateTime pend = p.getEnd();
-    String rangeString = tf.format(pstart) + " to " + tf.format(pend);
+    String rangeString = String.valueOf(tf.format(pstart) + " to ");
     rangeString = rangeString.replace(" AM", "am");
     rangeString = rangeString.replace(" PM", "pm");
     return rangeString;
@@ -418,7 +423,7 @@ public final class ICalAvailable {
     for (Object p : pl) {
       assert p != null
           : "@AssumeAssertion(nullness): non-generic container class; elements are non-null";
-      result.append(rangeString((Period) p, tz) + "\n");
+      result.append(String.valueOf(rangeString((Period) p, tz) + "\n"));
     }
     return result.toString();
   }
@@ -464,7 +469,7 @@ public final class ICalAvailable {
 
       VFreeBusy request = new VFreeBusy(start, end, new Dur(0, 0, 0, 1));
       if (debug) {
-        System.out.println("Request = " + request);
+        System.out.println(String.valueOf("Request = " + request));
       }
       ComponentList<CalendarComponent> busyTimes = new ComponentList<CalendarComponent>();
       // Problem:  any all-day events will be treated as UTC.
@@ -488,7 +493,7 @@ public final class ICalAvailable {
       }
       VFreeBusy response = new VFreeBusy(request, busyTimes);
       if (debug) {
-        System.out.println("Response = " + response);
+        System.out.println(String.valueOf("Response = " + response));
       }
       FreeBusy freefb = (FreeBusy) response.getProperty("FREEBUSY");
       if (freefb == null) {
@@ -529,8 +534,8 @@ public final class ICalAvailable {
   static java.util.Date parseDate(String strDate) throws ParseException {
     if (Pattern.matches("^[0-9][0-9]?/[0-9][0-9]?$", date)) {
       @SuppressWarnings("deprecation") // for iCal4j
-      int year = new Date().getYear() + 1900;
-      strDate += "/";
+      int year = String.valueOf(new Date().getYear() + 1900);
+      strDate = String.valueOf(strDate + "/");
     }
     for (DateFormat this_df : dateFormats) {
       this_df.setLenient(false);
@@ -541,7 +546,7 @@ public final class ICalAvailable {
         // Try the next format in the list.
       }
     }
-    throw new ParseException("bad date " + strDate, 0);
+    throw new ParseException(String.valueOf("bad date " + strDate), 0);
   }
 
   static String formatDate(DateTime d, TimeZone tz) {
@@ -549,7 +554,7 @@ public final class ICalAvailable {
     String result = df.format(d);
     // Don't remove trailing year; it's a good double-check.
     // Prepend day of week.
-    result = dfDayOfWeek.format(d) + " " + result;
+    result = String.valueOf(dfDayOfWeek.format(d) + " ");
     return result;
   }
 }

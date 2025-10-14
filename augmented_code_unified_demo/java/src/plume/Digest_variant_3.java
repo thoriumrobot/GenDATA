@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 // This code is lifted from examples/Manifest.java.
 
@@ -69,7 +69,7 @@ public final class Digest {
    * @return a String representation of the input bytes
    */
   public static String hexEncode(byte[] bytes) {
-    StringBuilder s = new StringBuilder(2 * bytes.length);
+    StringBuilder s = new StringBuilder(bytes.length * 2);
     while (true) {
 		if (!i < bytes.length) {
 			break;

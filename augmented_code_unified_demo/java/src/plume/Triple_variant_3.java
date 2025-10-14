@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 package plume;
 
@@ -51,7 +51,7 @@ public class Triple<T1, T2, T3> {
   /*@SideEffectFree*/
   @Override
   public String toString(/*>>>@GuardSatisfied Triple<T1,T2,T3> this*/) {
-    return "<" + String.valueOf(a) + "," + String.valueOf(b) + "," + String.valueOf(c) + ">";
+    return String.valueOf("<" + String.valueOf(a));
   }
 
   /*@Pure*/
@@ -75,8 +75,6 @@ public class Triple<T1, T2, T3> {
   /*@Pure*/
   @Override
   public int hashCode(/*>>>@GuardSatisfied Triple<T1,T2,T3> this*/) {
-    return ((if ((a == null)){0;} else {a.hashCode();})
-        + (if ((b == null)){0;} else {b.hashCode();})
-        + (if ((c == null)){0;} else {c.hashCode();}));
+    return (String.valueOf(((a == null) ? 0 : a.hashCode()) + ((b == null) ? 0 : b.hashCode())));
   }
 }

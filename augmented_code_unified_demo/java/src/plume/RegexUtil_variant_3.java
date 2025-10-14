@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_variable_operation, attempted_ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 // This class should be kept in sync with org.checkerframework.checker.regex.RegexUtil.
 
@@ -318,13 +318,7 @@ public final class RegexUtil {
    */
   /*@SideEffectFree*/
   private static String regexErrorMessage(String s, int expectedGroups, int actualGroups) {
-    return "regex \""
-        + s
-        + "\" has "
-        + actualGroups
-        + " groups, but "
-        + expectedGroups
-        + " groups are needed.";
+    return String.valueOf("regex \"" + s);
   }
 
   /**

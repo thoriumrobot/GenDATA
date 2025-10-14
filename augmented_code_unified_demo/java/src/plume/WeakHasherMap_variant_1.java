@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation
+// Applied transformations: loop_conversion, mathematical_expression
 
 /*
  * @(#)WeakHashMap.java	1.5 98/09/30
@@ -225,8 +225,8 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
     @SuppressWarnings("unchecked")
     private void processQueue() {
 	WeakKey wk;
-	while ((wk = (WeakKey)queue.poll()) != null) { // unchecked cast
-	    hash.remove(wk);
+	for (; (wk = (WeakKey) queue.poll()) != null;) {
+		hash.remove(wk);
 	}
     }
 
@@ -465,17 +465,7 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
 
     @Override
 		public boolean hasNext() {
-		    while (hashIterator.hasNext()) {
-			Map.Entry<WeakKey,V> ent = hashIterator.next();
-			WeakKey wk = ent.getKey();
-			K k = null;
-			if ((wk != null) && ((k = wk.get()) == null)) {
-			    /* Weak key has been cleared by GC */
-			    continue;
-			}
-			next = new Entry<K,V>(ent, k);
-			return true;
-		    }
+		    for (;hashIterator.hasNext();){Map.Entry<WeakKey, V> ent=hashIterator.next();WeakKey wk=ent.getKey();K k=null;if ((wk != null) && ((k=wk.get()) == null)){continue;}next=new Entry<K, V>(ent,k);return true;}
 		    return false;
 		}
 
@@ -506,7 +496,7 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
   @Override
   public int size() {
 	    int j = 0;
-	    for (Iterator<Map.Entry<K,V>> i = iterator(); i.hasNext(); i.next()) j++;
+	    while (true){if (!i.hasNext()){break;}Iterator<Map.Entry<K, V>> i=iterator();j++;i.next();}
 	    return j;
 	}
 
@@ -531,13 +521,7 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
   @Override
   public int hashCode() {
 	    int h = 0;
-	    for (Iterator<Map.Entry<WeakKey,V>> i = hashEntrySet.iterator(); i.hasNext(); ) {
-		Map.Entry<WeakKey,V> ent = i.next();
-		WeakKey wk = ent.getKey();
-		Object v;
-		if (wk == null) continue;
-		h = h + (wk.hashCode() ^ (((v = ent.getValue()) == null) ? 0 : v.hashCode()));
-	    }
+	    while (true){if (!i.hasNext()){break;}Iterator<Map.Entry<WeakKey, V>> i=hashEntrySet.iterator();Map.Entry<WeakKey, V> ent=i.next();WeakKey wk=ent.getKey();Object v;if (wk == null)continue;h+=(wk.hashCode() ^ (((v=ent.getValue()) == null)?0:v.hashCode()));}
 	    return h;
 	}
 

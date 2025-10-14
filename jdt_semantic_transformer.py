@@ -93,7 +93,8 @@ class JdtSemanticTransformer:
             return False
     
     def transform_code(self, java_code: str, transformations: List[str],
-                      mode: str = 'enhanced', force_transformation: bool = True) -> str:
+                      mode: str = 'enhanced', force_transformation: bool = True,
+                      **kwargs) -> str:
         """
         Transform Java code string using JDT-based transformations.
         
@@ -109,7 +110,7 @@ class JdtSemanticTransformer:
         original_code = java_code
         
         # Try the requested transformations first
-        transformed_code = self._try_transformations(java_code, transformations, mode)
+        transformed_code = self._try_transformations(java_code, transformations, mode, **kwargs)
         
         # If no changes were made and force_transformation is True, try other transformations
         if force_transformation and transformed_code == original_code and transformations:
@@ -120,7 +121,7 @@ class JdtSemanticTransformer:
                 # Try with a subset of other transformations
                 retry_transformations = other_transformations[:min(3, len(other_transformations))]
                 logger.info(f"No changes with {transformations}, retrying with {retry_transformations}")
-                transformed_code = self._try_transformations(java_code, retry_transformations, mode)
+                transformed_code = self._try_transformations(java_code, retry_transformations, mode, **kwargs)
         
         return transformed_code
 
@@ -135,7 +136,7 @@ class JdtSemanticTransformer:
         transformed = self.transform_code(java_code, transformations, mode, force_transformation)
         return transformed, (transformed != java_code)
     
-    def _try_transformations(self, java_code: str, transformations: List[str], mode: str) -> str:
+    def _try_transformations(self, java_code: str, transformations: List[str], mode: str, **kwargs) -> str:
         """Try applying transformations and return transformed code."""
         try:
             with tempfile.NamedTemporaryFile(mode='w', suffix='.java', delete=False) as input_file:
@@ -157,6 +158,19 @@ class JdtSemanticTransformer:
                     "--mode", mode,
                     "--seed", str(current_seed)
                 ]
+                # Optional extended flags (best-effort; jar may ignore)
+                seq_len = kwargs.get('sequence_len')
+                max_depth = kwargs.get('max_depth')
+                avoid = kwargs.get('avoid')
+                focus_nodes = kwargs.get('focus_nodes')
+                if seq_len is not None:
+                    cmd += ["--sequence-len", str(seq_len)]
+                if max_depth is not None:
+                    cmd += ["--max-depth", str(max_depth)]
+                if avoid:
+                    cmd += ["--avoid", ",".join(avoid)]
+                if focus_nodes:
+                    cmd += ["--focus-nodes", ",".join(focus_nodes)]
                 
                 logger.debug(f"Running command: {' '.join(cmd)}")
                 result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)

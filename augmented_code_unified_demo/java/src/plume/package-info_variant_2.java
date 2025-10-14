@@ -1,8 +1,3 @@
-/*
- * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
- */
-// Applied transformations: attempted_variable_operation, attempted_ternary_operator
-
 /**
  * The {@code plume} package contains the Java component of <a
  * href="https://mernst.github.io/plume-lib/">plume-lib</a>, which contains a variety of useful

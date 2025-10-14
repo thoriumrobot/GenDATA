@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_variable_operation, attempted_ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 // Lists all declaration annotations (more specifically, non-type
 // annotations) reachable from the classpath.  Only lists the simple name.
@@ -40,7 +40,7 @@ public class DeclarationAnnotations {
     Set<ClassPath.ClassInfo> classes = ClassPath.from(cl).getAllClasses();
     for (ClassPath.ClassInfo ci : classes) {
       if (debug) {
-        System.out.println("Trying: " + ci);
+        System.out.println(String.valueOf("Trying: " + ci));
       }
       Class<?> c;
       try {
@@ -75,7 +75,7 @@ public class DeclarationAnnotations {
         // Debugging output
         // System.out.println((isTypeAnnotation ? "type        " : "declaration ") + ci.getName());
         if (!isTypeAnnotation) {
-          System.out.println("  \"" + ci.getSimpleName() + "\", # " + ci.getName());
+          System.out.println(String.valueOf("  \"" + ci.getSimpleName()));
         }
       }
     }

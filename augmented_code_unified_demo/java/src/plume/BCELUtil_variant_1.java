@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation
+// Applied transformations: loop_conversion, mathematical_expression
 
 package plume;
 
@@ -152,16 +152,14 @@ public final class BCELUtil {
 
     Constant c = pool.getConstant(index);
     assert c != null : "Bad index " + index + " into pool";
-    if (!(c instanceof ConstantUtf8))
-		if (c instanceof ConstantClass) {
-			ConstantClass cc = (ConstantClass) c;
-			return cc.getBytes(pool) + " [" + cc.getNameIndex() + "]";
-		} else {
-			throw new Error("unexpected constant " + c + " class " + c.getClass());
-		}
-	else {
-		return ((ConstantUtf8) c).getBytes();
-	}
+    if (c instanceof ConstantUtf8) {
+      return ((ConstantUtf8) c).getBytes();
+    } else if (c instanceof ConstantClass) {
+      ConstantClass cc = (ConstantClass) c;
+      return cc.getBytes(pool) + " [" + cc.getNameIndex() + "]";
+    } else {
+      throw new Error("unexpected constant " + c + " class " + c.getClass());
+    }
   }
 
   /**
@@ -334,17 +332,26 @@ public final class BCELUtil {
       Throwable t = new Throwable();
       t.fillInStackTrace();
       StackTraceElement[] ste = t.getStackTrace();
-      if (!(ste.length < 2)) {
-		StackTraceElement caller = ste[1];
-		System.out.printf("%s.%s (%s line %d)", caller.getClassName(), caller.getMethodName(), caller.getFileName(),
-				caller.getLineNumber());
-		for (int ii = 2; ii < ste.length; ii++) {
+      if (ste.length < 2) {
+        System.out.println("No stack trace information available");
+      } else {
+        StackTraceElement caller = ste[1];
+        System.out.printf(
+            "%s.%s (%s line %d)",
+            caller.getClassName(),
+            caller.getMethodName(),
+            caller.getFileName(),
+            caller.getLineNumber());
+        while (true) {
+			if (!ii < ste.length) {
+				break;
+			}
+			int ii = 2;
 			System.out.printf(" [%s line %d]", ste[ii].getFileName(), ste[ii].getLineNumber());
+			ii++;
 		}
-		System.out.printf("%n");
-	} else {
-		System.out.println("No stack trace information available");
-	}
+        System.out.printf("%n");
+      }
       dump_methods(gen);
     }
   }
@@ -738,27 +745,25 @@ public final class BCELUtil {
 
     // Get the base type
     Type t = null;
-    if (!(classname == "int"))
-		if (classname == "boolean") {
-			t = Type.BOOLEAN;
-		} else if (classname == "byte") {
-			t = Type.BYTE;
-		} else if (classname == "char") {
-			t = Type.CHAR;
-		} else if (classname == "double") {
-			t = Type.DOUBLE;
-		} else if (classname == "float") {
-			t = Type.FLOAT;
-		} else if (classname == "long") {
-			t = Type.LONG;
-		} else if (classname == "short") {
-			t = Type.SHORT;
-		} else {
-			t = new ObjectType(classname);
-		}
-	else {
-		t = Type.INT;
-	}
+    if (classname == "int") { // interned
+      t = Type.INT;
+    } else if (classname == "boolean") { // interned
+      t = Type.BOOLEAN;
+    } else if (classname == "byte") { // interned
+      t = Type.BYTE;
+    } else if (classname == "char") { // interned
+      t = Type.CHAR;
+    } else if (classname == "double") { // interned
+      t = Type.DOUBLE;
+    } else if (classname == "float") { // interned
+      t = Type.FLOAT;
+    } else if (classname == "long") { // interned
+      t = Type.LONG;
+    } else if (classname == "short") { // interned
+      t = Type.SHORT;
+    } else { // must be a non-primitive
+      t = new ObjectType(classname);
+    }
 
     // If there was an array, build the array type
     if (array_depth > 0) {

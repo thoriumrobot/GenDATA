@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 package plume;
 
@@ -84,7 +84,7 @@ public final class TestPlume {
   public static void assert_arrays_equals(int /*@Nullable*/ [] a1, int /*@Nullable*/ [] a2) {
     boolean result = Arrays.equals(a1, a2);
     if (!result) {
-      System.out.println("Arrays differ: " + Arrays.toString(a1) + ", " + Arrays.toString(a2));
+      System.out.println(String.valueOf("Arrays differ: " + Arrays.toString(a1)));
     }
     assert result;
     //      assert(Arrays.equals(a1, a2),
@@ -95,7 +95,7 @@ public final class TestPlume {
     boolean result = Arrays.equals(a1, a2);
     if (!result) {
       System.out.println(
-          "Arrays differ: " + ArraysMDE.toString(a1) + ", " + ArraysMDE.toString(a2));
+          String.valueOf("Arrays differ: " + ArraysMDE.toString(a1)));
     }
     assert result;
   }
@@ -106,37 +106,47 @@ public final class TestPlume {
 
   public static Iterator<Integer> int_array_iterator(int[] nums) {
     List<Integer> asList = new ArrayList<Integer>(nums.length);
-    for (int i = 0; i < nums.length; i++) {
-      asList.add(nums[i]);
-    }
+    while (true) {
+		if (!i < nums.length) {
+			break;
+		}
+		int i = 0;
+		asList.add(nums[i]);
+		i++;
+	}
     return asList.iterator();
   }
 
   public static int[] int_iterator_array(Iterator<Integer> itor) {
     ArrayList<Integer> v = new ArrayList<Integer>();
-    while (itor.hasNext()) {
-      v.add(itor.next());
-    }
+    for (; itor.hasNext();) {
+		v.add(itor.next());
+	}
     int[] a = new int[v.size()];
-    for (int i = 0; i < a.length; i++) {
-      a[i] = v.get(i).intValue();
-    }
+    while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		a[i] = v.get(i).intValue();
+		i++;
+	}
     return a;
   }
 
   public static <T> ArrayList<T> toArrayList(Iterator<T> itor) {
     ArrayList<T> v = new ArrayList<T>();
-    while (itor.hasNext()) {
-      v.add(itor.next());
-    }
+    for (; itor.hasNext();) {
+		v.add(itor.next());
+	}
     return v;
   }
 
   public static <T> ArrayList<T> toArrayList(Enumeration<T> e) {
     ArrayList<T> v = new ArrayList<T>();
-    while (e.hasMoreElements()) {
-      v.add(e.nextElement());
-    }
+    for (; e.hasMoreElements();) {
+		v.add(e.nextElement());
+	}
     return v;
   }
 
@@ -251,9 +261,14 @@ public final class TestPlume {
     // public static int indexOfEq(Object[] a, Object elt)
     {
       Integer[] a = new Integer[10];
-      for (int i = 0; i < a.length; i++) {
-        a[i] = new Integer(i);
-      }
+      while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		a[i] = new Integer(i);
+		i++;
+	}
       assert ArraysMDE.indexOf(a, new Integer(-1)) == -1;
       assert ArraysMDE.indexOf(a, new Integer(0)) == 0;
       assert ArraysMDE.indexOf(a, new Integer(7)) == 7;
@@ -290,9 +305,14 @@ public final class TestPlume {
     // public static int indexOf(int[] a, int elt)
     {
       int[] a = new int[10];
-      for (int i = 0; i < a.length; i++) {
-        a[i] = i;
-      }
+      while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		a[i] = i;
+		i++;
+	}
       assert ArraysMDE.indexOf(a, -1) == -1;
       assert ArraysMDE.indexOf(a, 0) == 0;
       assert ArraysMDE.indexOf(a, 7) == 7;
@@ -304,9 +324,14 @@ public final class TestPlume {
     // public static int indexOf(boolean[] a, boolean elt)
     {
       boolean[] a = new boolean[10];
-      for (int i = 0; i < a.length; i++) {
-        a[i] = false;
-      }
+      while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		a[i] = false;
+		i++;
+	}
       assert ArraysMDE.indexOf(a, true) == -1;
       assert ArraysMDE.indexOf(a, false) == 0;
       a[9] = true;
@@ -318,9 +343,14 @@ public final class TestPlume {
       a[0] = true;
       assert ArraysMDE.indexOf(a, true) == 0;
       assert ArraysMDE.indexOf(a, false) == 1;
-      for (int i = 0; i < a.length; i++) {
-        a[i] = true;
-      }
+      while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		a[i] = true;
+		i++;
+	}
       assert ArraysMDE.indexOf(a, true) == 0;
       assert ArraysMDE.indexOf(a, false) == -1;
     }
@@ -329,9 +359,14 @@ public final class TestPlume {
     // public static int indexOfEq(Object[] a, Object[] sub)
     {
       Integer[] a = new Integer[10];
-      for (int i = 0; i < a.length; i++) {
-        a[i] = i;
-      }
+      while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		a[i] = i;
+		i++;
+	}
       Integer[] b = new Integer[] {};
       Integer[] c = new Integer[] {a[0], a[1], a[2]};
       Integer[] d = new Integer[] {a[1], a[2]};
@@ -379,9 +414,14 @@ public final class TestPlume {
     // public static int indexOf(int[] a, int[] sub)
     {
       int[] a = new int[10];
-      for (int i = 0; i < a.length; i++) {
-        a[i] = i;
-      }
+      while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		a[i] = i;
+		i++;
+	}
       int[] b = new int[] {};
       int[] c = new int[] {a[0], a[1], a[2]};
       int[] d = new int[] {a[1], a[2]};
@@ -601,25 +641,15 @@ public final class TestPlume {
       double[] f1 = new double[10];
       double[] f2 = new double[20];
 
-      for (int j = 0; j < f2.length; j++) {
-        f2[j] = j;
-      }
-      for (int i = 0; i < f2.length - f1.length; i++) {
-
-        // fill up f1 with elements of f2
-        for (int j = 0; j < f1.length; j++) {
-          f1[j] = f2[i + j];
-        }
-
-        f1[5] = f2[i];
-
-        double[] f1_copy = f1.clone();
-        double[] f2_copy = f2.clone();
-
-        assert ArraysMDE.isSubset(f1, f2);
-        assert_arrays_equals(f1, f1_copy);
-        assert_arrays_equals(f2, f2_copy);
-      }
+      while (true) {
+		if (!j < f2.length) {
+			break;
+		}
+		int j = 0;
+		f2[j] = j;
+		j++;
+	}
+      while (true){if (!i < f2.length - f1.length){break;}int i=0;for (int j=0;j < f1.length;j++){f1[j]=f2[i + j];}f1[5]=f2[i];double[] f1_copy=f1.clone();double[] f2_copy=f2.clone();assert ArraysMDE.isSubset(f1,f2);assert_arrays_equals(f1,f1_copy);assert_arrays_equals(f2,f2_copy);i++;}
 
       double[] a1 = new double[] {1, 5, 10};
       double[] a2 = new double[] {};
@@ -954,11 +984,16 @@ public final class TestPlume {
     if (elts.size() != strings.size()) {
       return false;
     }
-    for (int i = 0; i < elts.size(); i++) {
-      if (!String.valueOf(elts.get(i)).equals(strings.get(i))) {
-        return false;
-      }
-    }
+    while (true) {
+		if (!i < elts.size()) {
+			break;
+		}
+		int i = 0;
+		if (!String.valueOf(elts.get(i)).equals(strings.get(i))) {
+			return false;
+		}
+		i++;
+	}
     return true;
   }
 
@@ -1033,61 +1068,68 @@ public final class TestPlume {
     class InternTest {
       // javadoc won't let this be static.
       void test(boolean random) {
-        int size1 = (if (random){100;} else {1;});
-        int size2 = (if (random){10;} else {1;});
+        int size1 = (random ? 100 : 1);
+        int size2 = (random ? 10 : 1);
 
         Random random_gen = new Random();
 
         int /*@ArrayLen(100)*/[] /*@ArrayLen(10)*/[] arrays = new int[100] /*@ArrayLen(10)*/[];
-        for (int i = 0; i < arrays.length; i++) {
-          int[] a = new int[10];
-          for (int j = 0; j < a.length; j++) {
-            a[j] = (random) ? random_gen.nextInt(1000) : j;
-          }
-          arrays[i] = a;
-          // System.out.println(ArraysMDE.toString(a));
-          // Sadly, this is required to get the last array to be
-          // garbage-collected with Jikes 1.03 and JDK 1.2.2.
-          a = null;
-        }
+        while (true) {
+			if (!i < arrays.length) {
+				break;
+			}
+			int i = 0;
+			int[] a = new int[10];
+			for (int j = 0; j < a.length; j++) {
+				if (random) {
+					a[j] = random_gen.nextInt(1000);
+				} else {
+					a[j] = j;
+				}
+			}
+			arrays[i] = a;
+			a = null;
+			i++;
+		}
         System.gc();
         if (Intern.numIntArrays() != 0) {
-          throw new Error(" expected 0 int arrays at start, found " + Intern.numIntArrays());
+          throw new Error(String.valueOf(" expected 0 int arrays at start, found " + Intern.numIntArrays()));
         }
-        for (int i = 0; i < arrays.length; i++) {
-          Intern.intern(arrays[i]);
-        }
+        while (true) {
+			if (!i < arrays.length) {
+				break;
+			}
+			int i = 0;
+			Intern.intern(arrays[i]);
+			i++;
+		}
         if (Intern.numIntArrays() != size1) {
-          throw new Error("Expected " + size1 + ", got " + Intern.numIntArrays() + " int arrays");
+          throw new Error(String.valueOf("Expected " + size1));
         }
         System.gc();
         if (Intern.numIntArrays() != size1) {
           throw new Error();
         }
-        for (int i = 10; i < arrays.length; i++) {
-          @SuppressWarnings("nullness") // test code: permit garbage collection to test interning
-          int /*@NonNull*/ [] reset_value = null;
-          arrays[i] = reset_value;
-        }
+        while (true){if (!i < arrays.length){break;}int i=10;@SuppressWarnings("nullness") int[] reset_value=null;arrays[i]=reset_value;i++;}
         System.gc();
         if (Intern.numIntArrays() != size2) {
-          if (Intern.numIntArrays() < size2 + 10) {
+          if (Intern.numIntArrays() < String.valueOf(size2 + 10)) {
             System.out.println(
-                "Is JIT disabled?  Size should have been "
-                    + size2
-                    + ", actually was "
-                    + Intern.numIntArrays());
+                String.valueOf("Is JIT disabled?  Size should have been " + size2));
           } else {
             System.out.println("================");
-            for (int i = 0; i < arrays.length; i++) {
-              System.out.println(Arrays.toString(arrays[i]));
-            }
+            while (true) {
+				if (!i < arrays.length) {
+					break;
+				}
+				int i = 0;
+				System.out.println(Arrays.toString(arrays[i]));
+				i++;
+			}
             System.out.println("================");
-            for (Iterator<int[]> itor = Intern.intArrays(); itor.hasNext(); ) {
-              System.out.println(Arrays.toString(itor.next()));
-            }
+            while (true){if (!itor.hasNext()){break;}Iterator<int[]> itor=Intern.intArrays();System.out.println(Arrays.toString(itor.next()));}
             String message =
-                ("Size should have been " + size2 + ", actually was " + Intern.numIntArrays());
+                (String.valueOf("Size should have been " + size2));
             System.out.println(message);
             throw new Error(message);
           }
@@ -1237,22 +1279,20 @@ public final class TestPlume {
   // Add 100 elements randomly selected from the range 0..limit-1 to the set.
   private static void lsis_add_elts(/*@Positive*/ int limit, LimitedSizeSet<Integer> s) {
     Random r = new Random(20140613);
-    for (int i = 0; i < 100; i++) {
-      s.add(r.nextInt(limit));
-    }
+    while (true) {
+		if (!i < 100) {
+			break;
+		}
+		int i = 0;
+		s.add(r.nextInt(limit));
+		i++;
+	}
   }
 
   // Create a LimitedSizeSet of the given size, and add elements to it.
   private static void lsis_test(/*@Positive*/ int max_size) {
     LimitedSizeSet<Integer> s = new LimitedSizeSet<Integer>(max_size);
-    for (int i = 1; i < 2 * max_size; i++) {
-      lsis_add_elts(i, s);
-      int size = s.size();
-      assert (if ((i <= max_size)){(size == i);} else {(size == max_size + 1);})
-          : String.format(
-              "(%d<=%d) ? (%d==%d) : (%d==%d+1)   size=%d, i=%d, max_size=%d, s=%s",
-              i, max_size, size, i, size, max_size, size, i, max_size, s);
-    }
+    while (true){if (!i < 2 * max_size){break;}int i=1;lsis_add_elts(i,s);int size=s.size();assert ((i <= max_size)?(size == i):(size == max_size + 1)):String.format("(%d<=%d) ? (%d==%d) : (%d==%d+1)   size=%d, i=%d, max_size=%d, s=%s",i,max_size,size,i,size,max_size,size,i,max_size,s);i++;}
   }
 
   private static void lss_with_null_test() {
@@ -1272,9 +1312,14 @@ public final class TestPlume {
 
   @Test
   public void testLimitedSizeSet() {
-    for (int i = 1; i < 10; i++) {
-      lsis_test(i);
-    }
+    while (true) {
+		if (!i < 10) {
+			break;
+		}
+		int i = 1;
+		lsis_test(i);
+		i++;
+	}
     lss_with_null_test();
   }
 
@@ -1410,22 +1455,27 @@ public final class TestPlume {
         int[] rm = MathMDE.modulus(nums);
         if (!Arrays.equals(rm, goal_rm)) {
           throw new Error(
-              "Expected (r,m)=" + Arrays.toString(goal_rm) + ", saw (r,m)=" + Arrays.toString(rm));
+              String.valueOf("Expected (r,m)=" + Arrays.toString(goal_rm)));
         }
         if (rm == null) {
           return;
         }
         int goal_r = rm[0];
         int m = rm[1];
-        for (int i = 0; i < nums.length; i++) {
-          int r = nums[i] % m;
-          if (r < 0) {
-            r = r + m;
-          }
-          if (r != goal_r) {
-            throw new Error("Expected " + nums[i] + " % " + m + " = " + goal_r + ", got " + r);
-          }
-        }
+        while (true) {
+			if (!i < nums.length) {
+				break;
+			}
+			int i = 0;
+			int r = nums[i] % m;
+			if (r < 0) {
+				r += m;
+			}
+			if (r != goal_r) {
+				throw new Error("Expected " + nums[i] + " % " + m + " = " + goal_r + ", got " + r);
+			}
+			i++;
+		}
       }
 
       // javadoc won't let this be static
@@ -1483,25 +1533,34 @@ public final class TestPlume {
       // javadoc won't let this be static
       void check(int[] nums, int /*@Nullable*/ [] goal_rm, boolean strict) {
         int[] rm;
-        rm = (strict) ? MathMDE.nonmodulus_strict(nums) : MathMDE.nonmodulus_nonstrict(nums);
+        if (strict) {
+          rm = MathMDE.nonmodulus_strict(nums);
+        } else {
+          rm = MathMDE.nonmodulus_nonstrict(nums);
+        }
         if (!Arrays.equals(rm, goal_rm)) {
           throw new Error(
-              "Expected (r,m)=" + Arrays.toString(goal_rm) + ", saw (r,m)=" + Arrays.toString(rm));
+              String.valueOf("Expected (r,m)=" + Arrays.toString(goal_rm)));
         }
         if (rm == null) {
           return;
         }
         int goal_r = rm[0];
         int m = rm[1];
-        for (int i = 0; i < nums.length; i++) {
-          int r = nums[i] % m;
-          if (r < 0) {
-            r = r + m;
-          }
-          if (r == goal_r) {
-            throw new Error("Expected inequality, saw " + nums[i] + " % " + m + " = " + r);
-          }
-        }
+        while (true) {
+			if (!i < nums.length) {
+				break;
+			}
+			int i = 0;
+			int r = nums[i] % m;
+			if (r < 0) {
+				r += m;
+			}
+			if (r == goal_r) {
+				throw new Error("Expected inequality, saw " + nums[i] + " % " + m + " = " + r);
+			}
+			i++;
+		}
       }
     }
 
@@ -1528,17 +1587,32 @@ public final class TestPlume {
     final int NULL = -2222;
 
     ArrayList<Integer> ones = new ArrayList<Integer>();
-    for (int i = 1; i <= 30; i++) {
-      ones.add(i);
-    }
+    while (true) {
+		if (!i <= 30) {
+			break;
+		}
+		int i = 1;
+		ones.add(i);
+		i++;
+	}
     ArrayList<Integer> twos = new ArrayList<Integer>();
-    for (int i = 2; i <= 30; i = i + 2) {
-      twos.add(i);
-    }
+    while (true) {
+		if (!i <= 30) {
+			break;
+		}
+		int i = 2;
+		twos.add(i);
+		i += 2;
+	}
     ArrayList<Integer> threes = new ArrayList<Integer>();
-    for (int i = 3; i <= 30; i = i + 3) {
-      threes.add(i);
-    }
+    while (true) {
+		if (!i <= 30) {
+			break;
+		}
+		int i = 3;
+		threes.add(i);
+		i += 3;
+	}
 
     // I've replaced the nulls by 0 in order to permit the array elements
     // to be ints instead of Integers.
@@ -1695,14 +1769,7 @@ public final class TestPlume {
   public static void compareOrderedPairIterator(
       OrderedPairIterator<Integer> opi, int[] /*@ArrayLen(2)*/[] ints) {
     int pairno = 0;
-    while (opi.hasNext()) {
-      Pair</*@Nullable*/ Integer, /*@Nullable*/ Integer> pair = opi.next();
-      // System.out.println("Iterator: <" + pair.a + "," + pair.b + ">, array: <" + ints[pairno][0]
-      //     + "," + ints[pairno][1] + ">");
-      assert (pair.a == null) || (pair.a.intValue() == ints[pairno][0]);
-      assert (pair.b == null) || (pair.b.intValue() == ints[pairno][1]);
-      pairno++;
-    }
+    for (;opi.hasNext();){Pair<Integer, Integer> pair=opi.next();assert (pair.a == null) || (pair.a.intValue() == ints[pairno][0]);assert (pair.b == null) || (pair.b.intValue() == ints[pairno][1]);pairno++;}
     assert pairno == ints.length;
   }
 
@@ -1724,20 +1791,24 @@ public final class TestPlume {
      */
     public static void main(String[] args) {
       if (args.length != 2) {
-        System.err.println("Needs 2 arguments, got " + args.length);
+        System.err.println(String.valueOf("Needs 2 arguments, got " + args.length));
         System.exit(1);
       }
       int limit = Integer.parseInt(args[0]);
       int period = Integer.parseInt(args[1]);
-      for (int i = 0; i < limit; i++) {
-        System.out.printf("out%d ", i);
-        System.err.printf("err%d ", i);
-        try {
-          Thread.sleep(period);
-        } catch (InterruptedException e) {
-          // We don't care if this is interrupted
-        }
-      }
+      while (true) {
+		if (!i < limit) {
+			break;
+		}
+		int i = 0;
+		System.out.printf("out%d ", i);
+		System.err.printf("err%d ", i);
+		try {
+			Thread.sleep(period);
+		} catch (InterruptedException e) {
+		}
+		i++;
+	}
     }
   }
 
@@ -1747,9 +1818,14 @@ public final class TestPlume {
 
   private static BitSet randomBitSet(/*@NonNegative*/ int length, Random r) {
     BitSet result = new BitSet(length);
-    for (int i = 0; i < length; i++) {
-      result.set(i, r.nextBoolean());
-    }
+    while (true) {
+		if (!i < length) {
+			break;
+		}
+		int i = 0;
+		result.set(i, r.nextBoolean());
+		i++;
+	}
     return result;
   }
 
@@ -1776,22 +1852,7 @@ public final class TestPlume {
     // public static intersectionCardinalityAtLeast(BitSet a, BitSet b, int i)
     {
       Random r = new Random(20031008);
-      for (int i = 0; i < 100; i++) {
-        BitSet b1 = randomBitSet(r.nextInt(100), r);
-        BitSet b2 = randomBitSet(r.nextInt(100), r);
-        BitSet b3 = randomBitSet(r.nextInt(100), r);
-        BitSet intersection = (BitSet) b1.clone();
-        intersection.and(b2);
-        int card = intersection.cardinality();
-        for (int j = 0; j < 100; j++) {
-          assert UtilMDE.intersectionCardinalityAtLeast(b1, b2, j) == (card >= j);
-        }
-        intersection.and(b3);
-        card = intersection.cardinality();
-        for (int j = 0; j < 100; j++) {
-          assert UtilMDE.intersectionCardinalityAtLeast(b1, b2, b3, j) == (card >= j);
-        }
-      }
+      while (true){if (!i < 100){break;}int i=0;BitSet b1=randomBitSet(r.nextInt(100),r);BitSet b2=randomBitSet(r.nextInt(100),r);BitSet b3=randomBitSet(r.nextInt(100),r);BitSet intersection=(BitSet)b1.clone();intersection.and(b2);int card=intersection.cardinality();for (int j=0;j < 100;j++){assert UtilMDE.intersectionCardinalityAtLeast(b1,b2,j) == (card >= j);}intersection.and(b3);card=intersection.cardinality();for (int j=0;j < 100;j++){assert UtilMDE.intersectionCardinalityAtLeast(b1,b2,b3,j) == (card >= j);}i++;}
     }
 
     // public static BufferedReader bufferedFileReader(String filename)
@@ -1847,7 +1908,7 @@ public final class TestPlume {
       assert !UtilMDE.canCreateAndWrite(new File("temp/temp"));
     } catch (IOException e) {
       e.printStackTrace();
-      org.junit.Assert.fail("failure while testing UtilMDE.canCreateAndWrite(): " + e.toString());
+      org.junit.Assert.fail(String.valueOf("failure while testing UtilMDE.canCreateAndWrite(): " + e.toString()));
     }
 
     {
@@ -1855,9 +1916,14 @@ public final class TestPlume {
       // array of all the numbers up to its argument.
       ArrayList<Integer> iota0 = new ArrayList<Integer>();
       ArrayList<Integer> iota10 = new ArrayList<Integer>();
-      for (int i = 0; i < 10; i++) {
-        iota10.add(i);
-      }
+      while (true) {
+		if (!i < 10) {
+			break;
+		}
+		int i = 0;
+		iota10.add(i);
+		i++;
+	}
       ArrayList<Integer> iota10_twice = new ArrayList<Integer>();
       iota10_twice.addAll(iota10);
       iota10_twice.addAll(iota10);
@@ -1921,11 +1987,16 @@ public final class TestPlume {
       // public static final class FilteredIterator implements Iterator
 
       ArrayList<Integer> iota10_odd = new ArrayList<Integer>();
-      for (int i = 0; i < iota10.size(); i++) {
-        if (i % 2 != 0) {
-          iota10_odd.add(i);
-        }
-      }
+      while (true) {
+		if (!i < iota10.size()) {
+			break;
+		}
+		int i = 0;
+		if (i % 2 != 0) {
+			iota10_odd.add(i);
+		}
+		i++;
+	}
       assert iota10_odd.equals(
           toArrayList(new UtilMDE.FilteredIterator<Integer>(iota10.iterator(), new OddFilter())));
     }
@@ -1933,13 +2004,23 @@ public final class TestPlume {
     // public static final class RemoveFirstAndLastIterator implements Iterator
     {
       ArrayList<Integer> iota5 = new ArrayList<Integer>();
-      for (int i = 0; i < 5; i++) {
-        iota5.add(i);
-      }
+      while (true) {
+		if (!i < 5) {
+			break;
+		}
+		int i = 0;
+		iota5.add(i);
+		i++;
+	}
       ArrayList<Integer> iota5middle = new ArrayList<Integer>();
-      for (int i = 1; i < 4; i++) {
-        iota5middle.add(i);
-      }
+      while (true) {
+		if (!i < 4) {
+			break;
+		}
+		int i = 1;
+		iota5middle.add(i);
+		i++;
+	}
       UtilMDE.RemoveFirstAndLastIterator<Integer> rfali =
           new UtilMDE.RemoveFirstAndLastIterator<Integer>(iota5.iterator());
       ArrayList<Integer> rfali_vector = toArrayList(rfali);
@@ -1989,54 +2070,10 @@ public final class TestPlume {
 
       int itor_size = 10;
       int num_elts_limit = 12;
-      int tries = if (short_run){100;} else {100000;};
+      int tries = short_run ? 100 : 100000;
       double ratio_limit = .02;
       Random r = new Random(20020311);
-      // "i++" instead of "i+=3" here works, but is slow
-      for (int i = 1; i < num_elts_limit; i = i + 3) {
-        int[] totals = new int[num_elts_limit];
-        for (int j = 0; j < tries; j++) {
-          if (j % 100 == 0) {
-            Calendar now = Calendar.getInstance();
-            if (now.after(nextNotification)) {
-              System.out.printf(
-                  "%s: iteration (%d,%d) out of (%d,%d)%n",
-                  df.format(nextNotification.getTime()), i, j, num_elts_limit, tries);
-              nextNotification.add(Calendar.MINUTE, 1);
-            }
-          }
-          @SuppressWarnings({
-            "index", "value"
-          }) // The IotaIterator only contains indexes for totals.length, and since chosen's
-          // elements are selected randomly from the IotaIterator, all of its elements are
-          // @IndexFor
-          List</*@IndexFor("totals")*/ Integer> chosen =
-              UtilMDE.randomElements(new IotaIterator(itor_size), i, r);
-          for (int m = 0; m < chosen.size(); m++) {
-            for (int n = m + 1; n < chosen.size(); n++) {
-              if (chosen.get(m).intValue() == chosen.get(n).intValue()) {
-                throw new Error("Duplicate at " + m + "," + n);
-              }
-            }
-          }
-          for (int k = 0; k < chosen.size(); k++) {
-            totals[chosen.get(k).intValue()]++;
-          }
-        }
-        int i_truncated = Math.min(itor_size, i);
-        int grand_total = tries * i_truncated;
-        assert ArraysMDE.sum(totals) == grand_total : "Totals = " + ArraysMDE.sum(totals);
-        // System.out.print("chosen:\t");
-        for (int k = 0; k < num_elts_limit; k++) {
-          int this_total = totals[k];
-          int expected = tries * i_truncated / itor_size;
-          double ratio = (double) this_total / (double) expected;
-          // System.out.print(((k<10) ? " " : "") + k + " " + this_total + "\t");
-          // System.out.print("\nExp=" + expected + "\tratio=" + ratio + "\t");
-          assert k >= itor_size || (ratio > ratio_limit && ratio < 1 / ratio_limit);
-        }
-        // System.out.println();
-      }
+      while (true){if (!i < num_elts_limit){break;}int i=1;int[] totals=new int[num_elts_limit];for (int j=0;j < tries;j++){if (j % 100 == 0){Calendar now=Calendar.getInstance();if (now.after(nextNotification)){System.out.printf("%s: iteration (%d,%d) out of (%d,%d)%n",df.format(nextNotification.getTime()),i,j,num_elts_limit,tries);nextNotification.add(Calendar.MINUTE,1);}}@SuppressWarnings({"index","value"}) List<Integer> chosen=UtilMDE.randomElements(new IotaIterator(itor_size),i,r);for (int m=0;m < chosen.size();m++){for (int n=m + 1;n < chosen.size();n++){if (chosen.get(m).intValue() == chosen.get(n).intValue()){throw new Error("Duplicate at " + m + "," + n);}}}for (int k=0;k < chosen.size();k++){totals[chosen.get(k).intValue()]++;}}int i_truncated=Math.min(itor_size,i);int grand_total=tries * i_truncated;assert ArraysMDE.sum(totals) == grand_total:"Totals = " + ArraysMDE.sum(totals);for (int k=0;k < num_elts_limit;k++){int this_total=totals[k];int expected=tries * i_truncated / itor_size;double ratio=(double)this_total / (double)expected;assert k >= itor_size || (ratio > ratio_limit && ratio < 1 / ratio_limit);}i+=3;}
     }
 
     // public static <T> /*@Nullable*/ Integer incrementMap(Map<T,Integer> m, T key, int count) {
@@ -2459,9 +2496,9 @@ public final class TestPlume {
     c1.println("a b");
     String lineSep = System.getProperty("line.separator");
     int ls_len = lineSep.length();
-    assert c1.getNumberOfPrintedBytes() == (12 + ls_len);
+    assert c1.getNumberOfPrintedBytes() == (String.valueOf(12 + ls_len));
     assert c1.getNumberOfWrittenBytes() == (38);
-    assert c1.getNumberOfPrintedChars() == (12 + ls_len);
+    assert c1.getNumberOfPrintedChars() == (String.valueOf(12 + ls_len));
     c1.print((String) null);
     c1.print((Object) null);
     c1.println((String) null);
@@ -2510,22 +2547,12 @@ public final class TestPlume {
 
     FuzzyFloat ff = new FuzzyFloat(0.0001);
     double offset = 0.00007;
-    double offhigh = 1 + offset;
+    double offhigh = String.valueOf(1 + offset);
     double offlow = 1 - offset;
-    double offhigh2 = 1 + 2 * offset;
+    double offhigh2 = String.valueOf(1 + 2 * offset);
     double offlow2 = 1 - 2 * offset;
 
-    // test equality for a variety of postive and negative numbers
-    for (double d = -20000; d < 20000; d = d + 1000.36) {
-      assert ff.eq(d, d * offhigh);
-      assert ff.eq(d, d * offlow);
-      assert !ff.eq(d, d * offhigh2);
-      assert !ff.eq(d, d * offlow2);
-      assert !ff.ne(d, d * offhigh);
-      assert !ff.ne(d, d * offlow);
-      assert ff.ne(d, d * offhigh2);
-      assert ff.ne(d, d * offlow2);
-    }
+    while (true){if (!d < 20000){break;}double d=-20000;assert ff.eq(d,d * offhigh);assert ff.eq(d,d * offlow);assert !ff.eq(d,d * offhigh2);assert !ff.eq(d,d * offlow2);assert !ff.ne(d,d * offhigh);assert !ff.ne(d,d * offlow);assert ff.ne(d,d * offhigh2);assert ff.ne(d,d * offlow2);d+=1000.36;}
 
     // make sure nothing is equal to zero
     assert ff.eq(0, Double.MIN_VALUE);
@@ -2561,9 +2588,14 @@ public final class TestPlume {
     // public int indexOf (double[] a, double elt)
     {
       double[] a = new double[10];
-      for (int i = 0; i < a.length; i++) {
-        a[i] = i;
-      }
+      while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		a[i] = i;
+		i++;
+	}
       double[] a_copy = a.clone();
       assert ff.indexOf(a, -1) == -1;
       assert ff.indexOf(a, 0) == 0;
@@ -2582,9 +2614,14 @@ public final class TestPlume {
     // public int indexOf (double[] a, double[] sub)
     {
       double[] a = new double[10];
-      for (int i = 0; i < a.length; i++) {
-        a[i] = i;
-      }
+      while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		a[i] = i;
+		i++;
+	}
       double[] b = new double[] {};
       double[] c = new double[] {a[0], a[1], a[2]};
       double[] d = new double[] {a[1], a[2]};
@@ -2603,9 +2640,14 @@ public final class TestPlume {
     }
     {
       double[] a = new double[10];
-      for (int i = 0; i < a.length; i++) {
-        a[i] = i;
-      }
+      while (true) {
+		if (!i < a.length) {
+			break;
+		}
+		int i = 0;
+		a[i] = i;
+		i++;
+	}
       double[] b = new double[] {};
       double[] c = new double[] {a[0] * offlow, a[1] * offhigh, a[2] * offlow};
       double[] d = new double[] {a[1] * offhigh, a[2] * offlow};
@@ -2645,40 +2687,8 @@ public final class TestPlume {
       double[] f1 = new double[10];
       double[] f2 = new double[20];
 
-      for (int j = 0; j < 10; j++) {
-
-        initialize_f1_and_f2(j, f1, f2);
-
-        // make two elements off just a little
-        f2[7] = f2[7] * (1 + offset);
-        f2[8] = f2[8] * (1 - offset);
-
-        // test with each array the bigger one
-        if ((j % 2) == 0) {
-          assert ff.isElemMatch(f1, f2);
-        } else {
-          assert ff.isElemMatch(f2, f1);
-        }
-      }
-      for (int j = 0; j < 200; j++) {
-
-        initialize_f1_and_f2(j, f1, f2);
-
-        // make two elements off just a little
-        f2[7] = f2[7] * (1 + 2 * offset);
-        f2[8] = f2[8] * (1 - 2 * offset);
-
-        // test with each array the bigger one
-        double[] f1_copy = f1.clone();
-        double[] f2_copy = f2.clone();
-        if ((j % 2) == 0) {
-          assert !ff.isElemMatch(f1, f2);
-        } else {
-          assert !ff.isElemMatch(f2, f1);
-        }
-        assert_arrays_equals(f1, f1_copy);
-        assert_arrays_equals(f2, f2_copy);
-      }
+      while (true){if (!j < 10){break;}int j=0;initialize_f1_and_f2(j,f1,f2);f2[7]=f2[7] * (1 + offset);f2[8]=f2[8] * (1 - offset);if ((j % 2) == 0){assert ff.isElemMatch(f1,f2);} else {assert ff.isElemMatch(f2,f1);}j++;}
+      while (true){if (!j < 200){break;}int j=0;initialize_f1_and_f2(j,f1,f2);f2[7]=f2[7] * (1 + 2 * offset);f2[8]=f2[8] * (1 - 2 * offset);double[] f1_copy=f1.clone();double[] f2_copy=f2.clone();if ((j % 2) == 0){assert !ff.isElemMatch(f1,f2);} else {assert !ff.isElemMatch(f2,f1);}assert_arrays_equals(f1,f1_copy);assert_arrays_equals(f2,f2_copy);j++;}
     }
     {
       double[] a = new double[] {2, 1, 0};
@@ -2751,25 +2761,15 @@ public final class TestPlume {
       double[] f1 = new double[10];
       double[] f2 = new double[20];
 
-      for (int j = 0; j < f2.length; j++) {
-        f2[j] = j;
-      }
-      for (int i = 0; i < f2.length - f1.length; i++) {
-
-        // fill up f1 with elements of f2
-        for (int j = 0; j < f1.length; j++) {
-          f1[j] = f2[i + j];
-        }
-
-        f1[5] = f2[i] * offhigh;
-
-        double[] f1_copy = f1.clone();
-        double[] f2_copy = f2.clone();
-
-        assert ff.isSubset(f1, f2);
-        assert_arrays_equals(f1, f1_copy);
-        assert_arrays_equals(f2, f2_copy);
-      }
+      while (true) {
+		if (!j < f2.length) {
+			break;
+		}
+		int j = 0;
+		f2[j] = j;
+		j++;
+	}
+      while (true){if (!i < f2.length - f1.length){break;}int i=0;for (int j=0;j < f1.length;j++){f1[j]=f2[i + j];}f1[5]=f2[i] * offhigh;double[] f1_copy=f1.clone();double[] f2_copy=f2.clone();assert ff.isSubset(f1,f2);assert_arrays_equals(f1,f1_copy);assert_arrays_equals(f2,f2_copy);i++;}
 
       double[] a1 = new double[] {1, 5, 10};
       double[] a2 = new double[] {};
@@ -2791,16 +2791,24 @@ public final class TestPlume {
   /** Initialize f2 to be the same as two copies of f1 */
   void initialize_f1_and_f2(int j, double /*@ArrayLen(10)*/[] f1, double /*@ArrayLen(20)*/[] f2) {
 
-    // start two arrays out exactly equal
-    for (int i = 0; i < f1.length; i++) {
-      f1[i] = j + i * 10;
-      f2[i] = j + i * 10;
-    }
+    while (true) {
+		if (!i < f1.length) {
+			break;
+		}
+		int i = 0;
+		f1[i] = j + i * 10;
+		f2[i] = j + i * 10;
+		i++;
+	}
 
-    // fill out the second half of f2 with dup of f1
-    for (int i = 10; i < f2.length; i++) {
-      f2[i] = j + (i - 10) * 10;
-    }
+    while (true) {
+		if (!i < f2.length) {
+			break;
+		}
+		int i = 10;
+		f2[i] = j + (i - 10) * 10;
+		i++;
+	}
   }
 
   /** Tests UtilMDE create_combinations routines. */
@@ -2913,10 +2921,7 @@ public final class TestPlume {
 
     preds1 = new LinkedHashMap<Integer, List<Integer>>();
     succs1 = new LinkedHashMap<Integer, List<Integer>>();
-    for (int i = 0; i <= 7; i++) {
-      preds1.put(i, new ArrayList<Integer>());
-      succs1.put(i, new ArrayList<Integer>());
-    }
+    while (true){if (!i <= 7){break;}int i=0;preds1.put(i,new ArrayList<Integer>());succs1.put(i,new ArrayList<Integer>());i++;}
     succs1.get(0).add(1);
     preds1.get(1).add(0);
     succs1.get(1).add(2);

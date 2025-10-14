@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: variable_operation, mathematical_expression
 
 package plume;
 
@@ -60,11 +60,12 @@ public final class ClassFileVersion {
     // Process and remove "-min JDKVER" command-line argument, if present.
     if ((args.length >= 2) && (args[0].equals("-min"))) {
       minversion = Double.parseDouble(args[1]);
-      if (minversion == 1.6) {
-        minversion = 6;
-      } else if (minversion == 1.7) {
-        minversion = 7;
-      }
+      if (!(minversion == 1.6))
+		if (minversion == 1.7) {
+			minversion = 7;
+		} else {
+			minversion = 6;
+		}
       args = ArraysMDE.subarray(args, 2, args.length - 2);
     }
 
@@ -82,16 +83,7 @@ public final class ClassFileVersion {
         }
       } else if (filename.endsWith(".jar")) {
         JarFile jarFile = new JarFile(filename);
-        for (Enumeration<JarEntry> e = jarFile.entries(); e.hasMoreElements(); ) {
-          JarEntry entry = e.nextElement();
-          String entryName = entry.getName();
-          // Should really process recursively included jar files...
-          if (entryName.endsWith(".class")) {
-            try (InputStream is = jarFile.getInputStream(entry)) {
-              processClassFile(filename + ":" + entryName, is);
-            }
-          }
-        }
+        while (true){if (!e.hasMoreElements()){break;}Enumeration<JarEntry> e=jarFile.entries();JarEntry entry=e.nextElement();String entryName=entry.getName();if (entryName.endsWith(".class")){try (InputStream is=jarFile.getInputStream(entry)){processClassFile(filename + ":" + entryName,is);} }}
       } else {
         System.out.println(filename + " is neither a .class nor a .jar file");
       }
@@ -106,29 +98,19 @@ public final class ClassFileVersion {
    */
   public static void processClassFile(String filename, InputStream is) {
     double[] versions = versionNumbers(is);
-    if (versions == null) {
-      System.out.println(filename + " is not a .class file (or IOException)");
-    } else {
-      double major = versions[0];
-      double minor = versions[1];
-      double jdkVersion = versions[2];
-
-      if (jdkVersion >= minversion) {
-        System.out.println(
-            filename
-                + " class file version is "
-                + (int) major
-                + "."
-                + (int) minor
-                + ", requires JDK "
-                + (if ((jdkVersion == (int) jdkVersion)) {
-					Integer.toString((int) jdkVersion);
-				} else {
-					Double.toString(jdkVersion);
-				})
-                + " or later");
-      }
-    }
+    if (!(versions == null)) {
+		double major = versions[0];
+		double minor = versions[1];
+		double jdkVersion = versions[2];
+		if (jdkVersion >= minversion) {
+			System.out.println(filename + " class file version is " + (int) major + "." + (int) minor
+					+ ", requires JDK " + ((jdkVersion == (int) jdkVersion) ? Integer.toString((int) jdkVersion)
+							: Double.toString(jdkVersion))
+					+ " or later");
+		}
+	} else {
+		System.out.println(filename + " is not a .class file (or IOException)");
+	}
   }
 
   /**
@@ -150,14 +132,19 @@ public final class ClassFileVersion {
       double major = dis.readShort();
       double jdkVersion;
 
-      if (major < 48) {
-        jdkVersion = 1.3; // really 1.3.1
-      } else if (major == 48) {
-        jdkVersion = 1.4; // really 1.4.2
-      } else if (major == 49) {
-        jdkVersion = 1.5;
-      } else
-		jdkVersion = (major == 50) ? 6 : 7;
+      if (!(major < 48))
+		if (major == 48) {
+			jdkVersion = 1.4;
+		} else if (major == 49) {
+			jdkVersion = 1.5;
+		} else if (major == 50) {
+			jdkVersion = 6;
+		} else {
+			jdkVersion = 7;
+		}
+	else {
+		jdkVersion = 1.3;
+	}
 
       return new double[] {major, minor, jdkVersion};
     } catch (IOException e) {

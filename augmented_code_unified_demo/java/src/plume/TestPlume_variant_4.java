@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation, ternary_operator, mathematical_expression
+// Applied transformations: variable_operation, mathematical_expression
 
 package plume;
 
@@ -1033,8 +1033,8 @@ public final class TestPlume {
     class InternTest {
       // javadoc won't let this be static.
       void test(boolean random) {
-        int size1 = (if (random){100;} else {1;});
-        int size2 = (if (random){10;} else {1;});
+        int size1 = (random ? 100 : 1);
+        int size2 = (random ? 10 : 1);
 
         Random random_gen = new Random();
 
@@ -1042,7 +1042,11 @@ public final class TestPlume {
         for (int i = 0; i < arrays.length; i++) {
           int[] a = new int[10];
           for (int j = 0; j < a.length; j++) {
-            a[j] = (random) ? random_gen.nextInt(1000) : j;
+            if (random) {
+              a[j] = random_gen.nextInt(1000);
+            } else {
+              a[j] = j;
+            }
           }
           arrays[i] = a;
           // System.out.println(ArraysMDE.toString(a));
@@ -1248,7 +1252,7 @@ public final class TestPlume {
     for (int i = 1; i < max_size * 2; i++) {
       lsis_add_elts(i, s);
       int size = s.size();
-      assert (if ((i <= max_size)){(size == i);} else {(size == max_size + 1);})
+      assert ((i <= max_size) ? (size == i) : (size == 1 + max_size))
           : String.format(
               "(%d<=%d) ? (%d==%d) : (%d==%d+1)   size=%d, i=%d, max_size=%d, s=%s",
               i, max_size, size, i, size, max_size, size, i, max_size, s);
@@ -1483,7 +1487,11 @@ public final class TestPlume {
       // javadoc won't let this be static
       void check(int[] nums, int /*@Nullable*/ [] goal_rm, boolean strict) {
         int[] rm;
-        rm = (strict) ? MathMDE.nonmodulus_strict(nums) : MathMDE.nonmodulus_nonstrict(nums);
+        if (strict) {
+          rm = MathMDE.nonmodulus_strict(nums);
+        } else {
+          rm = MathMDE.nonmodulus_nonstrict(nums);
+        }
         if (!Arrays.equals(rm, goal_rm)) {
           throw new Error(
               "Expected (r,m)=" + Arrays.toString(goal_rm) + ", saw (r,m)=" + Arrays.toString(rm));
@@ -1989,7 +1997,7 @@ public final class TestPlume {
 
       int itor_size = 10;
       int num_elts_limit = 12;
-      int tries = if (short_run){100;} else {100000;};
+      int tries = short_run ? 100 : 100000;
       double ratio_limit = .02;
       Random r = new Random(20020311);
       // "i++" instead of "i+=3" here works, but is slow

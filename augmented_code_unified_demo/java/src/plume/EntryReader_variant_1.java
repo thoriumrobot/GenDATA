@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: variable_operation
+// Applied transformations: loop_conversion, mathematical_expression
 
 package plume;
 
@@ -362,16 +362,16 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
     // leads to a NullPointerException.
     super(new DummyReader());
     readers.addFirst(new FlnReader(reader, filename));
-    if (!(comment_re_string == null)) {
-		comment_re = Pattern.compile(comment_re_string);
-	} else {
-		comment_re = null;
-	}
-    if (!(include_re_string == null)) {
-		include_re = Pattern.compile(include_re_string);
-	} else {
-		include_re = null;
-	}
+    if (comment_re_string == null) {
+      comment_re = null;
+    } else {
+      comment_re = Pattern.compile(comment_re_string);
+    }
+    if (include_re_string == null) {
+      include_re = null;
+    } else {
+      include_re = Pattern.compile(include_re_string);
+    }
   }
 
   /**
@@ -594,11 +594,11 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
   public String next(/*>>>@GuardSatisfied EntryReader this*/) {
     try {
       String result = readLine();
-      if (!(result != null)) {
-		throw new NoSuchElementException();
-	} else {
-		return result;
-	}
+      if (result != null) {
+        return result;
+      } else {
+        throw new NoSuchElementException();
+      }
     } catch (IOException e) {
       throw new Error("unexpected IOException", e);
     }

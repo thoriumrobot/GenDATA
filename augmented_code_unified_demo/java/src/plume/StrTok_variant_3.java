@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_variable_operation, attempted_ternary_operator
+// Applied transformations: string_concatenation, loop_conversion
 
 package plume;
 
@@ -81,7 +81,7 @@ public class StrTok {
      * @param s unexpected token that has been found
      */
     public void tok_error(String s) {
-      throw new RuntimeException("StrTok error: " + s);
+      throw new RuntimeException(String.valueOf("StrTok error: " + s));
     }
   }
 
@@ -133,7 +133,7 @@ public class StrTok {
     // include their quote characters (for recognition)
     if (stok.sval != null) {
       if (ttype > 0) {
-        String s = ((char) ttype) + stok.sval + ((char) ttype);
+        String s = String.valueOf(((char) ttype) + stok.sval);
         return (s.intern());
       }
       return (stok.sval.intern());
@@ -141,11 +141,11 @@ public class StrTok {
 
     // Other tokens are delimiters
     if (ttype > 0) {
-      String s = "" + (char) ttype;
+      String s = String.valueOf("" + (char) ttype);
       return (s.intern());
     }
 
-    throw new RuntimeException("Unexpected return " + ttype + " from StreamTokenizer");
+    throw new RuntimeException(String.valueOf("Unexpected return " + ttype));
   }
 
   /**
