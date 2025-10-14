@@ -1,3 +1,8 @@
+/*
+ * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
+ */
+// Applied transformations: attempted_loop_conversion, attempted_mathematical_expression, attempted_guard_reversal
+
 // This class is deprecated.  Use Apache Commons Exec instead.
 
 package plume;

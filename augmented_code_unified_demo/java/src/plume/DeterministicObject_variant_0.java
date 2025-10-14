@@ -1,3 +1,8 @@
+/*
+ * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
+ */
+// Applied transformations: attempted_guard_reversal, attempted_loop_conversion, attempted_switch_statement
+
 package plume;
 
 // Even with these, Javadoc wouldn't make links from {@link HashMap} or

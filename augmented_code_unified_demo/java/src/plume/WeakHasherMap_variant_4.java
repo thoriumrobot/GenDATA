@@ -1,4 +1,9 @@
 /*
+ * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
+ */
+// Applied transformations: attempted_loop_conversion, attempted_mathematical_expression, attempted_guard_reversal
+
+/*
  * @(#)WeakHashMap.java	1.5 98/09/30
  *
  * Copyright 1998 by Sun Microsystems, Inc.,
