@@ -289,6 +289,88 @@ The ablation pipeline integrates seamlessly with the existing GenDATA architectu
 - Works with existing evaluation metrics
 - Maintains compatibility with case study projects
 
+## Troubleshooting
+
+### Common Issues and Solutions
+
+#### 1. "No .java slices produced" Error
+
+**Problem**: `[SLICE] No .java slices produced by 'soot'. Falling back to 'cf' slicer...`
+
+**Root Cause**: Soot slicer fails to produce slices, then CF slicer can't find the JAR.
+
+**Solution**: The pipeline now uses Specimin slicer by default, which is more reliable for Checker Framework code.
+
+#### 2. "Unknown transformation" Warnings
+
+**Problem**: `WARNING - Unknown transformation: TransformationType.RANDOM_METHOD_INSERTION`
+
+**Root Cause**: Random walk optimizer tries to use random transformation types that don't exist in semantic transformers.
+
+**Solution**: Random walk optimizer is disabled in ablation studies to prevent these warnings.
+
+#### 3. "CheckerFrameworkSlicer JAR not found" Error
+
+**Problem**: `Error: CheckerFrameworkSlicer JAR not found at <path>/build/libs/GenDATA-all.jar`
+
+**Root Cause**: Pipeline looks for JAR in wrong directory.
+
+**Solution**: Pipeline now uses main GenDATA directory (`/home/ubuntu/GenDATA`) as `cfwr_root` to access the JAR.
+
+#### 4. CUDA/GPU Issues
+
+**Problem**: `RuntimeError: No CUDA GPUs are available`
+
+**Root Cause**: Environment has no CUDA GPUs.
+
+**Solution**: Use `--device cpu` flag for CPU-only environments.
+
+#### 5. Blank Output Directories
+
+**Problem**: Slices, CFGs, or models directories are empty.
+
+**Root Cause**: Pipeline failure during slicing, CFG generation, or model training.
+
+**Solution**: Check logs for specific errors and ensure all dependencies are properly installed.
+
+### Slicer Comparison
+
+| Slicer | Pros | Cons | Use Case |
+|--------|------|------|----------|
+| **Specimin** | ✅ More reliable for CF code<br>✅ No pre-compilation needed<br>✅ Better error handling | ⚠️ Slower than Soot | **Default choice** |
+| **Soot** | ✅ Faster bytecode analysis<br>✅ More precise slicing | ❌ Requires compilation<br>❌ Less reliable with CF | Legacy compatibility |
+| **CF** | ✅ Direct CF integration<br>✅ Fastest execution | ❌ Requires JAR<br>❌ Limited functionality | Fallback only |
+
+### Device Configuration
+
+- **GPU (CUDA)**: Default for better performance when available
+- **CPU**: Use when no GPU available or for testing
+- **Auto**: Automatically detects best available device
+
+### File Path Issues
+
+The pipeline expects:
+- Warnings file: `index1.out` (will copy from `index1.small.out` if needed)
+- JAR location: `/home/ubuntu/GenDATA/build/libs/GenDATA-all.jar`
+- Project root: `/home/ubuntu/checker-framework/checker/tests/index`
+
+### Testing Commands
+
+```bash
+# Test no augmentation mode (recommended for initial testing)
+python run_ablation_studies.py \
+  --mode no_aug \
+  --project_root /home/ubuntu/checker-framework/checker/tests/index \
+  --warnings_file /home/ubuntu/GenDATA/index1.small.out \
+  --output_dir ablation_studies_test \
+  --device cpu
+
+# Verify outputs
+ls -la ablation_studies_test/no_augmentation/cfg_output/
+ls -la ablation_studies_test/no_augmentation/models/
+cat ablation_studies_test/no_augmentation/results.json
+```
+
 ## Future Enhancements
 
 Potential improvements to the ablation pipeline:

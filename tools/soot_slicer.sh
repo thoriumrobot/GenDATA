@@ -47,7 +47,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CFWR_ROOT="$(dirname "$SCRIPT_DIR")"
 
 # Check if the SootSlicer JAR exists
-SOOT_JAR="$CFWR_ROOT/build/libs/CFWR-all.jar"
+SOOT_JAR="$CFWR_ROOT/build/libs/GenDATA-all.jar"
 if [[ ! -f "$SOOT_JAR" ]]; then
   echo "[soot_slicer] SootSlicer JAR not found at $SOOT_JAR" >&2
   echo "[soot_slicer] Please run './gradlew build' first" >&2

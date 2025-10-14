@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 class SimpleAnnotationTypePipeline:
     """Simplified pipeline for training and testing annotation types"""
     
-    def __init__(self, project_root, warnings_file, cfwr_root, mode='train', no_auto_train=False, device='auto', augment_first=True):
+    def __init__(self, project_root, warnings_file, cfwr_root, mode='train', no_auto_train=False, device='auto', augment_first=True, disable_random_walk=False):
         self.project_root = project_root
         self.warnings_file = warnings_file
         self.cfwr_root = cfwr_root
@@ -37,6 +37,7 @@ class SimpleAnnotationTypePipeline:
         self.no_auto_train = no_auto_train
         self.device = device
         self.augment_first = augment_first
+        self.disable_random_walk = disable_random_walk
         
         # Set up directories for adaptive semantic augmentation
         self.slices_dir = os.path.join(cfwr_root, 'slices_adaptive_specimin')
@@ -52,12 +53,16 @@ class SimpleAnnotationTypePipeline:
         self.unified_registry = UnifiedAugmentationRegistry(seed=42)
         self.location_analyzer = CodeLocationAnalyzer()
         
-        # Initialize random walk optimizer with unified registry
-        self.random_walk_optimizer = RandomWalkOptimizer(
-            methods=['rl', 'mcts', 'evolutionary'],
-            device=device,
-            registry=self.unified_registry
-        )
+        # Initialize random walk optimizer with unified registry (unless disabled)
+        if not self.disable_random_walk:
+            self.random_walk_optimizer = RandomWalkOptimizer(
+                methods=['rl', 'mcts', 'evolutionary'],
+                device=device,
+                registry=self.unified_registry
+            )
+        else:
+            self.random_walk_optimizer = None
+            logger.info("Random walk optimizer disabled for ablation study")
         
         # Annotation types
         self.annotation_types = ['@Positive', '@NonNegative', '@GTENegativeOne']
@@ -478,7 +483,7 @@ class SimpleAnnotationTypePipeline:
                 '--cfg_dir', self.cfg_dir,
                 '--episodes', str(episodes),
                 '--base_model', base_model,
-                '--device', 'cpu',
+                '--device', self.device,
                 '--use_real_cfg_data'
             ]
             

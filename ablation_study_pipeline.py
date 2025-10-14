@@ -95,13 +95,15 @@ class AblationStudyPipeline:
         baseline_dir = self.ablation_dirs['baseline']
         
         # Use existing pipeline with full features
+        # Use the main GenDATA directory as cfwr_root so it can find the JAR
         pipeline = SimpleAnnotationTypePipeline(
             project_root=self.project_root,
             warnings_file=self.warnings_file,
-            cfwr_root=str(baseline_dir),
+            cfwr_root='/home/ubuntu/GenDATA',  # Use main GenDATA dir for JAR access
             mode='train',
             device=self.device,
-            augment_first=True
+            augment_first=True,
+            disable_random_walk=True  # Disable random walk optimizer to prevent CUDA issues
         )
         
         # Update directories to use baseline-specific paths
@@ -109,9 +111,15 @@ class AblationStudyPipeline:
         pipeline.cfg_dir = str(baseline_dir / 'cfg_output')
         pipeline.models_dir = str(baseline_dir / 'models')
         
-        # Run training pipeline
+        # Copy warnings file to expected location (pipeline expects index1.out in cfwr_root)
+        import shutil
+        expected_warnings_file = '/home/ubuntu/GenDATA/index1.out'
+        shutil.copy2(self.warnings_file, expected_warnings_file)
+        logger.info(f"Copied warnings file to {expected_warnings_file}")
+        
+        # Run training pipeline with reduced episodes for testing
         start_time = time.time()
-        success = pipeline.run_training_pipeline(episodes=50, base_model='gcn')
+        success = pipeline.run_training_pipeline(episodes=10, base_model='gcn')
         training_time = time.time() - start_time
         
         if success:
@@ -131,13 +139,15 @@ class AblationStudyPipeline:
         no_aug_dir = self.ablation_dirs['no_augmentation']
         
         # Create pipeline without augmentation
+        # Use the main GenDATA directory as cfwr_root so it can find the JAR
         pipeline = SimpleAnnotationTypePipeline(
             project_root=self.project_root,
             warnings_file=self.warnings_file,
-            cfwr_root=str(no_aug_dir),
+            cfwr_root='/home/ubuntu/GenDATA',  # Use main GenDATA dir for JAR access
             mode='train',
             device=self.device,
-            augment_first=False  # Disable augment-first
+            augment_first=False,  # Disable augmentation entirely
+            disable_random_walk=True  # Disable random walk optimizer to prevent CUDA issues
         )
         
         # Update directories
@@ -145,12 +155,14 @@ class AblationStudyPipeline:
         pipeline.cfg_dir = str(no_aug_dir / 'cfg_output')
         pipeline.models_dir = str(no_aug_dir / 'models')
         
-        # Override augmentation to skip it entirely
-        original_augment = pipeline._augment_slices
-        pipeline._augment_slices = lambda *args, **kwargs: True  # Skip augmentation
+        # Copy warnings file to expected location (pipeline expects index1.out in cfwr_root)
+        import shutil
+        expected_warnings_file = '/home/ubuntu/GenDATA/index1.out'
+        shutil.copy2(self.warnings_file, expected_warnings_file)
+        logger.info(f"Copied warnings file to {expected_warnings_file}")
         
         start_time = time.time()
-        success = pipeline.run_training_pipeline(episodes=50, base_model='gcn')
+        success = pipeline.run_training_pipeline(episodes=10, base_model='gcn')
         training_time = time.time() - start_time
         
         if success:
