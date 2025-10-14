@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_mathematical_expression
+// Applied transformations: variable_operation
 
 // The five files
 //   Option.java
@@ -440,9 +440,9 @@ public class Options {
       if (short_name != null) {
         name = String.format("-%s %s", short_name, name);
       }
-      name += String.format("=<%s>", type_name);
+      name = name + String.format("=<%s>", type_name);
       if (list != null) {
-        name += " [+]";
+        name = name + " [+]";
       }
       return (name);
     }
@@ -949,12 +949,12 @@ public class Options {
     for (int ii = 0; ii < args.length(); ii++) {
       char ch = args.charAt(ii);
       if ((ch == '\'') || (ch == '"')) {
-        arg += ch;
+        arg = arg + ch;
         ii++;
         while ((ii < args.length()) && (args.charAt(ii) != ch)) {
-          arg += args.charAt(ii++);
+          arg = arg + args.charAt(ii++);
         }
-        arg += ch;
+        arg = arg + ch;
       } else if (Character.isWhitespace(ch)) {
         // System.out.printf ("adding argument '%s'%n", arg);
         arg_list.add(arg);
@@ -968,7 +968,7 @@ public class Options {
           ii--;
         }
       } else { // must be part of current argument
-        arg += ch;
+        arg = arg + ch;
       }
     }
     if (!arg.equals("")) {
@@ -1339,16 +1339,16 @@ public class Options {
 
     // Keep track of all of the options specified
     if (options_str.length() > 0) {
-      options_str += " ";
+      options_str = options_str + " ";
     }
-    options_str += arg_name;
+    options_str = options_str + arg_name;
     if (arg_value != null) {
       if (!arg_value.contains(" ")) {
-        options_str += "=" + arg_value;
+        options_str = options_str + "=" + arg_value;
       } else if (!arg_value.contains("'")) {
-        options_str += "='" + arg_value + "'";
+        options_str = options_str + "='" + arg_value + "'";
       } else if (!arg_value.contains("\"")) {
-        options_str += "=\"" + arg_value + "\"";
+        options_str = options_str + "=\"" + arg_value + "\"";
       } else {
         throw new ArgException("Can't quote for internal debugging: " + arg_value);
       }
@@ -1561,7 +1561,7 @@ public class Options {
       @SuppressWarnings("formatter") // format string computed from max_len
       String use = String.format("%-" + max_len + "s = ", oi.long_name);
       try {
-        use += oi.field.get(oi.obj);
+        use = use + oi.field.get(oi.obj);
       } catch (Exception e) {
         throw new Error("unexpected exception reading field " + oi.field, e);
       }

@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_loop_conversion, attempted_mathematical_expression, attempted_guard_reversal
+// Applied transformations: variable_operation, ternary_operator, mathematical_expression
 
 package plume;
 
@@ -403,13 +403,10 @@ public class MultiVersionControl {
           System.err.printf(
               "Warning: Directory to ignore while searching for checkouts does not exist:%n  %s%n",
               adir);
-        } else if (!afile.isDirectory()) {
-          System.err.printf(
-              "Warning: Directory to ignore while searching for checkouts is not a directory:%n  %s%n",
-              adir);
-        } else {
-          mvc.ignoreDirs.add(afile);
-        }
+        }else !afile.isDirectory()
+				? System.err.printf(
+						"Warning: Directory to ignore while searching for checkouts is not a directory:%n  %s%n", adir)
+				: mvc.ignoreDirs.add(afile)
       }
 
       for (String adir : mvc.dir) {
@@ -493,7 +490,7 @@ public class MultiVersionControl {
       search = false;
       show = true;
       // Checkouts can be much slower than other operations.
-      timeout = timeout * 10;
+      timeout = 10 * timeout;
 
       // Set dry_run to true unless it was explicitly specified
       boolean explicit_run_dry = false;
@@ -560,7 +557,7 @@ public class MultiVersionControl {
         /*@Nullable*/ String module) {
       // Directory might not exist if we are running the checkout command.
       // If it exists, it must be a directory.
-      assert (directory.exists() ? directory.isDirectory() : true)
+      assert (if (directory.exists()){directory.isDirectory();} else {true;})
           : "Not a directory: " + directory;
       this.repoType = repoType;
       this.directory = directory;
@@ -613,8 +610,8 @@ public class MultiVersionControl {
       Checkout c2 = (Checkout) other;
       return ((repoType == c2.repoType)
           && directory.equals(c2.directory)
-          && ((repository == null) ? (c2.repository == null) : repository.equals(c2.repository))
-          && ((module == null) ? (c2.module == null) : module.equals(c2.module)));
+          && (if ((repository == null)){(c2.repository == null);} else {repository.equals(c2.repository);})
+          && (if ((module == null)){(c2.module == null);} else {module.equals(c2.module);}));
     }
 
     @Override
@@ -622,8 +619,8 @@ public class MultiVersionControl {
     public int hashCode(/*>>>@GuardSatisfied Checkout this*/) {
       return (repoType.hashCode()
           + directory.hashCode()
-          + (repository == null ? 0 : repository.hashCode())
-          + (module == null ? 0 : module.hashCode()));
+          + (if (repository == null){0;} else {repository.hashCode();})
+          + (if (module == null){0;} else {module.hashCode();}));
     }
 
     @Override
@@ -715,12 +712,7 @@ public class MultiVersionControl {
       String module = null;
 
       int spacePos = line.lastIndexOf(' ');
-      if (spacePos == -1) {
-        dirname = line;
-      } else {
-        dirname = line.substring(0, spacePos);
-        module = line.substring(spacePos + 1);
-      }
+      dirname = (spacePos == -1) ? line : line.substring(0, spacePos);
 
       // The directory may not yet exist if we are doing a checkout.
       File dir = new File(expandTilde(dirname));
@@ -730,7 +722,7 @@ public class MultiVersionControl {
       }
       if (currentType != RepoType.CVS) {
         if (!currentRootIsRepos) {
-          root = root + "/" + module;
+          root += "/";
         }
         module = null;
       }
@@ -881,11 +873,7 @@ public class MultiVersionControl {
       System.exit(1);
     }
     String pathInRepoAtCheckout;
-    if (stripped.b != null) {
-      pathInRepoAtCheckout = stripped.b.toString();
-    } else {
-      pathInRepoAtCheckout = cDir.getName();
-    }
+    pathInRepoAtCheckout = (stripped.b != null) ? stripped.b.toString() : cDir.getName();
 
     checkouts.add(new Checkout(RepoType.CVS, cDir, repoRoot, pathInRepoAtCheckout));
   }
@@ -1208,11 +1196,8 @@ public class MultiVersionControl {
               }
               break;
             case SVN:
-              if (c.module != null) {
-                pb.command(svn_executable, "checkout", c.repository, c.module);
-              } else {
-                pb.command(svn_executable, "checkout", c.repository);
-              }
+              c.module != null ? pb.command(svn_executable, "checkout", c.repository, c.module)
+					: pb.command(svn_executable, "checkout", c.repository)
               addArgs(pb, svn_arg);
               break;
             default:
@@ -1348,11 +1333,9 @@ public class MultiVersionControl {
                 System.out.printf(
                     "invalidCertificate(%s) => %s%n", c.directory, invalidCertificate(c.directory));
               }
-              if (invalidCertificate(c.directory)) {
-                pb2.command(hg_executable, "outgoing", "-l", "1", "--config", "web.cacerts=");
-              } else {
-                pb2.command(hg_executable, "outgoing", "-l", "1");
-              }
+              invalidCertificate(c.directory)
+					? pb2.command(hg_executable, "outgoing", "-l", "1", "--config", "web.cacerts=")
+					: pb2.command(hg_executable, "outgoing", "-l", "1")
               addArgs(pb2, hg_arg);
               if (insecure) {
                 addArg(pb2, "--insecure");
@@ -1434,11 +1417,8 @@ public class MultiVersionControl {
               replacers.add(new Replacer("(^|\\n)abort: ", "$1"));
               pb.command(hg_executable, "-q", "update");
               addArgs(pb, hg_arg);
-              if (invalidCertificate(c.directory)) {
-                pb2.command(hg_executable, "-q", "fetch", "--config", "web.cacerts=");
-              } else {
-                pb2.command(hg_executable, "-q", "fetch");
-              }
+              invalidCertificate(c.directory) ? pb2.command(hg_executable, "-q", "fetch", "--config", "web.cacerts=")
+					: pb2.command(hg_executable, "-q", "fetch")
               addArgs(pb2, hg_arg);
               if (insecure) {
                 addArg(pb2, "--insecure");
@@ -1482,13 +1462,8 @@ public class MultiVersionControl {
           case CLONE:
             if (!parent.exists()) {
               if (show) {
-                if (!dry_run) {
-                  System.out.printf(
-                      "Parent directory %s does not exist%s%n",
-                      parent, (dry_run ? "" : " (creating)"));
-                } else {
-                  System.out.printf("  mkdir -p %s%n", parent);
-                }
+                !dry_run ? System.out.printf("Parent directory %s does not exist%s%n", parent,
+						(dry_run ? "" : " (creating)")) : System.out.printf("  mkdir -p %s%n", parent)
               }
               if (!dry_run) {
                 if (!parent.mkdirs()) {
@@ -1598,7 +1573,7 @@ public class MultiVersionControl {
     /*@NonNull*/ File defaultDirectory = pb.directory();
     executor.setWorkingDirectory(defaultDirectory);
 
-    ExecuteWatchdog watchdog = new ExecuteWatchdog(timeout * 1000);
+    ExecuteWatchdog watchdog = new ExecuteWatchdog(1000 * timeout);
     executor.setWatchdog(watchdog);
 
     final ByteArrayOutputStream outStream = new ByteArrayOutputStream();

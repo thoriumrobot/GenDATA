@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_logical_expression, attempted_string_concatenation
+// Applied transformations: variable_operation, ternary_operator
 
 package plume;
 
@@ -250,7 +250,7 @@ public final class FileCompiler {
         if (!fileExists(classFilePath)) {
           if (!errorClasses.contains(sourceFileName)) {
             retry.add(sourceFileName);
-            filenames += " " + sourceFileName;
+            filenames = filenames + " " + sourceFileName;
           }
         }
       }

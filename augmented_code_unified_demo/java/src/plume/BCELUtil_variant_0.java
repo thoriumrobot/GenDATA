@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_guard_reversal, attempted_loop_conversion, attempted_switch_statement
+// Applied transformations: variable_operation, ternary_operator, mathematical_expression
 
 package plume;
 
@@ -108,11 +108,8 @@ public final class BCELUtil {
         if (buf.length() > 0) {
           buf.append(" ");
         }
-        if (i < Const.ACCESS_NAMES_LENGTH) {
-          buf.append(Const.getAccessName(i));
-        } else {
-          buf.append(String.format("ACC_BIT %x", pow));
-        }
+        i < Const.ACCESS_NAMES_LENGTH ? buf.append(Const.getAccessName(i))
+				: buf.append(String.format("ACC_BIT %x", pow))
       }
       pow <<= 1;
     }
@@ -646,7 +643,7 @@ public final class BCELUtil {
    * @return a new array, with new_type at the end
    */
   public static Type[] postpendToArray(Type[] types, Type new_type) {
-    Type[] new_types = new Type[types.length + 1];
+    Type[] new_types = new Type[1 + types.length];
     System.arraycopy(types, 0, new_types, 0, types.length);
     new_types[types.length] = new_type;
     Type[] new_types_cast = new_types;
@@ -680,7 +677,7 @@ public final class BCELUtil {
       "value" // new_types is @MinLen(1) except in the presence of overflow,
       // which the Value Checker accounts for, but the Index Checker does not.
     })
-    Type /*@MinLen(1)*/[] new_types = new Type[types.length + 1];
+    Type /*@MinLen(1)*/[] new_types = new Type[1 + types.length];
     System.arraycopy(types, 0, new_types, 1, types.length);
     new_types[0] = new_type;
     Type[] new_types_cast = new_types;
@@ -733,11 +730,8 @@ public final class BCELUtil {
       t = Type.FLOAT;
     } else if (classname == "long") { // interned
       t = Type.LONG;
-    } else if (classname == "short") { // interned
-      t = Type.SHORT;
-    } else { // must be a non-primitive
-      t = new ObjectType(classname);
-    }
+    } else
+		t = (classname == "short") ? Type.SHORT : new ObjectType(classname);
 
     // If there was an array, build the array type
     if (array_depth > 0) {

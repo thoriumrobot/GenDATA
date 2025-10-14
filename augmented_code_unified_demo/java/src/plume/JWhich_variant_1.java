@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_mathematical_expression
+// Applied transformations: variable_operation
 
 /*
  * Copyright (C) 2001 Clarkware Consulting, Inc.
@@ -120,10 +120,10 @@ public final class JWhich {
 
   protected static String asResourceName(String resource) {
     if (!resource.startsWith("/")) {
-      resource = "/" + resource;
+      resource += "/";
     }
     resource = resource.replace('.', '/');
-    resource = resource + ".class";
+    resource += ".class";
     return resource;
   }
 

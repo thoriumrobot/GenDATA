@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_logical_expression, attempted_string_concatenation
+// Applied transformations: variable_operation, ternary_operator
 
 package plume;
 
@@ -1033,8 +1033,8 @@ public final class TestPlume {
     class InternTest {
       // javadoc won't let this be static.
       void test(boolean random) {
-        int size1 = (random ? 100 : 1);
-        int size2 = (random ? 10 : 1);
+        int size1 = (if (random){100;} else {1;});
+        int size2 = (if (random){10;} else {1;});
 
         Random random_gen = new Random();
 
@@ -1042,11 +1042,7 @@ public final class TestPlume {
         for (int i = 0; i < arrays.length; i++) {
           int[] a = new int[10];
           for (int j = 0; j < a.length; j++) {
-            if (random) {
-              a[j] = random_gen.nextInt(1000);
-            } else {
-              a[j] = j;
-            }
+            a[j] = (random) ? random_gen.nextInt(1000) : j;
           }
           arrays[i] = a;
           // System.out.println(ArraysMDE.toString(a));
@@ -1252,7 +1248,7 @@ public final class TestPlume {
     for (int i = 1; i < 2 * max_size; i++) {
       lsis_add_elts(i, s);
       int size = s.size();
-      assert ((i <= max_size) ? (size == i) : (size == max_size + 1))
+      assert (if ((i <= max_size)){(size == i);} else {(size == max_size + 1);})
           : String.format(
               "(%d<=%d) ? (%d==%d) : (%d==%d+1)   size=%d, i=%d, max_size=%d, s=%s",
               i, max_size, size, i, size, max_size, size, i, max_size, s);
@@ -1424,7 +1420,7 @@ public final class TestPlume {
         for (int i = 0; i < nums.length; i++) {
           int r = nums[i] % m;
           if (r < 0) {
-            r += m;
+            r = r + m;
           }
           if (r != goal_r) {
             throw new Error("Expected " + nums[i] + " % " + m + " = " + goal_r + ", got " + r);
@@ -1487,11 +1483,7 @@ public final class TestPlume {
       // javadoc won't let this be static
       void check(int[] nums, int /*@Nullable*/ [] goal_rm, boolean strict) {
         int[] rm;
-        if (strict) {
-          rm = MathMDE.nonmodulus_strict(nums);
-        } else {
-          rm = MathMDE.nonmodulus_nonstrict(nums);
-        }
+        rm = (strict) ? MathMDE.nonmodulus_strict(nums) : MathMDE.nonmodulus_nonstrict(nums);
         if (!Arrays.equals(rm, goal_rm)) {
           throw new Error(
               "Expected (r,m)=" + Arrays.toString(goal_rm) + ", saw (r,m)=" + Arrays.toString(rm));
@@ -1504,7 +1496,7 @@ public final class TestPlume {
         for (int i = 0; i < nums.length; i++) {
           int r = nums[i] % m;
           if (r < 0) {
-            r += m;
+            r = r + m;
           }
           if (r == goal_r) {
             throw new Error("Expected inequality, saw " + nums[i] + " % " + m + " = " + r);
@@ -1540,11 +1532,11 @@ public final class TestPlume {
       ones.add(i);
     }
     ArrayList<Integer> twos = new ArrayList<Integer>();
-    for (int i = 2; i <= 30; i += 2) {
+    for (int i = 2; i <= 30; i = i + 2) {
       twos.add(i);
     }
     ArrayList<Integer> threes = new ArrayList<Integer>();
-    for (int i = 3; i <= 30; i += 3) {
+    for (int i = 3; i <= 30; i = i + 3) {
       threes.add(i);
     }
 
@@ -1997,11 +1989,11 @@ public final class TestPlume {
 
       int itor_size = 10;
       int num_elts_limit = 12;
-      int tries = short_run ? 100 : 100000;
+      int tries = if (short_run){100;} else {100000;};
       double ratio_limit = .02;
       Random r = new Random(20020311);
       // "i++" instead of "i+=3" here works, but is slow
-      for (int i = 1; i < num_elts_limit; i += 3) {
+      for (int i = 1; i < num_elts_limit; i = i + 3) {
         int[] totals = new int[num_elts_limit];
         for (int j = 0; j < tries; j++) {
           if (j % 100 == 0) {
@@ -2524,7 +2516,7 @@ public final class TestPlume {
     double offlow2 = 1 - 2 * offset;
 
     // test equality for a variety of postive and negative numbers
-    for (double d = -20000; d < 20000; d += 1000.36) {
+    for (double d = -20000; d < 20000; d = d + 1000.36) {
       assert ff.eq(d, d * offhigh);
       assert ff.eq(d, d * offlow);
       assert !ff.eq(d, d * offhigh2);

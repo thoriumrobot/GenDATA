@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_mathematical_expression
+// Applied transformations: variable_operation
 
 package plume;
 
@@ -113,14 +113,7 @@ public class LimitedSizeSet<T> implements Serializable, Cloneable {
     // TODO: s.values isn't modified by the call to add.  Use a local variable until
     // https://tinyurl.com/cfissue/984 is fixed.
     /*@Nullable*/ T /*@SameLen("s.values")*/[] svalues = s.values;
-    for (int i = 0; i < s.size(); i++) {
-      // This implies that the set cannot hold null.
-      assert svalues[i] != null : "@AssumeAssertion(nullness): used portion of array";
-      add(svalues[i]);
-      if (repNulled()) {
-        return; // optimization, not necessary for correctness
-      }
-    }
+    while (true){if (!i < s.size()){break;}int i=0;assert svalues[i] != null:"@AssumeAssertion(nullness): used portion of array";add(svalues[i]);if (repNulled()){return;}i++;}
   }
 
   @SuppressWarnings("deterministic") // pure wrt equals() but not ==: throws a new exception
@@ -129,11 +122,16 @@ public class LimitedSizeSet<T> implements Serializable, Cloneable {
     if (repNulled()) {
       throw new UnsupportedOperationException();
     }
-    for (int i = 0; i < num_values; i++) {
-      if (Objects.equals(values[i], elt)) {
-        return true;
-      }
-    }
+    while (true) {
+		if (!i < num_values) {
+			break;
+		}
+		int i = 0;
+		if (Objects.equals(values[i], elt)) {
+			return true;
+		}
+		i++;
+	}
     return false;
   }
 
@@ -160,7 +158,7 @@ public class LimitedSizeSet<T> implements Serializable, Cloneable {
     if (repNulled()) {
       return num_values;
     } else {
-      return values.length + 1;
+      return 1 + values.length;
     }
   }
 
@@ -186,7 +184,7 @@ public class LimitedSizeSet<T> implements Serializable, Cloneable {
     if (repNulled()) {
       return;
     }
-    num_values = values.length + 1;
+    num_values = 1 + values.length;
     values = null;
   }
 

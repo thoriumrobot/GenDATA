@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_mathematical_expression
+// Applied transformations: variable_operation
 
 // If you edit this file, you must also edit its tests.
 // For tests of this and the entire plume package, see class TestPlume.
@@ -618,7 +618,7 @@ public final class UtilMDE {
       result = "L" + sans_array + ";";
     }
     for (int i = 0; i < dims; i++) {
-      result = "[" + result;
+      result += "[";
     }
     return result.replace('.', '/');
   }
@@ -701,9 +701,9 @@ public final class UtilMDE {
     while (args_tokenizer.hasMoreTokens()) {
       @SuppressWarnings("signature") // substring
       /*@BinaryName*/ String arg = args_tokenizer.nextToken().trim();
-      result += binaryNameToFieldDescriptor(arg);
+      result = result + binaryNameToFieldDescriptor(arg);
     }
-    result += ")";
+    result = result + ")";
     // System.out.println("arglistToJvm: " + arglist + " => " + result);
     return result;
   }
@@ -753,7 +753,7 @@ public final class UtilMDE {
       }
     }
     for (int i = 0; i < dims; i++) {
-      result += "[]";
+      result = result + "[]";
     }
     return result.replace('/', '.');
   }
@@ -777,7 +777,7 @@ public final class UtilMDE {
     /*@Positive*/ int pos = 1;
     while (pos < arglist.length() - 1) {
       if (pos > 1) {
-        result += ", ";
+        result = result + ", ";
       }
       int nonarray_pos = pos;
       while (arglist.charAt(nonarray_pos) == '[') {
@@ -793,7 +793,7 @@ public final class UtilMDE {
           throw new Error("Malformed arglist: " + arglist);
         }
         String fieldDescriptor = arglist.substring(pos, semi_pos + 1);
-        result += fieldDescriptorToBinaryName(fieldDescriptor);
+        result = result + fieldDescriptorToBinaryName(fieldDescriptor);
         pos = semi_pos + 1;
       } else {
         String maybe = fieldDescriptorToBinaryName(arglist.substring(pos, nonarray_pos + 1));
@@ -801,7 +801,7 @@ public final class UtilMDE {
           // return null;
           throw new Error("Malformed arglist: " + arglist);
         }
-        result += maybe;
+        result = result + maybe;
         pos = nonarray_pos + 1;
       }
     }
@@ -2607,13 +2607,13 @@ public final class UtilMDE {
     } else if (c < 256) {
       String octal = Integer.toOctalString(c);
       while (octal.length() < 3) {
-        octal = '0' + octal;
+        octal += '0';
       }
       return "\\" + octal;
     } else {
       String hex = Integer.toHexString(c);
       while (hex.length() < 4) {
-        hex = "0" + hex;
+        hex += "0";
       }
       return "\\u" + hex;
     }

@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_loop_conversion, attempted_mathematical_expression, attempted_guard_reversal
+// Applied transformations: attempted_variable_operation, attempted_ternary_operator, attempted_mathematical_expression
 
 package plume;
 

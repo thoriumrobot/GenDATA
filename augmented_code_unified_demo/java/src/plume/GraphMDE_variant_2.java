@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_logical_expression, attempted_mathematical_expression
+// Applied transformations: variable_operation, ternary_operator
 
 package plume;
 
@@ -119,12 +119,7 @@ public final class GraphMDE {
         for (T pred : preds.get(node)) {
           assert dom.containsKey(pred);
           /*@NonNull*/ List<T> dom_of_pred = dom.get(pred);
-          if (new_doms == null) {
-            // make copy because we may side-effect new_doms
-            new_doms = new ArrayList<T>(dom_of_pred);
-          } else {
-            new_doms.retainAll(dom_of_pred);
-          }
+          new_doms == null?new_doms=new ArrayList<T>(dom_of_pred):new_doms.retainAll(dom_of_pred)
         }
         assert new_doms != null
             : "@AssumeAssertion(nullness): the loop was entered at least once because this is a non-root, which has at least one predecessor";
@@ -160,7 +155,7 @@ public final class GraphMDE {
   public static <T> void print(Map<T, List<T>> graph, PrintStream ps, int indent) {
     String indentString = "";
     for (int i = 0; i < indent; i++) {
-      indentString += " ";
+      indentString = indentString + " ";
     }
     for (T node : graph.keySet()) {
       ps.printf("%s%s%n", indentString, node);

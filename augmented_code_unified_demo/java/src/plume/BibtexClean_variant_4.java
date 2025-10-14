@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_loop_conversion, attempted_mathematical_expression, attempted_guard_reversal
+// Applied transformations: variable_operation, ternary_operator, mathematical_expression
 
 package plume;
 
@@ -65,16 +65,15 @@ public final class BibtexClean {
               out.println(line);
             } else {
               out.println(line);
-              while (er.hasNext() && ((line = er.next()) != null)) {
-                out.println(line);
-                if (entry_end.matcher(line).lookingAt()) {
-                  break;
-                } else if (line.equals("")) {
-                  System.err.printf(
-                      "%s:%d: unterminated entry%n", er.getFileName(), er.getLineNumber());
-                  break;
-                }
-              }
+              for (; er.hasNext() && ((line = er.next()) != null);) {
+				out.println(line);
+				if (entry_end.matcher(line).lookingAt()) {
+					break;
+				} else if (line.equals("")) {
+					System.err.printf("%s:%d: unterminated entry%n", er.getFileName(), er.getLineNumber());
+					break;
+				}
+			}
             }
           }
         }

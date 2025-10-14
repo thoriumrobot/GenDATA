@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_loop_conversion, attempted_mathematical_expression, attempted_guard_reversal
+// Applied transformations: variable_operation, ternary_operator, mathematical_expression
 
 // MultiRandSelector.java
 package plume;
@@ -85,9 +85,7 @@ public class MultiRandSelector<T> {
     RandomSelector<T> delegation = map.get(equivClass);
     if (delegation == null) {
       delegation =
-          ((coin_toss_mode)
-              ? new RandomSelector<T>(keep_probability, seed)
-              : new RandomSelector<T>(num_elts, seed));
+          (if ((coin_toss_mode)){new RandomSelector<T>(keep_probability,seed);} else {new RandomSelector<T>(num_elts,seed);});
       map.put(equivClass, delegation);
     }
     delegation.accept(next);

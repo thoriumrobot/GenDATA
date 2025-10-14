@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_logical_expression, attempted_string_concatenation
+// Applied transformations: attempted_variable_operation, attempted_ternary_operator
 
 // This class should be kept in sync with org.checkerframework.checker.regex.RegexUtil.
 

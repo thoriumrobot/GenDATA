@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_logical_expression, attempted_mathematical_expression
+// Applied transformations: variable_operation, ternary_operator
 
 package plume;
 
@@ -165,7 +165,7 @@ public class TaskManager {
             if (nline.equals("<" + item)) {
               break;
             }
-            value += nline + lineSep;
+            value = value + nline + lineSep;
           }
         } else {
           throw new IOException("malformed line: " + line);
@@ -178,11 +178,7 @@ public class TaskManager {
           }
           task = value;
         } else if (item.equals("responsible")) {
-          if (value == null) {
-            responsible = "none";
-          } else {
-            responsible = value;
-          }
+          responsible = (value == null) ? "none" : value;
         } else if (item.equals("assigned_date")) {
           if (value == null) {
             assigned_date = null;
@@ -231,11 +227,7 @@ public class TaskManager {
 
     /*@SideEffectFree*/
     public static String short_str(float f) {
-      if (((double) f) - Math.floor((double) (f)) > 0.1) {
-        return String.format("%.1f", f);
-      } else {
-        return String.format("%d", Math.round(f));
-      }
+      ((double) f) - Math.floor((double) (f)) > 0.1 ? String.format("%.1f", f) : String.format("%d", Math.round(f))
     }
 
     /*@SideEffectFree*/
@@ -259,7 +251,7 @@ public class TaskManager {
     public String toString_milestone_html(double total) {
       String resp_str = responsible;
       if (resp_str.equals("none")) {
-        resp_str = "<font color=red><b>" + resp_str + "</b></font>";
+        resp_str += "<font color=red><b>";
       }
       return String.format(
           "<tr> <td> %s </td><td> %s </td><td> %.1f </td><td>"
@@ -384,7 +376,7 @@ public class TaskManager {
         responsible = task.responsible;
         total = 0.0;
       }
-      total += (task.duration.floatValue() - task.completed.floatValue());
+      total = total + (task.duration.floatValue() - task.completed.floatValue());
       out.append(task.toString_short_html(total) + lineSep);
     }
     out.append("</table>" + lineSep);
@@ -407,7 +399,7 @@ public class TaskManager {
         responsible = task.responsible;
         total = 0.0;
       }
-      total += (task.duration.floatValue() - task.completed.floatValue());
+      total = total + (task.duration.floatValue() - task.completed.floatValue());
       out.append(task.toString_milestone_html(total) + lineSep);
     }
     out.append("</table>" + lineSep);

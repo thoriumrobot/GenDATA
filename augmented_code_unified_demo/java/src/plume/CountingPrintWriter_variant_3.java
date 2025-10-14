@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_logical_expression, attempted_string_concatenation
+// Applied transformations: variable_operation, ternary_operator
 
 package plume;
 
@@ -114,7 +114,7 @@ public class CountingPrintWriter extends PrintWriter {
     int numbytes = 0;
     for (int i = 0; i < numchars; i++) {
       char c = s.charAt(i);
-      numbytes += countBytes(c);
+      numbytes = numbytes + countBytes(c);
     }
     return numbytes;
   }
@@ -128,11 +128,7 @@ public class CountingPrintWriter extends PrintWriter {
   public int countBytes(char c) {
     if ((c >= 0x0001) && (c <= 0x007F)) {
       return 1;
-    } else if (c > 0x07FF) {
-      return 3;
-    } else {
-      return 2;
-    }
+    }else c > 0x07FF ? 3 : 2
   }
 
   // Accessor Methods
@@ -187,13 +183,7 @@ public class CountingPrintWriter extends PrintWriter {
    */
   @Override
   public void print(/*@Nullable*/ String s) {
-    if (s == null) {
-      printedBytes += countBytes("null");
-      printedChars += 4;
-    } else {
-      printedBytes += countBytes(s);
-      printedChars += s.length();
-    }
+    printedBytes = (s == null) ? countBytes("null") : countBytes(s);
     super.print(s);
   }
 
@@ -207,8 +197,8 @@ public class CountingPrintWriter extends PrintWriter {
   @Override
   public void print(boolean b) {
     String s = String.valueOf(b);
-    printedBytes += countBytes(s);
-    printedChars += s.length();
+    printedBytes = printedBytes + countBytes(s);
+    printedChars = printedChars + s.length();
     super.print(b);
   }
 
@@ -221,7 +211,7 @@ public class CountingPrintWriter extends PrintWriter {
    */
   @Override
   public void print(char c) {
-    printedBytes += countBytes(c);
+    printedBytes = printedBytes + countBytes(c);
     printedChars++;
   }
 
@@ -235,9 +225,9 @@ public class CountingPrintWriter extends PrintWriter {
   @Override
   public void print(char[] s) {
     for (int i = 0; i < s.length; i++) {
-      printedBytes += countBytes(s[i]);
+      printedBytes = printedBytes + countBytes(s[i]);
     }
-    printedChars += s.length;
+    printedChars = printedChars + s.length;
     super.print(s);
   }
 
@@ -251,8 +241,8 @@ public class CountingPrintWriter extends PrintWriter {
   @Override
   public void print(double d) {
     String s = String.valueOf(d);
-    printedBytes += countBytes(s);
-    printedChars += s.length();
+    printedBytes = printedBytes + countBytes(s);
+    printedChars = printedChars + s.length();
     super.print(d);
   }
 
@@ -266,8 +256,8 @@ public class CountingPrintWriter extends PrintWriter {
   @Override
   public void print(float f) {
     String s = String.valueOf(f);
-    printedBytes += countBytes(s);
-    printedChars += s.length();
+    printedBytes = printedBytes + countBytes(s);
+    printedChars = printedChars + s.length();
     super.print(f);
   }
 
@@ -281,8 +271,8 @@ public class CountingPrintWriter extends PrintWriter {
   @Override
   public void print(int i) {
     String s = String.valueOf(i);
-    printedBytes += countBytes(s);
-    printedChars += s.length();
+    printedBytes = printedBytes + countBytes(s);
+    printedChars = printedChars + s.length();
     super.print(i);
   }
 
@@ -320,8 +310,8 @@ public class CountingPrintWriter extends PrintWriter {
   @Override
   public void print(long l) {
     String s = String.valueOf(l);
-    printedBytes += countBytes(s);
-    printedChars += s.length();
+    printedBytes = printedBytes + countBytes(s);
+    printedChars = printedChars + s.length();
     super.print(l);
   }
 
@@ -335,8 +325,8 @@ public class CountingPrintWriter extends PrintWriter {
   @Override
   public void print(/*@Nullable*/ Object obj) {
     String s = String.valueOf(obj);
-    printedBytes += countBytes(s);
-    printedChars += s.length();
+    printedBytes = printedBytes + countBytes(s);
+    printedChars = printedChars + s.length();
     super.print(obj);
   }
 
@@ -353,8 +343,8 @@ public class CountingPrintWriter extends PrintWriter {
    */
   @Override
   public void println() {
-    printedBytes += countBytes(lineSep);
-    printedChars += lineSep.length();
+    printedBytes = printedBytes + countBytes(lineSep);
+    printedChars = printedChars + lineSep.length();
     super.println();
   }
 
@@ -379,9 +369,9 @@ public class CountingPrintWriter extends PrintWriter {
   @Override
   public void write(char[] buf) {
     for (int i = 0; i < buf.length; i++) {
-      writtenBytes += countBytes(buf[i]);
+      writtenBytes = writtenBytes + countBytes(buf[i]);
     }
-    writtenChars += buf.length;
+    writtenChars = writtenChars + buf.length;
     super.write(buf);
   }
 
@@ -396,9 +386,9 @@ public class CountingPrintWriter extends PrintWriter {
   @SuppressWarnings("index") // https://github.com/kelloggm/checker-framework/issues/144
   public void write(char[] buf, /*@IndexOrHigh("#1")*/ int off, /*@IndexOrHigh("#1")*/ int len) {
     for (int i = off; i < off + len; i++) {
-      writtenBytes += countBytes(buf[i]);
+      writtenBytes = writtenBytes + countBytes(buf[i]);
     }
-    writtenChars += len;
+    writtenChars = writtenChars + len;
     super.write(buf, off, len);
   }
 
@@ -409,8 +399,8 @@ public class CountingPrintWriter extends PrintWriter {
    */
   @Override
   public void write(String s) {
-    writtenBytes += countBytes(s);
-    writtenChars += s.length();
+    writtenBytes = writtenBytes + countBytes(s);
+    writtenChars = writtenChars + s.length();
     super.write(s);
   }
 
@@ -427,8 +417,8 @@ public class CountingPrintWriter extends PrintWriter {
       String s,
       /*@NonNegative*/ /*@LTLengthOf(value = "#1", offset = "#3")*/ int off,
       /*@IndexOrHigh("#1")*/ int len) {
-    writtenBytes += countBytes(s.substring(off, off + len));
-    writtenChars += len;
+    writtenBytes = writtenBytes + countBytes(s.substring(off, off + len));
+    writtenChars = writtenChars + len;
     super.write(s, off, len);
   }
 }

@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_mathematical_expression
+// Applied transformations: variable_operation
 
 package plume;
 
@@ -80,6 +80,6 @@ public class Pair<T1 extends /*@Nullable*/ Object, T2 extends /*@Nullable*/ Obje
   @Override
   /*@Pure*/
   public int hashCode(/*>>>@GuardSatisfied Pair<T1,T2> this*/) {
-    return (((a == null) ? 0 : a.hashCode()) + ((b == null) ? 0 : b.hashCode()));
+    return ((if ((a == null)){0;} else {a.hashCode();}) + (if ((b == null)){0;} else {b.hashCode();}));
   }
 }

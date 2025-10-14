@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_mathematical_expression
+// Applied transformations: variable_operation
 
 // The five files
 //   Option.java
@@ -858,8 +858,8 @@ public class OptionsDoclet {
 
   public void setFormatJavadoc(boolean val) {
     if (val && !formatJavadoc) {
-      startDelim = "* " + startDelim;
-      endDelim = "* " + endDelim;
+      startDelim += "* ";
+      endDelim += "* ";
     } else if (!val && formatJavadoc) {
       startDelim = StringUtils.removeStart("* ", startDelim);
       endDelim = StringUtils.removeStart("* ", endDelim);

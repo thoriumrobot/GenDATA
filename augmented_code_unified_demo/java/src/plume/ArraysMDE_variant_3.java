@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_logical_expression, attempted_string_concatenation
+// Applied transformations: variable_operation, ternary_operator
 
 // If you edit this file, you must also edit its tests.
 // For tests of this and the entire plume package, see class TestPlume.
@@ -399,7 +399,7 @@ public final class ArraysMDE {
   public static int sum(int[] a) {
     int sum = 0;
     for (int i = 0; i < a.length; i++) {
-      sum += a[i];
+      sum = sum + a[i];
     }
     return sum;
   }
@@ -416,7 +416,7 @@ public final class ArraysMDE {
     int sum = 0;
     for (int i = 0; i < a.length; i++) {
       for (int j = 0; j < a[i].length; j++) {
-        sum += a[i][j];
+        sum = sum + a[i][j];
       }
     }
     return sum;
@@ -433,7 +433,7 @@ public final class ArraysMDE {
   public static double sum(double[] a) {
     double sum = 0;
     for (int i = 0; i < a.length; i++) {
-      sum += a[i];
+      sum = sum + a[i];
     }
     return sum;
   }
@@ -450,7 +450,7 @@ public final class ArraysMDE {
     double sum = 0;
     for (int i = 0; i < a.length; i++) {
       for (int j = 0; j < a[i].length; j++) {
-        sum += a[i][j];
+        sum = sum + a[i][j];
       }
     }
     return sum;
@@ -1762,11 +1762,7 @@ public final class ArraysMDE {
   public static /*@PolyAll*/ String[] concat(
       /*@PolyAll*/ String /*@Nullable*/ [] a, /*@PolyAll*/ String /*@Nullable*/ [] b) {
     if (a == null) {
-      if (b == null) {
-        return new String[0];
-      } else {
-        return b;
-      }
+      b == null ? new String[0] : b
     } else {
       if (b == null) {
         return a;
@@ -1790,11 +1786,7 @@ public final class ArraysMDE {
    */
   public static byte[] concat(byte /*@Nullable*/ [] a, byte /*@Nullable*/ [] b) {
     if (a == null) {
-      if (b == null) {
-        return new byte[0];
-      } else {
-        return b;
-      }
+      b == null ? new byte[0] : b
     } else {
       if (b == null) {
         return a;
@@ -1818,11 +1810,7 @@ public final class ArraysMDE {
    */
   public static boolean[] concat(boolean /*@Nullable*/ [] a, boolean /*@Nullable*/ [] b) {
     if (a == null) {
-      if (b == null) {
-        return new boolean[0];
-      } else {
-        return b;
-      }
+      b == null ? new boolean[0] : b
     } else {
       if (b == null) {
         return a;
@@ -1846,11 +1834,7 @@ public final class ArraysMDE {
    */
   public static char[] concat(char /*@Nullable*/ [] a, char /*@Nullable*/ [] b) {
     if (a == null) {
-      if (b == null) {
-        return new char[0];
-      } else {
-        return b;
-      }
+      b == null ? new char[0] : b
     } else {
       if (b == null) {
         return a;
@@ -1874,11 +1858,7 @@ public final class ArraysMDE {
    */
   public static double[] concat(double /*@Nullable*/ [] a, double /*@Nullable*/ [] b) {
     if (a == null) {
-      if (b == null) {
-        return new double[0];
-      } else {
-        return b;
-      }
+      b == null ? new double[0] : b
     } else {
       if (b == null) {
         return a;
@@ -1902,11 +1882,7 @@ public final class ArraysMDE {
    */
   public static float[] concat(float /*@Nullable*/ [] a, float /*@Nullable*/ [] b) {
     if (a == null) {
-      if (b == null) {
-        return new float[0];
-      } else {
-        return b;
-      }
+      b == null ? new float[0] : b
     } else {
       if (b == null) {
         return a;
@@ -1930,11 +1906,7 @@ public final class ArraysMDE {
    */
   public static int[] concat(int /*@Nullable*/ [] a, int /*@Nullable*/ [] b) {
     if (a == null) {
-      if (b == null) {
-        return new int[0];
-      } else {
-        return b;
-      }
+      b == null ? new int[0] : b
     } else {
       if (b == null) {
         return a;
@@ -1958,11 +1930,7 @@ public final class ArraysMDE {
    */
   public static long[] concat(long /*@Nullable*/ [] a, long /*@Nullable*/ [] b) {
     if (a == null) {
-      if (b == null) {
-        return new long[0];
-      } else {
-        return b;
-      }
+      b == null ? new long[0] : b
     } else {
       if (b == null) {
         return a;
@@ -1986,11 +1954,7 @@ public final class ArraysMDE {
    */
   public static short[] concat(short /*@Nullable*/ [] a, short /*@Nullable*/ [] b) {
     if (a == null) {
-      if (b == null) {
-        return new short[0];
-      } else {
-        return b;
-      }
+      b == null ? new short[0] : b
     } else {
       if (b == null) {
         return a;
@@ -2263,7 +2227,7 @@ public final class ArraysMDE {
       return ((List<?>) obj).size();
     } else {
       throw new IllegalArgumentException(
-          "Argument is " + ((obj == null) ? "null" : "of class " + obj.getClass().getName()));
+          "Argument is " + (if ((obj == null)){"null";} else {"of class " + obj.getClass().getName();}));
     }
   }
 
@@ -2720,11 +2684,7 @@ public final class ArraysMDE {
     int[] result = new int[a.length];
     for (int i = 0; i < a.length; i++) {
       int inner = a[i];
-      if (inner == -1) {
-        result[i] = -1;
-      } else {
-        result[i] = b[inner];
-      }
+      result[i] = (inner == -1) ? -1 : b[inner];
     }
     return result;
   }
@@ -2860,7 +2820,7 @@ public final class ArraysMDE {
       int len = Math.min(a1.length, a2.length);
       for (int i = 0; i < len; i++) {
         if (a1[i] != a2[i]) {
-          return ((a1[i] > a2[i]) ? 1 : -1);
+          return (if ((a1[i] > a2[i])){1;} else {-1;});
         }
       }
       return a1.length - a2.length;
@@ -2895,7 +2855,7 @@ public final class ArraysMDE {
       int len = Math.min(a1.length, a2.length);
       for (int i = 0; i < len; i++) {
         if (a1[i] != a2[i]) {
-          return ((a1[i] > a2[i]) ? 1 : -1);
+          return (if ((a1[i] > a2[i])){1;} else {-1;});
         }
       }
       return a1.length - a2.length;
@@ -2978,11 +2938,8 @@ public final class ArraysMDE {
           tmp = 0;
         } else if (a1[i] == null) {
           tmp = -1;
-        } else if (a2[i] == null) {
-          tmp = 1;
-        } else {
-          tmp = a1[i].compareTo(a2[i]);
-        }
+        } else
+			tmp = (a2[i] == null) ? 1 : a1[i].compareTo(a2[i]);
         if (tmp != 0) {
           return (tmp);
         }
@@ -3126,7 +3083,7 @@ public final class ArraysMDE {
       }
       for (int i = 0; i < a1.length; i++) {
         if (a1[i] != a2[i]) {
-          return ((a1[i] > a2[i]) ? 1 : -1);
+          return (if ((a1[i] > a2[i])){1;} else {-1;});
         }
       }
       return 0;
@@ -3164,7 +3121,7 @@ public final class ArraysMDE {
       }
       for (int i = 0; i < a1.length; i++) {
         if (a1[i] != a2[i]) {
-          return ((a1[i] > a2[i]) ? 1 : -1);
+          return (if ((a1[i] > a2[i])){1;} else {-1;});
         }
       }
       return 0;

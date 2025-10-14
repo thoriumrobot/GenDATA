@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_mathematical_expression
+// Applied transformations: variable_operation
 
 package plume;
 
@@ -1424,7 +1424,7 @@ public final class TestPlume {
         for (int i = 0; i < nums.length; i++) {
           int r = nums[i] % m;
           if (r < 0) {
-            r += m;
+            r = r + m;
           }
           if (r != goal_r) {
             throw new Error("Expected " + nums[i] + " % " + m + " = " + goal_r + ", got " + r);
@@ -1504,7 +1504,7 @@ public final class TestPlume {
         for (int i = 0; i < nums.length; i++) {
           int r = nums[i] % m;
           if (r < 0) {
-            r += m;
+            r = r + m;
           }
           if (r == goal_r) {
             throw new Error("Expected inequality, saw " + nums[i] + " % " + m + " = " + r);
@@ -1540,11 +1540,11 @@ public final class TestPlume {
       ones.add(i);
     }
     ArrayList<Integer> twos = new ArrayList<Integer>();
-    for (int i = 2; i <= 30; i += 2) {
+    for (int i = 2; i <= 30; i = i + 2) {
       twos.add(i);
     }
     ArrayList<Integer> threes = new ArrayList<Integer>();
-    for (int i = 3; i <= 30; i += 3) {
+    for (int i = 3; i <= 30; i = i + 3) {
       threes.add(i);
     }
 
@@ -2001,7 +2001,7 @@ public final class TestPlume {
       double ratio_limit = .02;
       Random r = new Random(20020311);
       // "i++" instead of "i+=3" here works, but is slow
-      for (int i = 1; i < num_elts_limit; i += 3) {
+      for (int i = 1; i < num_elts_limit; i = i + 3) {
         int[] totals = new int[num_elts_limit];
         for (int j = 0; j < tries; j++) {
           if (j % 100 == 0) {
@@ -2524,7 +2524,7 @@ public final class TestPlume {
     double offlow2 = 1 - 2 * offset;
 
     // test equality for a variety of postive and negative numbers
-    for (double d = -20000; d < 20000; d += 1000.36) {
+    for (double d = -20000; d < 20000; d = d + 1000.36) {
       assert ff.eq(d, d * offhigh);
       assert ff.eq(d, d * offlow);
       assert !ff.eq(d, d * offhigh2);

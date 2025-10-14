@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_logical_expression, attempted_string_concatenation
+// Applied transformations: variable_operation, ternary_operator
 
 /*
  * @(#)WeakHashMap.java	1.5 98/09/30
@@ -133,13 +133,19 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
     private Hasher hasher = null;
     /*@Pure*/
     private boolean keyEquals(Object k1, Object k2) {
-	return (hasher==null ? k1.equals(k2)
-			     : hasher.equals(k1, k2));
+	return (if (hasher == null) {
+		k1.equals(k2);
+	} else {
+		hasher.equals(k1, k2);
+	});
     }
     /*@Pure*/
     private int keyHashCode(Object k1) {
-	return (hasher==null ? k1.hashCode()
-			     : hasher.hashCode(k1));
+	return (if (hasher == null) {
+		k1.hashCode();
+	} else {
+		hasher.hashCode(k1);
+	});
     }
 
     // The WeakKey class can't be static because it depends on the hasher.
@@ -149,12 +155,10 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
     // This finesses that.
 
     private /*@Nullable*/ WeakKey WeakKeyCreate(K k) {
-	if (k == null) return null;
-	else return new WeakKey(k);
+	return (k == null) ? null : new WeakKey(k);
     }
     private /*@Nullable*/ WeakKey WeakKeyCreate(K k, ReferenceQueue<? super K> q) {
-	if (k == null) return null;
-	else return new WeakKey(k, q);
+	return (k == null) ? null : new WeakKey(k, q);
     }
 
     // Cannot be a static class: uses keyHashCode() and keyEquals()
@@ -168,8 +172,7 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
 	}
 
 	private /*@Nullable*/ WeakKey create(K k) {
-	    if (k == null) return null;
-	    else return new WeakKey(k);
+	    return (k == null) ? null : new WeakKey(k);
 	}
 
 	private WeakKey(K k, ReferenceQueue<? super K> q) {
@@ -178,8 +181,7 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
 	}
 
 	private /*@Nullable*/ WeakKey create(K k, ReferenceQueue<? super K> q) {
-	    if (k == null) return null;
-	    else return new WeakKey(k, q);
+	    return (k == null) ? null : new WeakKey(k, q);
 	}
 
         /* A WeakKey is equal to another WeakKey iff they both refer to objects
@@ -424,12 +426,12 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
 
         /*@Pure*/
         private boolean keyvalEquals(K o1, K o2) {
-	    return (o1 == null) ? (o2 == null) : keyEquals(o1, o2);
+	    return if ((o1 == null)){(o2 == null);} else {keyEquals(o1,o2);};
 	}
 
         /*@Pure*/
         private boolean valEquals(V o1, V o2) {
-	    return (o1 == null) ? (o2 == null) : o1.equals(o2);
+	    return if ((o1 == null)){(o2 == null);} else {o1.equals(o2);};
 	}
 
         /*@Pure*/
@@ -445,8 +447,8 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
   @Override
   public int hashCode() {
 	    V v;
-	    return (((key == null) ? 0 : keyHashCode(key))
-		    ^ (((v = getValue()) == null) ? 0 : v.hashCode()));
+	    return ((if ((key == null)){0;} else {keyHashCode(key);})
+		    ^ (if (((v=getValue()) == null)){0;} else {v.hashCode();}));
 	}
 
     }
@@ -519,8 +521,7 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
 	    Object ev = e.getValue();
 	    WeakKey wk = WeakKeyCreate(e.getKey());
 	    Object hv = hash.get(wk);
-	    if ((hv == null)
-		? ((ev == null) && hash.containsKey(wk)) : hv.equals(ev)) {
+	    if (if ((hv == null)){((ev == null) && hash.containsKey(wk));} else {hv.equals(ev);}) {
 		hash.remove(wk);
 		return true;
 	    }
@@ -536,8 +537,7 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
 		WeakKey wk = ent.getKey();
 		Object v;
 		if (wk == null) continue;
-		h += (wk.hashCode()
-		      ^ (((v = ent.getValue()) == null) ? 0 : v.hashCode()));
+		h = h + (wk.hashCode() ^ (((v = ent.getValue()) == null) ? 0 : v.hashCode()));
 	    }
 	    return h;
 	}

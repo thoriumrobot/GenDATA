@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_loop_conversion, attempted_mathematical_expression, attempted_guard_reversal
+// Applied transformations: variable_operation, ternary_operator, mathematical_expression
 
 package plume;
 
@@ -190,7 +190,7 @@ public final class SimpleLog {
   /** Indents by one level and pushes a corresponding start time. */
   public void indent() {
     if (enabled) {
-      indent_str += INDENT_STR_ONE_LEVEL;
+      indent_str = indent_str + INDENT_STR_ONE_LEVEL;
       push_start_time();
     }
   }
@@ -311,11 +311,7 @@ public final class SimpleLog {
       }
       long elapsed = System.currentTimeMillis() - start_time.longValue();
       logfile.print(indent_str);
-      if (elapsed > 1000) {
-        logfile.printf("[%,f secs] ", elapsed / 1000.0);
-      } else {
-        logfile.print("[" + elapsed + " ms] ");
-      }
+      elapsed > 1000 ? logfile.printf("[%,f secs] ", elapsed / 1000.0) : logfile.print("[" + elapsed + " ms] ")
       format = add_newline(format);
       logfile.printf(format, args);
     }

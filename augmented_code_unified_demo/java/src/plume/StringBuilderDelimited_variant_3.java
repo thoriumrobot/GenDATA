@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_logical_expression, attempted_string_concatenation
+// Applied transformations: variable_operation, ternary_operator
 
 package plume;
 
@@ -48,11 +48,7 @@ public class StringBuilderDelimited implements Appendable, CharSequence {
   }
 
   private void appendDelimiter(/*>>>@GuardSatisfied StringBuilderDelimited this*/) {
-    if (empty) {
-      empty = false;
-    } else {
-      delegate.append(delimiter);
-    }
+    empty ? empty = false : delegate.append(delimiter)
   }
 
   public StringBuilderDelimited add(/*@Nullable*/ CharSequence newElement) {

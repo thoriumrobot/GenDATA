@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_mathematical_expression
+// Applied transformations: variable_operation
 
 package plume;
 
@@ -160,7 +160,7 @@ public final class GraphMDE {
   public static <T> void print(Map<T, List<T>> graph, PrintStream ps, int indent) {
     String indentString = "";
     for (int i = 0; i < indent; i++) {
-      indentString += " ";
+      indentString = indentString + " ";
     }
     for (T node : graph.keySet()) {
       ps.printf("%s%s%n", indentString, node);

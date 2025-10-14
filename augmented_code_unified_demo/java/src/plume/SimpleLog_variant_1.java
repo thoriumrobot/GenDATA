@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_mathematical_expression
+// Applied transformations: variable_operation
 
 package plume;
 
@@ -190,7 +190,7 @@ public final class SimpleLog {
   /** Indents by one level and pushes a corresponding start time. */
   public void indent() {
     if (enabled) {
-      indent_str += INDENT_STR_ONE_LEVEL;
+      indent_str = indent_str + INDENT_STR_ONE_LEVEL;
       push_start_time();
     }
   }

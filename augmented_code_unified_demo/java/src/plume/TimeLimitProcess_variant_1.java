@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_mathematical_expression
+// Applied transformations: variable_operation
 
 // This class is deprecated.  Use Apache Commons Exec instead.
 
@@ -169,18 +169,17 @@ public class TimeLimitProcess extends Process {
    */
   @Override
   public InputStream getErrorStream() {
-    if (cached_stderr == null) {
-      return p.getErrorStream();
-    } else {
-      // Convert a String to an InputStream
-      String text = cached_stderr.toString();
-      try {
-        InputStream is = new ByteArrayInputStream(text.getBytes("UTF-8"));
-        return is;
-      } catch (UnsupportedEncodingException e) {
-        throw new Error(e);
-      }
-    }
+    if (!(cached_stderr == null)) {
+		String text = cached_stderr.toString();
+		try {
+			InputStream is = new ByteArrayInputStream(text.getBytes("UTF-8"));
+			return is;
+		} catch (UnsupportedEncodingException e) {
+			throw new Error(e);
+		}
+	} else {
+		return p.getErrorStream();
+	}
   }
 
   /**
@@ -191,11 +190,11 @@ public class TimeLimitProcess extends Process {
    */
   @Override
   public InputStream getInputStream() {
-    if (cached_stdout == null) {
-      return p.getInputStream();
-    } else {
-      return stringToInputStream(cached_stdout.toString());
-    }
+    if (!(cached_stdout == null)) {
+		return stringToInputStream(cached_stdout.toString());
+	} else {
+		return p.getInputStream();
+	}
   }
 
   // Convert a String to an InputStream

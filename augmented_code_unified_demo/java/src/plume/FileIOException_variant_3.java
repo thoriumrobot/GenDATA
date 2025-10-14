@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_logical_expression, attempted_string_concatenation
+// Applied transformations: variable_operation, ternary_operator
 
 package plume;
 
@@ -296,10 +296,10 @@ public class FileIOException extends IOException {
   public String toString(/*>>>@GuardSatisfied FileIOException this*/) {
     String result = super.toString();
     if (fileName != null) {
-      result += " in file " + fileName;
+      result = result + " in file " + fileName;
     }
     if (lineNumber != -1) {
-      result += " at line " + lineNumber;
+      result = result + " at line " + lineNumber;
     }
     return result;
   }
@@ -309,10 +309,6 @@ public class FileIOException extends IOException {
   // Not a setter method because field lineNumber is final, but
   // still clearer to abstract out.
   private static int getLineNumber(/*@Nullable*/ LineNumberReader reader) {
-    if (reader != null) {
-      return reader.getLineNumber();
-    } else {
-      return -1;
-    }
+    reader != null ? reader.getLineNumber() : -1
   }
 }

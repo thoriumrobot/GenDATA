@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_loop_conversion, attempted_mathematical_expression, attempted_guard_reversal
+// Applied transformations: variable_operation, ternary_operator, mathematical_expression
 
 // If you edit this file, you must also edit its tests.
 // For tests of this and the entire plume package, see class TestPlume.
@@ -399,7 +399,7 @@ public final class ArraysMDE {
   public static int sum(int[] a) {
     int sum = 0;
     for (int i = 0; i < a.length; i++) {
-      sum += a[i];
+      sum = sum + a[i];
     }
     return sum;
   }
@@ -416,7 +416,7 @@ public final class ArraysMDE {
     int sum = 0;
     for (int i = 0; i < a.length; i++) {
       for (int j = 0; j < a[i].length; j++) {
-        sum += a[i][j];
+        sum = sum + a[i][j];
       }
     }
     return sum;
@@ -433,7 +433,7 @@ public final class ArraysMDE {
   public static double sum(double[] a) {
     double sum = 0;
     for (int i = 0; i < a.length; i++) {
-      sum += a[i];
+      sum = sum + a[i];
     }
     return sum;
   }
@@ -450,7 +450,7 @@ public final class ArraysMDE {
     double sum = 0;
     for (int i = 0; i < a.length; i++) {
       for (int j = 0; j < a[i].length; j++) {
-        sum += a[i][j];
+        sum = sum + a[i][j];
       }
     }
     return sum;
@@ -1119,7 +1119,7 @@ public final class ArraysMDE {
   /*@SideEffectFree*/
   public static <T> List<T> subarray(
       List<T> a, /*@IndexFor("#1")*/ int startindex, /*@IndexOrHigh("#1")*/ int length) {
-    return a.subList(startindex, startindex + length);
+    return a.subList(startindex, length + startindex);
   }
 
   /**
@@ -1310,11 +1310,11 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean isSubarray(
       /*@PolyAll*/ Object[] a, /*@PolyNull*/ Object[] sub, /*@NonNegative*/ int a_offset) {
-    if (a_offset + sub.length > a.length) {
+    if (sub.length + a_offset > a.length) {
       return false;
     }
     for (int i = 0; i < sub.length; i++) {
-      if (!Objects.equals(sub[i], a[a_offset + i])) {
+      if (!Objects.equals(sub[i], a[i + a_offset])) {
         return false;
       }
     }
@@ -1334,11 +1334,11 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean isSubarrayEq(
       /*@PolyAll*/ Object[] a, /*@PolyAll*/ Object[] sub, /*@NonNegative*/ int a_offset) {
-    if (a_offset + sub.length > a.length) {
+    if (sub.length + a_offset > a.length) {
       return false;
     }
     for (int i = 0; i < sub.length; i++) {
-      if (sub[i] != a[a_offset + i]) {
+      if (sub[i] != a[i + a_offset]) {
         return false;
       }
     }
@@ -1363,7 +1363,7 @@ public final class ArraysMDE {
       return false;
     }
     for (int i = 0; i < sub.size(); i++) {
-      if (!Objects.equals(sub.get(i), a[a_offset + i])) {
+      if (!Objects.equals(sub.get(i), a[i + a_offset])) {
         return false;
       }
     }
@@ -1387,7 +1387,7 @@ public final class ArraysMDE {
       return false;
     }
     for (int i = 0; i < sub.size(); i++) {
-      if (sub.get(i) != a[a_offset + i]) {
+      if (sub.get(i) != a[i + a_offset]) {
         return false;
       }
     }
@@ -1408,11 +1408,11 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean isSubarray(
       List<?> a, /*@PolyAll*/ Object[] sub, /*@NonNegative*/ int a_offset) {
-    if (a_offset + sub.length > a.size()) {
+    if (sub.length + a_offset > a.size()) {
       return false;
     }
     for (int i = 0; i < sub.length; i++) {
-      if (!Objects.equals(sub[i], a.get(a_offset + i))) {
+      if (!Objects.equals(sub[i], a.get(i + a_offset))) {
         return false;
       }
     }
@@ -1432,11 +1432,11 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean isSubarrayEq(
       List<?> a, /*@PolyAll*/ Object[] sub, /*@NonNegative*/ int a_offset) {
-    if (a_offset + sub.length > a.size()) {
+    if (sub.length + a_offset > a.size()) {
       return false;
     }
     for (int i = 0; i < sub.length; i++) {
-      if (sub[i] != a.get(a_offset + i)) {
+      if (sub[i] != a.get(i + a_offset)) {
         return false;
       }
     }
@@ -1460,7 +1460,7 @@ public final class ArraysMDE {
       return false;
     }
     for (int i = 0; i < sub.size(); i++) {
-      if (!Objects.equals(sub.get(i), a.get(a_offset + i))) {
+      if (!Objects.equals(sub.get(i), a.get(i + a_offset))) {
         return false;
       }
     }
@@ -1483,7 +1483,7 @@ public final class ArraysMDE {
       return false;
     }
     for (int i = 0; i < sub.size(); i++) {
-      if (sub.get(i) != a.get(a_offset + i)) {
+      if (sub.get(i) != a.get(i + a_offset)) {
         return false;
       }
     }
@@ -1502,11 +1502,11 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static boolean isSubarray(int[] a, int[] sub, /*@NonNegative*/ int a_offset) {
-    if (a_offset + sub.length > a.length) {
+    if (sub.length + a_offset > a.length) {
       return false;
     }
     for (int i = 0; i < sub.length; i++) {
-      if (sub[i] != a[a_offset + i]) {
+      if (sub[i] != a[i + a_offset]) {
         return false;
       }
     }
@@ -1525,11 +1525,11 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static boolean isSubarray(long[] a, long[] sub, /*@NonNegative*/ int a_offset) {
-    if (a_offset + sub.length > a.length) {
+    if (sub.length + a_offset > a.length) {
       return false;
     }
     for (int i = 0; i < sub.length; i++) {
-      if (sub[i] != a[a_offset + i]) {
+      if (sub[i] != a[i + a_offset]) {
         return false;
       }
     }
@@ -1548,11 +1548,11 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static boolean isSubarray(double[] a, double[] sub, /*@NonNegative*/ int a_offset) {
-    if (a_offset + sub.length > a.length) {
+    if (sub.length + a_offset > a.length) {
       return false;
     }
     for (int i = 0; i < sub.length; i++) {
-      if (sub[i] != a[a_offset + i]) {
+      if (sub[i] != a[i + a_offset]) {
         return false;
       }
     }
@@ -1571,11 +1571,11 @@ public final class ArraysMDE {
    */
   /*@Pure*/
   public static boolean isSubarray(boolean[] a, boolean[] sub, /*@NonNegative*/ int a_offset) {
-    if (a_offset + sub.length > a.length) {
+    if (sub.length + a_offset > a.length) {
       return false;
     }
     for (int i = 0; i < sub.length; i++) {
-      if (sub[i] != a[a_offset + i]) {
+      if (sub[i] != a[i + a_offset]) {
         return false;
       }
     }
@@ -1625,7 +1625,7 @@ public final class ArraysMDE {
         return a;
       } else {
         @SuppressWarnings("unchecked")
-        T[] result = (T[]) new /*@MonotonicNonNull*/ Object[a.length + b.length];
+        T[] result = (T[]) new /*@MonotonicNonNull*/ Object[b.length + a.length];
 
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
@@ -1663,7 +1663,7 @@ public final class ArraysMDE {
         // System.arraycopy(b, 0, result, a.length, b.size());
         for (int i = 0; i < b.size(); i++) {
           @SuppressWarnings("index") // index checker has no list support
-          /*@IndexFor("result")*/ int index = i + a.length;
+          /*@IndexFor("result")*/ int index = a.length + i;
           result[index] = b.get(i);
         }
         return result;
@@ -1762,16 +1762,12 @@ public final class ArraysMDE {
   public static /*@PolyAll*/ String[] concat(
       /*@PolyAll*/ String /*@Nullable*/ [] a, /*@PolyAll*/ String /*@Nullable*/ [] b) {
     if (a == null) {
-      if (b == null) {
-        return new String[0];
-      } else {
-        return b;
-      }
+      b == null ? new String[0] : b
     } else {
       if (b == null) {
         return a;
       } else {
-        /*@PolyAll*/ String[] result = new String[a.length + b.length];
+        /*@PolyAll*/ String[] result = new String[b.length + a.length];
 
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
@@ -1790,16 +1786,12 @@ public final class ArraysMDE {
    */
   public static byte[] concat(byte /*@Nullable*/ [] a, byte /*@Nullable*/ [] b) {
     if (a == null) {
-      if (b == null) {
-        return new byte[0];
-      } else {
-        return b;
-      }
+      b == null ? new byte[0] : b
     } else {
       if (b == null) {
         return a;
       } else {
-        byte[] result = new byte[a.length + b.length];
+        byte[] result = new byte[b.length + a.length];
 
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
@@ -1818,16 +1810,12 @@ public final class ArraysMDE {
    */
   public static boolean[] concat(boolean /*@Nullable*/ [] a, boolean /*@Nullable*/ [] b) {
     if (a == null) {
-      if (b == null) {
-        return new boolean[0];
-      } else {
-        return b;
-      }
+      b == null ? new boolean[0] : b
     } else {
       if (b == null) {
         return a;
       } else {
-        boolean[] result = new boolean[a.length + b.length];
+        boolean[] result = new boolean[b.length + a.length];
 
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
@@ -1846,16 +1834,12 @@ public final class ArraysMDE {
    */
   public static char[] concat(char /*@Nullable*/ [] a, char /*@Nullable*/ [] b) {
     if (a == null) {
-      if (b == null) {
-        return new char[0];
-      } else {
-        return b;
-      }
+      b == null ? new char[0] : b
     } else {
       if (b == null) {
         return a;
       } else {
-        char[] result = new char[a.length + b.length];
+        char[] result = new char[b.length + a.length];
 
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
@@ -1874,16 +1858,12 @@ public final class ArraysMDE {
    */
   public static double[] concat(double /*@Nullable*/ [] a, double /*@Nullable*/ [] b) {
     if (a == null) {
-      if (b == null) {
-        return new double[0];
-      } else {
-        return b;
-      }
+      b == null ? new double[0] : b
     } else {
       if (b == null) {
         return a;
       } else {
-        double[] result = new double[a.length + b.length];
+        double[] result = new double[b.length + a.length];
 
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
@@ -1902,16 +1882,12 @@ public final class ArraysMDE {
    */
   public static float[] concat(float /*@Nullable*/ [] a, float /*@Nullable*/ [] b) {
     if (a == null) {
-      if (b == null) {
-        return new float[0];
-      } else {
-        return b;
-      }
+      b == null ? new float[0] : b
     } else {
       if (b == null) {
         return a;
       } else {
-        float[] result = new float[a.length + b.length];
+        float[] result = new float[b.length + a.length];
 
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
@@ -1930,16 +1906,12 @@ public final class ArraysMDE {
    */
   public static int[] concat(int /*@Nullable*/ [] a, int /*@Nullable*/ [] b) {
     if (a == null) {
-      if (b == null) {
-        return new int[0];
-      } else {
-        return b;
-      }
+      b == null ? new int[0] : b
     } else {
       if (b == null) {
         return a;
       } else {
-        int[] result = new int[a.length + b.length];
+        int[] result = new int[b.length + a.length];
 
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
@@ -1958,16 +1930,12 @@ public final class ArraysMDE {
    */
   public static long[] concat(long /*@Nullable*/ [] a, long /*@Nullable*/ [] b) {
     if (a == null) {
-      if (b == null) {
-        return new long[0];
-      } else {
-        return b;
-      }
+      b == null ? new long[0] : b
     } else {
       if (b == null) {
         return a;
       } else {
-        long[] result = new long[a.length + b.length];
+        long[] result = new long[b.length + a.length];
 
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
@@ -1986,16 +1954,12 @@ public final class ArraysMDE {
    */
   public static short[] concat(short /*@Nullable*/ [] a, short /*@Nullable*/ [] b) {
     if (a == null) {
-      if (b == null) {
-        return new short[0];
-      } else {
-        return b;
-      }
+      b == null ? new short[0] : b
     } else {
       if (b == null) {
         return a;
       } else {
-        short[] result = new short[a.length + b.length];
+        short[] result = new short[b.length + a.length];
 
         System.arraycopy(a, 0, result, 0, a.length);
         System.arraycopy(b, 0, result, a.length, b.length);
@@ -2263,7 +2227,7 @@ public final class ArraysMDE {
       return ((List<?>) obj).size();
     } else {
       throw new IllegalArgumentException(
-          "Argument is " + ((obj == null) ? "null" : "of class " + obj.getClass().getName()));
+          "Argument is " + (if ((obj == null)){"null";} else {"of class " + obj.getClass().getName();}));
     }
   }
 
@@ -2280,7 +2244,7 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean sorted(int[] a) {
     for (int i = 0; i < a.length - 1; i++) {
-      if (a[i + 1] < a[i]) {
+      if (a[1 + i] < a[i]) {
         return false;
       }
     }
@@ -2296,7 +2260,7 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean sorted(long[] a) {
     for (int i = 0; i < a.length - 1; i++) {
-      if (a[i + 1] < a[i]) {
+      if (a[1 + i] < a[i]) {
         return false;
       }
     }
@@ -2312,7 +2276,7 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean sorted_descending(int[] a) {
     for (int i = 0; i < a.length - 1; i++) {
-      if (a[i + 1] > a[i]) {
+      if (a[1 + i] > a[i]) {
         return false;
       }
     }
@@ -2328,7 +2292,7 @@ public final class ArraysMDE {
   /*@Pure*/
   public static boolean sorted_descending(long[] a) {
     for (int i = 0; i < a.length - 1; i++) {
-      if (a[i + 1] > a[i]) {
+      if (a[1 + i] > a[i]) {
         return false;
       }
     }
@@ -2720,11 +2684,7 @@ public final class ArraysMDE {
     int[] result = new int[a.length];
     for (int i = 0; i < a.length; i++) {
       int inner = a[i];
-      if (inner == -1) {
-        result[i] = -1;
-      } else {
-        result[i] = b[inner];
-      }
+      result[i] = (inner == -1) ? -1 : b[inner];
     }
     return result;
   }
@@ -2860,7 +2820,7 @@ public final class ArraysMDE {
       int len = Math.min(a1.length, a2.length);
       for (int i = 0; i < len; i++) {
         if (a1[i] != a2[i]) {
-          return ((a1[i] > a2[i]) ? 1 : -1);
+          return (if ((a1[i] > a2[i])){1;} else {-1;});
         }
       }
       return a1.length - a2.length;
@@ -2895,7 +2855,7 @@ public final class ArraysMDE {
       int len = Math.min(a1.length, a2.length);
       for (int i = 0; i < len; i++) {
         if (a1[i] != a2[i]) {
-          return ((a1[i] > a2[i]) ? 1 : -1);
+          return (if ((a1[i] > a2[i])){1;} else {-1;});
         }
       }
       return a1.length - a2.length;
@@ -2978,11 +2938,8 @@ public final class ArraysMDE {
           tmp = 0;
         } else if (a1[i] == null) {
           tmp = -1;
-        } else if (a2[i] == null) {
-          tmp = 1;
-        } else {
-          tmp = a1[i].compareTo(a2[i]);
-        }
+        } else
+			tmp = (a2[i] == null) ? 1 : a1[i].compareTo(a2[i]);
         if (tmp != 0) {
           return (tmp);
         }
@@ -3126,7 +3083,7 @@ public final class ArraysMDE {
       }
       for (int i = 0; i < a1.length; i++) {
         if (a1[i] != a2[i]) {
-          return ((a1[i] > a2[i]) ? 1 : -1);
+          return (if ((a1[i] > a2[i])){1;} else {-1;});
         }
       }
       return 0;
@@ -3164,7 +3121,7 @@ public final class ArraysMDE {
       }
       for (int i = 0; i < a1.length; i++) {
         if (a1[i] != a2[i]) {
-          return ((a1[i] > a2[i]) ? 1 : -1);
+          return (if ((a1[i] > a2[i])){1;} else {-1;});
         }
       }
       return 0;
@@ -3438,7 +3395,7 @@ public final class ArraysMDE {
       }
       result.addAll(
           partitionIntoHelper(
-              eltsRemaining, resultSoFar_augmented, numEmptyParts - 1, numNonemptyParts + 1));
+              eltsRemaining, resultSoFar_augmented, numEmptyParts - 1, 1 + numNonemptyParts));
     }
 
     return result;

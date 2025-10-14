@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_logical_expression, attempted_mathematical_expression
+// Applied transformations: variable_operation, ternary_operator
 
 package plume;
 
@@ -70,13 +70,13 @@ public class OrderedPairIterator<T>
   /*@RequiresNonNull("itor1")*/
   private void setnext1(
       /*>>> @GuardSatisfied @UnknownInitialization @Raw OrderedPairIterator<T> this*/) {
-    next1 = itor1.hasNext() ? itor1.next() : null;
+    next1 = if (itor1.hasNext()){itor1.next();} else {null;};
   }
   /** Set the next2 variable. */
   /*@RequiresNonNull("itor2")*/
   private void setnext2(
       /*>>> @GuardSatisfied @UnknownInitialization @Raw OrderedPairIterator<T> this*/) {
-    next2 = itor2.hasNext() ? itor2.next() : null;
+    next2 = if (itor2.hasNext()){itor2.next();} else {null;};
   }
   // Have the caller do this directly, probably.
   // public OrderedPairIterator(Set s1, Set s2) {
@@ -149,11 +149,7 @@ public class OrderedPairIterator<T>
         }
         if (comparison < 0) {
           return return1();
-        } else if (comparison > 0) {
-          return return2();
-        } else {
-          return returnboth();
-        }
+        }else comparison > 0 ? return2() : returnboth()
       }
     }
   }

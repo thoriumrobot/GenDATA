@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_mathematical_expression
+// Applied transformations: variable_operation
 
 // This code is lifted from examples/Manifest.java.
 
@@ -43,12 +43,8 @@ public final class Digest {
     // Create a stream to read from the file and compute the digest
     DigestInputStream in = new DigestInputStream(new FileInputStream(filename), md);
 
-    // Read to the end of the file, discarding everything we read. {
-    // The DigestInputStream automatically passes all the bytes read to
-    // the update() method of the MessageDigest
-    while (in.read(buffer) != -1) {
-      /* do nothing */
-    }
+    for (; in.read(buffer) != -1;) {
+	}
 
     // Finally, compute and return the digest value.
     byte[] result = md.digest();
@@ -73,12 +69,17 @@ public final class Digest {
    * @return a String representation of the input bytes
    */
   public static String hexEncode(byte[] bytes) {
-    StringBuilder s = new StringBuilder(bytes.length * 2);
-    for (int i = 0; i < bytes.length; i++) {
-      byte b = bytes[i];
-      s.append(digits[(b & 0xf0) >> 4]);
-      s.append(digits[b & 0x0f]);
-    }
+    StringBuilder s = new StringBuilder(2 * bytes.length);
+    while (true) {
+		if (!i < bytes.length) {
+			break;
+		}
+		int i = 0;
+		byte b = bytes[i];
+		s.append(digits[(b & 0xf0) >> 4]);
+		s.append(digits[b & 0x0f]);
+		i++;
+	}
     return s.toString();
   }
 
@@ -93,21 +94,7 @@ public final class Digest {
     try {
       int len = s.length();
       byte[] r = new byte[len / 2];
-      for (int i = 0; i < r.length; i++) {
-        @SuppressWarnings("index") // correlated length: two arrays with correlated, nonequal length
-        int digit1 = s.charAt(i * 2), digit2 = s.charAt(i * 2 + 1);
-        if ((digit1 >= '0') && (digit1 <= '9')) {
-          digit1 -= '0';
-        } else if ((digit1 >= 'a') && (digit1 <= 'f')) {
-          digit1 -= 'a' - 10;
-        }
-        if ((digit2 >= '0') && (digit2 <= '9')) {
-          digit2 -= '0';
-        } else if ((digit2 >= 'a') && (digit2 <= 'f')) {
-          digit2 -= 'a' - 10;
-        }
-        r[i] = (byte) ((digit1 << 4) + digit2);
-      }
+      while (true){if (!i < r.length){break;}int i=0;@SuppressWarnings("index") int digit1=s.charAt(i * 2),digit2=s.charAt(i * 2 + 1);if ((digit1 >= '0') && (digit1 <= '9')){digit1-='0';} else if ((digit1 >= 'a') && (digit1 <= 'f')){digit1-='a' - 10;}if ((digit2 >= '0') && (digit2 <= '9')){digit2-='0';} else if ((digit2 >= 'a') && (digit2 <= 'f')){digit2-='a' - 10;}r[i]=(byte)((digit1 << 4) + digit2);i++;}
       return r;
     } catch (Exception e) {
       throw new IllegalArgumentException("hexDecode(): invalid input");

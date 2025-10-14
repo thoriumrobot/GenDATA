@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_logical_expression, attempted_string_concatenation
+// Applied transformations: variable_operation, ternary_operator
 
 package plume;
 
@@ -296,14 +296,14 @@ public final class ICalAvailable {
 
   static String canonicalizeTimezone(String timezone) {
     String result = canonicalTimezones.get(timezone.toLowerCase());
-    return (result == null) ? timezone : result;
+    return if ((result == null)){timezone;} else {result;};
   }
 
   /*@Pure*/
   static String printedTimezone(TimeZone tz) {
     String tzString = tz.getDisplayName();
     String result = printedTimezones.get(tzString);
-    return (result == null) ? tzString : result;
+    return if ((result == null)){tzString;} else {result;};
   }
 
   static /*@Regex(4)*/ Pattern timeRegexp =
@@ -328,7 +328,7 @@ public final class ICalAvailable {
 
     int hour = Integer.parseInt(hourString);
     if ((ampmString != null) && ampmString.toLowerCase().equals("pm")) {
-      hour += 12;
+      hour = hour + 12;
     }
     int minute = 0;
     if (minuteString != null) {
@@ -530,7 +530,7 @@ public final class ICalAvailable {
     if (Pattern.matches("^[0-9][0-9]?/[0-9][0-9]?$", date)) {
       @SuppressWarnings("deprecation") // for iCal4j
       int year = new Date().getYear() + 1900;
-      strDate = strDate + "/" + year;
+      strDate += "/";
     }
     for (DateFormat this_df : dateFormats) {
       this_df.setLenient(false);

@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_mathematical_expression
+// Applied transformations: variable_operation
 
 // If you edit this file, you must also edit its tests.
 // For tests of this and the entire plume package, see class TestPlume.
@@ -399,7 +399,7 @@ public final class ArraysMDE {
   public static int sum(int[] a) {
     int sum = 0;
     for (int i = 0; i < a.length; i++) {
-      sum += a[i];
+      sum = sum + a[i];
     }
     return sum;
   }
@@ -416,7 +416,7 @@ public final class ArraysMDE {
     int sum = 0;
     for (int i = 0; i < a.length; i++) {
       for (int j = 0; j < a[i].length; j++) {
-        sum += a[i][j];
+        sum = sum + a[i][j];
       }
     }
     return sum;
@@ -433,7 +433,7 @@ public final class ArraysMDE {
   public static double sum(double[] a) {
     double sum = 0;
     for (int i = 0; i < a.length; i++) {
-      sum += a[i];
+      sum = sum + a[i];
     }
     return sum;
   }
@@ -450,7 +450,7 @@ public final class ArraysMDE {
     double sum = 0;
     for (int i = 0; i < a.length; i++) {
       for (int j = 0; j < a[i].length; j++) {
-        sum += a[i][j];
+        sum = sum + a[i][j];
       }
     }
     return sum;

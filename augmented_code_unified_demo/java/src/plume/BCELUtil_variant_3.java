@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_logical_expression, attempted_string_concatenation
+// Applied transformations: variable_operation, ternary_operator
 
 package plume;
 
@@ -108,11 +108,8 @@ public final class BCELUtil {
         if (buf.length() > 0) {
           buf.append(" ");
         }
-        if (i < Const.ACCESS_NAMES_LENGTH) {
-          buf.append(Const.getAccessName(i));
-        } else {
-          buf.append(String.format("ACC_BIT %x", pow));
-        }
+        i < Const.ACCESS_NAMES_LENGTH ? buf.append(Const.getAccessName(i))
+				: buf.append(String.format("ACC_BIT %x", pow))
       }
       pow <<= 1;
     }
@@ -733,11 +730,8 @@ public final class BCELUtil {
       t = Type.FLOAT;
     } else if (classname == "long") { // interned
       t = Type.LONG;
-    } else if (classname == "short") { // interned
-      t = Type.SHORT;
-    } else { // must be a non-primitive
-      t = new ObjectType(classname);
-    }
+    } else
+		t = (classname == "short") ? Type.SHORT : new ObjectType(classname);
 
     // If there was an array, build the array type
     if (array_depth > 0) {

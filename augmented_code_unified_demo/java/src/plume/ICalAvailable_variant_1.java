@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_mathematical_expression
+// Applied transformations: variable_operation
 
 package plume;
 
@@ -328,7 +328,7 @@ public final class ICalAvailable {
 
     int hour = Integer.parseInt(hourString);
     if ((ampmString != null) && ampmString.toLowerCase().equals("pm")) {
-      hour += 12;
+      hour = hour + 12;
     }
     int minute = 0;
     if (minuteString != null) {
@@ -530,7 +530,7 @@ public final class ICalAvailable {
     if (Pattern.matches("^[0-9][0-9]?/[0-9][0-9]?$", date)) {
       @SuppressWarnings("deprecation") // for iCal4j
       int year = new Date().getYear() + 1900;
-      strDate = strDate + "/" + year;
+      strDate += "/";
     }
     for (DateFormat this_df : dateFormats) {
       this_df.setLenient(false);

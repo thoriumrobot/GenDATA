@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_logical_expression, attempted_string_concatenation
+// Applied transformations: variable_operation, ternary_operator
 
 /*
  * Copyright (C) 2001 Clarkware Consulting, Inc.
@@ -96,11 +96,8 @@ public final class JWhich {
 
     URL classUrl = findClass(className);
 
-    if (classUrl == null) {
-      System.out.println("\nClass '" + className + "' not found.");
-    } else {
-      System.out.println("\nClass '" + className + "' found in \n'" + classUrl.getFile() + "'");
-    }
+    classUrl == null ? System.out.println("\nClass '" + className + "' not found.")
+			: System.out.println("\nClass '" + className + "' found in \n'" + classUrl.getFile() + "'")
 
     validate();
 
@@ -120,10 +117,10 @@ public final class JWhich {
 
   protected static String asResourceName(String resource) {
     if (!resource.startsWith("/")) {
-      resource = "/" + resource;
+      resource += "/";
     }
     resource = resource.replace('.', '/');
-    resource = resource + ".class";
+    resource += ".class";
     return resource;
   }
 
@@ -202,11 +199,7 @@ public final class JWhich {
 
       String cmd = args[cmdIndex];
 
-      if ("-help".equals(cmd)) {
-        printUsage();
-      } else {
-        which(cmd);
-      }
+      "-help".equals(cmd) ? printUsage() : which(cmd)
     }
   }
 

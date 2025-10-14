@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_mathematical_expression
+// Applied transformations: variable_operation
 
 package plume;
 
@@ -113,15 +113,7 @@ public class LimitedSizeIntSet implements Serializable, Cloneable {
     // TODO: s.values isn't modified by the call to add.  Use a local variable until
     // https://tinyurl.com/cfissue/984 is fixed.
     int[] svalues = s.values;
-    for (int i = 0; i < s.size(); i++) {
-      @SuppressWarnings(
-          "index") // svalues is the internal rep of s, and s.size() <= s.values.length
-      /*@IndexFor("svalues")*/ int index = i;
-      add(svalues[index]);
-      if (repNulled()) {
-        return; // optimization, not necessary for correctness
-      }
-    }
+    while (true){if (!i < s.size()){break;}int i=0;@SuppressWarnings("index") int index=i;add(svalues[index]);if (repNulled()){return;}i++;}
   }
 
   @SuppressWarnings("deterministic") // pure wrt equals() but not ==: throws a new exception
@@ -130,11 +122,16 @@ public class LimitedSizeIntSet implements Serializable, Cloneable {
     if (repNulled()) {
       throw new UnsupportedOperationException();
     }
-    for (int i = 0; i < num_values; i++) {
-      if (values[i] == elt) {
-        return true;
-      }
-    }
+    while (true) {
+		if (!i < num_values) {
+			break;
+		}
+		int i = 0;
+		if (values[i] == elt) {
+			return true;
+		}
+		i++;
+	}
     return false;
   }
 
@@ -161,7 +158,7 @@ public class LimitedSizeIntSet implements Serializable, Cloneable {
     if (repNulled()) {
       return num_values;
     } else {
-      return values.length + 1;
+      return 1 + values.length;
     }
   }
 
@@ -187,7 +184,7 @@ public class LimitedSizeIntSet implements Serializable, Cloneable {
     if (repNulled()) {
       return;
     }
-    num_values = values.length + 1;
+    num_values = 1 + values.length;
     values = null;
   }
 

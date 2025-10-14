@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_mathematical_expression
+// Applied transformations: variable_operation
 
 package plume;
 
@@ -115,47 +115,7 @@ public class OrderedPairIterator<T>
   @Override
   public Pair</*@Nullable*/ T, /*@Nullable*/ T> next(
       /*>>>@GuardSatisfied OrderedPairIterator<T> this*/) {
-    if (next1 == null) {
-      if (next2 == null) {
-        throw new NoSuchElementException();
-      } else {
-        return return2();
-      }
-    } else {
-      if (next2 == null) {
-        return return1();
-      } else {
-        int comparison;
-        // Either T extends Comparable<T>, or else a comparator was passed in.
-        try {
-          if (comparator == null) {
-            @SuppressWarnings("unchecked")
-            Comparable</*@NonNull*/ T> cble1 = (Comparable</*@NonNull*/ T>) next1;
-            comparison = cble1.compareTo(next2);
-          } else {
-            comparison = comparator.compare(next1, next2);
-          }
-        } catch (NullPointerException npe) {
-          // Either one of the arguments is null, or the comparator is buggy
-          if (next1 == null && next2 == null) {
-            comparison = 0;
-          } else if (next1 == null && next2 != null) {
-            comparison = -1;
-          } else if (next1 != null && next2 == null) {
-            comparison = 1;
-          } else {
-            throw new RuntimeException("this can't happen " + next1 + " " + next2);
-          }
-        }
-        if (comparison < 0) {
-          return return1();
-        } else if (comparison > 0) {
-          return return2();
-        } else {
-          return returnboth();
-        }
-      }
-    }
+    if (!(next1 == null)){if (next2 == null){return return1();} else {int comparison;try {if (comparator == null){@SuppressWarnings("unchecked") Comparable<T> cble1=(Comparable<T>)next1;comparison=cble1.compareTo(next2);} else {comparison=comparator.compare(next1,next2);}} catch (NullPointerException npe){if (next1 == null && next2 == null){comparison=0;} else if (next1 == null && next2 != null){comparison=-1;} else if (next1 != null && next2 == null){comparison=1;} else {throw new RuntimeException("this can't happen " + next1 + " " + next2);}}if (comparison < 0){return return1();} else if (comparison > 0){return return2();} else {return returnboth();}}} else {if (next2 == null){throw new NoSuchElementException();} else {return return2();}}
   }
 
   @Override

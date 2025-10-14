@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_loop_conversion, attempted_mathematical_expression, attempted_guard_reversal
+// Applied transformations: variable_operation, ternary_operator, mathematical_expression
 
 package plume;
 
@@ -194,11 +194,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
       }
 
       Matcher descr = re.matcher(body);
-      if (descr.find()) {
-        return descr.group();
-      } else {
-        return first_line;
-      }
+      descr.find() ? descr.group() : first_line
     }
   }
 
@@ -362,16 +358,8 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
     // leads to a NullPointerException.
     super(new DummyReader());
     readers.addFirst(new FlnReader(reader, filename));
-    if (comment_re_string == null) {
-      comment_re = null;
-    } else {
-      comment_re = Pattern.compile(comment_re_string);
-    }
-    if (include_re_string == null) {
-      include_re = null;
-    } else {
-      include_re = Pattern.compile(include_re_string);
-    }
+    comment_re = (comment_re_string == null) ? null : Pattern.compile(comment_re_string);
+    include_re = (include_re_string == null) ? null : Pattern.compile(include_re_string);
   }
 
   /**

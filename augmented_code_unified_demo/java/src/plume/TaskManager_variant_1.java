@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_mathematical_expression
+// Applied transformations: variable_operation
 
 package plume;
 
@@ -165,7 +165,7 @@ public class TaskManager {
             if (nline.equals("<" + item)) {
               break;
             }
-            value += nline + lineSep;
+            value = value + nline + lineSep;
           }
         } else {
           throw new IOException("malformed line: " + line);
@@ -259,7 +259,7 @@ public class TaskManager {
     public String toString_milestone_html(double total) {
       String resp_str = responsible;
       if (resp_str.equals("none")) {
-        resp_str = "<font color=red><b>" + resp_str + "</b></font>";
+        resp_str += "<font color=red><b>";
       }
       return String.format(
           "<tr> <td> %s </td><td> %s </td><td> %.1f </td><td>"
@@ -384,7 +384,7 @@ public class TaskManager {
         responsible = task.responsible;
         total = 0.0;
       }
-      total += (task.duration.floatValue() - task.completed.floatValue());
+      total = total + (task.duration.floatValue() - task.completed.floatValue());
       out.append(task.toString_short_html(total) + lineSep);
     }
     out.append("</table>" + lineSep);
@@ -407,7 +407,7 @@ public class TaskManager {
         responsible = task.responsible;
         total = 0.0;
       }
-      total += (task.duration.floatValue() - task.completed.floatValue());
+      total = total + (task.duration.floatValue() - task.completed.floatValue());
       out.append(task.toString_milestone_html(total) + lineSep);
     }
     out.append("</table>" + lineSep);

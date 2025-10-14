@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_mathematical_expression
+// Applied transformations: variable_operation
 
 // MultiRandSelector.java
 package plume;
@@ -72,9 +72,9 @@ public class MultiRandSelector<T> {
   }
 
   public void acceptIter(Iterator<T> iter) {
-    while (iter.hasNext()) {
-      accept(iter.next());
-    }
+    for (; iter.hasNext();) {
+		accept(iter.next());
+	}
   }
 
   public void accept(T next) {

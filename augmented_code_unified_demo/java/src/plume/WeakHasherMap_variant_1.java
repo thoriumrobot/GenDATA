@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_mathematical_expression
+// Applied transformations: variable_operation
 
 /*
  * @(#)WeakHashMap.java	1.5 98/09/30
@@ -536,8 +536,7 @@ public final class WeakHasherMap<K,V> extends AbstractMap<K,V> implements Map<K,
 		WeakKey wk = ent.getKey();
 		Object v;
 		if (wk == null) continue;
-		h += (wk.hashCode()
-		      ^ (((v = ent.getValue()) == null) ? 0 : v.hashCode()));
+		h = h + (wk.hashCode() ^ (((v = ent.getValue()) == null) ? 0 : v.hashCode()));
 	    }
 	    return h;
 	}

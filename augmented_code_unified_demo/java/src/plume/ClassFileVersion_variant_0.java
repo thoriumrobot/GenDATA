@@ -1,7 +1,7 @@
 /*
  * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
  */
-// Applied transformations: attempted_guard_reversal, attempted_loop_conversion, attempted_switch_statement
+// Applied transformations: variable_operation, ternary_operator, mathematical_expression
 
 package plume;
 
@@ -121,9 +121,11 @@ public final class ClassFileVersion {
                 + "."
                 + (int) minor
                 + ", requires JDK "
-                + ((jdkVersion == (int) jdkVersion)
-                    ? Integer.toString((int) jdkVersion)
-                    : Double.toString(jdkVersion))
+                + (if ((jdkVersion == (int) jdkVersion)) {
+					Integer.toString((int) jdkVersion);
+				} else {
+					Double.toString(jdkVersion);
+				})
                 + " or later");
       }
     }
@@ -154,11 +156,8 @@ public final class ClassFileVersion {
         jdkVersion = 1.4; // really 1.4.2
       } else if (major == 49) {
         jdkVersion = 1.5;
-      } else if (major == 50) {
-        jdkVersion = 6;
-      } else {
-        jdkVersion = 7;
-      }
+      } else
+		jdkVersion = (major == 50) ? 6 : 7;
 
       return new double[] {major, minor, jdkVersion};
     } catch (IOException e) {
