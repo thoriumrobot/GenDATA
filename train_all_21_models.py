@@ -119,8 +119,8 @@ class AllModelsTrainer:
         # Summary
         logger.info("=" * 80)
         logger.info("🎯 TRAINING COMPLETE!")
-        logger.info(f"✅ Successfully trained: {len(self.trained_models)}/18 models")
-        logger.info(f"❌ Failed to train: {len(self.failed_models)}/18 models")
+        logger.info(f"✅ Successfully trained: {len(self.trained_models)}/21 models")
+        logger.info(f"❌ Failed to train: {len(self.failed_models)}/21 models")
         
         if self.trained_models:
             logger.info("\n✅ Successfully trained models:")

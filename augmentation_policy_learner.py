@@ -207,8 +207,13 @@ class ReinforcementLearningPolicy(AugmentationPolicyLearner):
         # Compute advantages
         advantages = self._compute_advantages(all_rewards, all_values)
         
-        # Normalize advantages
-        advantages = (advantages - advantages.mean()) / (advantages.std() + 1e-8)
+        # Normalize advantages with stable std guard
+        adv_mean = advantages.mean()
+        adv_std = advantages.std()
+        if not np.isfinite(adv_std) or adv_std < 1e-8:
+            advantages = advantages - adv_mean
+        else:
+            advantages = (advantages - adv_mean) / (adv_std + 1e-8)
         
         # PPO training
         for epoch in range(10):  # Multiple epochs

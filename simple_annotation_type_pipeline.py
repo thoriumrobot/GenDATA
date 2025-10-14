@@ -393,23 +393,27 @@ class SimpleAnnotationTypePipeline:
             from pipeline import run_slicing
             
             logger.info("Generating slices using Soot")
-            # Use the correct warnings file path
-            warnings_file = os.path.join(self.cfwr_root, 'index1.out')
+            # Use the warnings file provided to this pipeline
+            warnings_file = self.warnings_file
+            # Ensure the base slices directory exists (per-case directory)
+            os.makedirs(self.slices_dir, exist_ok=True)
             run_slicing(self.project_root, warnings_file, self.cfwr_root, 
-                       os.path.dirname(self.slices_dir), 'soot')
+                       self.slices_dir, 'soot')
             
             # Augment slices using semantic-preserving transformations
             logger.info("Augmenting slices with semantic-preserving transformations")
-            augmented_dir = os.path.join(self.cfwr_root, 'slices_augmented')
+            # Keep augmented slices inside the case slices directory
+            augmented_dir = os.path.join(self.slices_dir, 'augmented')
             os.makedirs(augmented_dir, exist_ok=True)
             
             # Run semantic augmentation
             import subprocess
             augment_cmd = [
-                'python', 'semantic_augment_slices.py',
+                'python', 'enhanced_semantic_augment_slices.py',
                 '--slices_dir', self.slices_dir,
                 '--out_dir', augmented_dir,
-                '--variants_per_file', '50'  # Reduced since semantic transformations are more meaningful
+                '--variants_per_file', '50',
+                '--compiler_check'
             ]
             result = subprocess.run(augment_cmd, capture_output=True, text=True)
             if result.returncode != 0:
@@ -421,11 +425,8 @@ class SimpleAnnotationTypePipeline:
             
             # Verify slices were generated (check both specimin and cf directories)
             specimin_slices = glob.glob(os.path.join(self.slices_dir, '**/*.java'), recursive=True)
-            cf_slices_dir = os.path.join(self.cfwr_root, 'slices_cf')
-            cf_slices = glob.glob(os.path.join(cf_slices_dir, '**/*.java'), recursive=True) if os.path.exists(cf_slices_dir) else []
-            
-            total_slices = len(specimin_slices) + len(cf_slices)
-            logger.info(f"Generated {total_slices} slice files ({len(specimin_slices)} specimin, {len(cf_slices)} cf)")
+            total_slices = len(specimin_slices)
+            logger.info(f"Generated {total_slices} slice files")
             
             if total_slices > 0:
                 logger.info("Slice generation completed successfully")
@@ -449,11 +450,8 @@ class SimpleAnnotationTypePipeline:
             
             # Verify CFGs were generated (check both specimin and cf directories)
             specimin_cfgs = glob.glob(os.path.join(self.cfg_dir, '**/*.json'), recursive=True)
-            cf_cfgs_dir = os.path.join(self.cfwr_root, 'slices_cf')
-            cf_cfgs = glob.glob(os.path.join(cf_cfgs_dir, '**/*.json'), recursive=True) if os.path.exists(cf_cfgs_dir) else []
-            
-            total_cfgs = len(specimin_cfgs) + len(cf_cfgs)
-            logger.info(f"Generated {total_cfgs} CFG files ({len(specimin_cfgs)} specimin, {len(cf_cfgs)} cf)")
+            total_cfgs = len(specimin_cfgs)
+            logger.info(f"Generated {total_cfgs} CFG files")
             
             if total_cfgs > 0:
                 logger.info("CFG generation completed successfully")
@@ -481,6 +479,7 @@ class SimpleAnnotationTypePipeline:
                 '--cfwr_root', self.cfwr_root,
                 '--slices_dir', self.slices_dir,
                 '--cfg_dir', self.cfg_dir,
+                '--models_dir', self.models_dir,
                 '--episodes', str(episodes),
                 '--base_model', base_model,
                 '--device', self.device,

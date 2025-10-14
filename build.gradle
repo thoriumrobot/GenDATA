@@ -53,6 +53,9 @@ dependencies {
   // Vineflower decompiler (optional)
   implementation 'org.vineflower:vineflower:1.10.1'
 
+  // Eclipse JDT core for AST parsing/rewrites used by semantic augmentation
+  implementation 'org.eclipse.jdt:org.eclipse.jdt.core:3.36.0'
+
   // --- Tests (choose JUnit 5 or 4; here we use JUnit 5) ---
   testImplementation 'org.junit.jupiter:junit-jupiter:5.10.3'
   testImplementation 'org.junit.jupiter:junit-jupiter-params:5.10.3'
@@ -133,6 +136,27 @@ tasks.register('cfSlicerJar', com.github.jengelman.gradle.plugins.shadow.tasks.S
   manifest { attributes 'Main-Class': 'cfwr.CheckerFrameworkSlicer' }
 }
 
+// Build a fat JAR for the AST-based semantic augmenter CLI
+tasks.register('astAugmentJar', com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
+  group = 'build'
+  description = 'Build a fat JAR for the AST-based semantic augmenter CLI'
+  archiveBaseName.set('ast-augmenter')
+  archiveClassifier.set('all')
+  archiveVersion.set('')
+
+  from sourceSets.main.output
+  configurations = [project.configurations.runtimeClasspath]
+
+  mergeServiceFiles {
+    include 'META-INF/services/*'
+  }
+
+  exclude 'module-info.class'
+  exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
+
+  manifest { attributes 'Main-Class': 'cfwr.ast.SemanticAugmenter' }
+}
+
 /**
  * Optional convenience tasks to run either entrypoint without switching 'application.mainClass'
  */
@@ -165,6 +189,17 @@ tasks.register('runResolver', JavaExec) {
   description = 'Run the CheckerFrameworkWarningResolver'
   classpath = sourceSets.main.runtimeClasspath
   mainClass = 'cfwr.CheckerFrameworkWarningResolver'
+  if (project.hasProperty('args')) {
+    args project.property('args').toString().split('\\s+')
+  }
+}
+
+// Run the AST-based semantic augmenter CLI from Gradle (no jar needed)
+tasks.register('runAstAugment', JavaExec) {
+  group = 'application'
+  description = 'Run the AST-based semantic augmenter CLI'
+  classpath = sourceSets.main.runtimeClasspath
+  mainClass = 'cfwr.ast.SemanticAugmenter'
   if (project.hasProperty('args')) {
     args project.property('args').toString().split('\\s+')
   }

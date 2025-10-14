@@ -18,10 +18,10 @@ This document summarizes the comprehensive evaluation of all 18 models (6 base m
 - **Annotation Types**: @Positive, @NonNegative, @GTENegativeOne
 - **File Format**: `[annotation_type]_[base_model]_model.pth` and corresponding stats files
 
-### **2. Training Pipeline Implementation**
-- **✅ Specimin Slicing**: Training uses Specimin for slice generation from `/home/ubuntu/checker-framework/checker/tests/index/`
-- **✅ Slice Augmentation**: `augment_slices.py` is integrated into the training pipeline with 10x augmentation
-- **✅ CFG Conversion**: Slices are converted to CFGs using Checker Framework's CFG Builder (via `CheckerFrameworkSlicer`)
+### **2. Training Pipeline Implementation (21 Models Total)**
+- **✅ Specimin/CF/Soot Slicing**: Training uses the configured slicer (Specimin/CF/soot) for slice generation from `/home/ubuntu/checker-framework/checker/tests/index/`
+- **✅ Slice Augmentation (DEFAULT: AST-based semantic)**: Parsing-based semantic augmentation via `enhanced_semantic_augment_slices.py` (enhanced, AST/JDT) with configurable factor; `semantic_augment_slices.py` (simple, AST) and legacy `augment_slices.py` (random) remain available via `--augmentation_mode`
+- **✅ CFG Conversion**: Slices are converted to CFGs using Checker Framework's CFG Builder and `cfg.py`
 - **✅ Real CFG Data**: Models are trained on real CFG data extracted from slices, not mock data
 
 ### **3. Prediction Pipeline Implementation**
@@ -75,11 +75,15 @@ This document summarizes the comprehensive evaluation of all 18 models (6 base m
 
 ## 🔧 **Technical Implementation**
 
-### **Training Pipeline**
-1. **Slice Generation**: Specimin extracts slices from warning locations
-2. **Slice Augmentation**: 10x augmentation using `augment_slices.py`
-3. **CFG Generation**: Checker Framework CFG Builder creates control flow graphs
-4. **Model Training**: RL models trained on real CFG data with episodes and rewards
+### **Training Pipeline (7 model types × 3 annotation types = 21 models)**
+1. **Slice Generation**: Configured slicer extracts slices from warning locations
+2. **Slice Augmentation (DEFAULT: parsing/AST)**: Enhanced semantic augmentation (`enhanced_semantic_augment_slices.py`) with compile-check filtering
+3. **CFG Generation**: Checker Framework CFG Builder / `cfg.py` create control/dataflow graphs
+4. **Model Training**: Train 7 model types for each of 3 annotation types on real CFG data
+### **Model Matrix (21 total)**
+- **Annotation Types (3)**: `@Positive`, `@NonNegative`, `@GTENegativeOne`
+- **Model Types (7)**: `gcn`, `gbt`, `causal`, `enhanced_causal`, `hgt`, `gcsn`, `dg2n`
+- Trained models: 7 × 3 = 21
 5. **Model Saving**: Models saved with proper naming convention
 
 ### **Prediction Pipeline**

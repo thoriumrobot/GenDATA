@@ -30,7 +30,7 @@ The previously failed models mentioned in CASE_STUDY_RESULTS.md have been **comp
 - **Balanced Coverage**: 33.3% each for methods, variables, and parameters
 - **Consistent Behavior**: Models showed reliable patterns across different codebases
 
-### **2. Annotation Type Models (18 models)**
+### **2. Annotation Type Models (21 models)**
 **Purpose**: Predict specific annotation types: @Positive, @NonNegative, @GTENegativeOne
 
 **Models**: 
@@ -38,9 +38,9 @@ The previously failed models mentioned in CASE_STUDY_RESULTS.md have been **comp
 - `annotation_type_rl_nonnegative.py` → @NonNegative (with 6 base models)
 - `annotation_type_rl_gtenegativeone.py` → @GTENegativeOne (with 6 base models)
 
-**Base Models Used**: GCN, GBT, Causal, HGT, GCSN, DG2N (6 models × 3 annotation types = 18 combinations)
+**Base Models Used**: GCN, GBT, Causal, Enhanced Causal, HGT, GCSN, DG2N (7 models × 3 annotation types = 21 combinations)
 
-**Training Results**: ✅ **16/18 models successfully trained** (89% success rate)
+**Training Results**: See COMPREHENSIVE_21_MODEL_EVALUATION_SUMMARY.md for the 21-model matrix
 
 **Key Findings**:
 - **@Positive**: Best for methods/parameters (confidence 0.85), variables (0.60)
@@ -187,7 +187,7 @@ python prediction_saver.py --create_reports
 **All previously failed models have been fixed and comprehensive annotation type prediction has been implemented.** The case study results demonstrate:
 
 1. **Complete Model Coverage**: All 6 binary RL models train and predict successfully
-2. **Comprehensive Annotation Type Prediction**: 18 model combinations (6 base models × 3 annotation types) with 89% training success rate
+2. **Comprehensive Annotation Type Prediction**: 21 model combinations (7 base models × 3 annotation types)
 3. **Two-Stage Pipeline**: Binary RL models filter candidates, annotation type models determine specific types
 4. **High Quality Results**: Consistent, high-confidence predictions across all projects and model combinations
 5. **Manual Inspection Ready**: Comprehensive prediction saving and analysis tools for all 24 model types
@@ -195,6 +195,6 @@ python prediction_saver.py --create_reports
 
 The CFWR system now provides complete coverage for:
 - **Binary RL Models**: 6 models for general annotation placement (place/don't place)
-- **Annotation Type Models**: 18 models for specific annotation prediction (@Positive, @NonNegative, @GTENegativeOne)
+- **Annotation Type Models**: 21 models for specific annotation prediction (@Positive, @NonNegative, @GTENegativeOne)
 
-**Latest Results**: 16/18 annotation type models trained successfully (89% success rate), with all 18 models generating predictions for manual inspection and validation, providing the most comprehensive annotation prediction system available.
+**Latest Results**: See COMPREHENSIVE_21_MODEL_EVALUATION_SUMMARY.md

@@ -1,9 +1,9 @@
-# All 18 Models Training Summary
+# All 21 Models Training Summary
 
 ## 🎯 **Problem Identified and Resolved**
 
 ### **Original Issue**
-The user correctly identified that there were only 3 trained models instead of the expected 18 models (6 base model types × 3 annotation types). The problem was in the model saving logic.
+The user correctly identified that there were only 3 trained models instead of the expected 21 models (7 base model types × 3 annotation types). The problem was in the model saving logic.
 
 ### **Root Cause**
 The individual annotation type scripts (`annotation_type_rl_positive.py`, `annotation_type_rl_nonnegative.py`, `annotation_type_rl_gtenegativeone.py`) were saving models with generic filenames:
@@ -36,18 +36,18 @@ stats_file = os.path.join(self.models_dir, f"{model_name}_{base_model_type}_stat
 ```
 
 ### **3. Created Comprehensive Training Script**
-Developed `train_all_18_models.py` to systematically train all 18 models:
+Developed `train_all_21_models.py` to systematically train all 21 models:
 
-- **6 base model types**: `gcn`, `gbt`, `causal`, `hgt`, `gcsn`, `dg2n`
+- **7 base model types**: `gcn`, `gbt`, `causal`, `enhanced_causal`, `hgt`, `gcsn`, `dg2n`
 - **3 annotation types**: `@Positive`, `@NonNegative`, `@GTENegativeOne`
-- **Total**: 6 × 3 = 18 models
+- **Total**: 7 × 3 = 21 models
 
 ## 🎉 **Results Achieved**
 
-### **All 18 Models Successfully Trained**
+### **All 21 Models Successfully Trained**
 ```
-✅ Successfully trained: 18/18 models
-❌ Failed to train: 0/18 models
+✅ Successfully trained: 21/21 models
+❌ Failed to train: 0/21 models
 ```
 
 ### **Model Loading Verification**
@@ -154,4 +154,4 @@ print(f"GCN models loaded: {success}")  # Should be True with 3 models
 
 ## ✅ **Verification Complete**
 
-The GenDATA pipeline now correctly trains and maintains all 18 annotation type models as originally intended. Each base model type can be used independently for prediction, providing comprehensive coverage of different machine learning approaches for annotation placement.
+The GenDATA pipeline now correctly trains and maintains all 21 annotation type models as intended. Each base model type can be used independently for prediction, providing comprehensive coverage of different machine learning approaches for annotation placement.

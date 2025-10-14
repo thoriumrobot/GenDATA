@@ -34,13 +34,13 @@ class AblationStudyPipeline:
     """Main ablation study pipeline that runs different ablation experiments"""
     
     def __init__(self, project_root: str, warnings_file: str, cfwr_root: str, 
-                 output_dir: str = 'ablation_studies', device: str = 'cuda'):
+                 output_dir: str = 'ablation_studies', device: str = 'cuda', augmentation_mode: str = 'enhanced'):
         self.project_root = project_root
         self.warnings_file = warnings_file
         self.cfwr_root = cfwr_root
         self.output_dir = Path(output_dir)
         self.device = device
-        
+        self.augmentation_mode = augmentation_mode
         # Create output directory
         self.output_dir.mkdir(exist_ok=True)
         
@@ -105,20 +105,18 @@ class AblationStudyPipeline:
             augment_first=True,
             disable_random_walk=False  # Enable random walk for baseline
         )
+        # Prefer parsing-based enhanced semantic augmentation in downstream pipeline
+        try:
+            pipeline.augmentation_mode = self.augmentation_mode
+        except Exception:
+            pass
         
         # Update directories to use baseline-specific paths
         pipeline.slices_dir = str(baseline_dir / 'slices')
         pipeline.cfg_dir = str(baseline_dir / 'cfg_output')
         pipeline.models_dir = str(baseline_dir / 'models')
         
-        # Copy warnings file to expected location (pipeline expects index1.out in cfwr_root)
-        import shutil
-        expected_warnings_file = '/home/ubuntu/GenDATA/index1.out'
-        if self.warnings_file != expected_warnings_file:
-            shutil.copy2(self.warnings_file, expected_warnings_file)
-            logger.info(f"Copied warnings file to {expected_warnings_file}")
-        else:
-            logger.info(f"Warnings file already at expected location: {expected_warnings_file}")
+        # Use warnings file as provided via CLI; do not rewrite
         
         # Run training pipeline with configurable episodes
         start_time = time.time()
@@ -158,14 +156,7 @@ class AblationStudyPipeline:
         pipeline.cfg_dir = str(no_aug_dir / 'cfg_output')
         pipeline.models_dir = str(no_aug_dir / 'models')
         
-        # Copy warnings file to expected location (pipeline expects index1.out in cfwr_root)
-        import shutil
-        expected_warnings_file = '/home/ubuntu/GenDATA/index1.out'
-        if self.warnings_file != expected_warnings_file:
-            shutil.copy2(self.warnings_file, expected_warnings_file)
-            logger.info(f"Copied warnings file to {expected_warnings_file}")
-        else:
-            logger.info(f"Warnings file already at expected location: {expected_warnings_file}")
+        # Use warnings file as provided via CLI; do not rewrite
         
         start_time = time.time()
         success = pipeline.run_training_pipeline(episodes=episodes, base_model='gcn')
@@ -195,6 +186,10 @@ class AblationStudyPipeline:
             device=self.device,
             augment_first=True
         )
+        try:
+            pipeline.augmentation_mode = self.augmentation_mode
+        except Exception:
+            pass
         
         # Update directories
         pipeline.slices_dir = str(ablation_dir / 'slices')
@@ -286,6 +281,10 @@ class AblationStudyPipeline:
             augment_first=True,
             disable_random_walk=True  # Disable random walk optimization
         )
+        try:
+            pipeline.augmentation_mode = self.augmentation_mode
+        except Exception:
+            pass
         
         # Update directories
         pipeline.slices_dir = str(no_rw_dir / 'slices')

@@ -266,9 +266,9 @@ Examples:
     
     # Mode selection
     parser.add_argument('--mode', 
-                       choices=['all', 'baseline', 'no_aug', 'no_rw', 'transformations', 'evaluate', 'report'],
-                       default='all',
-                       help='Ablation study mode')
+                       choices=['all', 'baseline', 'no_aug', 'no_rw', 'transformations', 'evaluate', 'report', 'compare'],
+                       default='compare',
+                       help='Ablation study mode (default compares augmentation vs no augmentation)')
     
     # Input parameters
     parser.add_argument('--project_root', 
@@ -292,6 +292,14 @@ Examples:
                        type=int,
                        default=10,
                        help='Number of training episodes (default: 10)')
+    parser.add_argument('--use_subset', 
+                       action='store_true',
+                       help='Use a smaller real-data subset warnings file (pre-generated)')
+    parser.add_argument('--subset_file',
+                       help='Path to a pre-generated real-data subset warnings file (.out)')
+    parser.add_argument('--fast_compare', 
+                       action='store_true',
+                       help='Speed up compare by disabling random walk in baseline')
     
     # Transformation-specific parameters
     parser.add_argument('--transform_subset', 
@@ -324,6 +332,16 @@ Examples:
     # Set up paths
     if not os.path.isabs(args.warnings_file):
         args.warnings_file = os.path.join(args.cfwr_root, args.warnings_file)
+
+    # Optionally create a tiny subset warnings file from real data
+    subset_warnings_file = None
+    if args.use_subset:
+        if args.subset_file and os.path.exists(args.subset_file):
+            subset_warnings_file = args.subset_file
+            logger.info(f"Using provided subset warnings file: {subset_warnings_file}")
+        else:
+            logger.error("--use_subset specified but --subset_file is missing or does not exist")
+            return 1
     
     # Detect optimal device
     if args.device == 'auto':
@@ -348,33 +366,64 @@ Examples:
     
     if args.mode == 'all':
         success = run_all_ablations(
-            args.project_root, args.warnings_file, args.cfwr_root,
+            args.project_root, subset_warnings_file or args.warnings_file, args.cfwr_root,
             args.output_dir, args.device, args.episodes
         )
         
     elif args.mode == 'baseline':
         success = run_baseline_study(
-            args.project_root, args.warnings_file, args.cfwr_root,
+            args.project_root, subset_warnings_file or args.warnings_file, args.cfwr_root,
             args.output_dir, args.device, args.episodes
         )
         
     elif args.mode == 'no_aug':
         success = run_no_augmentation_study(
-            args.project_root, args.warnings_file, args.cfwr_root,
+            args.project_root, subset_warnings_file or args.warnings_file, args.cfwr_root,
             args.output_dir, args.device, args.episodes
         )
         
     elif args.mode == 'no_rw':
         success = run_no_random_walk_study(
-            args.project_root, args.warnings_file, args.cfwr_root,
+            args.project_root, subset_warnings_file or args.warnings_file, args.cfwr_root,
             args.output_dir, args.device, args.episodes
         )
         
     elif args.mode == 'transformations':
         success = run_transformation_ablations(
-            args.project_root, args.warnings_file, args.cfwr_root,
+            args.project_root, subset_warnings_file or args.warnings_file, args.cfwr_root,
             args.output_dir, args.device, args.episodes, args.transform_subset
         )
+    
+    elif args.mode == 'compare':
+        # Fast comparison: with augmentation vs without augmentation
+        logger.info("=== Compare: augmentation vs no augmentation ===")
+        warnings_to_use = subset_warnings_file or args.warnings_file
+        pipeline = AblationStudyPipeline(
+            project_root=args.project_root,
+            warnings_file=warnings_to_use,
+            cfwr_root=args.cfwr_root,
+            output_dir=args.output_dir,
+            device=args.device
+        )
+        if args.fast_compare:
+            logger.info("Compare mode: using no-random-walk baseline for speed")
+            with_aug = pipeline.run_no_random_walk_study(episodes=args.episodes)
+        else:
+            with_aug = pipeline.run_baseline_study(episodes=args.episodes)
+        without_aug = pipeline.run_no_augmentation_study(episodes=args.episodes)
+        comparison = pipeline._calculate_performance_comparison({
+            'baseline': with_aug,
+            'no_augmentation': without_aug
+        })
+        out_path = os.path.join(args.output_dir, 'augmentation_vs_no_augmentation.json')
+        with open(out_path, 'w') as f:
+            json.dump({
+                'with_augmentation': with_aug,
+                'without_augmentation': without_aug,
+                'performance_comparison': comparison
+            }, f, indent=2)
+        logger.info(f"Compare saved to {out_path}")
+        success = True
         
     elif args.mode == 'evaluate':
         results_dir = args.results_dir or args.output_dir

@@ -493,6 +493,7 @@ def main():
     parser.add_argument('--slices_dir', help='Directory containing slice files')
     parser.add_argument('--cfg_dir', help='Directory containing CFG files')
     parser.add_argument('--use_real_cfg_data', action='store_true', default=True, help='Use real CFG data instead of mock data (default: True)')
+    parser.add_argument('--models_dir', help='Directory to save trained models and stats')
     
     args = parser.parse_args()
     
@@ -515,6 +516,11 @@ def main():
         use_real_cfg_data=args.use_real_cfg_data
     )
     
+    # Save outputs to provided models_dir if specified
+    if args.models_dir:
+        out_base = os.path.join(args.models_dir, f"{trainer.annotation_type.replace('@', '').lower()}_{trainer.base_model_type}")
+        trainer.save_model(out_base + '_model.pth')
+        trainer.save_training_stats(out_base + '_stats.json')
     logger.info("@NonNegative annotation type training completed successfully")
 
 class AnnotationTypeHGTModel(nn.Module):
