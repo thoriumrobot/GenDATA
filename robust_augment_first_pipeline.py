@@ -166,7 +166,7 @@ class RobustAugmentFirstPipeline:
     def _augment_original_code_robust(self) -> bool:
         """Augment the original code with robust error handling"""
         try:
-            from semantic_augment_slices import SemanticTransformer
+            from enhanced_semantic_augment_slices import EnhancedSemanticTransformer as SemanticTransformer
             
             logger.info(f"🔄 Augmenting original code with {self.augmentation_factor} variants per file")
             

@@ -93,7 +93,7 @@ class JdtSemanticTransformer:
             return False
     
     def transform_code(self, java_code: str, transformations: List[str],
-                      mode: str = 'enhanced') -> str:
+                      mode: str = 'enhanced', force_transformation: bool = True) -> str:
         """
         Transform Java code string using JDT-based transformations.
         
@@ -101,10 +101,31 @@ class JdtSemanticTransformer:
             java_code: Java source code as string
             transformations: List of transformation types to apply
             mode: Transformation mode ('enhanced' or 'simple')
+            force_transformation: If True, retry with different transformations if none apply
             
         Returns:
             Transformed Java code
         """
+        original_code = java_code
+        
+        # Try the requested transformations first
+        transformed_code = self._try_transformations(java_code, transformations, mode)
+        
+        # If no changes were made and force_transformation is True, try other transformations
+        if force_transformation and transformed_code == original_code and transformations:
+            available_transformations = self.get_available_transformations(mode)
+            other_transformations = [t for t in available_transformations if t not in transformations]
+            
+            if other_transformations:
+                # Try with a subset of other transformations
+                retry_transformations = other_transformations[:min(3, len(other_transformations))]
+                logger.info(f"No changes with {transformations}, retrying with {retry_transformations}")
+                transformed_code = self._try_transformations(java_code, retry_transformations, mode)
+        
+        return transformed_code
+    
+    def _try_transformations(self, java_code: str, transformations: List[str], mode: str) -> str:
+        """Try applying transformations and return transformed code."""
         try:
             with tempfile.NamedTemporaryFile(mode='w', suffix='.java', delete=False) as input_file:
                 input_file.write(java_code)
@@ -170,16 +191,8 @@ class JdtSemanticTransformer:
                 'ternary_operator',
                 'switch_statement',
                 'variable_operation',
-                'method_extraction',
-                'conditional_expression',
-                'array_access_pattern',
                 'string_concatenation',
-                'numeric_literal',
-                'exception_handling',
-                'lambda_expression',
-                'stream_api',
-                'builder_pattern',
-                'functional_conversion'
+                'numeric_literal'
             ]
         elif mode == 'simple':
             return [

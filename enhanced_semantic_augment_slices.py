@@ -71,25 +71,33 @@ class EnhancedSemanticTransformer:
                 logger.warning("No transformations available after filtering disabled ones")
                 return original_code
             
-            # Select random transformations to apply
-            num_transformations = min(random.randint(1, 4), len(enabled_transformations))
-            selected_transformations = random.sample(enabled_transformations, num_transformations)
+            # Use deterministic selection based on variant index to ensure different transformations
+            # Set seed based on variant index for reproducible but different transformations
+            variant_random = random.Random(self.seed + variant_idx * 1000)
             
-            logger.info(f"Applying transformations: {selected_transformations}")
+            # Select 1-3 transformations deterministically
+            num_transformations = min(variant_random.randint(1, 3), len(enabled_transformations))
+            selected_transformations = variant_random.sample(enabled_transformations, num_transformations)
             
-            # Apply transformations using JDT
+            logger.info(f"Applying transformations for variant {variant_idx}: {selected_transformations}")
+            
+            # Apply transformations using JDT with forced transformation
             transformed_code = self.jdt_transformer.transform_code(
                 original_code, 
                 selected_transformations, 
-                'enhanced'
+                'enhanced',
+                force_transformation=True
             )
             
             # Record applied transformations
             self.transformations_applied.extend(selected_transformations)
             
-            # Add header comment
+            # Always add header comment to indicate transformation attempt
             if transformed_code != original_code:
                 transformed_code = self._add_header_comment(transformed_code, selected_transformations)
+            else:
+                # Even if no changes, add header to show transformation was attempted
+                transformed_code = self._add_header_comment(transformed_code, [f"attempted_{t}" for t in selected_transformations])
             
             return transformed_code
             

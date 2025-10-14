@@ -116,7 +116,7 @@ def test_augment_first_approach():
         print(f"\nStep 1: Testing semantic augmentation on original code")
         print("-" * 50)
         
-        from semantic_augment_slices import SemanticTransformer, iter_java_files
+        from enhanced_semantic_augment_slices import EnhancedSemanticTransformer as SemanticTransformer, iter_java_files
         
         # Create augmentation output directory
         augmented_dir = temp_path / "augmented_code"

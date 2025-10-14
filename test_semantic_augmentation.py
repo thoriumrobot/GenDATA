@@ -6,7 +6,7 @@ Test script for semantic augmentation system
 import os
 import tempfile
 import shutil
-from semantic_augment_slices import SemanticTransformer
+from enhanced_semantic_augment_slices import EnhancedSemanticTransformer as SemanticTransformer
 
 def create_test_java_file():
     """Create a test Java file with various constructs to transform."""

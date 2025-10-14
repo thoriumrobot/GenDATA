@@ -98,7 +98,7 @@ def test_semantic_augmentation():
     """Test semantic augmentation functionality"""
     print("Testing Semantic Augmentation...")
     
-    from semantic_augment_slices import SemanticTransformer
+    from enhanced_semantic_augment_slices import EnhancedSemanticTransformer as SemanticTransformer
     
     # Create a test file
     test_content = """
@@ -265,7 +265,7 @@ def test_integration():
     
     try:
         # Test that all components can be imported
-        from semantic_augment_slices import SemanticTransformer
+        from enhanced_semantic_augment_slices import EnhancedSemanticTransformer as SemanticTransformer
         from augment_first_pipeline import AugmentFirstPipeline
         from pipeline_config import get_default_config
         from simple_annotation_type_pipeline import SimpleAnnotationTypePipeline

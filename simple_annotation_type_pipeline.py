@@ -147,8 +147,6 @@ class SimpleAnnotationTypePipeline:
     def _augment_original_code(self):
         """Augment the original code with unified augmentation registry and location-aware random walk"""
         try:
-            from enhanced_semantic_augment_slices import iter_java_files
-            
             # Create augmented code directory
             self.augmented_code_dir = os.path.join(self.cfwr_root, 'augmented_code_unified')
             os.makedirs(self.augmented_code_dir, exist_ok=True)
@@ -163,7 +161,7 @@ class SimpleAnnotationTypePipeline:
             random_count = 0
             
             # Process each Java file in the project
-            for java_file in iter_java_files(self.project_root):
+            for java_file in glob.glob(os.path.join(self.project_root, '**', '*.java'), recursive=True):
                 # Read original code
                 with open(java_file, 'r') as f:
                     original_code = f.read()

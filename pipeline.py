@@ -351,7 +351,7 @@ def main():
     parser.add_argument('--augmented_dir', default=AUGMENTED_DIR_DEFAULT, help='Output directory for augmented slices')
     parser.add_argument('--augment_variants', type=int, default=100, help='Variants per original slice for augmentation')
     parser.add_argument('--slicer', default='cf', choices=['cf','wala','specimin','soot'], help='Slicer to use (cf=CheckerFrameworkSlicer, wala, specimin, or soot)')
-    parser.add_argument('--augmentation_mode', default='enhanced', choices=['enhanced','simple','random'], help='Augmentation strategy (default enhanced semantic)')
+    parser.add_argument('--augmentation_mode', default='enhanced', choices=['enhanced','simple','random'], help='Augmentation strategy (default: enhanced semantic with 100% transformation probability)')
     # PF evaluation hook
     parser.add_argument('--pf_eval', action='store_true', help='Run parameter-free node-level RL evaluation (exclude *Bottom)')
     parser.add_argument('--pf_dataset_dir', default='test_results/statistical_dataset', help='Dataset dir for PF evaluation')
@@ -376,7 +376,7 @@ def main():
         if args.augmentation_mode == 'random':
             run([sys.executable, 'augment_slices.py', '--slices_dir', args.slices_dir, '--out_dir', augmented_dir, '--variants_per_file', str(args.augment_variants)])
         elif args.augmentation_mode == 'simple':
-            run([sys.executable, 'semantic_augment_slices.py', '--slices_dir', args.slices_dir, '--out_dir', augmented_dir, '--variants_per_file', str(args.augment_variants), '--compiler_check'])
+            run([sys.executable, 'enhanced_semantic_augment_slices.py', '--slices_dir', args.slices_dir, '--out_dir', augmented_dir, '--variants_per_file', str(args.augment_variants), '--compiler_check', '--disabled', 'switch_statement', 'variable_operation', 'string_concatenation', 'numeric_literal'])
         else:
             run([sys.executable, 'enhanced_semantic_augment_slices.py', '--slices_dir', args.slices_dir, '--out_dir', augmented_dir, '--variants_per_file', str(args.augment_variants), '--compiler_check'])
 
@@ -412,7 +412,7 @@ def main():
         if args.augmentation_mode == 'random':
             run([sys.executable, 'augment_slices.py', '--slices_dir', args.slices_dir, '--out_dir', augmented_dir, '--variants_per_file', str(args.augment_variants)])
         elif args.augmentation_mode == 'simple':
-            run([sys.executable, 'semantic_augment_slices.py', '--slices_dir', args.slices_dir, '--out_dir', augmented_dir, '--variants_per_file', str(args.augment_variants), '--compiler_check'])
+            run([sys.executable, 'enhanced_semantic_augment_slices.py', '--slices_dir', args.slices_dir, '--out_dir', augmented_dir, '--variants_per_file', str(args.augment_variants), '--compiler_check', '--disabled', 'switch_statement', 'variable_operation', 'string_concatenation', 'numeric_literal'])
         else:
             run([sys.executable, 'enhanced_semantic_augment_slices.py', '--slices_dir', args.slices_dir, '--out_dir', augmented_dir, '--variants_per_file', str(args.augment_variants), '--compiler_check'])
 

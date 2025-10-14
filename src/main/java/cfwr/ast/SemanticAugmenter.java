@@ -38,7 +38,7 @@ public class SemanticAugmenter {
             return;
         }
 
-        // Enabled transform families
+        // Enabled transform families - force all to be applied
         Set<String> enabled = new LinkedHashSet<>(Arrays.asList(
                 "guard", "demorgan", "ternary", "array_index", "identity_math"
         ));
@@ -49,13 +49,15 @@ public class SemanticAugmenter {
 
         ASTRewrite rw = ASTRewrite.create(cu.getAST());
 
-        if (enabled.contains("guard")) applyGuardReversal(cu, rw);
-        if (enabled.contains("demorgan")) applyDeMorgan(cu, rw);
-        if (enabled.contains("ternary")) applyTernaryIfElse(cu, rw);
-        if (enabled.contains("array_index")) applyArrayIndexIdentity(cu, rw);
-        if (enabled.contains("identity_math")) applyIdentityMath(cu, rw);
-        if (enabled.contains("string_concat_alt")) applyStringConcatAlternatives(cu, rw);
-        if (enabled.contains("numeric_literal_alt")) applyNumericLiteralAlternatives(cu, rw);
+        // Apply transformations and track if any changes were made
+        boolean hasChanges = false;
+        if (enabled.contains("guard")) hasChanges |= applyGuardReversal(cu, rw);
+        if (enabled.contains("demorgan")) hasChanges |= applyDeMorgan(cu, rw);
+        if (enabled.contains("ternary")) hasChanges |= applyTernaryIfElse(cu, rw);
+        if (enabled.contains("array_index")) hasChanges |= applyArrayIndexIdentity(cu, rw);
+        if (enabled.contains("identity_math")) hasChanges |= applyIdentityMath(cu, rw);
+        if (enabled.contains("string_concat_alt")) hasChanges |= applyStringConcatAlternatives(cu, rw);
+        if (enabled.contains("numeric_literal_alt")) hasChanges |= applyNumericLiteralAlternatives(cu, rw);
 
         Document doc = new Document(source);
         TextEdit edit = rw.rewriteAST(doc, null);
@@ -91,7 +93,8 @@ public class SemanticAugmenter {
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    private static void applyGuardReversal(CompilationUnit cu, ASTRewrite rw) {
+    private static boolean applyGuardReversal(CompilationUnit cu, ASTRewrite rw) {
+        final boolean[] changed = {false};
         cu.accept(new ASTVisitor() {
             @Override public boolean visit(IfStatement node) {
                 Statement thenS = node.getThenStatement();
@@ -104,9 +107,11 @@ public class SemanticAugmenter {
                 repl.setThenStatement((Statement) ASTNode.copySubtree(ast, elseS));
                 repl.setElseStatement((Statement) ASTNode.copySubtree(ast, thenS));
                 rw.replace(node, repl, null);
+                changed[0] = true;
                 return true;
             }
         });
+        return changed[0];
     }
 
     private static Expression negateCondition(AST ast, Expression expr) {
@@ -135,7 +140,8 @@ public class SemanticAugmenter {
         return not;
     }
 
-    private static void applyDeMorgan(CompilationUnit cu, ASTRewrite rw) {
+    private static boolean applyDeMorgan(CompilationUnit cu, ASTRewrite rw) {
+        final boolean[] changed = {false};
         cu.accept(new ASTVisitor() {
             @Override public boolean visit(PrefixExpression node) {
                 if (node.getOperator() != PrefixExpression.Operator.NOT) return true;
@@ -155,14 +161,17 @@ public class SemanticAugmenter {
                         repl.setLeftOperand(leftNot);
                         repl.setRightOperand(rightNot);
                         rw.replace(node, repl, null);
+                        changed[0] = true;
                     }
                 }
                 return true;
             }
         });
+        return changed[0];
     }
 
-    private static void applyTernaryIfElse(CompilationUnit cu, ASTRewrite rw) {
+    private static boolean applyTernaryIfElse(CompilationUnit cu, ASTRewrite rw) {
+        final boolean[] changed = {false};
         cu.accept(new ASTVisitor() {
             @Override public boolean visit(IfStatement node) {
                 Statement t = node.getThenStatement();
@@ -186,9 +195,11 @@ public class SemanticAugmenter {
                 asg.setLeftHandSide((Expression) ASTNode.copySubtree(ast, ta.getLeftHandSide()));
                 asg.setRightHandSide(cond);
                 rw.replace(node, ast.newExpressionStatement(asg), null);
+                changed[0] = true;
                 return true;
             }
         });
+        return changed[0];
     }
 
     private static ExpressionStatement stmtAsExpr(Statement s) {
@@ -198,7 +209,8 @@ public class SemanticAugmenter {
         return (s instanceof ExpressionStatement es) ? es : null;
     }
 
-    private static void applyArrayIndexIdentity(CompilationUnit cu, ASTRewrite rw) {
+    private static boolean applyArrayIndexIdentity(CompilationUnit cu, ASTRewrite rw) {
+        final boolean[] changed = {false};
         cu.accept(new ASTVisitor() {
             @Override public boolean visit(ArrayAccess node) {
                 AST ast = cu.getAST();
@@ -210,35 +222,45 @@ public class SemanticAugmenter {
                 repl.setArray((Expression) ASTNode.copySubtree(ast, node.getArray()));
                 repl.setIndex(plus);
                 rw.replace(node, repl, null);
+                changed[0] = true;
                 return true;
             }
         });
+        return changed[0];
     }
 
-    private static void applyIdentityMath(CompilationUnit cu, ASTRewrite rw) {
+    private static boolean applyIdentityMath(CompilationUnit cu, ASTRewrite rw) {
+        final boolean[] changed = {false};
         cu.accept(new ASTVisitor() {
             @Override public boolean visit(InfixExpression node) {
                 AST ast = cu.getAST();
                 if (node.getOperator() == InfixExpression.Operator.PLUS && isZero(node.getRightOperand())) {
                     rw.replace(node, ASTNode.copySubtree(ast, node.getLeftOperand()), null);
+                    changed[0] = true;
                 } else if (node.getOperator() == InfixExpression.Operator.PLUS && isZero(node.getLeftOperand())) {
                     rw.replace(node, ASTNode.copySubtree(ast, node.getRightOperand()), null);
+                    changed[0] = true;
                 } else if (node.getOperator() == InfixExpression.Operator.TIMES && isOne(node.getRightOperand())) {
                     rw.replace(node, ASTNode.copySubtree(ast, node.getLeftOperand()), null);
+                    changed[0] = true;
                 } else if (node.getOperator() == InfixExpression.Operator.TIMES && isOne(node.getLeftOperand())) {
                     rw.replace(node, ASTNode.copySubtree(ast, node.getRightOperand()), null);
+                    changed[0] = true;
                 } else if (node.getOperator() == InfixExpression.Operator.MINUS && isZero(node.getRightOperand())) {
                     rw.replace(node, ASTNode.copySubtree(ast, node.getLeftOperand()), null);
+                    changed[0] = true;
                 }
                 return true;
             }
         });
+        return changed[0];
     }
 
     private static boolean isZero(Expression e) { return e instanceof NumberLiteral nl && nl.getToken().equals("0"); }
     private static boolean isOne(Expression e) { return e instanceof NumberLiteral nl && nl.getToken().equals("1"); }
 
-    private static void applyStringConcatAlternatives(CompilationUnit cu, ASTRewrite rw) {
+    private static boolean applyStringConcatAlternatives(CompilationUnit cu, ASTRewrite rw) {
+        final boolean[] changed = {false};
         cu.accept(new ASTVisitor() {
             @Override public boolean visit(MethodInvocation node) {
                 if (!"valueOf".equals(node.getName().getIdentifier())) return true;
@@ -252,12 +274,15 @@ public class SemanticAugmenter {
                 plus.setLeftOperand(empty);
                 plus.setRightOperand((Expression) ASTNode.copySubtree(ast, (ASTNode) node.arguments().get(0)));
                 rw.replace(node, plus, null);
+                changed[0] = true;
                 return true;
             }
         });
+        return changed[0];
     }
 
-    private static void applyNumericLiteralAlternatives(CompilationUnit cu, ASTRewrite rw) {
+    private static boolean applyNumericLiteralAlternatives(CompilationUnit cu, ASTRewrite rw) {
+        final boolean[] changed = {false};
         cu.accept(new ASTVisitor() {
             @Override public boolean visit(NumberLiteral node) {
                 try {
@@ -266,11 +291,13 @@ public class SemanticAugmenter {
                         AST ast = cu.getAST();
                         NumberLiteral nl = ast.newNumberLiteral("1_000");
                         rw.replace(node, nl, null);
+                        changed[0] = true;
                     }
                 } catch (NumberFormatException ignore) { }
                 return true;
             }
         });
+        return changed[0];
     }
 }
 

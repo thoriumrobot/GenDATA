@@ -12,7 +12,6 @@ from unittest.mock import patch, MagicMock
 from code_location_analyzer import CodeLocationAnalyzer, CodeLocation, LocationType
 from enhanced_semantic_augment_slices import EnhancedSemanticTransformer
 from simple_code_semantic_augment_slices import SimpleCodeSemanticTransformer
-from semantic_augment_slices import SemanticTransformer
 from recursive_augmentation_engine import RecursiveAugmentationEngine, TransformationType
 
 

@@ -149,7 +149,7 @@ class AnnotationTypePipeline:
         """Augment slices using semantic-preserving transformations"""
         try:
             # Use the new semantic augmentation system
-            from semantic_augment_slices import SemanticTransformer, iter_java_files
+            from enhanced_semantic_augment_slices import EnhancedSemanticTransformer, iter_java_files
             
             logger.info(f"Augmenting slices using semantic transformations (factor: {augmentation_factor})")
             

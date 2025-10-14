@@ -165,7 +165,7 @@ class ImprovedAugmentFirstPipeline:
     def _augment_original_code_with_full_context(self) -> bool:
         """Augment the original code with full project context preserved"""
         try:
-            from semantic_augment_slices import SemanticTransformer
+            from enhanced_semantic_augment_slices import EnhancedSemanticTransformer as SemanticTransformer
             
             logger.info(f"🔄 Augmenting original code with {self.augmentation_factor} variants per file")
             logger.info("📋 Maintaining full project structure for each variant")

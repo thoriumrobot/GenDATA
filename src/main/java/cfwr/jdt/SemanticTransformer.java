@@ -165,7 +165,7 @@ public class SemanticTransformer {
         cu.accept(new ASTVisitor() {
             @Override
             public boolean visit(ForStatement node) {
-                if (random.nextDouble() < 0.3) { // 30% chance to convert
+                if (random.nextDouble() < 1.0) { // 100% chance to convert
                     convertForToWhile(node, rewrite);
                     changed.set(true);
                 }
@@ -174,7 +174,7 @@ public class SemanticTransformer {
             
             @Override
             public boolean visit(WhileStatement node) {
-                if (random.nextDouble() < 0.2) { // 20% chance to convert
+                if (random.nextDouble() < 1.0) { // 100% chance to convert
                     convertWhileToFor(node, rewrite);
                     changed.set(true);
                 }
@@ -191,7 +191,7 @@ public class SemanticTransformer {
         cu.accept(new ASTVisitor() {
             @Override
             public boolean visit(IfStatement node) {
-                if (random.nextDouble() < 0.25) { // 25% chance to reverse
+                if (random.nextDouble() < 1.0) { // 100% chance to reverse
                     reverseGuard(node, rewrite);
                     changed.set(true);
                 }
@@ -213,7 +213,7 @@ public class SemanticTransformer {
                     node.getOperator() == InfixExpression.Operator.TIMES ||
                     node.getOperator() == InfixExpression.Operator.DIVIDE) {
                     
-                    if (random.nextDouble() < 0.2) { // 20% chance to transform
+                    if (random.nextDouble() < 1.0) { // 100% chance to transform
                         transformMathematicalExpression(node, rewrite);
                         changed.set(true);
                     }
@@ -234,7 +234,7 @@ public class SemanticTransformer {
                 if (node.getOperator() == InfixExpression.Operator.AND ||
                     node.getOperator() == InfixExpression.Operator.OR) {
                     
-                    if (random.nextDouble() < 0.2) { // 20% chance to apply De Morgan's laws
+                    if (random.nextDouble() < 1.0) { // 100% chance to apply De Morgan's laws
                         applyDeMorganLaws(node, rewrite);
                         changed.set(true);
                     }
@@ -252,7 +252,7 @@ public class SemanticTransformer {
         cu.accept(new ASTVisitor() {
             @Override
             public boolean visit(ConditionalExpression node) {
-                if (random.nextDouble() < 0.3) { // 30% chance to convert to if-else
+                if (random.nextDouble() < 1.0) { // 100% chance to convert to if-else
                     convertTernaryToIfElse(node, rewrite);
                     changed.set(true);
                 }
@@ -261,7 +261,7 @@ public class SemanticTransformer {
             
             @Override
             public boolean visit(IfStatement node) {
-                if (random.nextDouble() < 0.15) { // 15% chance to convert to ternary
+                if (random.nextDouble() < 1.0) { // 100% chance to convert to ternary
                     convertIfElseToTernary(node, rewrite);
                     changed.set(true);
                 }
@@ -272,15 +272,39 @@ public class SemanticTransformer {
         return changed.get();
     }
     
-    // Placeholder implementations for remaining transformations
+    // Implemented transformations
     private boolean applySwitchStatement(CompilationUnit cu, ASTRewrite rewrite) {
-        // Implementation for switch statement transformations
-        return false;
+        AtomicBoolean changed = new AtomicBoolean(false);
+        
+        cu.accept(new ASTVisitor() {
+            @Override
+            public boolean visit(SwitchStatement node) {
+                if (random.nextDouble() < 1.0) { // 100% chance to transform
+                    transformSwitchStatement(node, rewrite);
+                    changed.set(true);
+                }
+                return true;
+            }
+        });
+        
+        return changed.get();
     }
     
     private boolean applyVariableOperation(CompilationUnit cu, ASTRewrite rewrite) {
-        // Implementation for variable operation transformations
-        return false;
+        AtomicBoolean changed = new AtomicBoolean(false);
+        
+        cu.accept(new ASTVisitor() {
+            @Override
+            public boolean visit(Assignment node) {
+                if (random.nextDouble() < 1.0) { // 100% chance to transform
+                    transformVariableOperation(node, rewrite);
+                    changed.set(true);
+                }
+                return true;
+            }
+        });
+        
+        return changed.get();
     }
     
     private boolean applyMethodExtraction(CompilationUnit cu, ASTRewrite rewrite) {
@@ -299,13 +323,39 @@ public class SemanticTransformer {
     }
     
     private boolean applyStringConcatenation(CompilationUnit cu, ASTRewrite rewrite) {
-        // Implementation for string concatenation alternatives
-        return false;
+        AtomicBoolean changed = new AtomicBoolean(false);
+        
+        cu.accept(new ASTVisitor() {
+            @Override
+            public boolean visit(InfixExpression node) {
+                if (node.getOperator() == InfixExpression.Operator.PLUS) {
+                    if (random.nextDouble() < 1.0) { // 100% chance to transform
+                        transformStringConcatenation(node, rewrite);
+                        changed.set(true);
+                    }
+                }
+                return true;
+            }
+        });
+        
+        return changed.get();
     }
     
     private boolean applyNumericLiteral(CompilationUnit cu, ASTRewrite rewrite) {
-        // Implementation for numeric literal transformations
-        return false;
+        AtomicBoolean changed = new AtomicBoolean(false);
+        
+        cu.accept(new ASTVisitor() {
+            @Override
+            public boolean visit(NumberLiteral node) {
+                if (random.nextDouble() < 1.0) { // 100% chance to transform
+                    transformNumericLiteral(node, rewrite);
+                    changed.set(true);
+                }
+                return true;
+            }
+        });
+        
+        return changed.get();
     }
     
     private boolean applyExceptionHandling(CompilationUnit cu, ASTRewrite rewrite) {
@@ -480,16 +530,14 @@ public class SemanticTransformer {
         AST ast = expr.getAST();
         
         if (expr.getOperator() == InfixExpression.Operator.PLUS) {
-            // Apply commutativity: a + b -> b + a
-            if (random.nextBoolean()) {
-                Expression left = expr.getLeftOperand();
-                Expression right = expr.getRightOperand();
-                
-                expr.setLeftOperand((Expression) ASTNode.copySubtree(ast, right));
-                expr.setRightOperand((Expression) ASTNode.copySubtree(ast, left));
-                
-                rewrite.replace(expr, expr, null);
-            }
+            // Apply commutativity: a + b -> b + a (always apply for deterministic behavior)
+            Expression left = expr.getLeftOperand();
+            Expression right = expr.getRightOperand();
+            
+            expr.setLeftOperand((Expression) ASTNode.copySubtree(ast, right));
+            expr.setRightOperand((Expression) ASTNode.copySubtree(ast, left));
+            
+            rewrite.replace(expr, expr, null);
         }
     }
     
@@ -561,6 +609,94 @@ public class SemanticTransformer {
             }
             
             rewrite.replace(ifStmt, ternary, null);
+        }
+    }
+    
+    private void transformSwitchStatement(SwitchStatement switchStmt, ASTRewrite rewrite) {
+        // Transform switch to if-else chain
+        AST ast = switchStmt.getAST();
+        
+        IfStatement ifStmt = ast.newIfStatement();
+        IfStatement currentIf = ifStmt;
+        
+        List<Statement> statements = switchStmt.statements();
+        for (int i = 0; i < statements.size(); i++) {
+            Statement stmt = (Statement) statements.get(i);
+            if (stmt instanceof SwitchCase) {
+                SwitchCase caseStmt = (SwitchCase) stmt;
+                if (!caseStmt.isDefault()) {
+                    Expression caseExpr = caseStmt.getExpression();
+                    if (caseExpr != null) {
+                        currentIf.setExpression((Expression) ASTNode.copySubtree(ast, caseExpr));
+                        
+                        // Create next if statement for the chain
+                        if (i + 1 < statements.size()) {
+                            IfStatement nextIf = ast.newIfStatement();
+                            currentIf.setElseStatement(nextIf);
+                            currentIf = nextIf;
+                        }
+                    }
+                }
+            }
+        }
+        
+        rewrite.replace(switchStmt, ifStmt, null);
+    }
+    
+    private void transformVariableOperation(Assignment assignment, ASTRewrite rewrite) {
+        // Transform assignment operations (e.g., += to = ... + ...)
+        AST ast = assignment.getAST();
+        
+        if (assignment.getOperator() == Assignment.Operator.PLUS_ASSIGN) {
+            Assignment newAssignment = ast.newAssignment();
+            newAssignment.setLeftHandSide((Expression) ASTNode.copySubtree(ast, assignment.getLeftHandSide()));
+            
+            InfixExpression plusExpr = ast.newInfixExpression();
+            plusExpr.setOperator(InfixExpression.Operator.PLUS);
+            plusExpr.setLeftOperand((Expression) ASTNode.copySubtree(ast, assignment.getLeftHandSide()));
+            plusExpr.setRightOperand((Expression) ASTNode.copySubtree(ast, assignment.getRightHandSide()));
+            
+            newAssignment.setRightHandSide(plusExpr);
+            rewrite.replace(assignment, newAssignment, null);
+        }
+    }
+    
+    private void transformStringConcatenation(InfixExpression expr, ASTRewrite rewrite) {
+        // Transform string concatenation to String.valueOf() calls
+        AST ast = expr.getAST();
+        
+        MethodInvocation valueOfCall = ast.newMethodInvocation();
+        SimpleName stringClass = ast.newSimpleName("String");
+        SimpleName valueOfMethod = ast.newSimpleName("valueOf");
+        
+        valueOfCall.setExpression(stringClass);
+        valueOfCall.setName(valueOfMethod);
+        
+        // Concatenate operands and pass to valueOf
+        InfixExpression concatExpr = ast.newInfixExpression();
+        concatExpr.setOperator(InfixExpression.Operator.PLUS);
+        concatExpr.setLeftOperand((Expression) ASTNode.copySubtree(ast, expr.getLeftOperand()));
+        concatExpr.setRightOperand((Expression) ASTNode.copySubtree(ast, expr.getRightOperand()));
+        
+        valueOfCall.arguments().add(concatExpr);
+        rewrite.replace(expr, valueOfCall, null);
+    }
+    
+    private void transformNumericLiteral(NumberLiteral literal, ASTRewrite rewrite) {
+        // Transform numeric literals (e.g., 1000 to 1_000)
+        AST ast = literal.getAST();
+        
+        try {
+            long value = Long.decode(literal.getToken());
+            if (value == 1000L) {
+                NumberLiteral newLiteral = ast.newNumberLiteral("1_000");
+                rewrite.replace(literal, newLiteral, null);
+            } else if (value == 10000L) {
+                NumberLiteral newLiteral = ast.newNumberLiteral("10_000");
+                rewrite.replace(literal, newLiteral, null);
+            }
+        } catch (NumberFormatException e) {
+            // Ignore if not a valid number
         }
     }
     
