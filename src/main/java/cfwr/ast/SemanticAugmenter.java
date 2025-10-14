@@ -1,7 +1,9 @@
 package cfwr.ast;
 
 import org.eclipse.jdt.core.dom.*;
+import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.core.formatter.DefaultCodeFormatterConstants;
+import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jface.text.Document;
 import org.eclipse.text.edits.TextEdit;
 
@@ -30,7 +32,7 @@ public class SemanticAugmenter {
         parser.setCompilerOptions(DefaultCodeFormatterConstants.getEclipseDefaultSettings());
 
         CompilationUnit cu = (CompilationUnit) parser.createAST(null);
-        if (cu == null || Arrays.stream(cu.getProblems()).anyMatch(Problem::isError)) {
+        if (cu == null || Arrays.stream(cu.getProblems()).anyMatch(IProblem::isError)) {
             Files.createDirectories(out.getParent());
             Files.writeString(out, source);
             return;

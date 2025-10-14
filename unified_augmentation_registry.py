@@ -204,39 +204,67 @@ class UnifiedAugmentationRegistry:
         
         return stats
     
+    def _transform_with_jdt(self, transformation_name: str, mode: str) -> Callable[[str], str]:
+        """Create a transformation function that uses JDT-based transformers"""
+        def transform_func(code: str) -> str:
+            try:
+                import tempfile
+                import os
+                
+                # Create temporary files for JDT transformer
+                with tempfile.NamedTemporaryFile(mode='w', suffix='.java', delete=False) as input_file:
+                    input_file.write(code)
+                    input_file.flush()
+                    
+                    # Use appropriate transformer based on mode
+                    if mode == 'enhanced':
+                        result = self.enhanced_transformer.transform_file(input_file.name, 0)
+                    else:  # simple
+                        result = self.simple_transformer.transform_file(input_file.name, 0)
+                    
+                    # Clean up temporary files
+                    os.unlink(input_file.name)
+                    
+                    return result
+            except Exception as e:
+                logger.warning(f"JDT transformation {transformation_name} failed: {e}")
+                return code  # Return original code on error
+        
+        return transform_func
+    
     def _build_transformation_map(self) -> Dict[TransformationType, Callable[[str], str]]:
         """Build mapping from transformation types to their implementation functions"""
         return {
-            # Enhanced transformations (17 methods)
-            TransformationType.LOOP_CONVERSION: self.enhanced_transformer._transform_loops,
-            TransformationType.GUARD_REVERSAL: self.enhanced_transformer._transform_guards,
-            TransformationType.MATHEMATICAL_EXPRESSION: self.enhanced_transformer._transform_mathematical_expressions,
-            TransformationType.LOGICAL_EXPRESSION: self.enhanced_transformer._transform_logical_expressions,
-            TransformationType.TERNARY_OPERATOR: self.enhanced_transformer._transform_ternary_operators,
-            TransformationType.SWITCH_STATEMENT: self.enhanced_transformer._transform_switch_statements,
-            TransformationType.VARIABLE_OPERATION: self.enhanced_transformer._transform_variable_operations,
-            TransformationType.METHOD_EXTRACTION: self.enhanced_transformer._transform_method_extraction,
-            TransformationType.CONDITIONAL_EXPRESSION: self.enhanced_transformer._transform_conditional_expressions,
-            TransformationType.ARRAY_ACCESS_PATTERN: self.enhanced_transformer._transform_array_access_patterns,
-            TransformationType.STRING_CONCATENATION: self.enhanced_transformer._transform_string_concatenation,
-            TransformationType.NUMERIC_LITERAL: self.enhanced_transformer._transform_numeric_literals,
-            TransformationType.EXCEPTION_HANDLING: self.enhanced_transformer._transform_exception_handling,
-            TransformationType.LAMBDA_EXPRESSION: self.enhanced_transformer._transform_lambda_expressions,
-            TransformationType.STREAM_API: self.enhanced_transformer._transform_stream_api,
-            TransformationType.BUILDER_PATTERN: self.enhanced_transformer._transform_builder_patterns,
-            TransformationType.FUNCTIONAL_CONVERSION: self.enhanced_transformer._transform_functional_conversions,
+            # Enhanced transformations (17 methods) - using JDT-based approach
+            TransformationType.LOOP_CONVERSION: self._transform_with_jdt('loop_conversion', 'enhanced'),
+            TransformationType.GUARD_REVERSAL: self._transform_with_jdt('guard_reversal', 'enhanced'),
+            TransformationType.MATHEMATICAL_EXPRESSION: self._transform_with_jdt('mathematical_expression', 'enhanced'),
+            TransformationType.LOGICAL_EXPRESSION: self._transform_with_jdt('logical_expression', 'enhanced'),
+            TransformationType.TERNARY_OPERATOR: self._transform_with_jdt('ternary_operator', 'enhanced'),
+            TransformationType.SWITCH_STATEMENT: self._transform_with_jdt('switch_statement', 'enhanced'),
+            TransformationType.VARIABLE_OPERATION: self._transform_with_jdt('variable_operation', 'enhanced'),
+            TransformationType.METHOD_EXTRACTION: self._transform_with_jdt('method_extraction', 'enhanced'),
+            TransformationType.CONDITIONAL_EXPRESSION: self._transform_with_jdt('conditional_expression', 'enhanced'),
+            TransformationType.ARRAY_ACCESS_PATTERN: self._transform_with_jdt('array_access_pattern', 'enhanced'),
+            TransformationType.STRING_CONCATENATION: self._transform_with_jdt('string_concatenation', 'enhanced'),
+            TransformationType.NUMERIC_LITERAL: self._transform_with_jdt('numeric_literal', 'enhanced'),
+            TransformationType.EXCEPTION_HANDLING: self._transform_with_jdt('exception_handling', 'enhanced'),
+            TransformationType.LAMBDA_EXPRESSION: self._transform_with_jdt('lambda_expression', 'enhanced'),
+            TransformationType.STREAM_API: self._transform_with_jdt('stream_api', 'enhanced'),
+            TransformationType.BUILDER_PATTERN: self._transform_with_jdt('builder_pattern', 'enhanced'),
+            TransformationType.FUNCTIONAL_CONVERSION: self._transform_with_jdt('functional_conversion', 'enhanced'),
             
-            # Simple transformations (10 methods)
-            TransformationType.SIMPLE_METHOD_CALL: self.simple_transformer._transform_simple_method_calls,
-            TransformationType.SIMPLE_ASSIGNMENT: self.simple_transformer._transform_simple_assignments,
-            TransformationType.SIMPLE_CONDITIONAL: self.simple_transformer._transform_simple_conditionals,
-            TransformationType.SIMPLE_ARRAY_ACCESS: self.simple_transformer._transform_simple_array_access,
-            TransformationType.SIMPLE_RETURN_STATEMENT: self.simple_transformer._transform_simple_return_statements,
-            TransformationType.SIMPLE_VARIABLE_DECLARATION: self.simple_transformer._transform_simple_variable_declarations,
-            TransformationType.SIMPLE_CONSTRUCTOR_CALL: self.simple_transformer._transform_simple_constructor_calls,
-            TransformationType.SIMPLE_FIELD_ACCESS: self.simple_transformer._transform_simple_field_access,
-            TransformationType.SIMPLE_STRING_OPERATION: self.simple_transformer._transform_simple_string_operations,
-            TransformationType.SIMPLE_NUMERIC_OPERATION: self.simple_transformer._transform_simple_numeric_operations,
+            # Simple transformations (10 methods) - using JDT-based approach
+            TransformationType.SIMPLE_METHOD_CALL: self._transform_with_jdt('simple_method_call', 'simple'),
+            TransformationType.SIMPLE_ASSIGNMENT: self._transform_with_jdt('simple_assignment', 'simple'),
+            TransformationType.SIMPLE_CONDITIONAL: self._transform_with_jdt('simple_conditional', 'simple'),
+            TransformationType.SIMPLE_ARRAY_ACCESS: self._transform_with_jdt('simple_array_access', 'simple'),
+            TransformationType.SIMPLE_RETURN_STATEMENT: self._transform_with_jdt('simple_return_statement', 'simple'),
+            TransformationType.SIMPLE_VARIABLE_DECLARATION: self._transform_with_jdt('simple_variable_declaration', 'simple'),
+            TransformationType.SIMPLE_CONSTRUCTOR_CALL: self._transform_with_jdt('simple_constructor_call', 'simple'),
+            TransformationType.SIMPLE_FIELD_ACCESS: self._transform_with_jdt('simple_field_access', 'simple'),
+            TransformationType.SIMPLE_STRING_OPERATION: self._transform_with_jdt('simple_string_operation', 'simple'),
+            TransformationType.SIMPLE_NUMERIC_OPERATION: self._transform_with_jdt('simple_numeric_operation', 'simple'),
             
             # Random augmentation transformations (3 methods)
             TransformationType.RANDOM_METHOD_INSERTION: self._apply_random_method_insertion,

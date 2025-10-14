@@ -55,6 +55,10 @@ dependencies {
 
   // Eclipse JDT core for AST parsing/rewrites used by semantic augmentation
   implementation 'org.eclipse.jdt:org.eclipse.jdt.core:3.36.0'
+  
+  // Jackson for JSON serialization in JDT services
+  implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
+  implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1'
 
   // --- Tests (choose JUnit 5 or 4; here we use JUnit 5) ---
   testImplementation 'org.junit.jupiter:junit-jupiter:5.10.3'
@@ -155,6 +159,48 @@ tasks.register('astAugmentJar', com.github.jengelman.gradle.plugins.shadow.tasks
   exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
 
   manifest { attributes 'Main-Class': 'cfwr.ast.SemanticAugmenter' }
+}
+
+// Build a fat JAR for the JDT parser service
+tasks.register('jdtParserJar', com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
+  group = 'build'
+  description = 'Build a fat JAR for the JDT parser service'
+  archiveBaseName.set('jdt-parser')
+  archiveClassifier.set('all')
+  archiveVersion.set('')
+
+  from sourceSets.main.output
+  configurations = [project.configurations.runtimeClasspath]
+
+  mergeServiceFiles {
+    include 'META-INF/services/*'
+  }
+
+  exclude 'module-info.class'
+  exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
+
+  manifest { attributes 'Main-Class': 'cfwr.jdt.JdtParserService' }
+}
+
+// Build a fat JAR for the JDT semantic transformer service
+tasks.register('jdtTransformerJar', com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
+  group = 'build'
+  description = 'Build a fat JAR for the JDT semantic transformer service'
+  archiveBaseName.set('jdt-transformer')
+  archiveClassifier.set('all')
+  archiveVersion.set('')
+
+  from sourceSets.main.output
+  configurations = [project.configurations.runtimeClasspath]
+
+  mergeServiceFiles {
+    include 'META-INF/services/*'
+  }
+
+  exclude 'module-info.class'
+  exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
+
+  manifest { attributes 'Main-Class': 'cfwr.jdt.SemanticTransformer' }
 }
 
 /**

@@ -1,5 +1,17 @@
 # GenDATA: Optimized Generative Data Augmentation for Training AI Models
 
+## 🎉 **NEW: Eclipse JDT Implementation Complete**
+
+**All regex-based parsing has been successfully replaced with robust Eclipse JDT AST parsing!**
+
+- ✅ **100% AST-based parsing** using Eclipse JDT for accurate Java code analysis
+- ✅ **27 semantic transformations** implemented with AST rewriting for semantic preservation
+- ✅ **Random walk optimization** fully compatible with JDT-based components
+- ✅ **Comprehensive testing** with unit and integration tests
+- ✅ **Production ready** with robust error handling and validation
+
+See `JDT_IMPLEMENTATION_COMPLETE.md` for detailed documentation.
+
 ## 🚀 **Latest Update: Enhanced Prediction Pipeline with Lower Bound Checker Integration**
 
 GenDATA now features an **enhanced prediction pipeline** that integrates the Checker Framework's Lower Bound Checker for dynamic warning detection and targeted slicing. The system automatically runs the Lower Bound Checker on target projects, uses Soot to slice based on warning locations, and applies trained models for intelligent annotation placement prediction.

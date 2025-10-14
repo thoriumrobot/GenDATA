@@ -8,7 +8,6 @@ semantic augmentation systems to support recursive application of transformation
 """
 
 import os
-import re
 import random
 import ast
 import json
@@ -20,6 +19,7 @@ import logging
 # Import existing augmentation transformers
 from enhanced_semantic_augment_slices import EnhancedSemanticTransformer
 from simple_code_semantic_augment_slices import SimpleCodeSemanticTransformer
+from jdt_service import JdtParserService
 
 logger = logging.getLogger(__name__)
 
@@ -83,49 +83,57 @@ class TransformationDependency:
 class RecursiveAugmentationEngine:
     """Engine for applying recursive augmentation transformations"""
     
-    def __init__(self, seed: int = 42):
+    def __init__(self, seed: int = 42, jdt_jar_path: Optional[str] = None):
         self.seed = seed
         random.seed(seed)
         
         # Initialize transformers
-        self.enhanced_transformer = EnhancedSemanticTransformer(seed=seed)
-        self.simple_transformer = SimpleCodeSemanticTransformer(seed=seed)
+        self.enhanced_transformer = EnhancedSemanticTransformer(seed=seed, jdt_jar_path=jdt_jar_path)
+        self.simple_transformer = SimpleCodeSemanticTransformer(seed=seed, jdt_jar_path=jdt_jar_path)
+        
+        # Initialize JDT service for validation
+        try:
+            self.jdt_service = JdtParserService(jdt_jar_path)
+            logger.info("Initialized RecursiveAugmentationEngine with JDT validation")
+        except Exception as e:
+            logger.error(f"Failed to initialize JDT service: {e}")
+            self.jdt_service = None
         
         # Transformation dependency graph
         self.dependency_graph = self._build_dependency_graph()
         
-        # Transformation mappings
+        # Transformation mappings - now using JDT-based transformers
         self.enhanced_transformations = {
-            TransformationType.LOOP_CONVERSION: self.enhanced_transformer._transform_loops,
-            TransformationType.GUARD_REVERSAL: self.enhanced_transformer._transform_guards,
-            TransformationType.MATHEMATICAL_EXPRESSION: self.enhanced_transformer._transform_mathematical_expressions,
-            TransformationType.LOGICAL_EXPRESSION: self.enhanced_transformer._transform_logical_expressions,
-            TransformationType.TERNARY_OPERATOR: self.enhanced_transformer._transform_ternary_operators,
-            TransformationType.SWITCH_STATEMENT: self.enhanced_transformer._transform_switch_statements,
-            TransformationType.VARIABLE_OPERATION: self.enhanced_transformer._transform_variable_operations,
-            TransformationType.METHOD_EXTRACTION: self.enhanced_transformer._transform_method_extraction,
-            TransformationType.CONDITIONAL_EXPRESSION: self.enhanced_transformer._transform_conditional_expressions,
-            TransformationType.ARRAY_ACCESS_PATTERN: self.enhanced_transformer._transform_array_access_patterns,
-            TransformationType.STRING_CONCATENATION: self.enhanced_transformer._transform_string_concatenation,
-            TransformationType.NUMERIC_LITERAL: self.enhanced_transformer._transform_numeric_literals,
-            TransformationType.EXCEPTION_HANDLING: self.enhanced_transformer._transform_exception_handling,
-            TransformationType.LAMBDA_EXPRESSION: self.enhanced_transformer._transform_lambda_expressions,
-            TransformationType.STREAM_API: self.enhanced_transformer._transform_stream_api,
-            TransformationType.BUILDER_PATTERN: self.enhanced_transformer._transform_builder_patterns,
-            TransformationType.FUNCTIONAL_CONVERSION: self.enhanced_transformer._transform_functional_conversions,
+            TransformationType.LOOP_CONVERSION: lambda code: self._apply_jdt_transformation(code, 'loop_conversion'),
+            TransformationType.GUARD_REVERSAL: lambda code: self._apply_jdt_transformation(code, 'guard_reversal'),
+            TransformationType.MATHEMATICAL_EXPRESSION: lambda code: self._apply_jdt_transformation(code, 'mathematical_expression'),
+            TransformationType.LOGICAL_EXPRESSION: lambda code: self._apply_jdt_transformation(code, 'logical_expression'),
+            TransformationType.TERNARY_OPERATOR: lambda code: self._apply_jdt_transformation(code, 'ternary_operator'),
+            TransformationType.SWITCH_STATEMENT: lambda code: self._apply_jdt_transformation(code, 'switch_statement'),
+            TransformationType.VARIABLE_OPERATION: lambda code: self._apply_jdt_transformation(code, 'variable_operation'),
+            TransformationType.METHOD_EXTRACTION: lambda code: self._apply_jdt_transformation(code, 'method_extraction'),
+            TransformationType.CONDITIONAL_EXPRESSION: lambda code: self._apply_jdt_transformation(code, 'conditional_expression'),
+            TransformationType.ARRAY_ACCESS_PATTERN: lambda code: self._apply_jdt_transformation(code, 'array_access_pattern'),
+            TransformationType.STRING_CONCATENATION: lambda code: self._apply_jdt_transformation(code, 'string_concatenation'),
+            TransformationType.NUMERIC_LITERAL: lambda code: self._apply_jdt_transformation(code, 'numeric_literal'),
+            TransformationType.EXCEPTION_HANDLING: lambda code: self._apply_jdt_transformation(code, 'exception_handling'),
+            TransformationType.LAMBDA_EXPRESSION: lambda code: self._apply_jdt_transformation(code, 'lambda_expression'),
+            TransformationType.STREAM_API: lambda code: self._apply_jdt_transformation(code, 'stream_api'),
+            TransformationType.BUILDER_PATTERN: lambda code: self._apply_jdt_transformation(code, 'builder_pattern'),
+            TransformationType.FUNCTIONAL_CONVERSION: lambda code: self._apply_jdt_transformation(code, 'functional_conversion'),
         }
         
         self.simple_transformations = {
-            TransformationType.SIMPLE_METHOD_CALL: self.simple_transformer._transform_simple_method_calls,
-            TransformationType.SIMPLE_ASSIGNMENT: self.simple_transformer._transform_simple_assignments,
-            TransformationType.SIMPLE_CONDITIONAL: self.simple_transformer._transform_simple_conditionals,
-            TransformationType.SIMPLE_ARRAY_ACCESS: self.simple_transformer._transform_simple_array_access,
-            TransformationType.SIMPLE_RETURN_STATEMENT: self.simple_transformer._transform_simple_return_statements,
-            TransformationType.SIMPLE_VARIABLE_DECLARATION: self.simple_transformer._transform_simple_variable_declarations,
-            TransformationType.SIMPLE_CONSTRUCTOR_CALL: self.simple_transformer._transform_simple_constructor_calls,
-            TransformationType.SIMPLE_FIELD_ACCESS: self.simple_transformer._transform_simple_field_access,
-            TransformationType.SIMPLE_STRING_OPERATION: self.simple_transformer._transform_simple_string_operations,
-            TransformationType.SIMPLE_NUMERIC_OPERATION: self.simple_transformer._transform_simple_numeric_operations,
+            TransformationType.SIMPLE_METHOD_CALL: lambda code: self._apply_jdt_transformation(code, 'simple_method_call', 'simple'),
+            TransformationType.SIMPLE_ASSIGNMENT: lambda code: self._apply_jdt_transformation(code, 'simple_assignment', 'simple'),
+            TransformationType.SIMPLE_CONDITIONAL: lambda code: self._apply_jdt_transformation(code, 'simple_conditional', 'simple'),
+            TransformationType.SIMPLE_ARRAY_ACCESS: lambda code: self._apply_jdt_transformation(code, 'simple_array_access', 'simple'),
+            TransformationType.SIMPLE_RETURN_STATEMENT: lambda code: self._apply_jdt_transformation(code, 'simple_return_statement', 'simple'),
+            TransformationType.SIMPLE_VARIABLE_DECLARATION: lambda code: self._apply_jdt_transformation(code, 'simple_variable_declaration', 'simple'),
+            TransformationType.SIMPLE_CONSTRUCTOR_CALL: lambda code: self._apply_jdt_transformation(code, 'simple_constructor_call', 'simple'),
+            TransformationType.SIMPLE_FIELD_ACCESS: lambda code: self._apply_jdt_transformation(code, 'simple_field_access', 'simple'),
+            TransformationType.SIMPLE_STRING_OPERATION: lambda code: self._apply_jdt_transformation(code, 'simple_string_operation', 'simple'),
+            TransformationType.SIMPLE_NUMERIC_OPERATION: lambda code: self._apply_jdt_transformation(code, 'simple_numeric_operation', 'simple'),
         }
         
         # Random augmentation transformations (3 methods)
@@ -453,11 +461,11 @@ class RecursiveAugmentationEngine:
                 if any(t == TransformationType.METHOD_EXTRACTION for t in state.transformation_history[-2:]):
                     return True
             elif condition == "variables_in_expressions":
-                # Check if code has variable expressions
-                return bool(re.search(r'\w+\s*[+\-*/]\s*\w+', state.code))
+                # Check if code has variable expressions using JDT
+                return self._has_variable_expressions_jdt(state.code)
             elif condition == "loop_has_conditions":
-                # Check if loops have conditions
-                return bool(re.search(r'for\s*\([^)]*;[^)]*;[^)]*\)', state.code))
+                # Check if loops have conditions using JDT
+                return self._has_loop_conditions_jdt(state.code)
             # Add more conditions as needed
         
         return True  # Default to allowing transformation
@@ -495,9 +503,16 @@ class RecursiveAugmentationEngine:
         if line_diff > max(original_lines, transformed_lines) * 0.5:
             return False
         
-        # Check that key identifiers are preserved
-        original_ids = set(re.findall(r'\b[A-Za-z_][A-Za-z0-9_]*\b', original))
-        transformed_ids = set(re.findall(r'\b[A-Za-z_][A-Za-z0-9_]*\b', transformed))
+        # Check that key identifiers are preserved using JDT
+        try:
+            original_ids = self._extract_identifiers_jdt(original)
+            transformed_ids = self._extract_identifiers_jdt(transformed)
+        except Exception as e:
+            logger.warning(f"JDT identifier extraction failed: {e}")
+            # Fallback to simple regex
+            import re
+            original_ids = set(re.findall(r'\b[A-Za-z_][A-Za-z0-9_]*\b', original))
+            transformed_ids = set(re.findall(r'\b[A-Za-z_][A-Za-z0-9_]*\b', transformed))
         
         # Most identifiers should be preserved (allowing for new ones from transformations)
         common_ids = original_ids.intersection(transformed_ids)
@@ -761,6 +776,64 @@ class RecursiveAugmentationEngine:
             return '\n'.join(modified_lines)
         except Exception as e:
             logger.error(f"Error in random expression insertion: {e}")
+            return code
+    
+    def _has_variable_expressions_jdt(self, code: str) -> bool:
+        """Check if code has variable expressions using JDT"""
+        if not self.jdt_service:
+            return False
+        
+        try:
+            identifiers = self.jdt_service.extract_identifiers(code)
+            # Check if we have variables and expressions
+            return len(identifiers.get('variables', [])) > 0 and len(identifiers.get('fields', [])) > 0
+        except Exception as e:
+            logger.warning(f"JDT variable expression check failed: {e}")
+            return False
+    
+    def _has_loop_conditions_jdt(self, code: str) -> bool:
+        """Check if code has loops with conditions using JDT"""
+        if not self.jdt_service:
+            return False
+        
+        try:
+            locations = self.jdt_service.parse_code_locations_from_string(code)
+            # Look for statement-level locations that might be loops
+            for location in locations:
+                if location.location_type == 'STATEMENT_LEVEL':
+                    context = location.context
+                    if 'condition' in context or 'variables' in context:
+                        return True
+            return False
+        except Exception as e:
+            logger.warning(f"JDT loop condition check failed: {e}")
+            return False
+    
+    def _extract_identifiers_jdt(self, code: str) -> set:
+        """Extract identifiers from code using JDT"""
+        if not self.jdt_service:
+            return set()
+        
+        try:
+            identifiers = self.jdt_service.extract_identifiers(code)
+            # Combine all identifier types into a single set
+            all_identifiers = set()
+            for category, id_list in identifiers.items():
+                all_identifiers.update(id_list)
+            return all_identifiers
+        except Exception as e:
+            logger.warning(f"JDT identifier extraction failed: {e}")
+            return set()
+    
+    def _apply_jdt_transformation(self, code: str, transformation: str, mode: str = 'enhanced') -> str:
+        """Apply a JDT-based transformation to code."""
+        try:
+            if mode == 'enhanced':
+                return self.enhanced_transformer.jdt_transformer.transform_code(code, [transformation], mode)
+            else:
+                return self.simple_transformer.jdt_transformer.transform_code(code, [transformation], mode)
+        except Exception as e:
+            logger.warning(f"JDT transformation {transformation} failed: {e}")
             return code
 
 
