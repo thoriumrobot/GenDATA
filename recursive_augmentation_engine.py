@@ -128,8 +128,15 @@ class RecursiveAugmentationEngine:
             TransformationType.SIMPLE_NUMERIC_OPERATION: self.simple_transformer._transform_simple_numeric_operations,
         }
         
+        # Random augmentation transformations (3 methods)
+        self.random_transformations = {
+            TransformationType.RANDOM_METHOD_INSERTION: self._apply_random_method_insertion,
+            TransformationType.RANDOM_STATEMENT_INSERTION: self._apply_random_statement_insertion,
+            TransformationType.RANDOM_EXPRESSION_INSERTION: self._apply_random_expression_insertion,
+        }
+        
         # All transformations
-        self.all_transformations = {**self.enhanced_transformations, **self.simple_transformations}
+        self.all_transformations = {**self.enhanced_transformations, **self.simple_transformations, **self.random_transformations}
         
         # Statistics
         self.transformation_stats = {
@@ -316,6 +323,8 @@ class RecursiveAugmentationEngine:
                 transformer_func = self.enhanced_transformations[transformation]
             elif transformation in self.simple_transformations:
                 transformer_func = self.simple_transformations[transformation]
+            elif transformation in self.random_transformations:
+                transformer_func = self.random_transformations[transformation]
             else:
                 logger.warning(f"Unknown transformation: {transformation}")
                 return None
@@ -677,6 +686,82 @@ class RecursiveAugmentationEngine:
             'recursion_depths': {},
             'transformation_counts': {t.value: 0 for t in TransformationType}
         }
+    
+    def apply_transformation(self, code: str, transformation_type: TransformationType, 
+                           deterministic: bool = False) -> Dict[str, Any]:
+        """Apply a single transformation to code"""
+        try:
+            # Apply transformation
+            if transformation_type in self.enhanced_transformations:
+                transformer_func = self.enhanced_transformations[transformation_type]
+            elif transformation_type in self.simple_transformations:
+                transformer_func = self.simple_transformations[transformation_type]
+            elif transformation_type in self.random_transformations:
+                transformer_func = self.random_transformations[transformation_type]
+            else:
+                logger.warning(f"Unknown transformation: {transformation_type}")
+                return {'success': False, 'error': f'Unknown transformation: {transformation_type}'}
+            
+            # Apply transformation
+            transformed_code = transformer_func(code)
+            
+            # Check if transformation was successful
+            success = transformed_code != code
+            
+            return {
+                'success': success,
+                'augmented_code': transformed_code,
+                'transformation_type': transformation_type.value,
+                'deterministic': deterministic
+            }
+            
+        except Exception as e:
+            logger.error(f"Error applying transformation {transformation_type}: {e}")
+            return {'success': False, 'error': str(e)}
+    
+    def _apply_random_method_insertion(self, code: str) -> str:
+        """Apply random method insertion transformation"""
+        try:
+            from augment_slices import insert_random_methods
+            # Insert 1-2 random methods
+            method_count = random.randint(1, 2)
+            return insert_random_methods(code, method_count)
+        except Exception as e:
+            logger.error(f"Error in random method insertion: {e}")
+            return code
+    
+    def _apply_random_statement_insertion(self, code: str) -> str:
+        """Apply random statement insertion transformation"""
+        try:
+            from augment_slices import insert_random_statements
+            # Insert 1-3 random statements
+            stmt_count = random.randint(1, 3)
+            return insert_random_statements(code, stmt_count)
+        except Exception as e:
+            logger.error(f"Error in random statement insertion: {e}")
+            return code
+    
+    def _apply_random_expression_insertion(self, code: str) -> str:
+        """Apply random expression insertion transformation"""
+        try:
+            from augment_slices import generate_random_statement
+            # Insert random expressions in appropriate contexts
+            lines = code.split('\n')
+            modified_lines = []
+            
+            for line in lines:
+                # Look for assignment statements
+                if '=' in line and ';' in line:
+                    # Insert random expression before assignment
+                    if random.random() < 0.3:  # 30% chance
+                        random_expr = generate_random_statement().strip()
+                        modified_lines.append(random_expr)
+                modified_lines.append(line)
+            
+            return '\n'.join(modified_lines)
+        except Exception as e:
+            logger.error(f"Error in random expression insertion: {e}")
+            return code
 
 
 def main():

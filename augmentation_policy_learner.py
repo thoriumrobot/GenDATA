@@ -969,9 +969,9 @@ class EvolutionaryAugmentationOptimizer(AugmentationPolicyLearner):
             
             # Add penalties for invalid transformations
             if not final_state.compilation_status:
-                fitness *= 0.5
+                fitness.overall_score *= 0.5
             if not final_state.semantic_preservation:
-                fitness *= 0.7
+                fitness.overall_score *= 0.7
             
             return fitness
             

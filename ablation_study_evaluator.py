@@ -90,9 +90,9 @@ class AblationStudyEvaluator:
             'summary_statistics': {}
         }
         
-        # Primary metric: warning reduction percentage (using training time as proxy)
-        baseline_time = self.baseline_metrics.get('training_time_seconds', 0)
-        baseline_slices = self.baseline_metrics.get('slices_generated', 0)
+        # Primary metric: warning reduction percentage
+        baseline_reduction = self.baseline_metrics.get('reduction_percentage', 0)
+        baseline_warnings = self.baseline_metrics.get('baseline_warnings', 0)
         baseline_models = self.baseline_metrics.get('models_trained', 0)
         
         performance_losses = []
@@ -104,31 +104,24 @@ class AblationStudyEvaluator:
             }
             
             # Calculate performance loss metrics
-            case_time = metrics.get('training_time_seconds', 0)
-            case_slices = metrics.get('slices_generated', 0)
+            case_reduction = metrics.get('reduction_percentage', 0)
+            case_warnings = metrics.get('baseline_warnings', 0)
             case_models = metrics.get('models_trained', 0)
             
-            # Time-based performance loss (primary metric)
-            if baseline_time > 0:
-                time_loss = max(0, (baseline_time - case_time) / baseline_time * 100)
-                case_analysis['performance_loss']['time_loss_percentage'] = time_loss
+            # Warning reduction loss (primary metric)
+            warning_reduction_loss = max(0, baseline_reduction - case_reduction)
+            case_analysis['performance_loss']['warning_reduction_loss'] = warning_reduction_loss
             
-            # Data generation loss
-            if baseline_slices > 0:
-                slices_loss = max(0, (baseline_slices - case_slices) / baseline_slices * 100)
-                case_analysis['performance_loss']['slices_loss_percentage'] = slices_loss
-            
-            # Model training loss
+            # Model training loss (secondary metric)
             if baseline_models > 0:
                 models_loss = max(0, (baseline_models - case_models) / baseline_models * 100)
                 case_analysis['performance_loss']['models_loss_percentage'] = models_loss
+            else:
+                models_loss = 0
+                case_analysis['performance_loss']['models_loss_percentage'] = models_loss
             
-            # Overall performance loss (weighted average)
-            overall_loss = np.mean([
-                case_analysis['performance_loss'].get('time_loss_percentage', 0),
-                case_analysis['performance_loss'].get('slices_loss_percentage', 0),
-                case_analysis['performance_loss'].get('models_loss_percentage', 0)
-            ])
+            # Overall performance loss (weighted: 80% warning reduction, 20% models)
+            overall_loss = (warning_reduction_loss * 0.8) + (models_loss * 0.2)
             case_analysis['performance_loss']['overall_loss_percentage'] = overall_loss
             
             performance_losses.append(overall_loss)
@@ -219,32 +212,25 @@ class AblationStudyEvaluator:
             return 0.0
         
         metrics = self.ablation_metrics[case_name]
-        baseline_time = self.baseline_metrics.get('training_time_seconds', 0)
-        baseline_slices = self.baseline_metrics.get('slices_generated', 0)
+        baseline_reduction = self.baseline_metrics.get('reduction_percentage', 0)
         baseline_models = self.baseline_metrics.get('models_trained', 0)
         
-        case_time = metrics.get('training_time_seconds', 0)
-        case_slices = metrics.get('slices_generated', 0)
+        case_reduction = metrics.get('reduction_percentage', 0)
         case_models = metrics.get('models_trained', 0)
         
-        losses = []
+        # Warning reduction loss (primary metric)
+        warning_reduction_loss = max(0, baseline_reduction - case_reduction)
         
-        # Time loss
-        if baseline_time > 0:
-            time_loss = max(0, (baseline_time - case_time) / baseline_time * 100)
-            losses.append(time_loss)
-        
-        # Slices loss
-        if baseline_slices > 0:
-            slices_loss = max(0, (baseline_slices - case_slices) / baseline_slices * 100)
-            losses.append(slices_loss)
-        
-        # Models loss
+        # Model training loss (secondary metric)
         if baseline_models > 0:
             models_loss = max(0, (baseline_models - case_models) / baseline_models * 100)
-            losses.append(models_loss)
+        else:
+            models_loss = 0
         
-        return np.mean(losses) if losses else 0.0
+        # Overall performance loss (weighted: 80% warning reduction, 20% models)
+        overall_loss = (warning_reduction_loss * 0.8) + (models_loss * 0.2)
+        
+        return overall_loss
     
     def generate_comparison_report(self) -> Dict[str, Any]:
         """Generate comprehensive comparison report"""
