@@ -29,6 +29,7 @@ public class SemanticTransformer {
     // Per-transform configuration: enable flag and max depth (internal, defaults enabled, depth=3)
     private final Map<String, Boolean> transformEnabled = new HashMap<>();
     private final Map<String, Integer> transformMaxDepth = new HashMap<>();
+    private final List<String> appliedThisRun = new ArrayList<>();
     
     public SemanticTransformer() {
         this.parser = createParser();
@@ -175,6 +176,7 @@ public class SemanticTransformer {
     }
     
     public String transformCode(String javaCode, List<String> transformations, String mode) {
+        appliedThisRun.clear();
         parser.setSource(javaCode.toCharArray());
         CompilationUnit cu = (CompilationUnit) parser.createAST(null);
         
@@ -192,6 +194,7 @@ public class SemanticTransformer {
             if (changed) {
                 debug("applied_" + transformation, "Applied transformation: " + transformation);
                 hasChanges = true;
+                appliedThisRun.add(transformation);
             } else {
                 debug("skipped_" + transformation, "No effect: " + transformation);
             }
@@ -1811,6 +1814,11 @@ public class SemanticTransformer {
             Files.writeString(outputPath, transformedCode);
             
             System.out.println("Transformation completed successfully");
+            // Emit applied transformations as a JSON line for wrapper parsing
+            try {
+                String json = "{\"appliedTransformations\":" + new ArrayList<>(transformer.appliedThisRun).toString().replace("="," : ") + "}";
+                System.out.println(json);
+            } catch (Exception ignore) {}
             
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());

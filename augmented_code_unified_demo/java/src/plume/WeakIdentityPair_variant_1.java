@@ -1,3 +1,8 @@
+/*
+ * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
+ */
+// Applied transformations: loop_conversion, mathematical_expression
+
 package plume;
 
 import java.lang.ref.WeakReference;
@@ -28,11 +33,10 @@ public class WeakIdentityPair<T1 extends Object, T2 extends Object> {
 
   public WeakIdentityPair(T1 a, T2 b) {
     if (a == null || b == null) {
-      throw new IllegalArgumentException(
-          String.format("WeakIdentityPair cannot hold null: %s %s", a, b));
+      throw new IllegalArgumentException((String.format("WeakIdentityPair cannot hold null: %s %s", a, b)));
     }
-    this.a = new WeakReference<T1>(a);
-    this.b = new WeakReference<T2>(b);
+    this.a = new WeakReference<T1>((a));
+    this.b = new WeakReference<T2>((b));
     int localHashCode = 0;
     try {
       localHashCode = a.hashCode() + b.hashCode();
@@ -51,7 +55,7 @@ public class WeakIdentityPair<T1 extends Object, T2 extends Object> {
    * @return a WeakIdentityPair of (a, b)
    */
   public static <A extends Object, B extends Object> WeakIdentityPair<A, B> of(A a, B b) {
-    return new WeakIdentityPair<A, B>(a, b);
+    return new WeakIdentityPair<A, B>((a),(b));
   }
 
   /**

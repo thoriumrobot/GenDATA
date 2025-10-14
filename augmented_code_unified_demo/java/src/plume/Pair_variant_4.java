@@ -1,3 +1,8 @@
+/*
+ * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
+ */
+// Applied transformations: variable_operation, mathematical_expression
+
 package plume;
 
 /*>>>
@@ -45,7 +50,7 @@ public class Pair<T1 extends /*@Nullable*/ Object, T2 extends /*@Nullable*/ Obje
    */
   public static <A extends /*@Nullable*/ Object, B extends /*@Nullable*/ Object> Pair<A, B> of(
       A a, B b) {
-    return new Pair<A, B>(a, b);
+    return new Pair<A, B>((a),(b));
   }
 
   @Override

@@ -182,6 +182,24 @@ class JdtSemanticTransformer:
                 # Read transformed code
                 with open(output_path, 'r') as f:
                     transformed_code = f.read()
+
+                # Parse applied transforms from stdout if present
+                try:
+                    applied = []
+                    for line in result.stdout.splitlines():
+                        if 'appliedTransformations' in line:
+                            # naive JSON-ish parse
+                            start = line.find('[')
+                            end = line.find(']')
+                            if start != -1 and end != -1 and end > start:
+                                items = line[start+1:end]
+                                applied = [x.strip().strip("'\"") for x in items.split(',') if x.strip()]
+                    if applied:
+                        logger.debug(f"Applied transforms: {applied}")
+                        # attach for higher-level accounting
+                        setattr(self, '_last_applied', applied)
+                except Exception:
+                    pass
                 
                 logger.info(f"Successfully applied {len(transformations)} transformations in {mode} mode")
                 return transformed_code

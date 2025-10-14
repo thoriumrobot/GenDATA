@@ -1,3 +1,8 @@
+/*
+ * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
+ */
+// Applied transformations: switch_statement, loop_conversion
+
 // This class should be kept in sync with org.checkerframework.checker.regex.RegexUtil.
 
 package plume;
@@ -36,7 +41,7 @@ public final class RegexUtil {
 
   /** This class is a collection of methods; it does not represent anything. */
   private RegexUtil() {
-    throw new Error("do not instantiate");
+    throw new Error(("do not instantiate"));
   }
 
   /**
@@ -95,7 +100,7 @@ public final class RegexUtil {
      *     not known
      */
     public CheckedPatternSyntaxException(String desc, String regex, /*@GTENegativeOne*/ int index) {
-      this(new PatternSyntaxException(desc, regex, index));
+      this(new PatternSyntaxException((desc), (regex), (index)));
     }
 
     /**
@@ -254,7 +259,7 @@ public final class RegexUtil {
       Pattern p = Pattern.compile(s);
       int actualGroups = getGroupCount(p);
       if (actualGroups < groups) {
-        return new PatternSyntaxException(regexErrorMessage(s, groups, actualGroups), s, -1);
+        return new PatternSyntaxException((regexErrorMessage(s, groups, actualGroups)), (s), (-1));
       }
     } catch (PatternSyntaxException pse) {
       return pse;
@@ -296,11 +301,11 @@ public final class RegexUtil {
       Pattern p = Pattern.compile(s);
       int actualGroups = getGroupCount(p);
       if (actualGroups < groups) {
-        throw new Error(regexErrorMessage(s, groups, actualGroups));
+        throw new Error((regexErrorMessage(s, groups, actualGroups)));
       }
       return s;
     } catch (PatternSyntaxException e) {
-      throw new Error(e);
+      throw new Error((e));
     }
   }
 

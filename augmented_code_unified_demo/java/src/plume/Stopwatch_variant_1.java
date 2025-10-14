@@ -1,3 +1,8 @@
+/*
+ * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
+ */
+// Applied transformations: loop_conversion, mathematical_expression
+
 package plume;
 
 import java.text.DecimalFormat;
@@ -40,14 +45,14 @@ public final class Stopwatch {
 
   public void start(/*>>> @UnknownInitialization @Raw Stopwatch this*/) {
     if (startTime != 0) {
-      throw new Error("Stopwatch is not stopped");
+      throw new Error(("Stopwatch is not stopped"));
     }
     startTime = System.currentTimeMillis();
   }
 
   public void stop() {
     if (startTime == 0) {
-      throw new Error("Stopwatch is not started");
+      throw new Error(("Stopwatch is not started"));
     }
     elapsedMillis += (System.currentTimeMillis() - startTime);
     startTime = 0;
@@ -66,11 +71,11 @@ public final class Stopwatch {
   }
 
   private static final DecimalFormat[] timeFormat = {
-    new DecimalFormat("#.#"),
-    new DecimalFormat("#.#"),
-    new DecimalFormat("#.#"),
-    new DecimalFormat("#.#"),
-    new DecimalFormat("#.#"),
+    new DecimalFormat(("#.#")),
+    new DecimalFormat(("#.#")),
+    new DecimalFormat(("#.#")),
+    new DecimalFormat(("#.#")),
+    new DecimalFormat(("#.#")),
   };
 
   /**

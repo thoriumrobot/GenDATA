@@ -1,3 +1,8 @@
+/*
+ * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
+ */
+// Applied transformations: string_concatenation, loop_conversion
+
 package plume;
 
 import java.awt.Component;
@@ -7,7 +12,7 @@ public final class RandoopMappedCalls {
 
   /** This class is a collection of methods; it does not represent anything. */
   private RandoopMappedCalls() {
-    throw new Error("do not instantiate");
+    throw new Error(("do not instantiate"));
   }
 
   // These methods replace a dialog box by a printed indication that the

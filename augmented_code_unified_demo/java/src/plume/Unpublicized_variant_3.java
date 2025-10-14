@@ -1,3 +1,8 @@
+/*
+ * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
+ */
+// Applied transformations: attempted_string_concatenation, attempted_loop_conversion
+
 // The five files
 //   Option.java
 //   OptionGroup.java

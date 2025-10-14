@@ -124,11 +124,18 @@ class EnhancedSemanticTransformer:
 
             # Retry with alternates if unchanged
             if transformed_code == original_code:
+                # Build diverse fallback candidates
                 fallback_sets = [
-                    prioritized,
+                    ['loop_conversion','guard_reversal','mathematical_expression'],
+                    ['logical_expression','conditional_expression'],
+                    ['stream_api'],
+                    ['builder_pattern'],
+                    ['functional_conversion'],
+                    ['string_concatenation'],
+                    ['numeric_literal'],
+                    ['simple_field_access'],
                     ['variable_operation'],
                     ['ternary_operator'],
-                    ['mathematical_expression'],
                 ]
                 for alt in fallback_sets:
                     if not alt:
@@ -139,7 +146,9 @@ class EnhancedSemanticTransformer:
                     if alt_code != original_code:
                         logger.info(f"Fallback transformations succeeded for variant {variant_idx}: {alt}")
                         transformed_code = alt_code
-                        used_transformations = list(alt)
+                        # Prefer applied list from wrapper if available
+                        applied = getattr(self.jdt_transformer, '_last_applied', None)
+                        used_transformations = list(applied) if applied else list(alt)
                         break
 
             # Enforce minimal diff threshold (approx by token-level ratio)
@@ -159,8 +168,9 @@ class EnhancedSemanticTransformer:
             except Exception:
                 pass
             
-            # Record applied transformations (selected or fallback used)
-            self.transformations_applied.extend(used_transformations)
+            # Record applied transformations (selected or fallback used, or parsed from JAR)
+            applied = getattr(self.jdt_transformer, '_last_applied', None)
+            self.transformations_applied.extend(list(applied) if applied else used_transformations)
             
             # Always add header comment to indicate transformation attempt
             if transformed_code != original_code:

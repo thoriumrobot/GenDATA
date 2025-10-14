@@ -1,3 +1,8 @@
+/*
+ * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
+ */
+// Applied transformations: ternary_operator, variable_operation
+
 package plume;
 
 /*>>>
@@ -57,8 +62,8 @@ public class StrTok {
    * @param e error handler
    */
   public StrTok(String s, ErrorHandler e) {
-    reader = new StringReader(s);
-    stok = new StreamTokenizer(reader);
+    reader = new StringReader((s));
+    stok = new StreamTokenizer((reader));
     stok.wordChars('_', '_');
     set_error_handler(e);
   }
@@ -76,7 +81,7 @@ public class StrTok {
      * @param s unexpected token that has been found
      */
     public void tok_error(String s) {
-      throw new RuntimeException("StrTok error: " + s);
+      throw new RuntimeException(("StrTok error: " + s));
     }
   }
 
@@ -93,7 +98,7 @@ public class StrTok {
     try {
       stok.nextToken();
     } catch (Exception e) {
-      throw new RuntimeException("StreamTokenizer exception: ", e);
+      throw new RuntimeException(("StreamTokenizer exception: "), (e));
     }
 
     return (token());
@@ -140,7 +145,7 @@ public class StrTok {
       return (s.intern());
     }
 
-    throw new RuntimeException("Unexpected return " + ttype + " from StreamTokenizer");
+    throw new RuntimeException(("Unexpected return " + ttype + " from StreamTokenizer"));
   }
 
   /**

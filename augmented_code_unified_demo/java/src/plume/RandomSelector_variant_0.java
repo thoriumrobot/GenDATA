@@ -1,3 +1,8 @@
+/*
+ * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
+ */
+// Applied transformations: attempted_ternary_operator, attempted_variable_operation
+
 package plume;
 
 import java.util.ArrayList;
