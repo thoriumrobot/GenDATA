@@ -30,10 +30,12 @@ public class SemanticTransformer {
     private final Map<String, Boolean> transformEnabled = new HashMap<>();
     private final Map<String, Integer> transformMaxDepth = new HashMap<>();
     private final List<String> appliedThisRun = new ArrayList<>();
+    private TransformationDiagnostics diagnostics;
     
     public SemanticTransformer() {
         this.parser = createParser();
         this.random = new Random();
+        this.diagnostics = new TransformationDiagnostics();
         initDefaults();
     }
     
@@ -78,9 +80,50 @@ public class SemanticTransformer {
             transformMaxDepth.put(t, Integer.valueOf(3));
         }
     }
+    
+    // Transformation compatibility matrix - prevents incompatible transformations from being applied together
+    private static final Map<String, Set<String>> INCOMPATIBLE_TRANSFORMATIONS = Map.of(
+        "loop_conversion", Set.of("guard_reversal"),
+        "guard_reversal", Set.of("loop_conversion")
+    );
 
     private boolean isEnabled(String t) {
         return transformEnabled.getOrDefault(t, Boolean.TRUE);
+    }
+    
+    /**
+     * Validate transformation compatibility and return list of compatible transformations.
+     */
+    private List<String> validateTransformationCompatibility(List<String> transformations) {
+        List<String> compatible = new ArrayList<>();
+        
+        for (String transformation : transformations) {
+            boolean isCompatible = true;
+            
+            // Check if this transformation is incompatible with any already selected transformations
+            for (String selected : compatible) {
+                Set<String> incompatibleWith = INCOMPATIBLE_TRANSFORMATIONS.get(transformation);
+                if (incompatibleWith != null && incompatibleWith.contains(selected)) {
+                    debug("compatibility_skip", "Skipping " + transformation + " - incompatible with " + selected);
+                    isCompatible = false;
+                    break;
+                }
+                
+                Set<String> incompatibleWithSelected = INCOMPATIBLE_TRANSFORMATIONS.get(selected);
+                if (incompatibleWithSelected != null && incompatibleWithSelected.contains(transformation)) {
+                    debug("compatibility_skip", "Skipping " + transformation + " - incompatible with " + selected);
+                    isCompatible = false;
+                    break;
+                }
+            }
+            
+            if (isCompatible) {
+                compatible.add(transformation);
+                debug("compatibility_accept", "Accepting transformation: " + transformation);
+            }
+        }
+        
+        return compatible;
     }
 
     private void debug(String key, String message) {
@@ -89,6 +132,39 @@ public class SemanticTransformer {
                 debugCounters.put(key, debugCounters.getOrDefault(key, 0) + 1);
             }
             System.err.println("[JDT_DEBUG] " + message);
+        }
+    }
+    
+    /**
+     * Enhanced logging with context and performance metrics.
+     */
+    private void logTransformationStart(String transformation, String mode) {
+        if (debugEnabled) {
+            System.err.println("[JDT_TRANSFORM_START] " + transformation + " (mode: " + mode + ")");
+        }
+    }
+    
+    private void logTransformationEnd(String transformation, boolean success, long durationMs) {
+        if (debugEnabled) {
+            String status = success ? "SUCCESS" : "FAILED";
+            System.err.println("[JDT_TRANSFORM_END] " + transformation + " - " + status + " (took " + durationMs + "ms)");
+        }
+    }
+    
+    private void logTransformationDecision(String transformation, String reason, boolean applied) {
+        if (debugEnabled) {
+            String action = applied ? "APPLIED" : "SKIPPED";
+            System.err.println("[JDT_DECISION] " + transformation + " - " + action + " (" + reason + ")");
+        }
+    }
+    
+    private void logError(String transformation, String error, Exception e) {
+        if (debugEnabled) {
+            System.err.println("[JDT_ERROR] " + transformation + " - " + error);
+            if (e != null) {
+                System.err.println("[JDT_ERROR] Exception: " + e.getMessage());
+                e.printStackTrace(System.err);
+            }
         }
     }
 
@@ -177,6 +253,25 @@ public class SemanticTransformer {
     
     public String transformCode(String javaCode, List<String> transformations, String mode) {
         appliedThisRun.clear();
+        
+        // Handle null or empty input
+        if (javaCode == null) {
+            debug("null_input", "Input code is null; returning null");
+            return null;
+        }
+        
+        if (javaCode.trim().isEmpty()) {
+            debug("empty_input", "Input code is empty; returning original");
+            return javaCode;
+        }
+        
+        // Validate transformation compatibility
+        List<String> compatibleTransformations = validateTransformationCompatibility(transformations);
+        if (compatibleTransformations.isEmpty()) {
+            debug("compatibility_error", "No compatible transformations found; returning original code");
+            return javaCode;
+        }
+        
         parser.setSource(javaCode.toCharArray());
         CompilationUnit cu = (CompilationUnit) parser.createAST(null);
         
@@ -188,15 +283,55 @@ public class SemanticTransformer {
         ASTRewrite rewrite = ASTRewrite.create(cu.getAST());
         boolean hasChanges = false;
         
-        for (String transformation : transformations) {
-            debug("consider_" + transformation, "Considering transformation: " + transformation);
-            boolean changed = applyTransformation(cu, rewrite, transformation, mode);
-            if (changed) {
-                debug("applied_" + transformation, "Applied transformation: " + transformation);
-                hasChanges = true;
-                appliedThisRun.add(transformation);
-            } else {
-                debug("skipped_" + transformation, "No effect: " + transformation);
+        for (String transformation : compatibleTransformations) {
+            logTransformationStart(transformation, mode);
+            if (diagnostics != null) {
+                diagnostics.recordTransformationStart(transformation, mode, javaCode);
+            }
+            long startTime = System.currentTimeMillis();
+            
+            try {
+                debug("consider_" + transformation, "Considering transformation: " + transformation);
+                boolean changed = applyTransformation(cu, rewrite, transformation, mode);
+                long duration = System.currentTimeMillis() - startTime;
+                
+                if (changed) {
+                    debug("applied_" + transformation, "Applied transformation: " + transformation);
+                    logTransformationDecision(transformation, "transformation applied successfully", true);
+                    if (diagnostics != null) {
+                        diagnostics.recordDecision(transformation, "transformation applied successfully", true);
+                    }
+                    hasChanges = true;
+                    appliedThisRun.add(transformation);
+                    logTransformationEnd(transformation, true, duration);
+                    if (diagnostics != null) {
+                        diagnostics.recordTransformationEnd(transformation, true, null, duration, null);
+                    }
+                } else {
+                    debug("skipped_" + transformation, "No effect: " + transformation);
+                    logTransformationDecision(transformation, "no changes made", false);
+                    if (diagnostics != null) {
+                        diagnostics.recordDecision(transformation, "no changes made", false);
+                    }
+                    logTransformationEnd(transformation, false, duration);
+                    if (diagnostics != null) {
+                        diagnostics.recordTransformationEnd(transformation, false, null, duration, null);
+                    }
+                }
+            } catch (Exception e) {
+                long duration = System.currentTimeMillis() - startTime;
+                String errorMsg = e.getMessage();
+                logError(transformation, "transformation failed with exception", e);
+                logTransformationEnd(transformation, false, duration);
+                if (diagnostics != null) {
+                    diagnostics.recordTransformationEnd(transformation, false, null, duration, errorMsg);
+                }
+                // Continue with other transformations instead of failing completely
+            }
+            
+            if (diagnostics != null) {
+                diagnostics.recordPerformanceMetric("transformation_" + transformation, 
+                    System.currentTimeMillis() - startTime);
             }
         }
         
@@ -294,6 +429,24 @@ public class SemanticTransformer {
             case "random_expression_insertion":
                 return applyRandomExpressionInsertion(cu, rewrite);
                 
+            // New transformation types
+            case "bitwise_operation":
+                return applyBitwiseOperation(cu, rewrite);
+            case "comparison_operation":
+                return applyComparisonOperation(cu, rewrite);
+            case "type_conversion":
+                return applyTypeConversion(cu, rewrite);
+            case "null_check_pattern":
+                return applyNullCheckPattern(cu, rewrite);
+            case "constant_folding":
+                return applyConstantFolding(cu, rewrite);
+            case "dead_code_insertion":
+                return applyDeadCodeInsertion(cu, rewrite);
+            case "method_chain_transformation":
+                return applyMethodChainTransformation(cu, rewrite);
+            case "variable_renaming":
+                return applyVariableRenaming(cu, rewrite);
+                
             default:
                 System.err.println("Unknown transformation: " + transformation);
                 return false;
@@ -322,6 +475,28 @@ public class SemanticTransformer {
                 }
                 return true;
             }
+            
+            @Override
+            public boolean visit(DoStatement node) {
+                if (random.nextDouble() < 0.8) { // 80% chance to convert
+                    convertDoWhileToFor(node, rewrite);
+                    changed.set(true);
+                }
+                return true;
+            }
+            
+            @Override
+            public boolean visit(LabeledStatement node) {
+                if (node.getBody() instanceof ForStatement || 
+                    node.getBody() instanceof WhileStatement ||
+                    node.getBody() instanceof DoStatement) {
+                    if (random.nextDouble() < 0.6) { // 60% chance to convert labeled loops
+                        convertLabeledLoop(node, rewrite);
+                        changed.set(true);
+                    }
+                }
+                return true;
+            }
         });
         
         return changed.get();
@@ -334,6 +509,12 @@ public class SemanticTransformer {
             @Override
             public boolean visit(IfStatement node) {
                 try {
+                    // Check if this if statement is inside a loop (skip guard reversal)
+                    if (isInsideLoop(node)) {
+                        debug("guard_reversal_skipped", "Skipped guard reversal: inside loop");
+                        return true;
+                    }
+                    
                     if (node.getElseStatement() != null && !containsMethodInvocation(node.getExpression())) {
                         debug("guard_reversal_considered", "IfStatement eligible for guard reversal: " + node.getExpression());
                         reverseGuard(node, rewrite);
@@ -361,10 +542,26 @@ public class SemanticTransformer {
                 if (node.getOperator() == InfixExpression.Operator.PLUS || 
                     node.getOperator() == InfixExpression.Operator.MINUS ||
                     node.getOperator() == InfixExpression.Operator.TIMES ||
-                    node.getOperator() == InfixExpression.Operator.DIVIDE) {
+                    node.getOperator() == InfixExpression.Operator.DIVIDE ||
+                    node.getOperator() == InfixExpression.Operator.REMAINDER) {
                     
-                    if (random.nextDouble() < 1.0) { // 100% chance to transform
-                        boolean local = transformMathematicalExpressionSafe(node, rewrite);
+                    if (random.nextDouble() < 0.8) { // 80% chance to transform
+                        boolean local = transformMathematicalExpressionEnhanced(node, rewrite);
+                        if (local) {
+                            changed.set(true);
+                        }
+                    }
+                }
+                return true;
+            }
+            
+            @Override
+            public boolean visit(PrefixExpression node) {
+                // Handle unary minus: -x -> 0 - x
+                if (node.getOperator() == PrefixExpression.Operator.MINUS && 
+                    node.getOperand() instanceof SimpleName) {
+                    if (random.nextDouble() < 0.5) { // 50% chance to transform
+                        boolean local = transformUnaryMinus(node, rewrite);
                         if (local) {
                             changed.set(true);
                         }
@@ -385,13 +582,31 @@ public class SemanticTransformer {
             public boolean visit(InfixExpression node) {
                 if (node.getOperator() == InfixExpression.Operator.AND ||
                     node.getOperator() == InfixExpression.Operator.OR) {
-                    // Conservative normalization: parenthesize operands to ensure textual change
-                    AST ast = node.getAST();
-                    InfixExpression copy = (InfixExpression) ASTNode.copySubtree(ast, node);
-                    copy.setLeftOperand(parenthesize(ast, copy.getLeftOperand()));
-                    copy.setRightOperand(parenthesize(ast, copy.getRightOperand()));
-                    rewrite.replace(node, copy, null);
-                    changed.set(true);
+                    
+                    if (random.nextDouble() < 0.8) { // 80% chance to transform
+                        boolean local = transformLogicalExpressionEnhanced(node, rewrite);
+                        if (local) {
+                            changed.set(true);
+                        }
+                    }
+                }
+                return true;
+            }
+            
+            @Override
+            public boolean visit(PrefixExpression node) {
+                // Handle double negation: !!a -> a
+                if (node.getOperator() == PrefixExpression.Operator.NOT &&
+                    node.getOperand() instanceof PrefixExpression) {
+                    PrefixExpression inner = (PrefixExpression) node.getOperand();
+                    if (inner.getOperator() == PrefixExpression.Operator.NOT) {
+                        if (random.nextDouble() < 0.7) { // 70% chance to transform
+                            boolean local = transformDoubleNegation(node, rewrite);
+                            if (local) {
+                                changed.set(true);
+                            }
+                        }
+                    }
                 }
                 return true;
             }
@@ -406,7 +621,9 @@ public class SemanticTransformer {
         cu.accept(new ASTVisitor() {
             @Override
             public boolean visit(ConditionalExpression node) {
-                if (random.nextDouble() < 1.0) { // 100% chance to convert to if-else
+                // Only convert ternary operators that are standalone statements, not values
+                ASTNode parent = node.getParent();
+                if (parent instanceof ExpressionStatement && random.nextDouble() < 0.3) { // 30% chance for standalone statements only
                     convertTernaryToIfElse(node, rewrite);
                     changed.set(true);
                 }
@@ -979,7 +1196,9 @@ public class SemanticTransformer {
             @Override
             public boolean visit(VariableDeclarationFragment node) {
                 try {
-                    if (node.getInitializer() != null && !(node.getInitializer() instanceof ParenthesizedExpression)) {
+                    if (node.getInitializer() != null && 
+                        !(node.getInitializer() instanceof ParenthesizedExpression) &&
+                        !(node.getInitializer() instanceof ArrayInitializer)) {
                         AST ast = node.getAST();
                         VariableDeclarationFragment copy = (VariableDeclarationFragment) ASTNode.copySubtree(ast, node);
                         copy.setInitializer(parenthesize(ast, (Expression) ASTNode.copySubtree(ast, node.getInitializer())));
@@ -1213,34 +1432,59 @@ public class SemanticTransformer {
     
     // Helper methods for specific transformations
     private void convertForToWhile(ForStatement forStmt, ASTRewrite rewrite) {
-        // Convert for loop to while loop
+        // Convert for loop to while loop with enhanced pattern support
         AST ast = forStmt.getAST();
+        
+        // Handle enhanced for-each loops - preserve them as-is
+        if (forStmt.initializers().isEmpty() && forStmt.updaters().isEmpty() && 
+            forStmt.getExpression() != null) {
+            // Check if this looks like an enhanced for-each loop (expression is a variable declaration)
+            debug("loop_conversion_skip", "Skipping enhanced for-each loop conversion");
+            return;
+        }
         
         WhileStatement whileStmt = ast.newWhileStatement();
         whileStmt.setExpression(ast.newBooleanLiteral(true));
         
         Block whileBody = ast.newBlock();
         
-        // Add initialization statements
+        // Enhanced initialization handling
+        handleComplexInitializers(forStmt, whileBody, ast);
+        
+        // Enhanced body handling with proper scoping
+        handleLoopBody(forStmt, whileBody, ast);
+        
+        // Enhanced increment handling
+        handleComplexIncrements(forStmt, whileBody, ast);
+        
+        whileStmt.setBody(whileBody);
+        
+        // Add condition check with enhanced positioning
+        addConditionCheck(forStmt, whileBody, ast);
+        
+        rewrite.replace(forStmt, whileStmt, null);
+    }
+    
+    /**
+     * Handle complex initializers including multiple variables and method calls.
+     */
+    private void handleComplexInitializers(ForStatement forStmt, Block whileBody, AST ast) {
         if (forStmt.initializers().size() > 0) {
             for (Object initializer : forStmt.initializers()) {
                 if (initializer instanceof VariableDeclarationExpression) {
                     VariableDeclarationExpression vde = (VariableDeclarationExpression) initializer;
-                    VariableDeclarationStatement vds = ast.newVariableDeclarationStatement(
-                        (VariableDeclarationFragment) ASTNode.copySubtree(ast, (ASTNode) vde.fragments().get(0))
-                    );
-                    vds.setType((Type) ASTNode.copySubtree(ast, vde.getType()));
-                    // If multiple fragments, add them as separate statements
-                    for (int i = 1; i < vde.fragments().size(); i++) {
-                        VariableDeclarationFragment frag = (VariableDeclarationFragment) vde.fragments().get(i);
-                        VariableDeclarationStatement extra = ast.newVariableDeclarationStatement(
+                    
+                    // Handle multiple variable declarations
+                    for (Object fragment : vde.fragments()) {
+                        VariableDeclarationFragment frag = (VariableDeclarationFragment) fragment;
+                        VariableDeclarationStatement vds = ast.newVariableDeclarationStatement(
                             (VariableDeclarationFragment) ASTNode.copySubtree(ast, frag)
                         );
-                        extra.setType((Type) ASTNode.copySubtree(ast, vde.getType()));
-                        whileBody.statements().add(extra);
+                        vds.setType((Type) ASTNode.copySubtree(ast, vde.getType()));
+                        whileBody.statements().add(vds);
                     }
-                    whileBody.statements().add(vds);
                 } else if (initializer instanceof Expression) {
+                    // Handle method calls and complex expressions in initialization
                     ExpressionStatement es = ast.newExpressionStatement(
                         (Expression) ASTNode.copySubtree(ast, (Expression) initializer)
                     );
@@ -1248,8 +1492,12 @@ public class SemanticTransformer {
                 }
             }
         }
-        
-        // Add original body with increment at the end
+    }
+    
+    /**
+     * Handle loop body with proper scoping and control flow.
+     */
+    private void handleLoopBody(ForStatement forStmt, Block whileBody, AST ast) {
         if (forStmt.getBody() != null) {
             if (forStmt.getBody() instanceof Block) {
                 Block originalBody = (Block) forStmt.getBody();
@@ -1257,11 +1505,18 @@ public class SemanticTransformer {
                     whileBody.statements().add(ASTNode.copySubtree(ast, (Statement) stmt));
                 }
             } else {
-                whileBody.statements().add(ASTNode.copySubtree(ast, forStmt.getBody()));
+                // Single statement body - wrap in block for consistency
+                Block singleStmtBlock = ast.newBlock();
+                singleStmtBlock.statements().add(ASTNode.copySubtree(ast, forStmt.getBody()));
+                whileBody.statements().add(singleStmtBlock);
             }
         }
-        
-        // Add increment statements
+    }
+    
+    /**
+     * Handle complex increment expressions including multiple updates.
+     */
+    private void handleComplexIncrements(ForStatement forStmt, Block whileBody, AST ast) {
         if (forStmt.updaters().size() > 0) {
             for (Object updater : forStmt.updaters()) {
                 if (updater instanceof Expression) {
@@ -1272,15 +1527,17 @@ public class SemanticTransformer {
                 }
             }
         }
-        
-        whileStmt.setBody(whileBody);
-        
-        // Add condition check at the beginning of the loop
+    }
+    
+    /**
+     * Add condition check with intelligent positioning.
+     */
+    private void addConditionCheck(ForStatement forStmt, Block whileBody, AST ast) {
         if (forStmt.getExpression() != null) {
             IfStatement conditionCheck = ast.newIfStatement();
             PrefixExpression notExpr = ast.newPrefixExpression();
             notExpr.setOperator(PrefixExpression.Operator.NOT);
-            notExpr.setOperand((Expression) ASTNode.copySubtree(ast, forStmt.getExpression()));
+            notExpr.setOperand(parenthesize(ast, (Expression) ASTNode.copySubtree(ast, forStmt.getExpression())));
             conditionCheck.setExpression(notExpr);
             
             BreakStatement breakStmt = ast.newBreakStatement();
@@ -1288,21 +1545,97 @@ public class SemanticTransformer {
             breakBlock.statements().add(breakStmt);
             conditionCheck.setThenStatement(breakBlock);
             
-            whileBody.statements().add(0, conditionCheck);
+            // Enhanced positioning logic
+            int insertPosition = findOptimalConditionPosition(whileBody);
+            whileBody.statements().add(insertPosition, conditionCheck);
+        }
+    }
+    
+    /**
+     * Find optimal position for condition check - after declarations, before body.
+     */
+    private int findOptimalConditionPosition(Block whileBody) {
+        int insertPosition = 0;
+        
+        // Count initialization statements to find where to insert condition check
+        for (int i = 0; i < whileBody.statements().size(); i++) {
+            Statement stmt = (Statement) whileBody.statements().get(i);
+            if (isInitializationStatement(stmt)) {
+                insertPosition = i + 1;
+            } else {
+                break; // Stop at first non-initialization statement
+            }
         }
         
-        rewrite.replace(forStmt, whileStmt, null);
+        return insertPosition;
+    }
+    
+    /**
+     * Check if a statement is an initialization statement.
+     */
+    private boolean isInitializationStatement(Statement stmt) {
+        return stmt instanceof VariableDeclarationStatement || 
+               (stmt instanceof ExpressionStatement && 
+                ((ExpressionStatement) stmt).getExpression() instanceof Assignment);
     }
     
     private void convertWhileToFor(WhileStatement whileStmt, ASTRewrite rewrite) {
-        // Convert while loop to for loop
+        // Convert while loop to for loop - only when it matches standard for pattern
         AST ast = whileStmt.getAST();
         
-        ForStatement forStmt = ast.newForStatement();
-        forStmt.setExpression((Expression) ASTNode.copySubtree(ast, whileStmt.getExpression()));
-        forStmt.setBody((Statement) ASTNode.copySubtree(ast, whileStmt.getBody()));
+        // Analyze the while loop to extract initialization, condition, and increment
+        WhileLoopAnalysis analysis = analyzeWhileLoop(whileStmt);
         
-        rewrite.replace(whileStmt, forStmt, null);
+        if (analysis.canConvertToFor) {
+            ForStatement forStmt = ast.newForStatement();
+            
+            // Set initialization if found
+            if (analysis.initialization != null) {
+                forStmt.initializers().add(analysis.initialization);
+            }
+            
+            // Set condition
+            forStmt.setExpression((Expression) ASTNode.copySubtree(ast, whileStmt.getExpression()));
+            
+            // Set increment if found
+            if (analysis.increment != null) {
+                forStmt.updaters().add(analysis.increment);
+            }
+            
+            // Set body (remove increment from body if it was extracted)
+            forStmt.setBody(analysis.body);
+            
+            rewrite.replace(whileStmt, forStmt, null);
+        } else {
+            // Cannot convert - preserve original while loop
+            debug("while_to_for_skipped", "Cannot convert while loop to for loop - pattern not recognized");
+        }
+    }
+    
+    /**
+     * Analyze a while loop to determine if it can be converted to a for loop.
+     */
+    private WhileLoopAnalysis analyzeWhileLoop(WhileStatement whileStmt) {
+        WhileLoopAnalysis analysis = new WhileLoopAnalysis();
+        
+        // For now, only convert simple while loops without complex initialization/increment
+        // This prevents semantic issues from incorrect conversion
+        analysis.canConvertToFor = false; // Conservative approach - preserve semantics
+        
+        // Copy the original body
+        analysis.body = (Statement) ASTNode.copySubtree(whileStmt.getAST(), whileStmt.getBody());
+        
+        return analysis;
+    }
+    
+    /**
+     * Helper class to store while loop analysis results.
+     */
+    private static class WhileLoopAnalysis {
+        boolean canConvertToFor = false;
+        Expression initialization = null;
+        Expression increment = null;
+        Statement body = null;
     }
     
     private void reverseGuard(IfStatement ifStmt, ASTRewrite rewrite) {
@@ -1367,26 +1700,263 @@ public class SemanticTransformer {
                 || (e instanceof ParenthesizedExpression && ((ParenthesizedExpression) e).getExpression() instanceof SimpleName)
                 || (e instanceof ParenthesizedExpression && ((ParenthesizedExpression) e).getExpression() instanceof NumberLiteral);
     }
+    
+    /**
+     * Get the diagnostics report for this transformation session.
+     */
+    public TransformationDiagnostics.DiagnosticReport getDiagnosticsReport() {
+        return diagnostics != null ? diagnostics.generateReport() : null;
+    }
+    
+    /**
+     * Get the diagnostics object for detailed analysis.
+     */
+    public TransformationDiagnostics getDiagnostics() {
+        return diagnostics;
+    }
 
-    private boolean transformMathematicalExpressionSafe(InfixExpression expr, ASTRewrite rewrite) {
-        // Apply commutativity safely on simple operands only
+    private boolean transformMathematicalExpressionEnhanced(InfixExpression expr, ASTRewrite rewrite) {
         AST ast = expr.getAST();
-        if (expr.getOperator() == InfixExpression.Operator.PLUS || expr.getOperator() == InfixExpression.Operator.TIMES) {
-            Expression left = expr.getLeftOperand();
-            Expression right = expr.getRightOperand();
-            if (isSimpleOperand(left) && isSimpleOperand(right)) {
-                InfixExpression newExpr = ast.newInfixExpression();
-                newExpr.setOperator(expr.getOperator());
-                newExpr.setLeftOperand((Expression) ASTNode.copySubtree(ast, right));
-                newExpr.setRightOperand((Expression) ASTNode.copySubtree(ast, left));
-                debug("math_commute", "Applied commutativity on simple operands: " + expr.toString());
-                rewrite.replace(expr, newExpr, null);
-                return true;
-            } else {
-                debug("math_skip_complex", "Skipped commutativity due to complex operands: " + expr.toString());
+        InfixExpression.Operator op = expr.getOperator();
+        Expression left = expr.getLeftOperand();
+        Expression right = expr.getRightOperand();
+        
+        // Apply various mathematical transformations based on operator
+        if (op == InfixExpression.Operator.PLUS) {
+            return transformAddition(expr, left, right, ast, rewrite);
+        } else if (op == InfixExpression.Operator.MINUS) {
+            return transformSubtraction(expr, left, right, ast, rewrite);
+        } else if (op == InfixExpression.Operator.TIMES) {
+            return transformMultiplication(expr, left, right, ast, rewrite);
+        } else if (op == InfixExpression.Operator.DIVIDE) {
+            return transformDivision(expr, left, right, ast, rewrite);
+        } else if (op == InfixExpression.Operator.REMAINDER) {
+            return transformModulo(expr, left, right, ast, rewrite);
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * Transform addition expressions: commutativity, associativity, identity elements
+     */
+    private boolean transformAddition(InfixExpression expr, Expression left, Expression right, AST ast, ASTRewrite rewrite) {
+        // Apply commutativity: a + b -> b + a
+        if (isSimpleOperand(left) && isSimpleOperand(right)) {
+            InfixExpression newExpr = ast.newInfixExpression();
+            newExpr.setOperator(InfixExpression.Operator.PLUS);
+            newExpr.setLeftOperand((Expression) ASTNode.copySubtree(ast, right));
+            newExpr.setRightOperand((Expression) ASTNode.copySubtree(ast, left));
+            debug("math_commute_plus", "Applied commutativity to addition: " + expr.toString());
+            rewrite.replace(expr, newExpr, null);
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Transform subtraction expressions: negation normalization
+     */
+    private boolean transformSubtraction(InfixExpression expr, Expression left, Expression right, AST ast, ASTRewrite rewrite) {
+        // Convert subtraction to addition with negation: a - b -> a + (-b)
+        if (isSimpleOperand(right)) {
+            PrefixExpression negatedRight = ast.newPrefixExpression();
+            negatedRight.setOperator(PrefixExpression.Operator.MINUS);
+            negatedRight.setOperand((Expression) ASTNode.copySubtree(ast, right));
+            
+            InfixExpression newExpr = ast.newInfixExpression();
+            newExpr.setOperator(InfixExpression.Operator.PLUS);
+            newExpr.setLeftOperand((Expression) ASTNode.copySubtree(ast, left));
+            newExpr.setRightOperand(negatedRight);
+            
+            debug("math_sub_to_add", "Converted subtraction to addition with negation: " + expr.toString());
+            rewrite.replace(expr, newExpr, null);
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Transform multiplication expressions: commutativity, identity elements
+     */
+    private boolean transformMultiplication(InfixExpression expr, Expression left, Expression right, AST ast, ASTRewrite rewrite) {
+        // Apply commutativity: a * b -> b * a
+        if (isSimpleOperand(left) && isSimpleOperand(right)) {
+            InfixExpression newExpr = ast.newInfixExpression();
+            newExpr.setOperator(InfixExpression.Operator.TIMES);
+            newExpr.setLeftOperand((Expression) ASTNode.copySubtree(ast, right));
+            newExpr.setRightOperand((Expression) ASTNode.copySubtree(ast, left));
+            debug("math_commute_times", "Applied commutativity to multiplication: " + expr.toString());
+            rewrite.replace(expr, newExpr, null);
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Transform division expressions: convert to multiplication when safe
+     */
+    private boolean transformDivision(InfixExpression expr, Expression left, Expression right, AST ast, ASTRewrite rewrite) {
+        // Convert division to multiplication: x / 2 -> x * 0.5 (when right is constant)
+        if (right instanceof NumberLiteral) {
+            NumberLiteral literal = (NumberLiteral) right;
+            try {
+                double value = Double.parseDouble(literal.getToken());
+                if (value != 0 && value != 1) {
+                    double reciprocal = 1.0 / value;
+                    NumberLiteral newLiteral = ast.newNumberLiteral(String.valueOf(reciprocal));
+                    
+                    InfixExpression newExpr = ast.newInfixExpression();
+                    newExpr.setOperator(InfixExpression.Operator.TIMES);
+                    newExpr.setLeftOperand((Expression) ASTNode.copySubtree(ast, left));
+                    newExpr.setRightOperand(newLiteral);
+                    
+                    debug("math_div_to_mul", "Converted division to multiplication: " + expr.toString());
+                    rewrite.replace(expr, newExpr, null);
+                    return true;
+                }
+            } catch (NumberFormatException e) {
+                // Skip if not a valid number
             }
         }
         return false;
+    }
+    
+    /**
+     * Transform modulo expressions: basic normalization
+     */
+    private boolean transformModulo(InfixExpression expr, Expression left, Expression right, AST ast, ASTRewrite rewrite) {
+        // For now, just parenthesize for consistency
+        InfixExpression newExpr = ast.newInfixExpression();
+        newExpr.setOperator(InfixExpression.Operator.REMAINDER);
+        newExpr.setLeftOperand(parenthesize(ast, (Expression) ASTNode.copySubtree(ast, left)));
+        newExpr.setRightOperand(parenthesize(ast, (Expression) ASTNode.copySubtree(ast, right)));
+        
+        debug("math_modulo_norm", "Normalized modulo expression: " + expr.toString());
+        rewrite.replace(expr, newExpr, null);
+        return true;
+    }
+    
+    /**
+     * Transform unary minus: -x -> 0 - x
+     */
+    private boolean transformUnaryMinus(PrefixExpression expr, ASTRewrite rewrite) {
+        AST ast = expr.getAST();
+        
+        InfixExpression newExpr = ast.newInfixExpression();
+        newExpr.setOperator(InfixExpression.Operator.MINUS);
+        newExpr.setLeftOperand(ast.newNumberLiteral("0"));
+        newExpr.setRightOperand((Expression) ASTNode.copySubtree(ast, expr.getOperand()));
+        
+        debug("math_unary_minus", "Converted unary minus to subtraction: " + expr.toString());
+        rewrite.replace(expr, newExpr, null);
+        return true;
+    }
+    
+    /**
+     * Enhanced logical expression transformation with comprehensive boolean algebra.
+     */
+    private boolean transformLogicalExpressionEnhanced(InfixExpression expr, ASTRewrite rewrite) {
+        AST ast = expr.getAST();
+        InfixExpression.Operator op = expr.getOperator();
+        Expression left = expr.getLeftOperand();
+        Expression right = expr.getRightOperand();
+        
+        // Apply various logical transformations based on operator
+        if (op == InfixExpression.Operator.AND) {
+            return transformLogicalAnd(expr, left, right, ast, rewrite);
+        } else if (op == InfixExpression.Operator.OR) {
+            return transformLogicalOr(expr, left, right, ast, rewrite);
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Transform logical AND expressions: idempotence, absorption, complement
+     */
+    private boolean transformLogicalAnd(InfixExpression expr, Expression left, Expression right, AST ast, ASTRewrite rewrite) {
+        // Apply idempotence: a && a -> a
+        if (isSameExpression(left, right)) {
+            Expression newExpr = (Expression) ASTNode.copySubtree(ast, left);
+            debug("logical_and_idempotence", "Applied idempotence to AND: " + expr.toString());
+            rewrite.replace(expr, newExpr, null);
+            return true;
+        }
+        
+        // Apply commutativity: a && b -> b && a
+        if (isSimpleOperand(left) && isSimpleOperand(right)) {
+            InfixExpression newExpr = ast.newInfixExpression();
+            newExpr.setOperator(InfixExpression.Operator.AND);
+            newExpr.setLeftOperand((Expression) ASTNode.copySubtree(ast, right));
+            newExpr.setRightOperand((Expression) ASTNode.copySubtree(ast, left));
+            debug("logical_and_commute", "Applied commutativity to AND: " + expr.toString());
+            rewrite.replace(expr, newExpr, null);
+            return true;
+        }
+        
+        // Apply parenthesization for consistency
+        InfixExpression newExpr = ast.newInfixExpression();
+        newExpr.setOperator(InfixExpression.Operator.AND);
+        newExpr.setLeftOperand(parenthesize(ast, (Expression) ASTNode.copySubtree(ast, left)));
+        newExpr.setRightOperand(parenthesize(ast, (Expression) ASTNode.copySubtree(ast, right)));
+        debug("logical_and_parenthesize", "Applied parenthesization to AND: " + expr.toString());
+        rewrite.replace(expr, newExpr, null);
+        return true;
+    }
+    
+    /**
+     * Transform logical OR expressions: idempotence, absorption, complement
+     */
+    private boolean transformLogicalOr(InfixExpression expr, Expression left, Expression right, AST ast, ASTRewrite rewrite) {
+        // Apply idempotence: a || a -> a
+        if (isSameExpression(left, right)) {
+            Expression newExpr = (Expression) ASTNode.copySubtree(ast, left);
+            debug("logical_or_idempotence", "Applied idempotence to OR: " + expr.toString());
+            rewrite.replace(expr, newExpr, null);
+            return true;
+        }
+        
+        // Apply commutativity: a || b -> b || a
+        if (isSimpleOperand(left) && isSimpleOperand(right)) {
+            InfixExpression newExpr = ast.newInfixExpression();
+            newExpr.setOperator(InfixExpression.Operator.OR);
+            newExpr.setLeftOperand((Expression) ASTNode.copySubtree(ast, right));
+            newExpr.setRightOperand((Expression) ASTNode.copySubtree(ast, left));
+            debug("logical_or_commute", "Applied commutativity to OR: " + expr.toString());
+            rewrite.replace(expr, newExpr, null);
+            return true;
+        }
+        
+        // Apply parenthesization for consistency
+        InfixExpression newExpr = ast.newInfixExpression();
+        newExpr.setOperator(InfixExpression.Operator.OR);
+        newExpr.setLeftOperand(parenthesize(ast, (Expression) ASTNode.copySubtree(ast, left)));
+        newExpr.setRightOperand(parenthesize(ast, (Expression) ASTNode.copySubtree(ast, right)));
+        debug("logical_or_parenthesize", "Applied parenthesization to OR: " + expr.toString());
+        rewrite.replace(expr, newExpr, null);
+        return true;
+    }
+    
+    /**
+     * Transform double negation: !!a -> a
+     */
+    private boolean transformDoubleNegation(PrefixExpression expr, ASTRewrite rewrite) {
+        AST ast = expr.getAST();
+        PrefixExpression inner = (PrefixExpression) expr.getOperand();
+        
+        Expression newExpr = (Expression) ASTNode.copySubtree(ast, inner.getOperand());
+        debug("logical_double_negation", "Applied double negation elimination: " + expr.toString());
+        rewrite.replace(expr, newExpr, null);
+        return true;
+    }
+    
+    /**
+     * Check if two expressions are the same (simplified comparison).
+     */
+    private boolean isSameExpression(Expression expr1, Expression expr2) {
+        // Simple string comparison for now - could be enhanced with deeper AST comparison
+        return expr1.toString().equals(expr2.toString());
     }
     
     private void applyDeMorganLaws(InfixExpression expr, ASTRewrite rewrite) {
@@ -1414,29 +1984,66 @@ public class SemanticTransformer {
     }
     
     private void convertTernaryToIfElse(ConditionalExpression ternary, ASTRewrite rewrite) {
-        // Convert ternary operator to if-else statement
-        AST ast = ternary.getAST();
+        // Only convert ternary operators that are used as statements, not as values
+        ASTNode parent = ternary.getParent();
         
-        IfStatement ifStmt = ast.newIfStatement();
-        ifStmt.setExpression((Expression) ASTNode.copySubtree(ast, ternary.getExpression()));
+        // Skip conversion if ternary is used as a value (assignment, return, method argument, etc.)
+        if (parent instanceof Assignment || 
+            parent instanceof ReturnStatement || 
+            parent instanceof MethodInvocation ||
+            parent instanceof ConditionalExpression ||
+            parent instanceof InfixExpression) {
+            debug("ternary_skip", "Skipping ternary conversion - used as value");
+            return;
+        }
         
-        // Create blocks for then and else
-        Block thenBlock = ast.newBlock();
-        Block elseBlock = ast.newBlock();
-        
-        // Add expressions as statements (this is simplified)
-        ExpressionStatement thenStmt = ast.newExpressionStatement(
-            (Expression) ASTNode.copySubtree(ast, ternary.getThenExpression()));
-        ExpressionStatement elseStmt = ast.newExpressionStatement(
-            (Expression) ASTNode.copySubtree(ast, ternary.getElseExpression()));
-        
-        thenBlock.statements().add(thenStmt);
-        elseBlock.statements().add(elseStmt);
-        
-        ifStmt.setThenStatement(thenBlock);
-        ifStmt.setElseStatement(elseBlock);
-        
-        rewrite.replace(ternary, ifStmt, null);
+        // Only convert if the ternary is a standalone statement
+        if (parent instanceof ExpressionStatement) {
+            AST ast = ternary.getAST();
+            
+            IfStatement ifStmt = ast.newIfStatement();
+            ifStmt.setExpression((Expression) ASTNode.copySubtree(ast, ternary.getExpression()));
+            
+            // Create blocks for then and else
+            Block thenBlock = ast.newBlock();
+            Block elseBlock = ast.newBlock();
+            
+            // Add expressions as statements only if they are valid statements
+            if (isValidStatementExpression(ternary.getThenExpression())) {
+                ExpressionStatement thenStmt = ast.newExpressionStatement(
+                    (Expression) ASTNode.copySubtree(ast, ternary.getThenExpression()));
+                thenBlock.statements().add(thenStmt);
+            } else {
+                // Skip conversion if expressions are not valid statements
+                debug("ternary_skip", "Skipping ternary conversion - invalid statement expressions");
+                return;
+            }
+            
+            if (isValidStatementExpression(ternary.getElseExpression())) {
+                ExpressionStatement elseStmt = ast.newExpressionStatement(
+                    (Expression) ASTNode.copySubtree(ast, ternary.getElseExpression()));
+                elseBlock.statements().add(elseStmt);
+            } else {
+                // Skip conversion if expressions are not valid statements
+                debug("ternary_skip", "Skipping ternary conversion - invalid statement expressions");
+                return;
+            }
+            
+            ifStmt.setThenStatement(thenBlock);
+            ifStmt.setElseStatement(elseBlock);
+            
+            rewrite.replace(ternary, ifStmt, null);
+        }
+    }
+    
+    /**
+     * Check if an expression can be used as a statement (method calls, assignments, etc.)
+     */
+    private boolean isValidStatementExpression(Expression expr) {
+        return expr instanceof MethodInvocation ||
+               expr instanceof Assignment ||
+               expr instanceof PrefixExpression ||
+               expr instanceof PostfixExpression;
     }
     
     private void convertIfElseToTernary(IfStatement ifStmt, ASTRewrite rewrite) {
@@ -1774,6 +2381,22 @@ public class SemanticTransformer {
         return found.get();
     }
     
+    /**
+     * Check if an AST node is inside a loop (while, for, or do-while).
+     */
+    private boolean isInsideLoop(ASTNode node) {
+        ASTNode parent = node.getParent();
+        while (parent != null) {
+            if (parent instanceof WhileStatement || 
+                parent instanceof ForStatement || 
+                parent instanceof DoStatement) {
+                return true;
+            }
+            parent = parent.getParent();
+        }
+        return false;
+    }
+    
     // CLI interface for the transformer service
     public static void main(String[] args) {
         if (args.length < 6) {
@@ -1866,6 +2489,809 @@ public class SemanticTransformer {
         }
         
         return params;
+    }
+    
+    // ===== NEW TRANSFORMATION METHODS =====
+    
+    /**
+     * Transform bitwise operations using bitwise algebra properties.
+     */
+    private boolean applyBitwiseOperation(CompilationUnit cu, ASTRewrite rewrite) {
+        AtomicBoolean changed = new AtomicBoolean(false);
+        
+        cu.accept(new ASTVisitor() {
+            @Override
+            public boolean visit(InfixExpression node) {
+                if (node.getOperator() == InfixExpression.Operator.AND || 
+                    node.getOperator() == InfixExpression.Operator.OR ||
+                    node.getOperator() == InfixExpression.Operator.XOR) {
+                    
+                    if (random.nextDouble() < 0.8) {
+                        transformBitwiseExpression(node, rewrite);
+                        changed.set(true);
+                    }
+                }
+                return true;
+            }
+            
+            @Override
+            public boolean visit(PrefixExpression node) {
+                if (node.getOperator() == PrefixExpression.Operator.COMPLEMENT) {
+                    if (random.nextDouble() < 0.8) {
+                        transformBitwiseNot(node, rewrite);
+                        changed.set(true);
+                    }
+                }
+                return true;
+            }
+        });
+        
+        return changed.get();
+    }
+    
+    /**
+     * Transform bitwise expressions using algebraic properties.
+     */
+    private void transformBitwiseExpression(InfixExpression expr, ASTRewrite rewrite) {
+        AST ast = expr.getAST();
+        
+        if (expr.getOperator() == InfixExpression.Operator.AND) {
+            // Commutativity: a & b = b & a
+            if (random.nextBoolean()) {
+                InfixExpression swapped = ast.newInfixExpression();
+                swapped.setLeftOperand((Expression) ASTNode.copySubtree(ast, expr.getRightOperand()));
+                swapped.setRightOperand((Expression) ASTNode.copySubtree(ast, expr.getLeftOperand()));
+                swapped.setOperator(InfixExpression.Operator.AND);
+                rewrite.replace(expr, swapped, null);
+            }
+        } else if (expr.getOperator() == InfixExpression.Operator.OR) {
+            // Commutativity: a | b = b | a
+            if (random.nextBoolean()) {
+                InfixExpression swapped = ast.newInfixExpression();
+                swapped.setLeftOperand((Expression) ASTNode.copySubtree(ast, expr.getRightOperand()));
+                swapped.setRightOperand((Expression) ASTNode.copySubtree(ast, expr.getLeftOperand()));
+                swapped.setOperator(InfixExpression.Operator.OR);
+                rewrite.replace(expr, swapped, null);
+            }
+        } else if (expr.getOperator() == InfixExpression.Operator.XOR) {
+            // Commutativity: a ^ b = b ^ a
+            if (random.nextBoolean()) {
+                InfixExpression swapped = ast.newInfixExpression();
+                swapped.setLeftOperand((Expression) ASTNode.copySubtree(ast, expr.getRightOperand()));
+                swapped.setRightOperand((Expression) ASTNode.copySubtree(ast, expr.getLeftOperand()));
+                swapped.setOperator(InfixExpression.Operator.XOR);
+                rewrite.replace(expr, swapped, null);
+            }
+        }
+    }
+    
+    /**
+     * Transform bitwise NOT operations.
+     */
+    private void transformBitwiseNot(PrefixExpression expr, ASTRewrite rewrite) {
+        // Convert ~x to (-x) - 1 for negative numbers
+        if (random.nextDouble() < 0.9) {
+            AST ast = expr.getAST();
+            InfixExpression newExpr = ast.newInfixExpression();
+            PrefixExpression negated = ast.newPrefixExpression();
+            negated.setOperator(PrefixExpression.Operator.MINUS);
+            negated.setOperand((Expression) ASTNode.copySubtree(ast, expr.getOperand()));
+            newExpr.setLeftOperand(negated);
+            newExpr.setRightOperand(ast.newNumberLiteral("1"));
+            newExpr.setOperator(InfixExpression.Operator.MINUS);
+            rewrite.replace(expr, newExpr, null);
+        }
+    }
+    
+    /**
+     * Transform comparison operations using comparison algebra.
+     */
+    private boolean applyComparisonOperation(CompilationUnit cu, ASTRewrite rewrite) {
+        AtomicBoolean changed = new AtomicBoolean(false);
+        
+        cu.accept(new ASTVisitor() {
+            @Override
+            public boolean visit(InfixExpression node) {
+                if (node.getOperator() == InfixExpression.Operator.LESS ||
+                    node.getOperator() == InfixExpression.Operator.GREATER ||
+                    node.getOperator() == InfixExpression.Operator.LESS_EQUALS ||
+                    node.getOperator() == InfixExpression.Operator.GREATER_EQUALS ||
+                    node.getOperator() == InfixExpression.Operator.EQUALS ||
+                    node.getOperator() == InfixExpression.Operator.NOT_EQUALS) {
+                    
+                    if (random.nextDouble() < 0.8) {
+                        transformComparisonExpression(node, rewrite);
+                        changed.set(true);
+                    }
+                }
+                return true;
+            }
+        });
+        
+        return changed.get();
+    }
+    
+    /**
+     * Transform comparison expressions using algebraic properties.
+     */
+    private void transformComparisonExpression(InfixExpression expr, ASTRewrite rewrite) {
+        AST ast = expr.getAST();
+        
+        if (expr.getOperator() == InfixExpression.Operator.LESS) {
+            // a < b = b > a
+            if (random.nextBoolean()) {
+                InfixExpression swapped = ast.newInfixExpression();
+                swapped.setLeftOperand((Expression) ASTNode.copySubtree(ast, expr.getRightOperand()));
+                swapped.setRightOperand((Expression) ASTNode.copySubtree(ast, expr.getLeftOperand()));
+                swapped.setOperator(InfixExpression.Operator.GREATER);
+                rewrite.replace(expr, swapped, null);
+            }
+        } else if (expr.getOperator() == InfixExpression.Operator.GREATER) {
+            // a > b = b < a
+            if (random.nextBoolean()) {
+                InfixExpression swapped = ast.newInfixExpression();
+                swapped.setLeftOperand((Expression) ASTNode.copySubtree(ast, expr.getRightOperand()));
+                swapped.setRightOperand((Expression) ASTNode.copySubtree(ast, expr.getLeftOperand()));
+                swapped.setOperator(InfixExpression.Operator.LESS);
+                rewrite.replace(expr, swapped, null);
+            }
+        } else if (expr.getOperator() == InfixExpression.Operator.LESS_EQUALS) {
+            // a <= b = b >= a
+            if (random.nextBoolean()) {
+                InfixExpression swapped = ast.newInfixExpression();
+                swapped.setLeftOperand((Expression) ASTNode.copySubtree(ast, expr.getRightOperand()));
+                swapped.setRightOperand((Expression) ASTNode.copySubtree(ast, expr.getLeftOperand()));
+                swapped.setOperator(InfixExpression.Operator.GREATER_EQUALS);
+                rewrite.replace(expr, swapped, null);
+            }
+        } else if (expr.getOperator() == InfixExpression.Operator.GREATER_EQUALS) {
+            // a >= b = b <= a
+            if (random.nextBoolean()) {
+                InfixExpression swapped = ast.newInfixExpression();
+                swapped.setLeftOperand((Expression) ASTNode.copySubtree(ast, expr.getRightOperand()));
+                swapped.setRightOperand((Expression) ASTNode.copySubtree(ast, expr.getLeftOperand()));
+                swapped.setOperator(InfixExpression.Operator.LESS_EQUALS);
+                rewrite.replace(expr, swapped, null);
+            }
+        } else if (expr.getOperator() == InfixExpression.Operator.EQUALS) {
+            // a == b = b == a (commutativity)
+            if (random.nextBoolean()) {
+                InfixExpression swapped = ast.newInfixExpression();
+                swapped.setLeftOperand((Expression) ASTNode.copySubtree(ast, expr.getRightOperand()));
+                swapped.setRightOperand((Expression) ASTNode.copySubtree(ast, expr.getLeftOperand()));
+                swapped.setOperator(InfixExpression.Operator.EQUALS);
+                rewrite.replace(expr, swapped, null);
+            }
+        } else if (expr.getOperator() == InfixExpression.Operator.NOT_EQUALS) {
+            // a != b = b != a (commutativity)
+            if (random.nextBoolean()) {
+                InfixExpression swapped = ast.newInfixExpression();
+                swapped.setLeftOperand((Expression) ASTNode.copySubtree(ast, expr.getRightOperand()));
+                swapped.setRightOperand((Expression) ASTNode.copySubtree(ast, expr.getLeftOperand()));
+                swapped.setOperator(InfixExpression.Operator.NOT_EQUALS);
+                rewrite.replace(expr, swapped, null);
+            }
+        }
+    }
+    
+    /**
+     * Transform type conversions and casts.
+     */
+    private boolean applyTypeConversion(CompilationUnit cu, ASTRewrite rewrite) {
+        AtomicBoolean changed = new AtomicBoolean(false);
+        
+        cu.accept(new ASTVisitor() {
+            @Override
+            public boolean visit(CastExpression node) {
+                if (random.nextDouble() < 0.8) {
+                    transformCastExpression(node, rewrite);
+                    changed.set(true);
+                }
+                return true;
+            }
+            
+            @Override
+            public boolean visit(InfixExpression node) {
+                if (node.getOperator() == InfixExpression.Operator.PLUS) {
+                    if (random.nextDouble() < 0.2) {
+                        transformStringConcatenationType(node, rewrite);
+                        changed.set(true);
+                    }
+                }
+                return true;
+            }
+        });
+        
+        return changed.get();
+    }
+    
+    /**
+     * Transform cast expressions.
+     */
+    private void transformCastExpression(CastExpression expr, ASTRewrite rewrite) {
+        AST ast = expr.getAST();
+        
+        // Convert explicit casts to implicit conversions where safe
+        if (random.nextBoolean()) {
+            // Remove redundant casts like (int) 42 or (String) "hello"
+            Type type = expr.getType();
+            Expression operand = expr.getExpression();
+            
+            if (type.isPrimitiveType() && operand instanceof NumberLiteral) {
+                // Remove cast for primitive literals
+                rewrite.replace(expr, (Expression) ASTNode.copySubtree(ast, operand), null);
+            } else if (type.isSimpleType() && operand instanceof StringLiteral) {
+                // Remove cast for string literals
+                rewrite.replace(expr, (Expression) ASTNode.copySubtree(ast, operand), null);
+            }
+        }
+    }
+    
+    /**
+     * Transform string concatenation patterns for type conversion.
+     */
+    private void transformStringConcatenationType(InfixExpression expr, ASTRewrite rewrite) {
+        // Convert string concatenation to StringBuilder where beneficial
+        if (random.nextBoolean()) {
+            AST ast = expr.getAST();
+            
+            // Create StringBuilder pattern
+            MethodInvocation sbAppend = ast.newMethodInvocation();
+            sbAppend.setName(ast.newSimpleName("append"));
+            sbAppend.setExpression(ast.newSimpleName("sb"));
+            sbAppend.arguments().add((Expression) ASTNode.copySubtree(ast, expr.getLeftOperand()));
+            
+            MethodInvocation sbAppend2 = ast.newMethodInvocation();
+            sbAppend2.setName(ast.newSimpleName("append"));
+            sbAppend2.setExpression(ast.newSimpleName("sb"));
+            sbAppend2.arguments().add((Expression) ASTNode.copySubtree(ast, expr.getRightOperand()));
+            
+            // Replace with method chaining
+            sbAppend.arguments().add(sbAppend2);
+            rewrite.replace(expr, sbAppend, null);
+        }
+    }
+    
+    /**
+     * Transform null check patterns.
+     */
+    private boolean applyNullCheckPattern(CompilationUnit cu, ASTRewrite rewrite) {
+        AtomicBoolean changed = new AtomicBoolean(false);
+        
+        cu.accept(new ASTVisitor() {
+            @Override
+            public boolean visit(InfixExpression node) {
+                if (node.getOperator() == InfixExpression.Operator.NOT_EQUALS &&
+                    node.getRightOperand() instanceof NullLiteral) {
+                    if (random.nextDouble() < 0.4) {
+                        transformNullCheck(node, rewrite);
+                        changed.set(true);
+                    }
+                }
+                return true;
+            }
+            
+            @Override
+            public boolean visit(MethodInvocation node) {
+                if (node.getName().getIdentifier().equals("equals") &&
+                    node.arguments().size() == 1) {
+                    if (random.nextDouble() < 0.3) {
+                        transformEqualsCheck(node, rewrite);
+                        changed.set(true);
+                    }
+                }
+                return true;
+            }
+        });
+        
+        return changed.get();
+    }
+    
+    /**
+     * Transform null checks.
+     */
+    private void transformNullCheck(InfixExpression expr, ASTRewrite rewrite) {
+        AST ast = expr.getAST();
+        
+        // Convert obj != null to !Objects.isNull(obj)
+        if (random.nextBoolean()) {
+            PrefixExpression notExpr = ast.newPrefixExpression();
+            notExpr.setOperator(PrefixExpression.Operator.NOT);
+            
+            MethodInvocation isNull = ast.newMethodInvocation();
+            isNull.setName(ast.newSimpleName("isNull"));
+            isNull.setExpression(ast.newSimpleName("Objects"));
+            isNull.arguments().add((Expression) ASTNode.copySubtree(ast, expr.getLeftOperand()));
+            
+            notExpr.setOperand(isNull);
+            rewrite.replace(expr, notExpr, null);
+        }
+    }
+    
+    /**
+     * Transform equals checks.
+     */
+    private void transformEqualsCheck(MethodInvocation node, ASTRewrite rewrite) {
+        AST ast = node.getAST();
+        
+        // Convert obj.equals(other) to Objects.equals(obj, other)
+        if (random.nextBoolean()) {
+            MethodInvocation objectsEquals = ast.newMethodInvocation();
+            objectsEquals.setName(ast.newSimpleName("equals"));
+            objectsEquals.setExpression(ast.newSimpleName("Objects"));
+            objectsEquals.arguments().add((Expression) ASTNode.copySubtree(ast, node.getExpression()));
+            objectsEquals.arguments().add((Expression) ASTNode.copySubtree(ast, (Expression) node.arguments().get(0)));
+            
+            rewrite.replace(node, objectsEquals, null);
+        }
+    }
+    
+    /**
+     * Apply constant folding optimizations.
+     */
+    private boolean applyConstantFolding(CompilationUnit cu, ASTRewrite rewrite) {
+        AtomicBoolean changed = new AtomicBoolean(false);
+        
+        cu.accept(new ASTVisitor() {
+            @Override
+            public boolean visit(InfixExpression node) {
+                if (isConstantExpression(node)) {
+                    if (random.nextDouble() < 0.5) {
+                        foldConstantExpression(node, rewrite);
+                        changed.set(true);
+                    }
+                }
+                return true;
+            }
+        });
+        
+        return changed.get();
+    }
+    
+    /**
+     * Check if an expression is a constant expression.
+     */
+    private boolean isConstantExpression(InfixExpression expr) {
+        return (expr.getLeftOperand() instanceof NumberLiteral || expr.getLeftOperand() instanceof StringLiteral) &&
+               (expr.getRightOperand() instanceof NumberLiteral || expr.getRightOperand() instanceof StringLiteral);
+    }
+    
+    /**
+     * Fold constant expressions.
+     */
+    private void foldConstantExpression(InfixExpression expr, ASTRewrite rewrite) {
+        AST ast = expr.getAST();
+        
+        // Simple constant folding for numeric expressions
+        if (expr.getLeftOperand() instanceof NumberLiteral && 
+            expr.getRightOperand() instanceof NumberLiteral) {
+            
+            try {
+                double left = Double.parseDouble(((NumberLiteral) expr.getLeftOperand()).getToken());
+                double right = Double.parseDouble(((NumberLiteral) expr.getRightOperand()).getToken());
+                double result = 0;
+                
+                if (expr.getOperator() == InfixExpression.Operator.PLUS) {
+                    result = left + right;
+                } else if (expr.getOperator() == InfixExpression.Operator.MINUS) {
+                    result = left - right;
+                } else if (expr.getOperator() == InfixExpression.Operator.TIMES) {
+                    result = left * right;
+                } else if (expr.getOperator() == InfixExpression.Operator.DIVIDE) {
+                    if (right != 0) result = left / right;
+                    else return; // Don't fold division by zero
+                } else {
+                    return;
+                }
+                
+                NumberLiteral folded = ast.newNumberLiteral(String.valueOf(result));
+                rewrite.replace(expr, folded, null);
+                
+            } catch (NumberFormatException e) {
+                // Skip if parsing fails
+            }
+        }
+    }
+    
+    /**
+     * Insert dead code that doesn't affect program semantics.
+     */
+    private boolean applyDeadCodeInsertion(CompilationUnit cu, ASTRewrite rewrite) {
+        AtomicBoolean changed = new AtomicBoolean(false);
+        
+        cu.accept(new ASTVisitor() {
+            @Override
+            public boolean visit(Block node) {
+                if (random.nextDouble() < 0.2) {
+                    insertDeadCode(node, rewrite);
+                    changed.set(true);
+                }
+                return true;
+            }
+        });
+        
+        return changed.get();
+    }
+    
+    /**
+     * Insert dead code statements.
+     */
+    private void insertDeadCode(Block block, ASTRewrite rewrite) {
+        AST ast = block.getAST();
+        
+        // Insert harmless dead code
+        List<Statement> deadStatements = Arrays.asList(
+            ast.newExpressionStatement(ast.newNumberLiteral("0")), // 0;
+            ast.newExpressionStatement(ast.newBooleanLiteral(false)), // false;
+            ast.newExpressionStatement(ast.newStringLiteral()) // "";
+        );
+        
+        Statement deadStatement = deadStatements.get(random.nextInt(deadStatements.size()));
+        
+        // Insert at random position in the block
+        int position = random.nextInt(block.statements().size() + 1);
+        rewrite.getListRewrite(block, Block.STATEMENTS_PROPERTY).insertAt(deadStatement, position, null);
+    }
+    
+    /**
+     * Transform method chaining patterns.
+     */
+    private boolean applyMethodChainTransformation(CompilationUnit cu, ASTRewrite rewrite) {
+        AtomicBoolean changed = new AtomicBoolean(false);
+        
+        cu.accept(new ASTVisitor() {
+            @Override
+            public boolean visit(MethodInvocation node) {
+                if (random.nextDouble() < 0.3) {
+                    transformMethodChain(node, rewrite);
+                    changed.set(true);
+                }
+                return true;
+            }
+        });
+        
+        return changed.get();
+    }
+    
+    /**
+     * Transform method chaining.
+     */
+    private void transformMethodChain(MethodInvocation node, ASTRewrite rewrite) {
+        AST ast = node.getAST();
+        
+        // Convert method calls to fluent interface style where possible
+        if (random.nextBoolean() && node.getExpression() != null) {
+            // Create a new method invocation with chaining
+            MethodInvocation chained = ast.newMethodInvocation();
+            chained.setName(ast.newSimpleName(node.getName().getIdentifier()));
+            chained.setExpression((Expression) ASTNode.copySubtree(ast, node.getExpression()));
+            
+            // Copy arguments
+            for (Object arg : node.arguments()) {
+                chained.arguments().add((Expression) ASTNode.copySubtree(ast, (Expression) arg));
+            }
+            
+            rewrite.replace(node, chained, null);
+        }
+    }
+    
+    /**
+     * Transform variable names to add variety.
+     */
+    private boolean applyVariableRenaming(CompilationUnit cu, ASTRewrite rewrite) {
+        AtomicBoolean changed = new AtomicBoolean(false);
+        
+        // Map to store variable name mappings
+        Map<String, String> nameMapping = new HashMap<>();
+        
+        cu.accept(new ASTVisitor() {
+            @Override
+            public boolean visit(VariableDeclarationFragment node) {
+                if (random.nextDouble() < 0.1) { // Low probability to avoid breaking code
+                    String oldName = node.getName().getIdentifier();
+                    String newName = generateNewVariableName(oldName);
+                    nameMapping.put(oldName, newName);
+                    
+                    SimpleName newSimpleName = node.getAST().newSimpleName(newName);
+                    rewrite.replace(node.getName(), newSimpleName, null);
+                    changed.set(true);
+                }
+                return true;
+            }
+            
+            @Override
+            public boolean visit(SimpleName node) {
+                if (nameMapping.containsKey(node.getIdentifier())) {
+                    String newName = nameMapping.get(node.getIdentifier());
+                    SimpleName newSimpleName = node.getAST().newSimpleName(newName);
+                    rewrite.replace(node, newSimpleName, null);
+                }
+                return true;
+            }
+        });
+        
+        return changed.get();
+    }
+    
+    /**
+     * Generate a new variable name based on the old one.
+     */
+    private String generateNewVariableName(String oldName) {
+        String[] prefixes = {"new", "temp", "var", "item", "value", "data", "obj"};
+        String[] suffixes = {"1", "2", "_new", "_tmp", "_var", "_alt"};
+        
+        String prefix = prefixes[random.nextInt(prefixes.length)];
+        String suffix = suffixes[random.nextInt(suffixes.length)];
+        
+        return prefix + Character.toUpperCase(oldName.charAt(0)) + oldName.substring(1) + suffix;
+    }
+    
+    // Enhanced loop conversion methods
+    
+    private void convertDoWhileToFor(DoStatement doStmt, ASTRewrite rewrite) {
+        AST ast = doStmt.getAST();
+        
+        // Convert do-while to for loop
+        ForStatement forStmt = ast.newForStatement();
+        
+        // Create a for loop that mimics do-while behavior
+        // do { body } while (condition) becomes:
+        // for (;;) { body; if (!condition) break; }
+        
+        Block forBody = ast.newBlock();
+        
+        // Add the original body
+        Statement body = doStmt.getBody();
+        if (body != null) {
+            if (body instanceof Block) {
+                for (Object stmt : ((Block) body).statements()) {
+                    forBody.statements().add(ASTNode.copySubtree(ast, (ASTNode) stmt));
+                }
+            } else {
+                forBody.statements().add(ASTNode.copySubtree(ast, body));
+            }
+        }
+        
+        // Add condition check with break
+        if (doStmt.getExpression() != null) {
+            IfStatement ifStmt = ast.newIfStatement();
+            PrefixExpression notCondition = ast.newPrefixExpression();
+            notCondition.setOperator(PrefixExpression.Operator.NOT);
+            notCondition.setOperand((Expression) ASTNode.copySubtree(ast, doStmt.getExpression()));
+            ifStmt.setExpression(notCondition);
+            
+            BreakStatement breakStmt = ast.newBreakStatement();
+            ifStmt.setThenStatement(breakStmt);
+            
+            forBody.statements().add(ifStmt);
+        }
+        
+        forStmt.setBody(forBody);
+        rewrite.replace(doStmt, forStmt, null);
+    }
+    
+    private void convertLabeledLoop(LabeledStatement labeledStmt, ASTRewrite rewrite) {
+        AST ast = labeledStmt.getAST();
+        Statement body = labeledStmt.getBody();
+        
+        if (body instanceof ForStatement) {
+            ForStatement forStmt = (ForStatement) body;
+            WhileStatement whileStmt = ast.newWhileStatement();
+            whileStmt.setExpression(ast.newBooleanLiteral(true));
+            
+            Block whileBody = ast.newBlock();
+            handleComplexInitializers(forStmt, whileBody, ast);
+            handleLoopBody(forStmt, whileBody, ast);
+            handleComplexIncrements(forStmt, whileBody, ast);
+            addConditionCheck(forStmt, whileBody, ast);
+            
+            whileStmt.setBody(whileBody);
+            
+            // Preserve the label
+            LabeledStatement newLabeled = ast.newLabeledStatement();
+            newLabeled.setLabel(ast.newSimpleName(labeledStmt.getLabel().getIdentifier()));
+            newLabeled.setBody(whileStmt);
+            
+            rewrite.replace(labeledStmt, newLabeled, null);
+        } else if (body instanceof WhileStatement) {
+            WhileStatement whileStmt = (WhileStatement) body;
+            ForStatement forStmt = ast.newForStatement();
+            
+            // Convert while to for with condition
+            Block forBody = ast.newBlock();
+            if (whileStmt.getBody() instanceof Block) {
+                for (Object stmt : ((Block) whileStmt.getBody()).statements()) {
+                    forBody.statements().add(ASTNode.copySubtree(ast, (ASTNode) stmt));
+                }
+            } else {
+                forBody.statements().add(ASTNode.copySubtree(ast, whileStmt.getBody()));
+            }
+            
+            forStmt.setExpression((Expression) ASTNode.copySubtree(ast, whileStmt.getExpression()));
+            forStmt.setBody(forBody);
+            
+            // Preserve the label
+            LabeledStatement newLabeled = ast.newLabeledStatement();
+            newLabeled.setLabel(ast.newSimpleName(labeledStmt.getLabel().getIdentifier()));
+            newLabeled.setBody(forStmt);
+            
+            rewrite.replace(labeledStmt, newLabeled, null);
+        } else if (body instanceof DoStatement) {
+            DoStatement doStmt = (DoStatement) body;
+            convertDoWhileToFor(doStmt, rewrite);
+            
+            // Update the labeled statement to point to the new for loop
+            LabeledStatement newLabeled = ast.newLabeledStatement();
+            newLabeled.setLabel(ast.newSimpleName(labeledStmt.getLabel().getIdentifier()));
+            newLabeled.setBody((Statement) rewrite.get(doStmt, null));
+            
+            rewrite.replace(labeledStmt, newLabeled, null);
+        }
+    }
+    
+    // Enhanced mathematical expression transformations
+    
+    private boolean transformDistributiveProperty(InfixExpression expr, ASTRewrite rewrite) {
+        if (expr.getOperator() == InfixExpression.Operator.TIMES) {
+            // Check for distributive pattern: a * (b + c) or (a + b) * c
+            Expression left = expr.getLeftOperand();
+            Expression right = expr.getRightOperand();
+            
+            if (left instanceof InfixExpression && 
+                ((InfixExpression) left).getOperator() == InfixExpression.Operator.PLUS) {
+                // (a + b) * c → a * c + b * c
+                InfixExpression leftAdd = (InfixExpression) left;
+                AST ast = expr.getAST();
+                
+                InfixExpression term1 = ast.newInfixExpression();
+                term1.setLeftOperand((Expression) ASTNode.copySubtree(ast, leftAdd.getLeftOperand()));
+                term1.setRightOperand((Expression) ASTNode.copySubtree(ast, right));
+                term1.setOperator(InfixExpression.Operator.TIMES);
+                
+                InfixExpression term2 = ast.newInfixExpression();
+                term2.setLeftOperand((Expression) ASTNode.copySubtree(ast, leftAdd.getRightOperand()));
+                term2.setRightOperand((Expression) ASTNode.copySubtree(ast, right));
+                term2.setOperator(InfixExpression.Operator.TIMES);
+                
+                InfixExpression result = ast.newInfixExpression();
+                result.setLeftOperand(term1);
+                result.setRightOperand(term2);
+                result.setOperator(InfixExpression.Operator.PLUS);
+                
+                rewrite.replace(expr, result, null);
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private boolean transformIdentityElements(InfixExpression expr, ASTRewrite rewrite) {
+        AST ast = expr.getAST();
+        
+        if (expr.getOperator() == InfixExpression.Operator.PLUS) {
+            // x + 0 → x, 0 + x → x
+            if (isZeroLiteral(expr.getLeftOperand())) {
+                rewrite.replace(expr, (Expression) ASTNode.copySubtree(ast, expr.getRightOperand()), null);
+                return true;
+            } else if (isZeroLiteral(expr.getRightOperand())) {
+                rewrite.replace(expr, (Expression) ASTNode.copySubtree(ast, expr.getLeftOperand()), null);
+                return true;
+            }
+        } else if (expr.getOperator() == InfixExpression.Operator.TIMES) {
+            // x * 1 → x, 1 * x → x
+            if (isOneLiteral(expr.getLeftOperand())) {
+                rewrite.replace(expr, (Expression) ASTNode.copySubtree(ast, expr.getRightOperand()), null);
+                return true;
+            } else if (isOneLiteral(expr.getRightOperand())) {
+                rewrite.replace(expr, (Expression) ASTNode.copySubtree(ast, expr.getLeftOperand()), null);
+                return true;
+            }
+            // x * 0 → 0, 0 * x → 0
+            if (isZeroLiteral(expr.getLeftOperand()) || isZeroLiteral(expr.getRightOperand())) {
+                NumberLiteral zero = ast.newNumberLiteral("0");
+                rewrite.replace(expr, zero, null);
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private boolean isZeroLiteral(Expression expr) {
+        if (expr instanceof NumberLiteral) {
+            String value = ((NumberLiteral) expr).getToken();
+            return "0".equals(value) || "0.0".equals(value) || "0L".equals(value) || "0f".equals(value);
+        }
+        return false;
+    }
+    
+    private boolean isOneLiteral(Expression expr) {
+        if (expr instanceof NumberLiteral) {
+            String value = ((NumberLiteral) expr).getToken();
+            return "1".equals(value) || "1.0".equals(value) || "1L".equals(value) || "1f".equals(value);
+        }
+        return false;
+    }
+    
+    // Enhanced logical expression transformations
+    
+    private boolean transformDeMorgan3Terms(InfixExpression expr, ASTRewrite rewrite) {
+        if (expr.getOperator() == InfixExpression.Operator.AND || 
+            expr.getOperator() == InfixExpression.Operator.OR) {
+            
+            // Check for De Morgan with 3+ terms: !(a && b && c) → !a || !b || !c
+            if (expr.getLeftOperand() instanceof PrefixExpression) {
+                PrefixExpression leftNot = (PrefixExpression) expr.getLeftOperand();
+                if (leftNot.getOperator() == PrefixExpression.Operator.NOT &&
+                    leftNot.getOperand() instanceof InfixExpression) {
+                    
+                    InfixExpression inner = (InfixExpression) leftNot.getOperand();
+                    if (inner.getOperator() == InfixExpression.Operator.AND) {
+                        // !(a && b) && c → (!a || !b) && c
+                        AST ast = expr.getAST();
+                        
+                        PrefixExpression notA = ast.newPrefixExpression();
+                        notA.setOperator(PrefixExpression.Operator.NOT);
+                        notA.setOperand((Expression) ASTNode.copySubtree(ast, inner.getLeftOperand()));
+                        
+                        PrefixExpression notB = ast.newPrefixExpression();
+                        notB.setOperator(PrefixExpression.Operator.NOT);
+                        notB.setOperand((Expression) ASTNode.copySubtree(ast, inner.getRightOperand()));
+                        
+                        InfixExpression orExpr = ast.newInfixExpression();
+                        orExpr.setLeftOperand(notA);
+                        orExpr.setRightOperand(notB);
+                        orExpr.setOperator(InfixExpression.Operator.OR);
+                        
+                        InfixExpression result = ast.newInfixExpression();
+                        result.setLeftOperand(orExpr);
+                        result.setRightOperand((Expression) ASTNode.copySubtree(ast, expr.getRightOperand()));
+                        result.setOperator(InfixExpression.Operator.AND);
+                        
+                        rewrite.replace(expr, result, null);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+    private boolean transformAbsorptionLaws(InfixExpression expr, ASTRewrite rewrite) {
+        if (expr.getOperator() == InfixExpression.Operator.AND) {
+            // a && (a || b) → a
+            if (expr.getRightOperand() instanceof InfixExpression) {
+                InfixExpression rightOr = (InfixExpression) expr.getRightOperand();
+                if (rightOr.getOperator() == InfixExpression.Operator.OR) {
+                    if (areEquivalentExpressions(expr.getLeftOperand(), rightOr.getLeftOperand()) ||
+                        areEquivalentExpressions(expr.getLeftOperand(), rightOr.getRightOperand())) {
+                        
+                        AST ast = expr.getAST();
+                        rewrite.replace(expr, (Expression) ASTNode.copySubtree(ast, expr.getLeftOperand()), null);
+                        return true;
+                    }
+                }
+            }
+        } else if (expr.getOperator() == InfixExpression.Operator.OR) {
+            // a || (a && b) → a
+            if (expr.getRightOperand() instanceof InfixExpression) {
+                InfixExpression rightAnd = (InfixExpression) expr.getRightOperand();
+                if (rightAnd.getOperator() == InfixExpression.Operator.AND) {
+                    if (areEquivalentExpressions(expr.getLeftOperand(), rightAnd.getLeftOperand()) ||
+                        areEquivalentExpressions(expr.getLeftOperand(), rightAnd.getRightOperand())) {
+                        
+                        AST ast = expr.getAST();
+                        rewrite.replace(expr, (Expression) ASTNode.copySubtree(ast, expr.getLeftOperand()), null);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+    private boolean areEquivalentExpressions(Expression expr1, Expression expr2) {
+        // Simple structural equivalence check
+        return expr1.toString().equals(expr2.toString());
     }
 }
 

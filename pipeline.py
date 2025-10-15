@@ -350,7 +350,7 @@ def main():
     parser.add_argument('--original_root', default=ORIGINAL_DIR_DEFAULT, help='Original projects root for bulk prediction')
     parser.add_argument('--augmented_dir', default=AUGMENTED_DIR_DEFAULT, help='Output directory for augmented slices')
     parser.add_argument('--augment_variants', type=int, default=100, help='Variants per original slice for augmentation')
-    parser.add_argument('--slicer', default='cf', choices=['cf','wala','specimin','soot'], help='Slicer to use (cf=CheckerFrameworkSlicer, wala, specimin, or soot)')
+    parser.add_argument('--slicer', default='soot', choices=['cf','wala','specimin','soot'], help='Slicer to use (soot=default, cf=CheckerFrameworkSlicer, wala, specimin)')
     parser.add_argument('--augmentation_mode', default='enhanced', choices=['enhanced','simple','random'], help='Augmentation strategy (default: enhanced semantic with 100% transformation probability)')
     # PF evaluation hook
     parser.add_argument('--pf_eval', action='store_true', help='Run parameter-free node-level RL evaluation (exclude *Bottom)')

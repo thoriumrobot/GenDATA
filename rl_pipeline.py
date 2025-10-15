@@ -434,7 +434,7 @@ def main():
     parser.add_argument('--project_root', required=True, help='Root directory of the target project')
     parser.add_argument('--output_dir', required=True, help='Output directory for all results')
     parser.add_argument('--models_dir', default='models', help='Directory for trained models')
-    parser.add_argument('--slicer', choices=['cf', 'specimin', 'wala'], default='cf',
+    parser.add_argument('--slicer', choices=['cf', 'specimin', 'wala', 'soot'], default='soot',
                        help='Slicer to use (cf=CheckerFrameworkSlicer)')
     parser.add_argument('--model_types', nargs='+', choices=['hgt', 'gbt', 'causal', 'dg2n', 'gcn'], 
                        default=['hgt', 'gbt', 'causal', 'dg2n', 'gcn'], help='Models to train')

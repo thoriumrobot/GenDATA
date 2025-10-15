@@ -416,7 +416,7 @@ def main():
     parser.add_argument('--project_root', required=True, help='Root directory of the target project')
     parser.add_argument('--models_dir', default='models', help='Directory containing trained models')
     parser.add_argument('--output_dir', default='predictions_project', help='Output directory for predictions')
-    parser.add_argument('--slicer', choices=['specimin', 'wala', 'cf'], default='cf', help='Slicer to use')
+    parser.add_argument('--slicer', choices=['specimin', 'wala', 'cf', 'soot'], default='soot', help='Slicer to use (soot=default)')
     parser.add_argument('--models', nargs='+', choices=['hgt', 'gbt', 'causal', 'nullgtn'], default=['hgt', 'gbt', 'causal'], help='Models to run predictions with')
     parser.add_argument('--nullgtn_artifact_dir', default='nullgtn-artifact', help='Path to nullgtn-artifact root')
     parser.add_argument('--nullgtn_model_key', default=os.environ.get('NULLGTN_MODEL_KEY', 'default'), help='Model key for nullgtn (suffix of pickle)')

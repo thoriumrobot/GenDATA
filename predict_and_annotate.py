@@ -370,8 +370,8 @@ def main():
     parser.add_argument('--models', nargs='*', choices=['hgt', 'gbt', 'causal'],
                        default=['hgt', 'gbt', 'causal'],
                        help='Models to use for prediction')
-    parser.add_argument('--slicer', choices=['specimin', 'wala', 'cf'], default='cf',
-                       help='Slicer to use (default: cf for Checker Framework)')
+    parser.add_argument('--slicer', choices=['specimin', 'wala', 'cf', 'soot'], default='soot',
+                       help='Slicer to use (default: soot)')
     parser.add_argument('--use_augmented_slices', action='store_true', default=True,
                        help='Use augmented slices (default: True)')
     parser.add_argument('--use_original_slices', action='store_true', default=False,

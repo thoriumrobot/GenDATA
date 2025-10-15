@@ -50,14 +50,14 @@ public class CheckerFrameworkWarningResolver {
 
     static String resolverPath;
     static boolean executeCommandFlag = true; // Flag to control command execution
-    static String slicerType = "cf"; // Default slicer type now uses Checker Framework CFG Builder
+    static String slicerType = "soot"; // Default slicer type uses Soot
     static String warningsFileGlobal;
     static int speciminLogCount = 0; // limit debug samples
 
     public static void main(String[] args) {
         if (args.length < 3) {
             System.err.println("Usage: java CheckerFrameworkWarningResolver <projectRoot> <warningsFilePath> <resolverRoot> [slicerType]");
-            System.err.println("  slicerType: 'wala' (default) or 'specimin'");
+            System.err.println("  slicerType: 'soot' (default), 'wala', 'specimin', or 'cf'");
             return;
         }
 
@@ -70,7 +70,7 @@ public class CheckerFrameworkWarningResolver {
         if (args.length >= 4) {
             slicerType = args[3].toLowerCase();
             if (!slicerType.equals("wala") && !slicerType.equals("specimin") && !slicerType.equals("cf") && !slicerType.equals("soot")) {
-                System.err.println("Error: slicerType must be 'cf' (default), 'wala', 'specimin', or 'soot', got: " + args[3]);
+                System.err.println("Error: slicerType must be 'soot' (default), 'wala', 'specimin', or 'cf', got: " + args[3]);
                 return;
             }
         }
