@@ -96,34 +96,134 @@ class ImprovedBalancedDatasetGenerator:
         return cfg_files
     
     def extract_node_features(self, node: Dict, cfg_data: Dict) -> List[float]:
-        """Extract features from a CFG node (enhanced version)"""
-        label = node.get('label', '')
-        node_type = node.get('type', '')
+        """Extract features from a CFG node (enhanced version with semantic patterns)"""
+        label = node.get('label', '').lower()
+        node_type = node.get('type', '').lower()
         line = node.get('line', 0)
+        
+        # Check for comparison patterns in label and surrounding context
+        has_strict_positive = any(pattern in label for pattern in ['> 0', '>0', 'greater than 0', 'strictly positive'])
+        has_nonnegative = any(pattern in label for pattern in ['>= 0', '>=0', 'greater than or equal to 0', 'nonnegative', 'non-negative'])
+        has_gtenegativeone = any(pattern in label for pattern in ['>= -1', '>=-1', 'greater than or equal to -1', '>= - 1'])
+        has_array_length_minus_one = any(pattern in label for pattern in ['length - 1', 'length-1', 'size - 1', 'size-1'])
+        
+        # Check surrounding nodes for comparison context
+        nodes = cfg_data.get('nodes', [])
+        current_idx = next((i for i, n in enumerate(nodes) if n.get('id') == node.get('id')), -1)
+        surrounding_labels = []
+        if current_idx >= 0:
+            # Check previous and next nodes
+            for offset in [-2, -1, 1, 2]:
+                idx = current_idx + offset
+                if 0 <= idx < len(nodes):
+                    surrounding_labels.append(nodes[idx].get('label', '').lower())
+        
+        surrounding_text = ' '.join(surrounding_labels)
+        has_strict_positive_context = any(pattern in surrounding_text for pattern in ['> 0', '>0'])
+        has_nonnegative_context = any(pattern in surrounding_text for pattern in ['>= 0', '>=0'])
+        
+        # "Could be zero" detection patterns
+        label_lower = label.lower()
+        
+        # Pattern 1: Array index usage (indices can be 0)
+        is_used_as_array_index = (
+            ('[' in label or ']' in label or 'array[' in label_lower or 'list[' in label_lower) and
+            any(var in label_lower for var in ['index', 'i', 'j', 'k', 'idx', 'pos'])
+        )
+        
+        # Pattern 2: Loop iteration variable (often start at 0)
+        is_loop_variable = (
+            any(pattern in label_lower for pattern in ['for', 'while', 'iterator', 'iter', 'loop']) and
+            any(var in label_lower for var in ['i', 'j', 'k', 'idx', 'index', 'counter'])
+        )
+        
+        # Pattern 3: Subtraction result that could be 0 (length - 1, size - offset)
+        is_subtraction_result = any(pattern in label_lower for pattern in [
+            ' - ', '- ', 'length -', 'size -', 'count -', '.length -', '.size -'
+        ])
+        
+        # Pattern 4: Parameter used in array access context (check surrounding nodes)
+        is_param_in_array_context = False
+        if 'parameter' in node_type and current_idx >= 0:
+            for offset in [-3, -2, -1, 1, 2, 3]:
+                idx = current_idx + offset
+                if 0 <= idx < len(nodes):
+                    nearby_label = nodes[idx].get('label', '').lower()
+                    if '[' in nearby_label and ']' in nearby_label:
+                        is_param_in_array_context = True
+                        break
+        
+        # Pattern 5: Comparison with length/size (suggests can start at 0)
+        compared_with_length = any(pattern in label_lower for pattern in [
+            '< length', '< size', '<= length', '<= size',
+            'length >', 'size >', 'length >=', 'size >=',
+            '.length', '.size()'
+        ])
+        
+        # Pattern 6: Initialization to 0
+        initialized_to_zero = any(pattern in label_lower for pattern in [
+            '= 0', '=0', ':= 0', ':=0', 'equals 0', 'equals zero', 'zero'
+        ])
+        
+        # Pattern 7: Used in >= 0 check (explicit nonnegative check)
+        used_in_nonnegative_check = (
+            has_nonnegative or has_nonnegative_context or
+            any(pattern in label_lower for pattern in ['>= 0', '>=0', '>= -1', '>=-1'])
+        )
+        
+        # Pattern 8: Offset/position variable (often can be 0)
+        is_offset_or_position = any(pattern in label_lower for pattern in [
+            'offset', 'position', 'pos', 'start', 'begin', 'beginning'
+        ])
+        
+        # Aggregated "could be zero" score (emphasized feature)
+        could_be_zero_indicators = [
+            is_used_as_array_index, is_loop_variable, is_subtraction_result,
+            is_param_in_array_context, compared_with_length, initialized_to_zero,
+            used_in_nonnegative_check, is_offset_or_position
+        ]
+        could_be_zero_score = sum(could_be_zero_indicators) / max(len(could_be_zero_indicators), 1)
         
         # Enhanced features for annotation type prediction
         features = [
             float(len(label)),  # label_length
             float(line if line is not None else 0),  # line_number
-            float('method' in node_type.lower()),  # is_method
-            float('field' in node_type.lower()),  # is_field
-            float('parameter' in node_type.lower()),  # is_parameter
-            float('variable' in node_type.lower()),  # is_variable
-            float('positive' in label.lower()),  # contains_positive
-            float('negative' in label.lower()),  # contains_negative
-            float('int' in label.lower()),  # contains_int
-            float('array' in label.lower()),  # contains_array
-            float('length' in label.lower()),  # contains_length
-            float('index' in label.lower()),  # contains_index
-            float('size' in label.lower()),  # contains_size
-            float('count' in label.lower()),  # contains_count
-            float('bound' in label.lower()),  # contains_bound
-            float('string' in label.lower()),  # contains_string
-            float('collection' in label.lower()),  # contains_collection
-            float('loop' in label.lower()),  # contains_loop
-            float('condition' in label.lower()),  # contains_condition
-            float('return' in label.lower()),  # contains_return
-            float('call' in label.lower()),  # contains_call
+            float('method' in node_type),  # is_method
+            float('field' in node_type),  # is_field
+            float('parameter' in node_type),  # is_parameter
+            float('variable' in node_type),  # is_variable
+            float('positive' in label),  # contains_positive
+            float('negative' in label),  # contains_negative
+            float('int' in label),  # contains_int
+            float('array' in label),  # contains_array
+            float('length' in label),  # contains_length
+            float('index' in label),  # contains_index
+            float('size' in label),  # contains_size
+            float('count' in label),  # contains_count
+            float('bound' in label),  # contains_bound
+            float('string' in label),  # contains_string
+            float('collection' in label),  # contains_collection
+            float('loop' in label),  # contains_loop
+            float('condition' in label),  # contains_condition
+            float('return' in label),  # contains_return
+            float('call' in label),  # contains_call
+            # New semantic pattern features
+            float(has_strict_positive),  # has_strict_positive_comparison (> 0)
+            float(has_nonnegative),  # has_nonnegative_comparison (>= 0)
+            float(has_gtenegativeone),  # has_gtenegativeone_comparison (>= -1)
+            float(has_array_length_minus_one),  # is_array_length_minus_one
+            float(has_strict_positive_context),  # strict_positive_in_context
+            float(has_nonnegative_context),  # nonnegative_in_context
+            # "Could be zero" features (emphasized - placed early and scaled)
+            float(is_used_as_array_index) * 2.0,  # Scaled for emphasis
+            float(is_loop_variable) * 2.0,
+            float(is_subtraction_result) * 1.5,
+            float(is_param_in_array_context) * 2.0,
+            float(compared_with_length) * 1.5,
+            float(initialized_to_zero) * 2.0,
+            float(used_in_nonnegative_check) * 2.0,
+            float(is_offset_or_position) * 1.5,
+            float(could_be_zero_score) * 3.0,  # Aggregated score, highly emphasized
         ]
         
         return features
@@ -183,10 +283,16 @@ class ImprovedBalancedDatasetGenerator:
             else:
                 return '@GTENegativeOne'
         
-        # Rule 3: Size and length related
+        # Rule 3: Size and length related (FIXED: Better match Index Checker semantics)
         if any(keyword in label for keyword in ['length', 'size', 'count', 'capacity']):
-            if 'parameter' in node_type:
+            # Check for explicit comparison patterns
+            if any(pattern in label for pattern in ['> 0', '>0', 'greater than 0']):
                 return '@Positive'
+            elif any(pattern in label for pattern in ['>= 0', '>=0', 'greater than or equal to 0']):
+                return '@NonNegative'
+            # Default: parameters often need @NonNegative (can be 0), not @Positive
+            elif 'parameter' in node_type:
+                return '@NonNegative'  # Changed from @Positive to @NonNegative
             else:
                 return '@NonNegative'
         

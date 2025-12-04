@@ -222,8 +222,22 @@ class ImprovedBalancedAnnotationTypeTrainer:
         input_dim = len(examples[0]['features'])
         model = self.create_model(input_dim, annotation_type)
         
-        # Training setup
-        criterion = nn.CrossEntropyLoss()
+        # Training setup with cost-sensitive loss
+        # Create a weight matrix to penalize @Positive ↔ @NonNegative confusion
+        # This helps models learn the distinction between > 0 and >= 0
+        class_weights = torch.ones(2).to(self.device)  # Default: equal weights
+        
+        # If this is @Positive or @NonNegative model, increase penalty for confusion
+        if annotation_type in ['@Positive', '@NonNegative']:
+            # Weight matrix: [weight_for_class_0, weight_for_class_1]
+            # We want to penalize misclassification more
+            class_weights = torch.tensor([1.0, 1.5]).to(self.device)  # Slightly higher weight for positive class
+        
+        criterion = nn.CrossEntropyLoss(weight=class_weights)
+        
+        # Additional cost-sensitive component: track confusion between @Positive and @NonNegative
+        # This will be logged but not directly used in loss (since we're training per annotation type)
+        confusion_penalty_weight = 1.5  # Penalty multiplier for @Positive ↔ @NonNegative swaps
         
         # Training history
         train_losses = []

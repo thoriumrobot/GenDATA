@@ -58,6 +58,7 @@ def is_annotation_target(node: Dict) -> bool:
 def extract_features(node: Dict, cfg_data: Dict) -> List[float]:
     label = node.get('label', '')
     node_id = node.get('id', 0)
+    node_type = str(node.get('node_type', '')).lower()
 
     # Basic features
     features: List[float] = [
@@ -81,6 +82,80 @@ def extract_features(node: Dict, cfg_data: Dict) -> List[float]:
     is_control = 1.0 if (node.get('node_type', 'control') == 'control') else 0.0
 
     features.extend([float(in_degree), float(out_degree), float(df_in), float(df_out), is_control])
+
+    # "Could be zero" detection patterns
+    label_lower = label.lower()
+    nodes = cfg_data.get('nodes', [])
+    current_idx = next((i for i, n in enumerate(nodes) if n.get('id') == node_id), -1)
+    
+    # Pattern 1: Array index usage
+    is_used_as_array_index = (
+        ('[' in label or ']' in label or 'array[' in label_lower or 'list[' in label_lower) and
+        any(var in label_lower for var in ['index', 'i', 'j', 'k', 'idx', 'pos'])
+    )
+    
+    # Pattern 2: Loop iteration variable
+    is_loop_variable = (
+        any(pattern in label_lower for pattern in ['for', 'while', 'iterator', 'iter', 'loop']) and
+        any(var in label_lower for var in ['i', 'j', 'k', 'idx', 'index', 'counter'])
+    )
+    
+    # Pattern 3: Subtraction result
+    is_subtraction_result = any(pattern in label_lower for pattern in [
+        ' - ', '- ', 'length -', 'size -', 'count -', '.length -', '.size -'
+    ])
+    
+    # Pattern 4: Parameter in array context
+    is_param_in_array_context = False
+    if 'parameter' in node_type and current_idx >= 0:
+        for offset in [-3, -2, -1, 1, 2, 3]:
+            idx = current_idx + offset
+            if 0 <= idx < len(nodes):
+                nearby_label = nodes[idx].get('label', '').lower()
+                if '[' in nearby_label and ']' in nearby_label:
+                    is_param_in_array_context = True
+                    break
+    
+    # Pattern 5: Comparison with length/size
+    compared_with_length = any(pattern in label_lower for pattern in [
+        '< length', '< size', '<= length', '<= size',
+        'length >', 'size >', 'length >=', 'size >=',
+        '.length', '.size()'
+    ])
+    
+    # Pattern 6: Initialization to 0
+    initialized_to_zero = any(pattern in label_lower for pattern in [
+        '= 0', '=0', ':= 0', ':=0', 'equals 0', 'equals zero', 'zero'
+    ])
+    
+    # Pattern 7: Used in >= 0 check
+    used_in_nonnegative_check = any(pattern in label_lower for pattern in ['>= 0', '>=0', '>= -1', '>=-1'])
+    
+    # Pattern 8: Offset/position variable
+    is_offset_or_position = any(pattern in label_lower for pattern in [
+        'offset', 'position', 'pos', 'start', 'begin', 'beginning'
+    ])
+    
+    # Aggregated score
+    could_be_zero_indicators = [
+        is_used_as_array_index, is_loop_variable, is_subtraction_result,
+        is_param_in_array_context, compared_with_length, initialized_to_zero,
+        used_in_nonnegative_check, is_offset_or_position
+    ]
+    could_be_zero_score = sum(could_be_zero_indicators) / max(len(could_be_zero_indicators), 1)
+    
+    # Add "could be zero" features
+    features.extend([
+        float(is_used_as_array_index) * 2.0,
+        float(is_loop_variable) * 2.0,
+        float(is_subtraction_result) * 1.5,
+        float(is_param_in_array_context) * 2.0,
+        float(compared_with_length) * 1.5,
+        float(initialized_to_zero) * 2.0,
+        float(used_in_nonnegative_check) * 2.0,
+        float(is_offset_or_position) * 1.5,
+        float(could_be_zero_score) * 3.0,
+    ])
 
     return features
 PF_CLASSES = [

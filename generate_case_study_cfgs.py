@@ -41,6 +41,7 @@ def generate_case_study_cfgs():
     os.makedirs(temp_slices_dir, exist_ok=True)
     
     processed_count = 0
+    index_map = {}
     for java_file in java_files:
         try:
             # Copy the Java file to the temp slices directory with a unique name
@@ -74,6 +75,11 @@ def generate_case_study_cfgs():
                         src_file = os.path.join(cfg_output_dir, json_files[0])
                         dst_file = os.path.join(cfg_output_dir, 'cfg.json')
                         shutil.copy2(src_file, dst_file)
+                        # Record mapping from absolute java path to cfg.json
+                        try:
+                            index_map[java_file] = dst_file
+                        except Exception:
+                            pass
                         
                         processed_count += 1
                         logger.info(f"Generated CFG for {basename} ({len(json_files)} files)")
@@ -90,6 +96,16 @@ def generate_case_study_cfgs():
         except Exception as e:
             logger.error(f"Error processing {java_file}: {e}")
     
+    # Write index.json mapping java → cfg.json
+    try:
+        import json
+        index_path = os.path.join(output_dir, 'index.json')
+        with open(index_path, 'w') as f:
+            json.dump(index_map, f, indent=2)
+        logger.info(f"Wrote CFG index with {len(index_map)} entries to {index_path}")
+    except Exception as e:
+        logger.warning(f"Failed to write CFG index: {e}")
+
     logger.info(f"Successfully generated CFGs for {processed_count}/{len(java_files)} case study files")
     return output_dir
 

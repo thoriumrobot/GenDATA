@@ -119,9 +119,12 @@ class EnhancedCausalFeatureExtractor:
         ][:8]  # Ensure exactly 8 features
     
     def _extract_semantic_causal(self, node: Dict, cfg_data: Dict) -> List[float]:
-        """Extract semantic causal relationships"""
+        """Extract semantic causal relationships with 'could be zero' detection"""
         label = node.get('label', '')
         node_type = node.get('node_type', '')
+        label_lower = label.lower()
+        nodes = cfg_data.get('nodes', [])
+        current_idx = next((i for i, n in enumerate(nodes) if n.get('id') == node.get('id')), -1)
         
         # Type relationships causal patterns
         primitive_type = float(any(t in label for t in ['int', 'long', 'double', 'float', 'boolean', 'char']))
@@ -133,30 +136,44 @@ class EnhancedCausalFeatureExtractor:
         # Field declaration causal patterns
         field_declaration = float('field' in node_type.lower() or 'variable' in node_type.lower())
         
-        # Annotation causal patterns
-        annotation_present = float('@' in label)
+        # "Could be zero" detection patterns (emphasized for semantic causal)
+        # Pattern 1: Array index usage
+        is_used_as_array_index = (
+            ('[' in label or ']' in label or 'array[' in label_lower or 'list[' in label_lower) and
+            any(var in label_lower for var in ['index', 'i', 'j', 'k', 'idx', 'pos'])
+        )
         
-        # Generic type causal patterns
-        generic_type = float('<' in label and '>' in label)
+        # Pattern 2: Loop iteration variable
+        is_loop_variable = (
+            any(pattern in label_lower for pattern in ['for', 'while', 'iterator', 'iter', 'loop']) and
+            any(var in label_lower for var in ['i', 'j', 'k', 'idx', 'index', 'counter'])
+        )
         
-        # Static causal patterns
-        static_causal = float('static' in label)
+        # Pattern 3: Comparison with length/size
+        compared_with_length = any(pattern in label_lower for pattern in [
+            '< length', '< size', '<= length', '<= size',
+            'length >', 'size >', 'length >=', 'size >=',
+            '.length', '.size()'
+        ])
         
-        # Final causal patterns
-        final_causal = float('final' in label)
+        # Pattern 4: Used in >= 0 check
+        used_in_nonnegative_check = any(pattern in label_lower for pattern in ['>= 0', '>=0', '>= -1', '>=-1'])
         
-        # Synchronized causal patterns
-        synchronized_causal = float('synchronized' in label)
+        # Aggregated "could be zero" score
+        could_be_zero_indicators = [
+            is_used_as_array_index, is_loop_variable, compared_with_length, used_in_nonnegative_check
+        ]
+        could_be_zero_score = sum(could_be_zero_indicators) / max(len(could_be_zero_indicators), 1)
         
         return [
             primitive_type,
             object_type,
             method_signature,
             field_declaration,
-            annotation_present,
-            generic_type,
-            static_causal,
-            final_causal
+            float(is_used_as_array_index) * 2.0,  # Emphasized
+            float(is_loop_variable) * 2.0,  # Emphasized
+            float(compared_with_length) * 1.5,  # Emphasized
+            float(could_be_zero_score) * 3.0,  # Highly emphasized aggregated score
         ]
     
     def _extract_temporal_causal(self, node: Dict, cfg_data: Dict) -> List[float]:

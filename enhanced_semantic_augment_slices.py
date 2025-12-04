@@ -25,6 +25,7 @@ import random
 import logging
 from pathlib import Path
 from typing import List, Tuple, Optional, Dict, Any
+import time
 
 from jdt_semantic_transformer import JdtSemanticTransformer
 
@@ -45,6 +46,8 @@ class EnhancedSemanticTransformer:
         self.seed = seed
         self.transformations_applied = []
         self.disabled_transformations = disabled_transformations or []
+        # Profiling store: list of timing entries per transformation attempt
+        self._timing_records: List[Dict[str, Any]] = []
         
         # Initialize JDT transformer
         try:
@@ -59,7 +62,8 @@ class EnhancedSemanticTransformer:
                        max_depth: int = 3,
                        avoid: Optional[List[str]] = None,
                        min_diff: float = 0.03,
-                       focus_nodes: Optional[List[str]] = None) -> str:
+                       focus_nodes: Optional[List[str]] = None,
+                       max_retries: int = 2) -> str:
         """Apply enhanced semantic transformations to a Java file using JDT."""
         try:
             with open(java_path, 'r') as f:
@@ -99,16 +103,27 @@ class EnhancedSemanticTransformer:
             logger.info(f"Applying transformations for variant {variant_idx}: {selected_transformations}")
             
             # Apply transformations using JDT with forced transformation and bounded retries
+            t0 = time.perf_counter()
             transformed_code = self.jdt_transformer.transform_code(
                 original_code,
                 selected_transformations,
                 'enhanced',
                 force_transformation=True,
+                max_retries=max_retries,
                 sequence_len=sequence_len,
                 max_depth=max_depth,
                 avoid=avoid,
                 focus_nodes=focus_nodes
             )
+            t1 = time.perf_counter()
+            self._timing_records.append({
+                'java_file': java_path,
+                'variant_idx': variant_idx,
+                'mode': 'enhanced',
+                'stage': 'initial',
+                'transformations': list(selected_transformations),
+                'duration_ms': (t1 - t0) * 1000.0
+            })
             used_transformations = list(selected_transformations)
 
             # Log body hash and size deltas
@@ -137,12 +152,26 @@ class EnhancedSemanticTransformer:
                     ['variable_operation'],
                     ['ternary_operator'],
                 ]
+                fallback_count = 0
                 for alt in fallback_sets:
+                    if fallback_count >= max_retries:
+                        logger.debug(f"Max fallback attempts ({max_retries}) reached for variant {variant_idx}")
+                        break
                     if not alt:
                         continue
+                    t_alt0 = time.perf_counter()
                     alt_code = self.jdt_transformer.transform_code(
-                        original_code, alt, 'enhanced', force_transformation=False,
+                        original_code, alt, 'enhanced', force_transformation=False, max_retries=0,
                         sequence_len=sequence_len, max_depth=max_depth, avoid=avoid, focus_nodes=focus_nodes)
+                    t_alt1 = time.perf_counter()
+                    self._timing_records.append({
+                        'java_file': java_path,
+                        'variant_idx': variant_idx,
+                        'mode': 'enhanced',
+                        'stage': 'fallback',
+                        'transformations': list(alt),
+                        'duration_ms': (t_alt1 - t_alt0) * 1000.0
+                    })
                     if alt_code != original_code:
                         logger.info(f"Fallback transformations succeeded for variant {variant_idx}: {alt}")
                         transformed_code = alt_code
@@ -150,6 +179,7 @@ class EnhancedSemanticTransformer:
                         applied = getattr(self.jdt_transformer, '_last_applied', None)
                         used_transformations = list(applied) if applied else list(alt)
                         break
+                    fallback_count += 1
 
             # Enforce minimal diff threshold (approx by token-level ratio)
             try:
@@ -194,7 +224,7 @@ class EnhancedSemanticTransformer:
     def transform_directory(self, input_dir: str, output_dir: str, num_variants: int = 3,
                             sequence_len: int = 2, max_depth: int = 3, avoid: Optional[List[str]] = None,
                             min_diff: float = 0.03, focus_nodes: Optional[List[str]] = None,
-                            write_manifest: bool = True) -> Dict[str, Any]:
+                            write_manifest: bool = True, max_retries: int = 2) -> Dict[str, Any]:
         """Transform all Java files in a directory."""
         input_path = Path(input_dir)
         output_path = Path(output_dir)
@@ -223,7 +253,7 @@ class EnhancedSemanticTransformer:
                     transformed_code = self.transform_file(
                         str(java_file), variant_idx,
                         sequence_len=sequence_len, max_depth=max_depth, avoid=avoid,
-                        min_diff=min_diff, focus_nodes=focus_nodes)
+                        min_diff=min_diff, focus_nodes=focus_nodes, max_retries=max_retries)
                     
                     # Create output path
                     variant_name = f"{java_file.stem}_variant_{variant_idx}{java_file.suffix}"
@@ -265,6 +295,26 @@ class EnhancedSemanticTransformer:
                 logger.error(error_msg)
                 results['errors'].append(error_msg)
         
+        # Write timing report alongside index for later analysis
+        try:
+            import json
+            timing_path = Path(output_dir) / 'augmentation_timing_report.json'
+            # Also provide simple aggregates by transformation set label
+            aggregates: Dict[str, Dict[str, Any]] = {}
+            for rec in self._timing_records:
+                label = ",".join(rec.get('transformations', [])) or '(none)'
+                agg = aggregates.setdefault(label, {'count': 0, 'total_ms': 0.0, 'max_ms': 0.0})
+                agg['count'] += 1
+                agg['total_ms'] += rec['duration_ms']
+                if rec['duration_ms'] > agg['max_ms']:
+                    agg['max_ms'] = rec['duration_ms']
+            for k, v in aggregates.items():
+                v['avg_ms'] = (v['total_ms'] / v['count']) if v['count'] else 0.0
+            with open(timing_path, 'w') as tf:
+                json.dump({'records': self._timing_records, 'aggregates_by_set': aggregates}, tf, indent=2)
+        except Exception:
+            pass
+
         # Write index
         if write_manifest:
             try:

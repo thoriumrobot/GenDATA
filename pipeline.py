@@ -82,8 +82,14 @@ def run_slicing(project_root, warnings_file, cfwr_root, base_slices_dir, slicer_
                         env['SPECIMIN_JARPATH'] = os.pathsep.join(existing_dirs)
         except Exception:
             pass
-        # Propagate Soot-related env vars explicitly for 'soot' slicer
+        # Configure Soot slicer defaults for 'soot' slicer
         if slicer_type == 'soot':
+            tools_cli = os.path.join(cfwr_root, 'tools', 'soot_slicer.sh')
+            if os.path.isfile(tools_cli):
+                # Prefer the bundled CLI wrapper if user hasn't provided one
+                if not os.environ.get('SOOT_SLICE_CLI'):
+                    env['SOOT_SLICE_CLI'] = tools_cli
+            # Also propagate any user-provided overrides
             if os.environ.get('SOOT_SLICE_CLI'):
                 env['SOOT_SLICE_CLI'] = os.environ['SOOT_SLICE_CLI']
             if os.environ.get('SOOT_JAR'):

@@ -1,0 +1,9 @@
+-cp
+/home/ubuntu/checker-framework/checker/dist/checker.jar:/home/ubuntu/checker-framework/checker/dist/checker-qual.jar:/home/ubuntu/checker-framework/checker/dist/checker-util.jar:/home/ubuntu/checker-framework/dataflow/build/libs/dataflow-errorprone-3.51.1-SNAPSHOT.jar:/home/ubuntu/checker-framework/dataflow/build/libs/dataflow-errorprone-3.51.1-SNAPSHOT-javadoc.jar:/home/ubuntu/checker-framework/dataflow/build/libs/dataflow-errorprone-3.51.1-SNAPSHOT-sources.jar:/home/ubuntu/checker-framework/dataflow/build/libs/dataflow-errorprone-3.51.1-SNAPSHOT-all.jar
+-processor
+org.checkerframework.checker.index.IndexChecker
+-Xmaxwarns
+1000
+-d
+/tmp/tmpb7wpoust
+/tmp/tmpfgl1l5fx.java

@@ -1,0 +1,53 @@
+    @Positive
+  void testLTL(@LTLengthOf("arr") int test) {
+    // :: error: (assignment)
+    @Positive
+    @LTLengthOf("arr") int a = Integer.parseInt("1");
+
+    @Positive
+    int b = 1;
+    @Positive
+    if (test == b) {
+    @Positive
+      @LTLengthOf("arr") int c = b;
+
+    @Positive
+    } else {
+      // :: error: (assignment)
+    @Positive
+      @LTLengthOf("arr") int e = b;
+    @Positive
+    }
+    // :: error: (assignment)
+    @Positive
+    @LTLengthOf("arr") int d = b;
+    @Positive
+  }
+
+    @Positive
+  void testLTEL(@LTEqLengthOf("arr") int test) {
+    // :: error: (assignment)
+    @Positive
+    @LTEqLengthOf("arr") int a = Integer.parseInt("1");
+
+    @Positive
+    int b = 1;
+    @Positive
+    if (test == b) {
+    @Positive
+      @LTEqLengthOf("arr") int c = b;
+
+    @Positive
+      @LTLengthOf("arr") int g = b;
+    @Positive
+    } else {
+      // :: error: (assignment)
+    @Positive
+      @LTEqLengthOf("arr") int e = b;
+    @Positive
+    }
+    // :: error: (assignment)
+    @Positive
+    @LTEqLengthOf("arr") int d = b;
+    @Positive
+  }

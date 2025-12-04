@@ -8,6 +8,7 @@ Checker Framework warnings.
 """
 
 import os
+import time
 import random
 import numpy as np
 import networkx as nx
@@ -377,9 +378,12 @@ class TransformationGraphWalker:
             )
     
     def optimize_augmentation_sequence(self, initial_code: str, 
-                                     max_iterations: int = 100) -> RandomWalkResult:
+                                     max_iterations: int = 100,
+                                     timeout_seconds: Optional[int] = None,
+                                     parallel: Optional[bool] = None) -> RandomWalkResult:
         """Find optimal augmentation sequence using random walks"""
         logger.info(f"Starting random walk optimization with {max_iterations} iterations")
+        start_ts = time.monotonic()
         
         # Build graph and learn initial embeddings
         self.build_transformation_graph()
@@ -390,6 +394,9 @@ class TransformationGraphWalker:
         best_warning_reduction = -1.0
         
         for iteration in range(max_iterations):
+            if timeout_seconds is not None and (time.monotonic() - start_ts) > timeout_seconds:
+                logger.warning("Random walk optimization timeout reached; stopping early")
+                break
             # Generate new walks using current embeddings
             walks = self.generate_random_walks(num_walks=10)
             

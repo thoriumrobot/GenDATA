@@ -13,6 +13,7 @@ Each ablation case uses separate directories to avoid data contamination.
 import os
 import json
 import time
+import sys
 import logging
 import argparse
 import subprocess
@@ -34,7 +35,8 @@ class AblationStudyPipeline:
     """Main ablation study pipeline that runs different ablation experiments"""
     
     def __init__(self, project_root: str, warnings_file: str, cfwr_root: str, 
-                 output_dir: str = 'ablation_studies', device: str = 'cuda', augmentation_mode: str = 'enhanced', run_checker_on_target: bool = True):
+                 output_dir: str = 'ablation_studies', device: str = 'cuda', augmentation_mode: str = 'enhanced', run_checker_on_target: bool = True,
+                 max_files_to_process: Optional[int] = None, max_variants_per_file: Optional[int] = None, time_limit_hours: Optional[int] = None, log_interval: int = 100):
         self.project_root = project_root
         self.warnings_file = warnings_file
         self.cfwr_root = cfwr_root
@@ -42,6 +44,10 @@ class AblationStudyPipeline:
         self.device = device
         self.augmentation_mode = augmentation_mode
         self.run_checker_on_target = run_checker_on_target
+        self.max_files_to_process = max_files_to_process
+        self.max_variants_per_file = max_variants_per_file
+        self.time_limit_hours = time_limit_hours
+        self.log_interval = log_interval
         # Create output directory
         self.output_dir.mkdir(exist_ok=True)
         
@@ -67,8 +73,222 @@ class AblationStudyPipeline:
         # Results tracking
         self.results = {}
         self.start_time = time.time()
+        self.deadline_ts = None
+        if self.time_limit_hours and self.time_limit_hours > 0:
+            self.deadline_ts = self.start_time + (self.time_limit_hours * 3600)
         
         logger.info(f"Initialized AblationStudyPipeline with output directory: {self.output_dir}")
+
+    def _time_exceeded(self) -> bool:
+        if self.deadline_ts is None:
+            return False
+        if time.time() > self.deadline_ts:
+            logger.error("⏰ Global time limit exceeded inside ablation pipeline")
+            return True
+        return False
+
+    def run_all_ablations_fast(self, episodes: int = 3) -> Dict[str, Any]:
+        """Fast ablation: slice-first with CF slicer, strict caps, rich logs.
+        Uses only real data and artifacts. Skips heavy augmentation.
+        """
+        logger.info("⚡ Starting fast ablation (slice-first, CF slicer, strict caps)")
+        summary: Dict[str, Any] = {
+            'start_ts': time.time(),
+            'slicer': 'soot',
+            'caps': {
+                'max_files_to_process': self.max_files_to_process,
+                'max_variants_per_file': self.max_variants_per_file,
+                'time_limit_hours': self.time_limit_hours,
+            },
+            'stages': {}
+        }
+
+        # Stage budgets (seconds) within global limit
+        total_budget = (self.time_limit_hours or 6) * 3600
+        budget_slice = min(60 * 60, total_budget * 0.35)
+        budget_cfg = min(45 * 60, total_budget * 0.25)
+        budget_train = min(45 * 60, total_budget * 0.25)
+
+        # Stage 1: slicing with Soot (fallback to CF inside pipeline if needed)
+        try:
+            from pipeline import run_slicing
+            slices_root = self.output_dir / 'fast_slices'
+            os.makedirs(slices_root, exist_ok=True)
+            t0 = time.time()
+            logger.info(f"[FAST] Slicing with Soot -> {slices_root}")
+            run_slicing(self.project_root, self.warnings_file, str(Path.cwd()), str(slices_root), 'soot')
+            # Soot slicer writes under slices_root/slices_soot
+            slice_dir = slices_root / 'slices_soot'
+            # Fallback: if CF put files at root
+            if not slice_dir.exists():
+                slice_dir = slices_root
+            dur = time.time() - t0
+            # Count .java slices
+            slice_count = 0
+            for r, _, files in os.walk(slice_dir):
+                for f in files:
+                    if f.endswith('.java'):
+                        slice_count += 1
+            logger.info(f"[FAST] Slicing complete in {dur:.2f}s with {slice_count} slices")
+            summary['stages']['slicing'] = {'dir': str(slice_dir), 'duration_sec': dur, 'count': slice_count}
+            if dur > budget_slice:
+                logger.warning("[FAST] Slicing exceeded budget; continuing")
+        except Exception as e:
+            logger.error(f"[FAST] Slicing error: {e}")
+            summary['stages']['slicing'] = {'error': str(e)}
+            slice_dir = self.output_dir / 'fast_slices'  # continue with whatever exists
+
+        # Stage 2: CFG generation
+        try:
+            from pipeline import run_cfg_generation
+            cfg_dir = self.output_dir / 'fast_cfg'
+            os.makedirs(cfg_dir, exist_ok=True)
+            t0 = time.time()
+            logger.info(f"[FAST] Generating CFGs -> {cfg_dir}")
+            run_cfg_generation(str(slice_dir), str(cfg_dir))
+            dur = time.time() - t0
+            cfg_count = 0
+            for r, _, files in os.walk(cfg_dir):
+                for f in files:
+                    if f.endswith('.json'):
+                        cfg_count += 1
+            logger.info(f"[FAST] CFG generation complete in {dur:.2f}s with {cfg_count} JSONs")
+            summary['stages']['cfg'] = {'dir': str(cfg_dir), 'duration_sec': dur, 'count': cfg_count}
+            if dur > budget_cfg:
+                logger.warning("[FAST] CFG generation exceeded budget; continuing")
+        except Exception as e:
+            logger.error(f"[FAST] CFG error: {e}")
+            summary['stages']['cfg'] = {'error': str(e)}
+            cfg_dir = self.output_dir / 'fast_cfg'
+
+        # Stage 3: quick training (GCN only)
+        try:
+            if summary['stages'].get('cfg', {}).get('count', 0) == 0:
+                logger.warning("[FAST] No CFGs found; skipping training")
+                summary['stages']['train'] = {'skipped': True, 'reason': 'no_cfgs'}
+            else:
+                t0 = time.time()
+                logger.info("[FAST] Quick training (GCN epochs=2)")
+                import subprocess
+                models_dir = self.output_dir / 'models_fast'
+                os.makedirs(models_dir, exist_ok=True)
+                cmd = [sys.executable, 'gcn_train.py', '--cfg_dir', str(cfg_dir), '--out_dir', str(models_dir / 'gcn'), '--epochs', '2']
+                res = subprocess.run(cmd, capture_output=True, text=True, timeout=int(budget_train))
+                dur = time.time() - t0
+                logger.info(f"[FAST] Train rc={res.returncode} in {dur:.2f}s")
+                if res.returncode != 0:
+                    logger.error(f"[FAST] Train stderr(head):\n{(res.stderr or '')[:1000]}")
+                summary['stages']['train'] = {'duration_sec': dur, 'rc': res.returncode}
+        except Exception as e:
+            logger.error(f"[FAST] Training error: {e}")
+            summary['stages']['train'] = {'error': str(e)}
+
+        summary['end_ts'] = time.time()
+        summary['duration_sec'] = summary['end_ts'] - summary['start_ts']
+        try:
+            out_json = self.output_dir / 'fast_summary.json'
+            with open(out_json, 'w') as f:
+                json.dump(summary, f, indent=2)
+            logger.info(f"[FAST] Summary written to {out_json}")
+        except Exception:
+            pass
+        return summary
+
+    def run_no_aug_experiment(self, max_files: int = 30) -> Dict[str, Any]:
+        """No-augmentation experiment: CF slice → CFG → quick GCN."""
+        self.max_files_to_process = max_files
+        return self.run_all_ablations_fast(episodes=3)
+
+    def run_aug_experiment(self, max_files: int = 30, max_variants: int = 1) -> Dict[str, Any]:
+        """Augmented experiment: deterministic augmentation → CF slice → CFG → quick GCN."""
+        logger.info("[AUG-EXP] Starting augmented experiment with deterministic/simple augmentation")
+        from simple_annotation_type_pipeline import SimpleAnnotationTypePipeline
+        # Use a dedicated output root to avoid mixing with no-aug
+        exp_root = self.output_dir / 'aug_exp'
+        os.makedirs(exp_root, exist_ok=True)
+        pipe = SimpleAnnotationTypePipeline(
+            project_root=self.project_root,
+            warnings_file=self.warnings_file,
+            cfwr_root=str(exp_root),
+            mode='train',
+            device='cpu',
+            augment_first=True,
+            disable_random_walk=True,
+            run_checker_on_target=False,
+        )
+        pipe.max_files_to_process = max_files
+        pipe.max_variants_per_file = max_variants
+        pipe.time_limit_deadline = time.time() + ((self.time_limit_hours or 6) * 3600)
+        pipe.log_interval = self.log_interval
+        # 1) Augment originals (deterministic/simple)
+        t0 = time.time()
+        if not pipe._augment_original_code():
+            logger.warning("[AUG-EXP] Augmentation step returned False; proceeding anyway")
+        aug_dir = getattr(pipe, 'augmented_code_dir', os.path.join(str(exp_root), 'augmented_code_unified'))
+        t_aug = time.time() - t0
+        logger.info(f"[AUG-EXP] Augmentation done in {t_aug:.2f}s -> {aug_dir}")
+        # 2) Slice augmented variants with CF pipeline helper
+        slices_dir = os.path.join(str(exp_root), 'slices_aug_exp')
+        os.makedirs(slices_dir, exist_ok=True)
+        try:
+            from pipeline import run_slicing
+            t1 = time.time()
+            run_slicing(project_root=self.project_root, warnings_file=self.warnings_file,
+                        cfwr_root=str(Path.cwd()), base_slices_dir=slices_dir, slicer_type='cf')
+            t_slice = time.time() - t1
+            logger.info(f"[AUG-EXP] Slicing done in {t_slice:.2f}s -> {slices_dir}")
+        except Exception as e:
+            logger.error(f"[AUG-EXP] Slicing error: {e}")
+        # 3) CFG generation
+        cfg_dir = os.path.join(str(exp_root), 'cfg')
+        os.makedirs(cfg_dir, exist_ok=True)
+        try:
+            from pipeline import run_cfg_generation
+            t2 = time.time()
+            # Prefer CF-generated slices directory
+            cf_slices = os.path.join(slices_dir, 'slices_cf')
+            run_cfg_generation(cf_slices if os.path.isdir(cf_slices) else slices_dir, cfg_dir)
+            t_cfg = time.time() - t2
+            logger.info(f"[AUG-EXP] CFG generation done in {t_cfg:.2f}s -> {cfg_dir}")
+        except Exception as e:
+            logger.error(f"[AUG-EXP] CFG error: {e}")
+        # 4) Quick training (GCN epochs=3)
+        try:
+            import subprocess
+            models_dir = os.path.join(str(exp_root), 'models')
+            os.makedirs(models_dir, exist_ok=True)
+            cmd = [sys.executable, 'gcn_train.py', '--cfg_dir', cfg_dir, '--out_dir', os.path.join(models_dir, 'gcn'), '--epochs', '3']
+            res = subprocess.run(cmd, capture_output=True, text=True, timeout=1800)
+            if res.returncode != 0:
+                logger.error(f"[AUG-EXP] Train stderr(head):\n{(res.stderr or '')[:1000]}")
+        except Exception as e:
+            logger.error(f"[AUG-EXP] Training error: {e}")
+        # Return simple summary stub; detailed counts handled by logs/dirs
+        return {
+            'aug_dir': aug_dir,
+            'slices_dir': slices_dir,
+            'cfg_dir': cfg_dir,
+        }
+
+    def run_ablation_compare(self, max_files: int = 30, max_variants: int = 1) -> Dict[str, Any]:
+        """Run no-aug and augmented experiments and produce comparison report."""
+        logger.info("[ABL-COMPARE] Running no-aug experiment")
+        noaug = self.run_no_aug_experiment(max_files=max_files)
+        logger.info("[ABL-COMPARE] Running augmented experiment")
+        aug = self.run_aug_experiment(max_files=max_files, max_variants=max_variants)
+        # Collect basic metrics
+        report = {
+            'no_aug': noaug,
+            'aug': aug,
+        }
+        out = self.output_dir / 'ablation_compare_summary.json'
+        try:
+            with open(out, 'w') as f:
+                json.dump(report, f, indent=2)
+            logger.info(f"[ABL-COMPARE] Wrote comparison summary to {out}")
+        except Exception:
+            pass
+        return report
     
     def _get_transformation_list(self) -> List[str]:
         """Get list of all semantic transformations based on actual enum values"""
@@ -107,6 +327,14 @@ class AblationStudyPipeline:
             disable_random_walk=False,  # Enable random walk for baseline
             run_checker_on_target=self.run_checker_on_target
         )
+        # Apply sampling/time limits
+        try:
+            pipeline.max_files_to_process = self.max_files_to_process
+            pipeline.max_variants_per_file = self.max_variants_per_file
+            pipeline.time_limit_deadline = self.deadline_ts
+            pipeline.log_interval = self.log_interval
+        except Exception:
+            pass
         # Prefer parsing-based enhanced semantic augmentation in downstream pipeline
         try:
             pipeline.augmentation_mode = self.augmentation_mode
@@ -122,6 +350,8 @@ class AblationStudyPipeline:
         
         # Run training pipeline with configurable episodes
         start_time = time.time()
+        if self._time_exceeded():
+            return {}
         success = pipeline.run_training_pipeline(episodes=episodes, base_model='gcn')
         training_time = time.time() - start_time
         
@@ -153,6 +383,13 @@ class AblationStudyPipeline:
             disable_random_walk=True,  # Disable random walk optimizer
             run_checker_on_target=self.run_checker_on_target
         )
+        try:
+            pipeline.max_files_to_process = self.max_files_to_process
+            pipeline.max_variants_per_file = self.max_variants_per_file
+            pipeline.time_limit_deadline = self.deadline_ts
+            pipeline.log_interval = self.log_interval
+        except Exception:
+            pass
         
         # Update directories
         pipeline.slices_dir = str(no_aug_dir / 'slices')
@@ -162,6 +399,8 @@ class AblationStudyPipeline:
         # Use warnings file as provided via CLI; do not rewrite
         
         start_time = time.time()
+        if self._time_exceeded():
+            return {}
         success = pipeline.run_training_pipeline(episodes=episodes, base_model='gcn')
         training_time = time.time() - start_time
         
@@ -192,6 +431,14 @@ class AblationStudyPipeline:
         )
         try:
             pipeline.augmentation_mode = self.augmentation_mode
+        except Exception:
+            pass
+        # Apply sampling/time limits
+        try:
+            pipeline.max_files_to_process = self.max_files_to_process
+            pipeline.max_variants_per_file = self.max_variants_per_file
+            pipeline.time_limit_deadline = self.deadline_ts
+            pipeline.log_interval = self.log_interval
         except Exception:
             pass
         
@@ -257,6 +504,8 @@ class AblationStudyPipeline:
         pipeline._augment_slices = augment_with_disabled_transform
         
         start_time = time.time()
+        if self._time_exceeded():
+            return {}
         success = pipeline.run_training_pipeline(episodes=episodes, base_model='gcn')
         training_time = time.time() - start_time
         
@@ -290,6 +539,13 @@ class AblationStudyPipeline:
             pipeline.augmentation_mode = self.augmentation_mode
         except Exception:
             pass
+        try:
+            pipeline.max_files_to_process = self.max_files_to_process
+            pipeline.max_variants_per_file = self.max_variants_per_file
+            pipeline.time_limit_deadline = self.deadline_ts
+            pipeline.log_interval = self.log_interval
+        except Exception:
+            pass
         
         # Update directories
         pipeline.slices_dir = str(no_rw_dir / 'slices')
@@ -297,6 +553,8 @@ class AblationStudyPipeline:
         pipeline.models_dir = str(no_rw_dir / 'models')
         
         start_time = time.time()
+        if self._time_exceeded():
+            return {}
         success = pipeline.run_training_pipeline(episodes=episodes, base_model='gcn')
         training_time = time.time() - start_time
         

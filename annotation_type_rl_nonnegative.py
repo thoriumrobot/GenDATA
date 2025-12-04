@@ -40,7 +40,13 @@ class AnnotationTypeTrainer:
     def __init__(self, annotation_type='@NonNegative', base_model_type='gcn', learning_rate=0.001, device='cuda'):
         self.annotation_type = annotation_type
         self.base_model_type = base_model_type
-        self.device = device
+        # Fall back to CPU if CUDA unavailable
+        import torch
+        if device == 'cuda' and not torch.cuda.is_available():
+            logger.warning(f"CUDA requested but not available, falling back to CPU")
+            self.device = 'cpu'
+        else:
+            self.device = device
         self.learning_rate = learning_rate
         
         # Initialize the annotation-specific model
@@ -151,6 +157,80 @@ class AnnotationTypeTrainer:
             float('loop' in label.lower()),  # is_loop_related
             float('array' in label.lower()),  # is_array_related
             float('for' in label.lower()),  # is_for_loop
+        ])
+        
+        # "Could be zero" detection patterns (strong signal for @NonNegative)
+        label_lower = label.lower()
+        nodes = cfg_data.get('nodes', [])
+        current_idx = next((i for i, n in enumerate(nodes) if n.get('id') == node.get('id')), -1)
+        
+        # Pattern 1: Array index usage (indices can be 0)
+        is_used_as_array_index = (
+            ('[' in label or ']' in label or 'array[' in label_lower or 'list[' in label_lower) and
+            any(var in label_lower for var in ['index', 'i', 'j', 'k', 'idx', 'pos'])
+        )
+        
+        # Pattern 2: Loop iteration variable (often start at 0)
+        is_loop_variable = (
+            any(pattern in label_lower for pattern in ['for', 'while', 'iterator', 'iter', 'loop']) and
+            any(var in label_lower for var in ['i', 'j', 'k', 'idx', 'index', 'counter'])
+        )
+        
+        # Pattern 3: Subtraction result that could be 0
+        is_subtraction_result = any(pattern in label_lower for pattern in [
+            ' - ', '- ', 'length -', 'size -', 'count -', '.length -', '.size -'
+        ])
+        
+        # Pattern 4: Parameter used in array access context
+        is_param_in_array_context = False
+        if 'parameter' in node_type.lower() and current_idx >= 0:
+            for offset in [-3, -2, -1, 1, 2, 3]:
+                idx = current_idx + offset
+                if 0 <= idx < len(nodes):
+                    nearby_label = nodes[idx].get('label', '').lower()
+                    if '[' in nearby_label and ']' in nearby_label:
+                        is_param_in_array_context = True
+                        break
+        
+        # Pattern 5: Comparison with length/size
+        compared_with_length = any(pattern in label_lower for pattern in [
+            '< length', '< size', '<= length', '<= size',
+            'length >', 'size >', 'length >=', 'size >=',
+            '.length', '.size()'
+        ])
+        
+        # Pattern 6: Initialization to 0
+        initialized_to_zero = any(pattern in label_lower for pattern in [
+            '= 0', '=0', ':= 0', ':=0', 'equals 0', 'equals zero', 'zero'
+        ])
+        
+        # Pattern 7: Used in >= 0 check
+        used_in_nonnegative_check = any(pattern in label_lower for pattern in ['>= 0', '>=0', '>= -1', '>=-1'])
+        
+        # Pattern 8: Offset/position variable
+        is_offset_or_position = any(pattern in label_lower for pattern in [
+            'offset', 'position', 'pos', 'start', 'begin', 'beginning'
+        ])
+        
+        # Aggregated "could be zero" score
+        could_be_zero_indicators = [
+            is_used_as_array_index, is_loop_variable, is_subtraction_result,
+            is_param_in_array_context, compared_with_length, initialized_to_zero,
+            used_in_nonnegative_check, is_offset_or_position
+        ]
+        could_be_zero_score = sum(could_be_zero_indicators) / max(len(could_be_zero_indicators), 1)
+        
+        # Add "could be zero" features (strong signal for @NonNegative)
+        features.extend([
+            float(is_used_as_array_index) * 2.0,
+            float(is_loop_variable) * 2.0,
+            float(is_subtraction_result) * 1.5,
+            float(is_param_in_array_context) * 2.0,
+            float(compared_with_length) * 1.5,
+            float(initialized_to_zero) * 2.0,
+            float(used_in_nonnegative_check) * 2.0,
+            float(is_offset_or_position) * 1.5,
+            float(could_be_zero_score) * 3.0,  # Aggregated score, highly emphasized
         ])
         
         return features

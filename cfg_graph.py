@@ -171,7 +171,37 @@ def load_cfg_as_pyg(cfg_file: str, k_lpe: int = DEFAULT_K_LPE, rw_steps: int = D
     pe = _compute_laplacian_pe(edge_index, num_nodes, k=k_lpe)
     rw = _compute_rwse(edge_index, num_nodes, steps=rw_steps)
 
-    x = torch.cat([X_type, deg, lines, pe, rw], dim=1)
+    # Extract semantic "could be zero" features for each node
+    semantic_features = []
+    for n in nodes:
+        label = n.get('label', '').lower()
+        node_type = str(n.get('node_type', '')).lower()
+        
+        # "Could be zero" detection (same patterns as Phase 1)
+        is_array_index = ('[' in label or ']' in label) and any(v in label for v in ['index', 'i', 'j', 'k'])
+        is_loop_var = any(p in label for p in ['for', 'while', 'loop']) and any(v in label for v in ['i', 'j', 'k'])
+        is_subtraction = any(p in label for p in [' - ', 'length -', 'size -'])
+        is_offset = any(p in label for p in ['offset', 'position', 'pos'])
+        has_nonneg_check = any(p in label for p in ['>= 0', '>=0', '>= -1'])
+        compared_with_len = any(p in label for p in ['< length', '<= length', '.length'])
+        
+        # Aggregated score
+        could_be_zero = float(sum([is_array_index, is_loop_var, is_subtraction, 
+                                    is_offset, has_nonneg_check, compared_with_len]) / 6.0)
+        
+        semantic_features.append([
+            float(is_array_index),
+            float(is_loop_var),
+            float(is_subtraction),
+            float(is_offset),
+            float(has_nonneg_check),
+            float(compared_with_len),
+            could_be_zero * 2.0  # Emphasized aggregated score
+        ])
+    
+    semantic_tensor = torch.tensor(semantic_features, dtype=torch.float32) if semantic_features else torch.zeros((num_nodes, 7), dtype=torch.float32)
+
+    x = torch.cat([X_type, deg, lines, pe, rw, semantic_tensor], dim=1)
 
     data = Data(x=x, edge_index=edge_index, edge_attr=edge_types_tensor)
     data.num_nodes = num_nodes

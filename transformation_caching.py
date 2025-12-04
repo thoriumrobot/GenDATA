@@ -106,21 +106,22 @@ class TransformationCache:
         
         try:
             # Save transformation results
-            with open(self.results_cache_file, 'wb') as f:
+            with __builtins__['open'](self.results_cache_file, 'wb') as f:
                 pickle.dump(self.transformation_results, f)
             
             # Save success patterns
-            with open(self.patterns_cache_file, 'wb') as f:
+            with __builtins__['open'](self.patterns_cache_file, 'wb') as f:
                 pickle.dump(self.success_patterns, f)
             
             # Save model cache
-            with open(self.model_cache_file, 'wb') as f:
+            with __builtins__['open'](self.model_cache_file, 'wb') as f:
                 pickle.dump(self.model_cache, f)
             
             logger.debug("Caches saved to disk")
             
         except Exception as e:
             logger.error(f"Error saving caches: {e}")
+            # Don't raise the error - make it non-fatal
         
         self.cache_stats['save_time'] = (datetime.now() - start_time).total_seconds()
     

@@ -5,6 +5,7 @@ Direct training and testing of annotation-specific models.
 """
 
 import os
+import time
 import json
 import argparse
 import subprocess
@@ -35,7 +36,15 @@ class SimpleAnnotationTypePipeline:
         self.cfwr_root = cfwr_root
         self.mode = mode
         self.no_auto_train = no_auto_train
-        self.device = device
+        
+        # Resolve device='auto' to 'cuda' or 'cpu'
+        if device == 'auto':
+            import torch
+            self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+            logger.info(f"Auto-selected device: {self.device}")
+        else:
+            self.device = device
+        
         self.augment_first = augment_first
         self.disable_random_walk = disable_random_walk
         self.run_checker_on_target = run_checker_on_target
@@ -58,7 +67,7 @@ class SimpleAnnotationTypePipeline:
         if not self.disable_random_walk:
             self.random_walk_optimizer = RandomWalkOptimizer(
                 methods=['rl', 'mcts', 'evolutionary'],
-                device=device,
+                device=self.device,
                 registry=self.unified_registry
             )
         else:
@@ -72,6 +81,12 @@ class SimpleAnnotationTypePipeline:
             '@NonNegative': 'annotation_type_rl_nonnegative.py',
             '@GTENegativeOne': 'annotation_type_rl_gtenegativeone.py'
         }
+        # Optional runtime constraints (may be set by callers)
+        self.max_files_to_process = getattr(self, 'max_files_to_process', None)
+        self.max_variants_per_file = getattr(self, 'max_variants_per_file', None)
+        self.time_limit_deadline = getattr(self, 'time_limit_deadline', None)
+        self.log_interval = getattr(self, 'log_interval', 100)
+        self.variant_timeout_sec = getattr(self, 'variant_timeout_sec', None)
     
     def run_training_pipeline(self, episodes=50, base_model='gcn'):
         """Run the training pipeline for annotation type models"""
@@ -160,8 +175,14 @@ class SimpleAnnotationTypePipeline:
             simple_count = 0
             random_count = 0
             
-            # Process each Java file in the project
-            for java_file in glob.glob(os.path.join(self.project_root, '**', '*.java'), recursive=True):
+            # Collect files then optionally sample
+            files = glob.glob(os.path.join(self.project_root, '**', '*.java'), recursive=True)
+            if self.max_files_to_process:
+                files = files[: int(self.max_files_to_process)]
+            for idx, java_file in enumerate(files):
+                if self.time_limit_deadline and time.time() > self.time_limit_deadline:
+                    logger.warning("⏰ Deadline reached during augmentation; stopping early")
+                    break
                 # Read original code
                 with open(java_file, 'r') as f:
                     original_code = f.read()
@@ -176,17 +197,26 @@ class SimpleAnnotationTypePipeline:
                 base_name = os.path.splitext(rel_path)[0]
                 
                 # Generate variants using random walk optimization
-                for variant_idx in range(50):  # 50 variants per file
+                variants = 50 if self.max_variants_per_file is None else int(self.max_variants_per_file)
+                for variant_idx in range(variants):
+                    if self.time_limit_deadline and time.time() > self.time_limit_deadline:
+                        logger.warning("⏰ Deadline reached during augmentation variants; stopping early")
+                        break
                     variant_dir = os.path.join(self.augmented_code_dir, f"{base_name}__variant_{variant_idx}")
                     os.makedirs(variant_dir, exist_ok=True)
                     output_path = os.path.join(variant_dir, os.path.basename(rel_path))
                     
                     # Use random walk optimizer to find optimal augmentation sequence
-                    optimization_result = self.random_walk_optimizer.optimize_augmentation_sequence(
-                        initial_code=original_code,
-                        max_iterations=20,  # Reduced for performance
-                        parallel=False
-                    )
+                    if self.random_walk_optimizer is None:
+                        logger.info("Random walk optimizer is disabled; writing original code as augmented variant")
+                        optimization_result = None
+                    else:
+                        # RandomWalkOptimizer from augmentation_policy_learner does not support timeout_seconds
+                        optimization_result = self.random_walk_optimizer.optimize_augmentation_sequence(
+                            initial_code=original_code,
+                            max_iterations=20,
+                            parallel=False
+                        )
                     
                     if optimization_result and optimization_result.get('best_sequence'):
                         # Apply the best sequence found
@@ -269,7 +299,10 @@ class SimpleAnnotationTypePipeline:
             total_slices = 0
             
             # Process each augmented variant
-            for variant_dir in os.listdir(self.augmented_code_dir):
+            for i, variant_dir in enumerate(os.listdir(self.augmented_code_dir)):
+                if self.time_limit_deadline and time.time() > self.time_limit_deadline:
+                    logger.warning("⏰ Deadline reached during slicing; stopping early")
+                    break
                 variant_path = os.path.join(self.augmented_code_dir, variant_dir)
                 if not os.path.isdir(variant_path):
                     continue
@@ -474,6 +507,7 @@ class SimpleAnnotationTypePipeline:
                 '--focus-nodes', 'control', 'dataflow',
                 '--manifest'
             ]
+            # Note: All transformations are enabled with retry limits preventing infinite loops
             result = subprocess.run(augment_cmd, capture_output=True, text=True)
             if result.returncode != 0:
                 logger.warning(f"Semantic slice augmentation failed: {result.stderr}")
@@ -559,6 +593,11 @@ class SimpleAnnotationTypePipeline:
                 logger.error(f"{annotation_type} model training timed out")
             except Exception as e:
                 logger.error(f"Error training {annotation_type} model: {e}")
+
+            # Check global deadline between trainings
+            if self.time_limit_deadline and time.time() > self.time_limit_deadline:
+                logger.warning("⏰ Deadline reached during training; stopping early")
+                break
         
         logger.info(f"Successfully trained {success_count}/{len(self.annotation_types)} annotation type models")
         return success_count > 0

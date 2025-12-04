@@ -7,6 +7,7 @@ Saves model to MODELS_DIR/gcn/best_gcn.pth
 import os
 import json
 import argparse
+import time
 from typing import List, Dict
 
 import torch
@@ -61,20 +62,21 @@ def cfg_to_graph(cfg_path: str) -> Data:
 
 
 class SimpleGCN(nn.Module):
-    def __init__(self, in_dim: int, hidden: int = 128, out_dim: int = 2, dropout: float = 0.1):
+    def __init__(self, in_dim: int, hidden: int = 128, out_dim: int = 2, dropout: float = 0.1, layers: int = 2):
         super().__init__()
-        self.conv1 = GCNConv(in_dim, hidden)
-        self.conv2 = GCNConv(hidden, hidden)
-        self.lin = nn.Linear(hidden, out_dim)
+        self.layers = nn.ModuleList()
+        last_dim = in_dim
+        for i in range(layers):
+            self.layers.append(GCNConv(last_dim, hidden if i < layers - 1 else hidden))
+            last_dim = hidden
+        self.lin = nn.Linear(last_dim, out_dim)
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, x, edge_index):
-        x = self.conv1(x, edge_index)
-        x = torch.relu(x)
-        x = self.dropout(x)
-        x = self.conv2(x, edge_index)
-        x = torch.relu(x)
-        x = self.dropout(x)
+        for conv in self.layers:
+            x = conv(x, edge_index)
+            x = torch.relu(x)
+            x = self.dropout(x)
         return self.lin(x)
 
 
@@ -98,6 +100,10 @@ def main():
     ap.add_argument('--epochs', type=int, default=40)
     ap.add_argument('--hidden', type=int, default=128)
     ap.add_argument('--lr', type=float, default=1e-3)
+    ap.add_argument('--metrics_path', type=str, default=None, help='Path to write per-epoch metrics JSON')
+    ap.add_argument('--dropout', type=float, default=0.2)
+    ap.add_argument('--layers', type=int, default=2)
+    ap.add_argument('--early_stop_patience', type=int, default=0)
     args = ap.parse_args()
 
     os.makedirs(args.out_dir, exist_ok=True)
@@ -106,21 +112,52 @@ def main():
         print('No graphs found in cfg_dir')
         return
 
-    # Simple split
-    split = int(0.8 * len(dataset))
-    train_ds = dataset[:split]
-    val_ds = dataset[split:]
+    # Deterministic split: sort by file path to stabilize
+    # We keep paths by reloading list in same order used to build dataset
+    all_paths = []
+    for root, _, files in os.walk(args.cfg_dir):
+        for f in files:
+            if f.endswith('.json'):
+                all_paths.append(os.path.join(root, f))
+    all_paths.sort()
+    split = int(0.8 * len(all_paths))
+    train_paths = set(all_paths[:split])
+    # Rebuild datasets in the deterministic order
+    train_ds: List[Data] = []
+    val_ds: List[Data] = []
+    for root, _, files in os.walk(args.cfg_dir):
+        for f in files:
+            if not f.endswith('.json'):
+                continue
+            p = os.path.join(root, f)
+            g = cfg_to_graph(p)
+            if g.x.numel() == 0:
+                continue
+            (train_ds if p in train_paths else val_ds).append(g)
     train_loader = DataLoader(train_ds, batch_size=1, shuffle=True)
     val_loader = DataLoader(val_ds, batch_size=1, shuffle=False)
 
     in_dim = dataset[0].x.size(-1)
-    model = SimpleGCN(in_dim=in_dim, hidden=args.hidden)
+    model = SimpleGCN(in_dim=in_dim, hidden=args.hidden, dropout=args.dropout, layers=args.layers)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model.to(device)
     opt = optim.AdamW(model.parameters(), lr=args.lr, weight_decay=1e-4)
     crit = nn.CrossEntropyLoss()
 
     best_val = 1e9
+    patience = args.early_stop_patience
+    since_improve = 0
+    metrics = {
+        'start_ts': time.time(),
+        'cfg_dir': args.cfg_dir,
+        'out_dir': args.out_dir,
+        'epochs': args.epochs,
+        'lr': args.lr,
+        'hidden': args.hidden,
+        'num_graphs': len(dataset),
+        'split': {'train': len(train_ds), 'val': len(val_ds)},
+        'epochs_log': []
+    }
     for epoch in range(1, args.epochs+1):
         model.train()
         total = 0.0
@@ -140,10 +177,27 @@ def main():
                 loss = crit(logits, batch.y)
                 val_loss += float(loss.item())
         print(f"Epoch {epoch:03d} | train_loss={total:.4f} | val_loss={val_loss:.4f}")
+        metrics['epochs_log'].append({'epoch': epoch, 'train_loss': total, 'val_loss': val_loss})
         if val_loss < best_val:
             best_val = val_loss
             torch.save({'model_state': model.state_dict(), 'in_dim': in_dim, 'hidden': args.hidden}, os.path.join(args.out_dir, 'best_gcn.pth'))
+            since_improve = 0
+        else:
+            since_improve += 1
+            if patience and since_improve >= patience:
+                print('Early stopping triggered')
+                break
 
+    metrics['best_val_loss'] = best_val
+    metrics['end_ts'] = time.time()
+    metrics['duration_sec'] = metrics['end_ts'] - metrics['start_ts']
+    if args.metrics_path is None:
+        args.metrics_path = os.path.join(args.out_dir, 'metrics.json')
+    try:
+        with open(args.metrics_path, 'w') as fp:
+            json.dump(metrics, fp, indent=2)
+    except Exception:
+        pass
     print('Training complete')
 
 

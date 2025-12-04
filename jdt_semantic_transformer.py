@@ -94,7 +94,7 @@ class JdtSemanticTransformer:
     
     def transform_code(self, java_code: str, transformations: List[str],
                       mode: str = 'enhanced', force_transformation: bool = True,
-                      **kwargs) -> str:
+                      max_retries: int = 2, **kwargs) -> str:
         """
         Transform Java code string using JDT-based transformations.
         
@@ -103,17 +103,20 @@ class JdtSemanticTransformer:
             transformations: List of transformation types to apply
             mode: Transformation mode ('enhanced' or 'simple')
             force_transformation: If True, retry with different transformations if none apply
+            max_retries: Maximum number of retry attempts (default: 2)
             
         Returns:
             Transformed Java code
         """
         original_code = java_code
+        retry_count = 0
         
         # Try the requested transformations first
         transformed_code = self._try_transformations(java_code, transformations, mode, **kwargs)
         
         # If no changes were made and force_transformation is True, try other transformations
-        if force_transformation and transformed_code == original_code and transformations:
+        # Stop after 1 retry to prevent excessive attempts
+        while force_transformation and transformed_code == original_code and transformations and retry_count < 1:
             available_transformations = self.get_available_transformations(mode)
             other_transformations = [t for t in available_transformations if t not in transformations]
             
@@ -122,6 +125,13 @@ class JdtSemanticTransformer:
                 retry_transformations = other_transformations[:min(3, len(other_transformations))]
                 logger.info(f"No changes with {transformations}, retrying with {retry_transformations}")
                 transformed_code = self._try_transformations(java_code, retry_transformations, mode, **kwargs)
+                retry_count += 1
+            else:
+                break
+        
+        # If still no changes after max retries, return original
+        if retry_count >= max_retries and transformed_code == original_code:
+            logger.debug(f"Max retries ({max_retries}) exceeded, returning original code")
         
         return transformed_code
 

@@ -1,0 +1,15 @@
+/*
+ * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
+ */
+// Applied transformations: attempted_mathematical_expression, attempted_logical_expression
+
+    @Positive
+  void lte_check(int[] a) {
+    @Positive
+    if (1 <= a.length) {
+    @Positive
+      int @MinLen(1) [] b = a;
+    @Positive
+    }
+    @Positive
+  }

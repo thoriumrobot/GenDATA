@@ -291,24 +291,24 @@ public class SemanticTransformer {
             long startTime = System.currentTimeMillis();
             
             try {
-                debug("consider_" + transformation, "Considering transformation: " + transformation);
-                boolean changed = applyTransformation(cu, rewrite, transformation, mode);
+            debug("consider_" + transformation, "Considering transformation: " + transformation);
+            boolean changed = applyTransformation(cu, rewrite, transformation, mode);
                 long duration = System.currentTimeMillis() - startTime;
                 
-                if (changed) {
-                    debug("applied_" + transformation, "Applied transformation: " + transformation);
+            if (changed) {
+                debug("applied_" + transformation, "Applied transformation: " + transformation);
                     logTransformationDecision(transformation, "transformation applied successfully", true);
                     if (diagnostics != null) {
                         diagnostics.recordDecision(transformation, "transformation applied successfully", true);
                     }
-                    hasChanges = true;
-                    appliedThisRun.add(transformation);
+                hasChanges = true;
+                appliedThisRun.add(transformation);
                     logTransformationEnd(transformation, true, duration);
                     if (diagnostics != null) {
                         diagnostics.recordTransformationEnd(transformation, true, null, duration, null);
                     }
-                } else {
-                    debug("skipped_" + transformation, "No effect: " + transformation);
+            } else {
+                debug("skipped_" + transformation, "No effect: " + transformation);
                     logTransformationDecision(transformation, "no changes made", false);
                     if (diagnostics != null) {
                         diagnostics.recordDecision(transformation, "no changes made", false);
@@ -586,7 +586,7 @@ public class SemanticTransformer {
                     if (random.nextDouble() < 0.8) { // 80% chance to transform
                         boolean local = transformLogicalExpressionEnhanced(node, rewrite);
                         if (local) {
-                            changed.set(true);
+                    changed.set(true);
                         }
                     }
                 }
@@ -1477,11 +1477,11 @@ public class SemanticTransformer {
                     // Handle multiple variable declarations
                     for (Object fragment : vde.fragments()) {
                         VariableDeclarationFragment frag = (VariableDeclarationFragment) fragment;
-                        VariableDeclarationStatement vds = ast.newVariableDeclarationStatement(
+                    VariableDeclarationStatement vds = ast.newVariableDeclarationStatement(
                             (VariableDeclarationFragment) ASTNode.copySubtree(ast, frag)
                         );
                         vds.setType((Type) ASTNode.copySubtree(ast, vde.getType()));
-                        whileBody.statements().add(vds);
+                    whileBody.statements().add(vds);
                     }
                 } else if (initializer instanceof Expression) {
                     // Handle method calls and complex expressions in initialization
@@ -1490,10 +1490,10 @@ public class SemanticTransformer {
                     );
                     whileBody.statements().add(es);
                 }
+                }
             }
         }
-    }
-    
+        
     /**
      * Handle loop body with proper scoping and control flow.
      */
@@ -1587,7 +1587,7 @@ public class SemanticTransformer {
         WhileLoopAnalysis analysis = analyzeWhileLoop(whileStmt);
         
         if (analysis.canConvertToFor) {
-            ForStatement forStmt = ast.newForStatement();
+        ForStatement forStmt = ast.newForStatement();
             
             // Set initialization if found
             if (analysis.initialization != null) {
@@ -1595,7 +1595,7 @@ public class SemanticTransformer {
             }
             
             // Set condition
-            forStmt.setExpression((Expression) ASTNode.copySubtree(ast, whileStmt.getExpression()));
+        forStmt.setExpression((Expression) ASTNode.copySubtree(ast, whileStmt.getExpression()));
             
             // Set increment if found
             if (analysis.increment != null) {
@@ -1604,8 +1604,8 @@ public class SemanticTransformer {
             
             // Set body (remove increment from body if it was extracted)
             forStmt.setBody(analysis.body);
-            
-            rewrite.replace(whileStmt, forStmt, null);
+        
+        rewrite.replace(whileStmt, forStmt, null);
         } else {
             // Cannot convert - preserve original while loop
             debug("while_to_for_skipped", "Cannot convert while loop to for loop - pattern not recognized");
@@ -1700,7 +1700,7 @@ public class SemanticTransformer {
                 || (e instanceof ParenthesizedExpression && ((ParenthesizedExpression) e).getExpression() instanceof SimpleName)
                 || (e instanceof ParenthesizedExpression && ((ParenthesizedExpression) e).getExpression() instanceof NumberLiteral);
     }
-    
+
     /**
      * Get the diagnostics report for this transformation session.
      */
@@ -1718,8 +1718,8 @@ public class SemanticTransformer {
     private boolean transformMathematicalExpressionEnhanced(InfixExpression expr, ASTRewrite rewrite) {
         AST ast = expr.getAST();
         InfixExpression.Operator op = expr.getOperator();
-        Expression left = expr.getLeftOperand();
-        Expression right = expr.getRightOperand();
+            Expression left = expr.getLeftOperand();
+            Expression right = expr.getRightOperand();
         
         // Apply various mathematical transformations based on operator
         if (op == InfixExpression.Operator.PLUS) {
@@ -1742,14 +1742,14 @@ public class SemanticTransformer {
      */
     private boolean transformAddition(InfixExpression expr, Expression left, Expression right, AST ast, ASTRewrite rewrite) {
         // Apply commutativity: a + b -> b + a
-        if (isSimpleOperand(left) && isSimpleOperand(right)) {
-            InfixExpression newExpr = ast.newInfixExpression();
+            if (isSimpleOperand(left) && isSimpleOperand(right)) {
+                InfixExpression newExpr = ast.newInfixExpression();
             newExpr.setOperator(InfixExpression.Operator.PLUS);
-            newExpr.setLeftOperand((Expression) ASTNode.copySubtree(ast, right));
-            newExpr.setRightOperand((Expression) ASTNode.copySubtree(ast, left));
+                newExpr.setLeftOperand((Expression) ASTNode.copySubtree(ast, right));
+                newExpr.setRightOperand((Expression) ASTNode.copySubtree(ast, left));
             debug("math_commute_plus", "Applied commutativity to addition: " + expr.toString());
-            rewrite.replace(expr, newExpr, null);
-            return true;
+                rewrite.replace(expr, newExpr, null);
+                return true;
         }
         return false;
     }
@@ -1999,19 +1999,19 @@ public class SemanticTransformer {
         
         // Only convert if the ternary is a standalone statement
         if (parent instanceof ExpressionStatement) {
-            AST ast = ternary.getAST();
-            
-            IfStatement ifStmt = ast.newIfStatement();
-            ifStmt.setExpression((Expression) ASTNode.copySubtree(ast, ternary.getExpression()));
-            
-            // Create blocks for then and else
-            Block thenBlock = ast.newBlock();
-            Block elseBlock = ast.newBlock();
-            
+        AST ast = ternary.getAST();
+        
+        IfStatement ifStmt = ast.newIfStatement();
+        ifStmt.setExpression((Expression) ASTNode.copySubtree(ast, ternary.getExpression()));
+        
+        // Create blocks for then and else
+        Block thenBlock = ast.newBlock();
+        Block elseBlock = ast.newBlock();
+        
             // Add expressions as statements only if they are valid statements
             if (isValidStatementExpression(ternary.getThenExpression())) {
-                ExpressionStatement thenStmt = ast.newExpressionStatement(
-                    (Expression) ASTNode.copySubtree(ast, ternary.getThenExpression()));
+        ExpressionStatement thenStmt = ast.newExpressionStatement(
+            (Expression) ASTNode.copySubtree(ast, ternary.getThenExpression()));
                 thenBlock.statements().add(thenStmt);
             } else {
                 // Skip conversion if expressions are not valid statements
@@ -2020,19 +2020,19 @@ public class SemanticTransformer {
             }
             
             if (isValidStatementExpression(ternary.getElseExpression())) {
-                ExpressionStatement elseStmt = ast.newExpressionStatement(
-                    (Expression) ASTNode.copySubtree(ast, ternary.getElseExpression()));
-                elseBlock.statements().add(elseStmt);
+        ExpressionStatement elseStmt = ast.newExpressionStatement(
+            (Expression) ASTNode.copySubtree(ast, ternary.getElseExpression()));
+        elseBlock.statements().add(elseStmt);
             } else {
                 // Skip conversion if expressions are not valid statements
                 debug("ternary_skip", "Skipping ternary conversion - invalid statement expressions");
                 return;
             }
-            
-            ifStmt.setThenStatement(thenBlock);
-            ifStmt.setElseStatement(elseBlock);
-            
-            rewrite.replace(ternary, ifStmt, null);
+        
+        ifStmt.setThenStatement(thenBlock);
+        ifStmt.setElseStatement(elseBlock);
+        
+        rewrite.replace(ternary, ifStmt, null);
         }
     }
     

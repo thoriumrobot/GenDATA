@@ -25,6 +25,7 @@ import random
 import logging
 from pathlib import Path
 from typing import List, Tuple, Optional, Dict, Any
+import time
 
 from jdt_semantic_transformer import JdtSemanticTransformer
 
@@ -45,6 +46,8 @@ class SimpleCodeSemanticTransformer:
         self.seed = seed
         self.transformations_applied = []
         self.disabled_transformations = disabled_transformations or []
+        # Profiling store
+        self._timing_records: List[Dict[str, Any]] = []
         
         # Initialize JDT transformer
         try:
@@ -54,7 +57,7 @@ class SimpleCodeSemanticTransformer:
             logger.error(f"Failed to initialize JDT transformer: {e}")
             raise RuntimeError(f"JDT transformer initialization failed: {e}")
     
-    def transform_file(self, java_path: str, variant_idx: int) -> str:
+    def transform_file(self, java_path: str, variant_idx: int, max_retries: int = 2) -> str:
         """Apply simple semantic transformations to a Java file using JDT."""
         try:
             with open(java_path, 'r') as f:
@@ -78,11 +81,22 @@ class SimpleCodeSemanticTransformer:
             logger.info(f"Applying simple transformations: {selected_transformations}")
             
             # Apply transformations using JDT
+            t0 = time.perf_counter()
             transformed_code = self.jdt_transformer.transform_code(
                 original_code, 
                 selected_transformations, 
-                'simple'
+                'simple',
+                max_retries=max_retries
             )
+            t1 = time.perf_counter()
+            self._timing_records.append({
+                'java_file': java_path,
+                'variant_idx': variant_idx,
+                'mode': 'simple',
+                'stage': 'initial',
+                'transformations': list(selected_transformations),
+                'duration_ms': (t1 - t0) * 1000.0
+            })
             
             # Record applied transformations
             self.transformations_applied.extend(selected_transformations)
@@ -151,6 +165,25 @@ class SimpleCodeSemanticTransformer:
                 logger.error(error_msg)
                 results['errors'].append(error_msg)
         
+        # Write timing report
+        try:
+            import json
+            timing_path = Path(output_dir) / 'simple_augmentation_timing_report.json'
+            aggregates: Dict[str, Dict[str, Any]] = {}
+            for rec in self._timing_records:
+                label = ",".join(rec.get('transformations', [])) or '(none)'
+                agg = aggregates.setdefault(label, {'count': 0, 'total_ms': 0.0, 'max_ms': 0.0})
+                agg['count'] += 1
+                agg['total_ms'] += rec['duration_ms']
+                if rec['duration_ms'] > agg['max_ms']:
+                    agg['max_ms'] = rec['duration_ms']
+            for k, v in aggregates.items():
+                v['avg_ms'] = (v['total_ms'] / v['count']) if v['count'] else 0.0
+            with open(timing_path, 'w') as tf:
+                json.dump({'records': self._timing_records, 'aggregates_by_set': aggregates}, tf, indent=2)
+        except Exception:
+            pass
+
         return results
     
     def get_transformation_stats(self) -> Dict[str, Any]:
