@@ -15,8 +15,17 @@ from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Any
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+def setup_logging(log_file: str):
+    """Configure logging to a file (no stdout noise)."""
+    log_path = Path(log_file)
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        handlers=[logging.FileHandler(log_path, mode='w')]
+    )
 
 def main():
     import argparse
@@ -28,46 +37,57 @@ def main():
     parser.add_argument('--skip_cfg_generation', action='store_true', help='Skip CFG generation (use existing)')
     parser.add_argument('--skip_augmentation_comparison', action='store_true', help='Skip augmentation comparison')
     parser.add_argument('--skip_transformation_ablation', action='store_true', help='Skip transformation ablation')
+    parser.add_argument('--log_file', default='ablation_full_pipeline.log', help='Path to write pipeline log')
     
     args = parser.parse_args()
     
+    # Configure logging to file
+    setup_logging(args.log_file)
+
     logger.info("=" * 80)
     logger.info("COMPLETE ABLATION STUDIES")
     logger.info("=" * 80)
     
-    # Step 1: Generate CFG directories if needed
+    # Step 1: Generate CFG directories if needed (skip if already present)
     if not args.skip_cfg_generation:
         logger.info("\n" + "=" * 80)
         logger.info("STEP 1: Generating CFG directories")
         logger.info("=" * 80)
         
-        # Generate non-augmented CFGs
-        logger.info("Generating non-augmented CFG directory...")
-        cmd = [
-            sys.executable, 'generate_ablation_cfg_directories.py',
-            '--slices_dir', args.slices_dir,
-            '--generate_no_aug',
-            '--output_base', 'ablation_studies'
-        ]
-        result = subprocess.run(cmd, capture_output=True, text=True)
-        if result.returncode != 0:
-            logger.error(f"Failed to generate non-augmented CFGs: {result.stderr}")
+        no_aug_cfg = Path('ablation_studies/no_augmentation/cfg_output')
+        if no_aug_cfg.exists() and any(no_aug_cfg.rglob('*.json')):
+            logger.info("Non-augmented CFG directory already exists; skipping generation")
         else:
-            logger.info("✅ Non-augmented CFG directory generated")
+            logger.info("Generating non-augmented CFG directory...")
+            cmd = [
+                sys.executable, 'generate_ablation_cfg_directories.py',
+                '--slices_dir', args.slices_dir,
+                '--generate_no_aug',
+                '--output_base', 'ablation_studies'
+            ]
+            result = subprocess.run(cmd, capture_output=True, text=True)
+            if result.returncode != 0:
+                logger.error(f"Failed to generate non-augmented CFGs: {result.stderr}")
+            else:
+                logger.info("✅ Non-augmented CFG directory generated")
         
-        # Generate transformation-ablated CFGs (sequentially)
-        logger.info("Generating transformation-ablated CFG directories (this will take a while)...")
-        cmd = [
-            sys.executable, 'generate_ablation_cfg_directories.py',
-            '--slices_dir', args.slices_dir,
-            '--generate_transforms',
-            '--output_base', 'ablation_studies'
-        ]
-        result = subprocess.run(cmd, capture_output=True, text=True)
-        if result.returncode != 0:
-            logger.error(f"Failed to generate transformation-ablated CFGs: {result.stderr}")
+        # Check for one known transform directory as sentinel; if missing, run full generation
+        sentinel = Path('ablation_studies/ablate_loop_conversion/cfg_output')
+        if sentinel.exists() and any(sentinel.rglob('*.json')):
+            logger.info("Transformation-ablated CFG directories already exist; skipping generation")
         else:
-            logger.info("✅ Transformation-ablated CFG directories generated")
+            logger.info("Generating transformation-ablated CFG directories (this will take a while)...")
+            cmd = [
+                sys.executable, 'generate_ablation_cfg_directories.py',
+                '--slices_dir', args.slices_dir,
+                '--generate_transforms',
+                '--output_base', 'ablation_studies'
+            ]
+            result = subprocess.run(cmd, capture_output=True, text=True)
+            if result.returncode != 0:
+                logger.error(f"Failed to generate transformation-ablated CFGs: {result.stderr}")
+            else:
+                logger.info("✅ Transformation-ablated CFG directories generated")
     else:
         logger.info("Skipping CFG generation (using existing directories)")
     

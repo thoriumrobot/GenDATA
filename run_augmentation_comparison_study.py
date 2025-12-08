@@ -98,6 +98,16 @@ class AugmentationComparisonStudy:
             logger.error(f"Non-augmented CFG directory does not exist: {cfg_dir_no_aug}")
             return False
         
+        # If datasets already exist, skip regeneration
+        expected = [
+            output_dataset_dir / "positive_real_balanced_dataset.json",
+            output_dataset_dir / "nonnegative_real_balanced_dataset.json",
+            output_dataset_dir / "gtenegativeone_real_balanced_dataset.json",
+        ]
+        if all(p.exists() for p in expected):
+            logger.info(f"Datasets already exist in {output_dataset_dir}; skipping regeneration")
+            return True
+        
         # Import the dataset generator utility
         from ablation_dataset_generator import AblationDatasetGenerator
         

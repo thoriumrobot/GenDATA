@@ -129,12 +129,11 @@ class AnnotationTypeTrainer:
         targets = []
         
         nodes = cfg_data.get('nodes', [])
+        use_all_nodes = not binary_predictions  # fallback when no binary preds provided
         for i, node in enumerate(nodes):
-            # Check if this node was predicted by binary model
-            is_binary_target = any(pred['line'] == node.get('line') for pred in binary_predictions)
-            
+            is_binary_target = True if use_all_nodes else any(pred['line'] == node.get('line') for pred in binary_predictions)
             if not is_binary_target:
-                continue  # Only consider nodes predicted by binary model
+                continue  # Only consider nodes predicted by binary model unless none provided
             
             # Extract features for annotation type prediction
             feature_vector = self._extract_annotation_type_features(node, cfg_data)
@@ -289,7 +288,7 @@ class AnnotationTypeTrainer:
             features, targets = self.extract_annotation_features(cfg_data, binary_predictions)
             
             if len(features) == 0:
-                logger.info(f"No features extracted for {self.annotation_type}")
+                logger.warning(f"No features extracted for {self.annotation_type}; skipping episode")
                 return 0.0
             
             # Train GBT model if needed
@@ -320,6 +319,9 @@ class AnnotationTypeTrainer:
     
     def predict_annotation_type(self, features):
         """Predict annotation type for given features"""
+        if len(features) == 0:
+            return np.array([])
+
         if self.base_model_type in ['gcn', 'causal', 'enhanced_causal', 'hgt', 'gcsn', 'dg2n']:
             self.model.eval()
             with torch.no_grad():
@@ -433,12 +435,8 @@ class AnnotationTypeTrainer:
         for episode in range(num_episodes):
             logger.info(f"Episode {episode + 1}/{num_episodes}")
             
-            # Simulate binary predictions (from binary RL model)
-            binary_predictions = [
-                {'line': 11, 'confidence': 0.8},
-                {'line': 12, 'confidence': 0.7},
-                {'line': 13, 'confidence': 0.9}
-            ]
+            # Use all nodes for feature extraction unless real binary predictions are supplied
+            binary_predictions = []
             
             # Simulate original warnings
             original_warnings = [f"warning_{i}" for i in range(random.randint(5, 15))]

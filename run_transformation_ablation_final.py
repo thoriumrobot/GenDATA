@@ -128,6 +128,15 @@ class TransformationAblationFinal:
             logger.error(f"Please ensure CFGs are generated with {transform_name} disabled")
             return False
         
+        expected = [
+            output_dataset_dir / "positive_real_balanced_dataset.json",
+            output_dataset_dir / "nonnegative_real_balanced_dataset.json",
+            output_dataset_dir / "gtenegativeone_real_balanced_dataset.json",
+        ]
+        if all(p.exists() for p in expected):
+            logger.info(f"Datasets already exist in {output_dataset_dir}; skipping regeneration")
+            return True
+        
         from ablation_dataset_generator import AblationDatasetGenerator
         
         generator = AblationDatasetGenerator(random_seed=42)
