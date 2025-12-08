@@ -14,7 +14,26 @@ This directory contains the essential files for the CFWR (Checker Framework Warn
 
 See `JDT_IMPLEMENTATION_COMPLETE.md` for detailed documentation.
 
-## 🚀 **Latest Update: Adaptive Semantic Augmentation Pipeline with GPU Acceleration**
+## 🚀 **Latest Update: Automatic Value Emphasis Learning for Checkers**
+
+The pipeline now includes **automatic learning of relevant values to emphasize** for each Checker Framework checker. Models learn during training which values (e.g., 0, -1 for Lower Bound; null for Null Checker; strings for Signature String) boost performance and automatically emphasize them using attention mechanisms.
+
+### **Automatic Value Emphasis**
+- **✅ Learnable Attention**: Multi-head attention learns which values to emphasize
+- **✅ Checker-Specific Models**: Separate models per checker with checker-specific emphasis
+- **✅ All 6 Checkers Supported**: Lower Bound, Null, Signature String, Interning, Lock, Regex
+- **✅ Automatic Discovery**: Models automatically find relevant values during training
+- **✅ Interpretability**: Attention weights show which values are emphasized
+
+### **Documentation**
+- **📘 Checker Value Emphasis**: `CHECKER_VALUE_EMPHASIS_DOCUMENTATION.md` - Complete guide to automatic value emphasis learning
+- **📘 "Could Be Zero" Features**: `COULD_BE_ZERO_FEATURES_DOCUMENTATION.md` - Manual feature documentation
+- **📘 Enhanced Pipeline**: `ENHANCED_PIPELINE_DOCUMENTATION.md` - Complete pipeline documentation
+- **📘 Ablation Studies**: `ABLATION_STUDY_AUGMENTATION.md` - Ablation study guide and results
+- **📘 Ablation Dataset Guide**: `ABLATION_STUDY_DATASET_GUIDE.md` - **DEFAULT**: Separate dataset directories for valid comparisons
+- **📘 Latest Ablation Results**: `ABLATION_STUDY_RESULTS_LATEST.md` - **NEW**: December 2025 results with baseline performance metrics
+
+## 🚀 **Previous Update: Adaptive Semantic Augmentation Pipeline with GPU Acceleration**
 
 The annotation-type models have been **completely rearchitected** with an adaptive semantic augmentation pipeline that combines all advanced features: adaptive semantic augmentation with 27 transformation methods, balanced training with real code examples, GPU acceleration, batching support, graph inputs, and sophisticated graph embeddings.
 
@@ -281,8 +300,17 @@ python predict_with_enhanced_pipeline.py --target_file /path/to/MyClass.java
 # Disable checker for backward compatibility
 python predict_with_enhanced_pipeline.py --target_file /path/to/MyClass.java --no_run_checker
 
-# Checker integration in ablation studies
-python run_comprehensive_ablation_studies.py --mode baseline --no_run_checker
+# Ablation studies with separate datasets (DEFAULT)
+python run_augmentation_comparison_study.py \
+    --cfg_dir cfg_output_specimin \
+    --cfg_dir_no_aug cfg_output_no_aug \
+    --episodes 10
+
+# Transformation ablation with separate datasets per transformation
+python run_transformation_ablation_final.py \
+    --cfg_dir cfg_output_specimin \
+    --cfg_dir_base_pattern "cfg_output_ablate_{transform}" \
+    --episodes 10
 ```
 
 ### **Checker Framework Configuration**
@@ -641,8 +669,14 @@ print(f'📊 All advanced features ready')
 
 ### **Key Files**
 - **Enhanced Balanced Pipeline**: `enhanced_balanced_pipeline.py` (DEFAULT)
+- **Ablation Studies with Dataset Separation**: `run_augmentation_comparison_study.py`, `run_transformation_ablation_final.py` (DEFAULT)
+  - Uses separate dataset directories for each condition
+  - Automatic dataset generation from CFG directories
+  - Fixed random seeds (42) for reproducible results
+  - See `ABLATION_STUDY_DATASET_GUIDE.md` for details
 - **Balanced Dataset Generator**: `improved_balanced_dataset_generator.py`
-- **Balanced Trainer**: `improved_balanced_annotation_type_trainer.py`
+- **Balanced Trainer**: `improved_balanced_annotation_type_trainer.py` (with fixed random seeds)
+- **Dataset Generation Utility**: `ablation_dataset_generator.py` (for ablation studies)
 - **Enhanced Predictor**: `enhanced_graph_predictor.py` (SUPPORTING)
 - **Enhanced Models**: `enhanced_graph_models.py` (SUPPORTING)
 - **CFG Dataloader**: `cfg_dataloader.py` (SUPPORTING)

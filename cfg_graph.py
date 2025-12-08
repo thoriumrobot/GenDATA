@@ -17,12 +17,21 @@ If fields are missing, reasonable defaults are applied.
 
 import os
 import json
-from typing import Dict, Tuple, List
+from typing import Dict, Tuple, List, Optional
 
 import torch
 from torch import Tensor
 from torch_geometric.data import Data
 from torch_geometric.utils import to_undirected, degree
+
+# Import checker-specific modules
+try:
+    from checker_config import CheckerType
+    from value_pattern_detector import ValuePatternDetector
+    CHECKER_MODULES_AVAILABLE = True
+except ImportError:
+    CHECKER_MODULES_AVAILABLE = False
+    CheckerType = None
 
 
 DEFAULT_K_LPE = 8
@@ -104,7 +113,7 @@ def _compute_rwse(edge_index: Tensor, num_nodes: int, steps: int) -> Tensor:
     return rw
 
 
-def load_cfg_as_pyg(cfg_file: str, k_lpe: int = DEFAULT_K_LPE, rw_steps: int = DEFAULT_RW_STEPS) -> Data:
+def load_cfg_as_pyg(cfg_file: str, k_lpe: int = DEFAULT_K_LPE, rw_steps: int = DEFAULT_RW_STEPS, checker_type: Optional[CheckerType] = None) -> Data:
     with open(cfg_file, 'r') as f:
         cfg = json.load(f)
 
@@ -173,6 +182,10 @@ def load_cfg_as_pyg(cfg_file: str, k_lpe: int = DEFAULT_K_LPE, rw_steps: int = D
 
     # Extract semantic "could be zero" features for each node
     semantic_features = []
+    pattern_detector = None
+    if CHECKER_MODULES_AVAILABLE and checker_type is not None:
+        pattern_detector = ValuePatternDetector()
+    
     for n in nodes:
         label = n.get('label', '').lower()
         node_type = str(n.get('node_type', '')).lower()
@@ -189,7 +202,7 @@ def load_cfg_as_pyg(cfg_file: str, k_lpe: int = DEFAULT_K_LPE, rw_steps: int = D
         could_be_zero = float(sum([is_array_index, is_loop_var, is_subtraction, 
                                     is_offset, has_nonneg_check, compared_with_len]) / 6.0)
         
-        semantic_features.append([
+        node_semantic = [
             float(is_array_index),
             float(is_loop_var),
             float(is_subtraction),
@@ -197,9 +210,23 @@ def load_cfg_as_pyg(cfg_file: str, k_lpe: int = DEFAULT_K_LPE, rw_steps: int = D
             float(has_nonneg_check),
             float(compared_with_len),
             could_be_zero * 2.0  # Emphasized aggregated score
-        ])
+        ]
+        
+        # Add checker-specific value patterns (raw features, will be emphasized during training)
+        if pattern_detector is not None:
+            checker_patterns = pattern_detector.get_pattern_features(n, cfg, checker_type)
+            node_semantic.extend(checker_patterns)
+        
+        semantic_features.append(node_semantic)
     
-    semantic_tensor = torch.tensor(semantic_features, dtype=torch.float32) if semantic_features else torch.zeros((num_nodes, 7), dtype=torch.float32)
+    # Determine semantic feature dimension
+    semantic_dim = 7  # Base "could be zero" features
+    if pattern_detector is not None and checker_type is not None:
+        from checker_config import get_checker_config
+        config = get_checker_config(checker_type)
+        semantic_dim += len(config.get('value_patterns', []))
+    
+    semantic_tensor = torch.tensor(semantic_features, dtype=torch.float32) if semantic_features else torch.zeros((num_nodes, semantic_dim), dtype=torch.float32)
 
     x = torch.cat([X_type, deg, lines, pe, rw, semantic_tensor], dim=1)
 

@@ -1,0 +1,16 @@
+/*
+ * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
+ */
+// Applied transformations: attempted_variable_operation, attempted_guard_reversal
+
+public class StringMethods {
+
+    void testCharAt(String s, int i) {
+        s.charAt(i);
+        s.codePointAt(i);
+        if (i >= 0 && i < s.length()) {
+            s.charAt(i);
+            s.codePointAt(i);
+        }
+    }
+}

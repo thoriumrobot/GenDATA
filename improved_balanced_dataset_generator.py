@@ -18,6 +18,15 @@ from typing import List, Dict, Any, Tuple, Optional
 from dataclasses import dataclass
 from pathlib import Path
 
+# Import checker-specific modules
+try:
+    from checker_config import CheckerType
+    from value_pattern_detector import ValuePatternDetector
+    CHECKER_MODULES_AVAILABLE = True
+except ImportError:
+    CHECKER_MODULES_AVAILABLE = False
+    CheckerType = None
+
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -40,18 +49,26 @@ class RealBalancedExample:
 class ImprovedBalancedDatasetGenerator:
     """Generates balanced training datasets using real code examples"""
     
-    def __init__(self, target_balance: float = 0.5, random_seed: int = 42):
+    def __init__(self, target_balance: float = 0.5, random_seed: int = 42, checker_type: Optional[CheckerType] = None):
         """
         Initialize the improved balanced dataset generator
         
         Args:
             target_balance: Target ratio of positive examples (0.5 = 50% positive, 50% negative)
             random_seed: Random seed for reproducible results
+            checker_type: Optional checker type for checker-specific value pattern extraction
         """
         self.target_balance = target_balance
         self.random_seed = random_seed
         random.seed(random_seed)
         np.random.seed(random_seed)
+        
+        # Checker type for value pattern extraction
+        self.checker_type = checker_type
+        if CHECKER_MODULES_AVAILABLE and checker_type is not None:
+            self.pattern_detector = ValuePatternDetector()
+        else:
+            self.pattern_detector = None
         
         # Annotation types to balance
         self.annotation_types = ['@Positive', '@NonNegative', '@GTENegativeOne']
@@ -95,8 +112,18 @@ class ImprovedBalancedDatasetGenerator:
         logger.info(f"Loaded {len(cfg_files)} CFG files from {cfg_directory}")
         return cfg_files
     
-    def extract_node_features(self, node: Dict, cfg_data: Dict) -> List[float]:
-        """Extract features from a CFG node (enhanced version with semantic patterns)"""
+    def extract_node_features(self, node: Dict, cfg_data: Dict, include_checker_patterns: bool = True) -> List[float]:
+        """
+        Extract features from a CFG node (enhanced version with semantic patterns)
+        
+        Args:
+            node: CFG node dictionary
+            cfg_data: Full CFG data dictionary
+            include_checker_patterns: Whether to include checker-specific value patterns
+            
+        Returns:
+            List of feature values
+        """
         label = node.get('label', '').lower()
         node_type = node.get('type', '').lower()
         line = node.get('line', 0)
@@ -225,6 +252,11 @@ class ImprovedBalancedDatasetGenerator:
             float(is_offset_or_position) * 1.5,
             float(could_be_zero_score) * 3.0,  # Aggregated score, highly emphasized
         ]
+        
+        # Add checker-specific value patterns (raw features, will be emphasized during training)
+        if include_checker_patterns and self.pattern_detector is not None and self.checker_type is not None:
+            checker_patterns = self.pattern_detector.get_pattern_features(node, cfg_data, self.checker_type)
+            features.extend(checker_patterns)
         
         return features
     

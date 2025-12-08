@@ -30,6 +30,15 @@ try:
 except ImportError:
     ENHANCED_CAUSAL_AVAILABLE = False
 
+# Import checker-specific modules
+try:
+    from checker_config import CheckerType
+    from checker_specific_models import create_checker_specific_model
+    CHECKER_MODULES_AVAILABLE = True
+except ImportError:
+    CHECKER_MODULES_AVAILABLE = False
+    CheckerType = None
+
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -37,9 +46,10 @@ logger = logging.getLogger(__name__)
 class AnnotationTypeTrainer:
     """Trainer for specific annotation types using binary RL models"""
     
-    def __init__(self, annotation_type='@NonNegative', base_model_type='gcn', learning_rate=0.001, device='cuda'):
+    def __init__(self, annotation_type='@NonNegative', base_model_type='gcn', learning_rate=0.001, device='cuda', checker_type=None):
         self.annotation_type = annotation_type
         self.base_model_type = base_model_type
+        self.checker_type = checker_type
         # Fall back to CPU if CUDA unavailable
         import torch
         if device == 'cuda' and not torch.cuda.is_available():
@@ -49,6 +59,8 @@ class AnnotationTypeTrainer:
             self.device = device
         self.learning_rate = learning_rate
         
+        # Determine base feature dimension for this model (without graph embeddings)
+        self.base_feature_dim = self._get_base_feature_dim()
         # Initialize the annotation-specific model
         self.model = self._init_annotation_model()
         
@@ -75,22 +87,39 @@ class AnnotationTypeTrainer:
         
     def _init_annotation_model(self):
         """Initialize model for specific annotation type prediction"""
+        # Use checker-specific model if available and checker type is specified
+        if CHECKER_MODULES_AVAILABLE and self.checker_type is not None:
+            base_input_dim = 14
+            from checker_config import get_checker_config
+            config = get_checker_config(self.checker_type)
+            pattern_dim = len(config.get('value_patterns', []))
+            input_dim = base_input_dim + pattern_dim
+            
+            return create_checker_specific_model(
+                checker_type=self.checker_type,
+                base_model_type=self.base_model_type,
+                input_dim=input_dim,
+                hidden_dim=128,
+                out_dim=2
+            )
+        
+        # Use standard models
         if self.base_model_type == 'gcn':
-            return AnnotationTypeGCNModel(input_dim=14, hidden_dim=128, out_dim=2)
+            return AnnotationTypeGCNModel(input_dim=self.base_feature_dim, hidden_dim=128, out_dim=2)
         elif self.base_model_type == 'gbt':
             return AnnotationTypeGBTModel()
         elif self.base_model_type == 'causal':
-            return AnnotationTypeCausalModel(input_dim=14, hidden_dim=128, out_dim=2)
+            return AnnotationTypeCausalModel(input_dim=self.base_feature_dim, hidden_dim=128, out_dim=2)
         elif self.base_model_type == 'enhanced_causal':
             if not ENHANCED_CAUSAL_AVAILABLE:
                 raise ImportError("Enhanced causal model not available. Please ensure enhanced_causal_model.py is present.")
             return AnnotationTypeEnhancedCausalModel(input_dim=32, hidden_dim=128, out_dim=2)
         elif self.base_model_type == 'hgt':
-            return AnnotationTypeHGTModel(input_dim=14, hidden_dim=128, out_dim=2)
+            return AnnotationTypeHGTModel(input_dim=self.base_feature_dim, hidden_dim=128, out_dim=2)
         elif self.base_model_type == 'gcsn':
-            return AnnotationTypeGCSNModel(input_dim=14, hidden_dim=128, out_dim=2)
+            return AnnotationTypeGCSNModel(input_dim=self.base_feature_dim, hidden_dim=128, out_dim=2)
         elif self.base_model_type == 'dg2n':
-            return AnnotationTypeDG2NModel(input_dim=14, hidden_dim=128, out_dim=2)
+            return AnnotationTypeDG2NModel(input_dim=self.base_feature_dim, hidden_dim=128, out_dim=2)
         else:
             raise ValueError(f"Unsupported base model type: {self.base_model_type}")
     
@@ -116,9 +145,12 @@ class AnnotationTypeTrainer:
             if not cfg_dir or not os.path.isdir(cfg_dir):
                 env_root = os.environ.get('CFG_OUTPUT_DIR') or os.environ.get('PREDICTION_CFG_DIR') or 'prediction_cfg_output'
                 cfg_dir = os.path.join(env_root, java_base) if java_base else ''
-            if os.path.isdir(cfg_dir):
-                emb = self.graph_embedder.embed_cfg_dir(cfg_dir)
-                feature_vector = np.concatenate([feature_vector, emb.cpu().numpy()])
+            # Only append graph embeddings for models that expect extended feature vectors.
+            # Graph-based models (gcn/hgt/gcsn) use input_dim=14; adding 256 dims breaks them.
+            if self.base_model_type not in ['gcn', 'hgt', 'gcsn']:
+                if os.path.isdir(cfg_dir):
+                    emb = self.graph_embedder.embed_cfg_dir(cfg_dir)
+                    feature_vector = np.concatenate([feature_vector, emb.cpu().numpy()])
             features.append(feature_vector)
             
             # Determine if this node should have the specific annotation type
@@ -127,6 +159,13 @@ class AnnotationTypeTrainer:
         
         return np.array(features), np.array(targets)
     
+    def _get_base_feature_dim(self):
+        """Compute base feature dimension from a dummy node (no embeddings)."""
+        dummy_node = {'label': '', 'node_type': '', 'line': 0, 'id': 0}
+        dummy_cfg = {'nodes': [dummy_node]}
+        feats = self._extract_annotation_type_features(dummy_node, dummy_cfg)
+        return len(feats)
+
     def _extract_annotation_type_features(self, node, cfg_data):
         """Extract features for annotation type prediction"""
         # Use enhanced causal features if available and model type is enhanced_causal
@@ -135,7 +174,7 @@ class AnnotationTypeTrainer:
         
         label = node.get('label', '')
         node_type = node.get('node_type', '')
-        line = node.get('line', 0)
+        line = node.get('line') or 0
         
         # Features specific to annotation type prediction
         features = [
@@ -322,15 +361,26 @@ class AnnotationTypeTrainer:
         """Load CFG data from files"""
         cfg_data_list = []
         try:
-            for root, dirs, files in os.walk(cfg_dir):
-                for file in files:
-                    if file.endswith('.json'):
-                        cfg_file = os.path.join(root, file)
-                        with open(cfg_file, 'r') as f:
-                            cfg_data = json.load(f)
-                            cfg_data_list.append(cfg_data)
+            if not os.path.exists(cfg_dir):
+                logger.error(f"CFG directory does not exist: {cfg_dir}")
+                return cfg_data_list
+            
+            # Count files first
+            json_files = list(Path(cfg_dir).rglob('*.json'))
+            logger.info(f"Found {len(json_files)} CFG JSON files in {cfg_dir}")
+            
+            for cfg_file in json_files:
+                try:
+                    with open(cfg_file, 'r') as f:
+                        cfg_data = json.load(f)
+                        cfg_data_list.append(cfg_data)
+                except Exception as e:
+                    logger.warning(f"Error loading CFG file {cfg_file}: {e}")
+                    continue
+            
+            logger.info(f"Successfully loaded {len(cfg_data_list)} CFG files")
         except Exception as e:
-            logger.error(f"Error loading CFG data: {e}")
+            logger.error(f"Error loading CFG data from {cfg_dir}: {e}")
         return cfg_data_list
     
     def _create_mock_cfg_data(self):
@@ -346,22 +396,39 @@ class AnnotationTypeTrainer:
         logger.info(f"Episodes: {num_episodes}")
         logger.info(f"Use real CFG data: {use_real_cfg_data}")
         
+        # Try to get CFG directory from various sources
+        if not cfg_dir:
+            # Try environment variable
+            cfg_dir = os.environ.get('CFG_OUTPUT_DIR') or os.environ.get('PREDICTION_CFG_DIR')
+        
         self.cfg_root = cfg_dir if cfg_dir and os.path.exists(cfg_dir) else None
+
         # Load real CFG data if available
-        if use_real_cfg_data and cfg_dir and os.path.exists(cfg_dir):
-            logger.info("Loading real CFG data for training")
-            cfg_data_list = self._load_cfg_data(cfg_dir)
-            if cfg_data_list:
-                logger.info(f"Loaded {len(cfg_data_list)} CFG files for training")
+        if use_real_cfg_data:
+            if cfg_dir and os.path.exists(cfg_dir):
+                logger.info(f"Loading real CFG data for training from {cfg_dir}")
+                cfg_data_list = self._load_cfg_data(cfg_dir)
+                if cfg_data_list:
+                    logger.info(f"Loaded {len(cfg_data_list)} CFG files for training")
+                else:
+                    logger.error(f"No CFG data found in {cfg_dir}. Please run the pipeline first to generate CFG data.")
+                    return
             else:
-                logger.error("No CFG data found from pipeline. Please run the pipeline first to generate CFG data.")
+                logger.error(f"CFG directory not found: {cfg_dir}. Please provide --cfg_dir or set CFG_OUTPUT_DIR environment variable.")
                 return
         else:
-            logger.error("No CFG data found from pipeline. Please run the pipeline first to generate CFG data.")
+            logger.error("Mock CFG data is deprecated. Please use real CFG data with --use_real_cfg_data (default).")
             return
         
         # Training loop
         episode_rewards = []
+        all_train_accuracies = []
+        all_val_accuracies = []
+        
+        # Split CFG data into train/val (80/20)
+        split_idx = int(len(cfg_data_list) * 0.8)
+        train_cfg_data = cfg_data_list[:split_idx]
+        val_cfg_data = cfg_data_list[split_idx:] if split_idx < len(cfg_data_list) else []
         
         for episode in range(num_episodes):
             logger.info(f"Episode {episode + 1}/{num_episodes}")
@@ -377,11 +444,29 @@ class AnnotationTypeTrainer:
             original_warnings = [f"warning_{i}" for i in range(random.randint(5, 15))]
             
             # Use real CFG data or mock data
-            cfg_data = cfg_data_list[episode % len(cfg_data_list)]
+            cfg_data = train_cfg_data[episode % len(train_cfg_data)] if train_cfg_data else cfg_data_list[episode % len(cfg_data_list)]
             
             # Train episode
             reward = self.train_episode(cfg_data, binary_predictions, original_warnings)
             episode_rewards.append(reward)
+            
+            # Compute training accuracy for this episode
+            features, targets = self.extract_annotation_features(cfg_data, binary_predictions)
+            if len(features) > 0:
+                predictions = self.predict_annotation_type(features)
+                if len(predictions) > 0 and len(targets) > 0:
+                    train_acc = np.mean(predictions == targets)
+                    all_train_accuracies.append(train_acc)
+            
+            # Compute validation accuracy periodically
+            if val_cfg_data and (episode + 1) % 5 == 0:
+                val_cfg = val_cfg_data[episode % len(val_cfg_data)]
+                val_features, val_targets = self.extract_annotation_features(val_cfg, binary_predictions)
+                if len(val_features) > 0:
+                    val_predictions = self.predict_annotation_type(val_features)
+                    if len(val_predictions) > 0 and len(val_targets) > 0:
+                        val_acc = np.mean(val_predictions == val_targets)
+                        all_val_accuracies.append(val_acc)
             
             # Update training statistics
             self.training_stats['episodes'].append(episode + 1)
@@ -395,7 +480,23 @@ class AnnotationTypeTrainer:
             # Log progress
             if (episode + 1) % 10 == 0:
                 avg_reward = np.mean(episode_rewards[-10:])
-                logger.info(f"Episode {episode + 1}: avg_reward={avg_reward:.3f}")
+                avg_train_acc = np.mean(all_train_accuracies[-10:]) if all_train_accuracies else 0.0
+                avg_val_acc = np.mean(all_val_accuracies[-5:]) if all_val_accuracies else 0.0
+                logger.info(f"Episode {episode + 1}: avg_reward={avg_reward:.3f}, Train Acc={avg_train_acc:.3f}, Val Acc={avg_val_acc:.3f}")
+        
+        # Compute final metrics
+        final_train_acc = np.mean(all_train_accuracies) if all_train_accuracies else 0.0
+        final_val_acc = np.mean(all_val_accuracies) if all_val_accuracies else 0.0
+        best_val_acc = max(all_val_accuracies) if all_val_accuracies else 0.0
+        
+        # Log final metrics
+        logger.info(f"Training completed - Train Acc: {final_train_acc:.4f}, Val Acc: {final_val_acc:.4f}, Best Val Acc: {best_val_acc:.4f}")
+        logger.info(f"Best validation accuracy: {best_val_acc * 100:.2f} percent")
+        
+        # Update training stats with accuracy metrics
+        self.training_stats['train_accuracy'] = float(final_train_acc)
+        self.training_stats['val_accuracy'] = float(final_val_acc)
+        self.training_stats['best_val_accuracy'] = float(best_val_acc)
         
         # Save model and training statistics
         self.save_model(f'models_annotation_types/{self.annotation_type.replace("@", "").lower()}_{self.base_model_type}_model.pth')

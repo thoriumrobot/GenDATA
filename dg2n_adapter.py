@@ -24,10 +24,19 @@ Minimal, non-invasive integration:
 import os
 import json
 import argparse
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Optional
 
 import torch
 import re
+
+# Import checker-specific modules
+try:
+    from checker_config import CheckerType
+    from value_pattern_detector import ValuePatternDetector
+    CHECKER_MODULES_AVAILABLE = True
+except ImportError:
+    CHECKER_MODULES_AVAILABLE = False
+    CheckerType = None
 
 
 def is_annotation_target(node: Dict) -> bool:
@@ -55,7 +64,7 @@ def is_annotation_target(node: Dict) -> bool:
     return False
 
 
-def extract_features(node: Dict, cfg_data: Dict) -> List[float]:
+def extract_features(node: Dict, cfg_data: Dict, checker_type: Optional[CheckerType] = None) -> List[float]:
     label = node.get('label', '')
     node_id = node.get('id', 0)
     node_type = str(node.get('node_type', '')).lower()
@@ -156,6 +165,12 @@ def extract_features(node: Dict, cfg_data: Dict) -> List[float]:
         float(is_offset_or_position) * 1.5,
         float(could_be_zero_score) * 3.0,
     ])
+    
+    # Add checker-specific value patterns (raw features, will be emphasized during training)
+    if CHECKER_MODULES_AVAILABLE and checker_type is not None:
+        pattern_detector = ValuePatternDetector()
+        checker_patterns = pattern_detector.get_pattern_features(node, cfg_data, checker_type)
+        features.extend(checker_patterns)
 
     return features
 PF_CLASSES = [

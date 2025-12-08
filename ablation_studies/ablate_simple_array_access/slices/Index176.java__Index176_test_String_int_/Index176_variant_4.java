@@ -1,0 +1,18 @@
+/*
+ * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
+ */
+// Applied transformations: attempted_variable_operation, attempted_mathematical_expression
+
+import org.checkerframework.checker.index.qual.IndexFor;
+
+public class Index176 {
+
+    void test(String arglist, @IndexFor("#1") int pos) {
+        int semi_pos = arglist.indexOf(";");
+        if (semi_pos == -1) {
+            throw new Error("Malformed arglist: " + arglist);
+        }
+        arglist.substring(pos, semi_pos + 1);
+        arglist.substring(pos, semi_pos + 2);
+    }
+}

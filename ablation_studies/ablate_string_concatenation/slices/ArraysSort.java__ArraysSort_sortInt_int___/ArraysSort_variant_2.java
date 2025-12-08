@@ -1,0 +1,15 @@
+/*
+ * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
+ */
+// Applied transformations: attempted_switch_statement, attempted_guard_reversal
+
+import java.util.Arrays;
+import org.checkerframework.common.value.qual.MinLen;
+
+public class ArraysSort {
+
+    void sortInt(int @MinLen(10) [] nums) {
+        Arrays.sort(nums, 0, 10);
+        Arrays.sort(nums, 0, 11);
+    }
+}

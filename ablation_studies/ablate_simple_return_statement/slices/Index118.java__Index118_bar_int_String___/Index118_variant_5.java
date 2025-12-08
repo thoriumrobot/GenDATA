@@ -1,0 +1,16 @@
+/*
+ * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
+ */
+// Applied transformations: attempted_loop_conversion, attempted_variable_operation
+
+import org.checkerframework.checker.index.qual.*;
+import org.checkerframework.common.value.qual.*;
+
+public class Index118 {
+
+    public static void bar(@NonNegative int i, String @ArrayLen(4) [] args) {
+        if (i <= 3) {
+            System.out.println(args[i]);
+        }
+    }
+}

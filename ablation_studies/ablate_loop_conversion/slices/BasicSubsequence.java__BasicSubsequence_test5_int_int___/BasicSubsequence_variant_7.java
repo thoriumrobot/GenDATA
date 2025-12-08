@@ -1,0 +1,14 @@
+/*
+ * CFWR enhanced semantic augmentation: applied advanced semantic-preserving transformations using JDT AST parsing.
+ */
+// Applied transformations: attempted_variable_operation, attempted_mathematical_expression
+
+import org.checkerframework.checker.index.qual.*;
+
+public class BasicSubsequence {
+
+    void test5(@GTENegativeOne @LessThan("y + 1") int x1, int[] a) {
+        x = x1;
+        b = a;
+    }
+}

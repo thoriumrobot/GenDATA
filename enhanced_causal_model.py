@@ -10,11 +10,25 @@ import torch.nn.functional as F
 import numpy as np
 from typing import Dict, List, Tuple, Optional
 
+# Import checker-specific modules
+try:
+    from checker_config import CheckerType
+    from value_pattern_detector import ValuePatternDetector
+    CHECKER_MODULES_AVAILABLE = True
+except ImportError:
+    CHECKER_MODULES_AVAILABLE = False
+    CheckerType = None
+
 class EnhancedCausalFeatureExtractor:
     """Enhanced causal feature extractor with 32-dimensional features"""
     
-    def __init__(self):
+    def __init__(self, checker_type: Optional[CheckerType] = None):
         self.feature_cache = {}
+        self.checker_type = checker_type
+        if CHECKER_MODULES_AVAILABLE and checker_type is not None:
+            self.pattern_detector = ValuePatternDetector()
+        else:
+            self.pattern_detector = None
     
     def extract_features(self, node: Dict, cfg_data: Dict) -> List[float]:
         """Extract 32-dimensional causal features"""
@@ -26,7 +40,7 @@ class EnhancedCausalFeatureExtractor:
         # 2. Dataflow Causal Features (8 features)
         features.extend(self._extract_dataflow_causal(node, cfg_data))
         
-        # 3. Semantic Causal Features (8 features)
+        # 3. Semantic Causal Features (8 features) - now checker-aware
         features.extend(self._extract_semantic_causal(node, cfg_data))
         
         # 4. Temporal Causal Features (8 features)
@@ -386,9 +400,24 @@ class GTENegativeOneCausalLayers(nn.Module):
         combined = torch.cat([capacity_features, limit_features, bound_features], dim=-1)
         return torch.relu(self.merge(combined))
 
-# Global feature extractor instance
+# Global feature extractor instance (default, no checker type)
 enhanced_feature_extractor = EnhancedCausalFeatureExtractor()
 
-def extract_enhanced_causal_features(node: Dict, cfg_data: Dict) -> List[float]:
-    """Extract enhanced causal features for a node"""
-    return enhanced_feature_extractor.extract_features(node, cfg_data)
+def extract_enhanced_causal_features(node: Dict, cfg_data: Dict, checker_type: Optional[CheckerType] = None) -> List[float]:
+    """
+    Extract enhanced causal features for a node
+    
+    Args:
+        node: CFG node dictionary
+        cfg_data: Full CFG data dictionary
+        checker_type: Optional checker type for checker-aware features
+        
+    Returns:
+        List of feature values
+    """
+    # Create extractor with checker type if provided
+    if checker_type is not None:
+        extractor = EnhancedCausalFeatureExtractor(checker_type=checker_type)
+        return extractor.extract_features(node, cfg_data)
+    else:
+        return enhanced_feature_extractor.extract_features(node, cfg_data)

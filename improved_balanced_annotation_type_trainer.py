@@ -10,14 +10,24 @@ not artificial modifications.
 import os
 import json
 import logging
+import random
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
-from typing import List, Dict, Any, Tuple
+from typing import List, Dict, Any, Tuple, Optional
 from pathlib import Path
+
+# Import checker-specific modules
+try:
+    from checker_config import CheckerType
+    from checker_specific_models import create_checker_specific_model
+    CHECKER_MODULES_AVAILABLE = True
+except ImportError:
+    CHECKER_MODULES_AVAILABLE = False
+    CheckerType = None
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -103,8 +113,10 @@ class ImprovedBalancedAnnotationTypeModel(nn.Module):
 class ImprovedBalancedAnnotationTypeTrainer:
     """Enhanced trainer for real balanced annotation type models"""
     
-    def __init__(self, model_type: str = 'improved_balanced_causal', device: str = 'auto'):
+    def __init__(self, model_type: str = 'improved_balanced_causal', device: str = 'auto', 
+                 checker_type: Optional[CheckerType] = None):
         self.model_type = model_type
+        self.checker_type = checker_type
         
         # Set device
         if device == 'auto':
@@ -113,6 +125,8 @@ class ImprovedBalancedAnnotationTypeTrainer:
             self.device = torch.device(device)
         
         logger.info(f"Using device: {self.device}")
+        if checker_type is not None:
+            logger.info(f"Using checker-specific models for: {checker_type}")
         
         # Model components
         self.models = {}
@@ -125,7 +139,8 @@ class ImprovedBalancedAnnotationTypeTrainer:
             'training_history': {},
             'best_accuracies': {},
             'final_metrics': {},
-            'real_code_analysis': {}
+            'real_code_analysis': {},
+            'checker_type': str(checker_type) if checker_type else None
         }
     
     def load_balanced_dataset(self, dataset_file: str) -> Tuple[List[Dict], str]:
@@ -153,11 +168,35 @@ class ImprovedBalancedAnnotationTypeTrainer:
     
     def create_model(self, input_dim: int, annotation_type: str) -> nn.Module:
         """Create an enhanced model for the given annotation type"""
-        model = ImprovedBalancedAnnotationTypeModel(
-            input_dim=input_dim,
-            hidden_dims=[512, 256, 128, 64],  # Larger architecture for better learning
-            dropout_rate=0.4  # Higher dropout for regularization
-        )
+        # Use checker-specific model if available
+        if CHECKER_MODULES_AVAILABLE and self.checker_type is not None:
+            # Extract base model type from model_type string
+            base_model_type = self.model_type.replace('improved_balanced_', '').replace('_', '')
+            if base_model_type == 'causal':
+                base_model_type = 'causal'
+            elif base_model_type == 'enhancedcausal':
+                base_model_type = 'enhanced_causal'
+            
+            # Get pattern dimension for this checker
+            from checker_config import get_checker_config
+            config = get_checker_config(self.checker_type)
+            pattern_dim = len(config.get('value_patterns', []))
+            
+            # Create checker-specific model
+            model = create_checker_specific_model(
+                checker_type=self.checker_type,
+                base_model_type=base_model_type,
+                input_dim=input_dim - pattern_dim,  # Subtract pattern dim since it will be added
+                hidden_dim=256,
+                out_dim=2
+            )
+        else:
+            # Use standard model
+            model = ImprovedBalancedAnnotationTypeModel(
+                input_dim=input_dim,
+                hidden_dims=[512, 256, 128, 64],  # Larger architecture for better learning
+                dropout_rate=0.4  # Higher dropout for regularization
+            )
         
         model = model.to(self.device)
         self.models[annotation_type] = model
@@ -191,6 +230,15 @@ class ImprovedBalancedAnnotationTypeTrainer:
                    validation_split: float = 0.2) -> Dict[str, Any]:
         """Train a model using real balanced dataset"""
         
+        # Set random seeds for reproducibility
+        torch.manual_seed(42)
+        np.random.seed(42)
+        random.seed(42)
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed_all(42)
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
+        
         # Load dataset
         examples, annotation_type = self.load_balanced_dataset(dataset_file)
         
@@ -211,8 +259,9 @@ class ImprovedBalancedAnnotationTypeTrainer:
             generator=torch.Generator().manual_seed(42)
         )
         
-        # Create data loaders
-        train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+        # Create data loaders with fixed seed generator for shuffle
+        train_generator = torch.Generator().manual_seed(42)
+        train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, generator=train_generator)
         val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
         
         logger.info(f"Training set: {len(train_dataset)} examples")
