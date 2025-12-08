@@ -8,8 +8,8 @@ The semantic transformation pipeline has been corrected to ensure that **actual 
 
 ### 1. **SemanticTransformer.java** (JDT-based)
 - ✅ **Probability thresholds increased from 20-30% to 100%** for deterministic transformations
-- ✅ **Implemented missing transformations**: switch_statement, variable_operation, string_concatenation, numeric_literal
-- ✅ **Removed unimplemented transformations** from available list (reduced from 17 to 9 working transformations)
+- ✅ **Implemented all transformations**: 20 total transformations (10 enhanced + 10 simple)
+- ✅ **Complete transformation coverage**: All transformations working and tested
 
 ### 2. **SemanticAugmenter.java** (AST-based)
 - ✅ **Enhanced transformation methods** to return boolean values indicating if changes were made
@@ -54,7 +54,7 @@ The semantic transformation pipeline has been corrected to ensure that **actual 
 
 ## Available Transformations (Corrected System)
 
-### Enhanced Mode (9 working transformations)
+### Enhanced Mode (10 transformations)
 1. `loop_conversion` - Converts for/while loops
 2. `guard_reversal` - Reverses if-else conditions  
 3. `mathematical_expression` - Applies mathematical properties
@@ -62,13 +62,21 @@ The semantic transformation pipeline has been corrected to ensure that **actual 
 5. `ternary_operator` - Converts ternary to if-else and vice versa
 6. `switch_statement` - Transforms switch to if-else chain
 7. `variable_operation` - Transforms assignment operations
-8. `string_concatenation` - Transforms string concatenation
-9. `numeric_literal` - Transforms numeric literals
+8. `brace_normalization` - Code formatting variations
+9. `string_concatenation` - Transforms string concatenation
+10. `numeric_literal` - Transforms numeric literals
 
-### Simple Mode (5 core transformations)
-- Uses enhanced system with disabled complex transformations:
-  - Disabled: `switch_statement`, `variable_operation`, `string_concatenation`, `numeric_literal`
-  - Enabled: `loop_conversion`, `guard_reversal`, `mathematical_expression`, `logical_expression`, `ternary_operator`
+### Simple Mode (10 transformations)
+1. `simple_method_call` - Method call variations (parentheses and spacing)
+2. `simple_assignment` - Assignment transformations (spacing and compound assignments)
+3. `simple_conditional` - Simple condition reversals
+4. `simple_array_access` - Array access pattern variations
+5. `simple_return_statement` - Return statement variations
+6. `simple_variable_declaration` - Variable declaration changes (final modifier, type casting)
+7. `simple_constructor_call` - Constructor call variations
+8. `simple_field_access` - Field access pattern variations
+9. `simple_string_operation` - String operation alternatives
+10. `simple_numeric_operation` - Numeric operation transformations
 
 ## Verification Results
 
@@ -76,6 +84,8 @@ The semantic transformation pipeline has been corrected to ensure that **actual 
 ✅ **Transformation probability**: 100% deterministic application
 ✅ **Semantic preservation**: Transformations maintain program semantics
 ✅ **Pipeline integration**: All pipelines use corrected system by default
+✅ **Complete coverage**: All 20 transformations (10 enhanced + 10 simple) implemented and tested
+✅ **Ablation study results**: Latest results show transformation impact on model performance (see `ablation_transformations_final/transformation_ablation_results.json`)
 
 ## Usage Examples
 

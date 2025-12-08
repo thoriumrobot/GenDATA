@@ -14,9 +14,12 @@ Inputs:
 """
 
 import json
+import logging
 from pathlib import Path
 from typing import Dict, List, Tuple
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, confusion_matrix, classification_report
+
+logger = logging.getLogger(__name__)
 
 
 TARGET_ANNOTATIONS = ['@Positive', '@NonNegative', '@GTENegativeOne']
@@ -250,25 +253,45 @@ def evaluate_project_model(project: str, model: str) -> Dict:
     
     gt_map = flatten_annotations(gt)
     pr_map = flatten_predictions(pr)
-    # If no GT, mark and return empty metrics
+    # If no GT, mark and return metrics that don't require GT (warning reduction, prediction counts)
     total_gt = sum(len(v) for v in gt_map.values())
+    total_pred = sum(len(v) for v in pr_map.values())
+    
     if total_gt == 0:
+        # Compute warning reduction even without GT
+        warning_reduction = None
+        baseline_warnings_file = base / f'{project}_warnings.out'
+        if baseline_warnings_file.exists():
+            try:
+                from studies.compute_warning_reduction import compute_warning_reduction_for_model
+                wr_result = compute_warning_reduction_for_model(
+                    project,
+                    model,
+                    baseline_warnings_file,
+                    base
+                )
+                warning_reduction = wr_result.get('reduction_percentage', None)
+            except Exception as e:
+                logger.debug(f"Warning reduction computation failed: {e}")
+                warning_reduction = None
+        
         return {
             'project': project,
             'model': model,
             'num_ground_truth': 0,
-            'num_predictions': sum(len(v) for v in pr_map.values()),
+            'num_predictions': total_pred,
             'note': 'no_gt',
-            'accuracy_exact': 0.0,
-            'accuracy_partial': 0.0,
-            'precision_weighted': 0.0,
-            'recall_weighted': 0.0,
-            'f1_macro': 0.0,
-            'f1_weighted': 0.0,
-            'coverage': 0.0,
+            'accuracy_exact': None,
+            'accuracy_partial': None,
+            'precision_weighted': None,
+            'recall_weighted': None,
+            'f1_macro': None,
+            'f1_weighted': None,
+            'coverage': None,
             'confusion_matrix_labels': TARGET_ANNOTATIONS + ['NONE'],
             'confusion_matrix': [],
-            'classification_report': {}
+            'classification_report': {},
+            'warning_reduction': warning_reduction
         }
 
     y_true, y_pred = align_labels(gt_map, pr_map)
@@ -311,7 +334,24 @@ def evaluate_project_model(project: str, model: str) -> Dict:
         # (The diagnostics don't track distance per match type, so this is approximate)
         acc_exact_plus1 = (diagnostics['exact_line_match'] + diagnostics['near_match_same_label']) / total
     
-    return {
+    # Compute warning reduction if baseline warnings file exists
+    warning_reduction = None
+    baseline_warnings_file = base / f'{project}_warnings.out'
+    if baseline_warnings_file.exists():
+        try:
+            from studies.compute_warning_reduction import compute_warning_reduction_for_model
+            wr_result = compute_warning_reduction_for_model(
+                project,
+                model,
+                baseline_warnings_file,
+                base
+            )
+            warning_reduction = wr_result.get('reduction_percentage', None)
+        except Exception as e:
+            logger.debug(f"Warning reduction computation failed: {e}")
+            warning_reduction = None
+    
+    result = {
         'project': project,
         'model': model,
         'num_ground_truth': total,
@@ -336,11 +376,17 @@ def evaluate_project_model(project: str, model: str) -> Dict:
             'accuracy_exact_plus1_line': acc_exact_plus1,
         },
     }
+    
+    # Add warning reduction if computed
+    if warning_reduction is not None:
+        result['warning_reduction'] = warning_reduction
+    
+    return result
 
 
 def main():
     projects = ['guava', 'jfreechart', 'plume-lib']
-    models = ['gcn', 'hgt', 'gbt', 'causal', 'gcsn', 'dg2n', 'dgcrf']
+    models = ['gcn', 'hgt', 'gbt', 'causal', 'gcsn', 'dg2n', 'enhanced_causal']
     results_dir = Path('case_studies') / 'evaluation_results'
     results_dir.mkdir(parents=True, exist_ok=True)
     all_results: List[Dict] = []

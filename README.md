@@ -1,13 +1,13 @@
 # CFWR Adaptive Semantic Augmentation Pipeline - GenDATA
 
-This directory contains the essential files for the CFWR (Checker Framework Warning Resolver) adaptive semantic augmentation pipeline. This advanced system predicts specific Checker Framework annotation types (@Positive, @NonNegative, @GTENegativeOne) using 27 semantic augmentation methods with automatic complexity-based selection, balanced training, GPU acceleration, batching, and graph inputs.
+This directory contains the essential files for the CFWR (Checker Framework Warning Resolver) adaptive semantic augmentation pipeline. This advanced system predicts specific Checker Framework annotation types (@Positive, @NonNegative, @GTENegativeOne) using 20 semantic augmentation methods (10 enhanced + 10 simple) with automatic complexity-based selection, balanced training, GPU acceleration, batching, and graph inputs.
 
 ## 🎉 **NEW: Eclipse JDT Implementation Complete**
 
 **All regex-based parsing has been successfully replaced with robust Eclipse JDT AST parsing!**
 
 - ✅ **100% AST-based parsing** using Eclipse JDT for accurate Java code analysis
-- ✅ **27 semantic transformations** implemented with AST rewriting for semantic preservation
+- ✅ **20 semantic transformations** (10 enhanced + 10 simple) implemented with AST rewriting for semantic preservation
 - ✅ **Random walk optimization** fully compatible with JDT-based components
 - ✅ **Comprehensive testing** with unit and integration tests
 - ✅ **Production ready** with robust error handling and validation
@@ -32,14 +32,17 @@ The pipeline now includes **automatic learning of relevant values to emphasize**
 - **📘 Ablation Studies**: `ABLATION_STUDY_AUGMENTATION.md` - Ablation study guide and results
 - **📘 Ablation Dataset Guide**: `ABLATION_STUDY_DATASET_GUIDE.md` - **DEFAULT**: Separate dataset directories for valid comparisons
 - **📘 Latest Ablation Results**: `ABLATION_STUDY_RESULTS_LATEST.md` - **NEW**: December 2025 results with baseline performance metrics
+- **📘 Primary Result Files**: 
+  - Augmentation Comparison: `ablation_augmentation_comparison_final/augmentation_comparison_results.json`
+  - Transformation Ablation: `ablation_transformations_final/transformation_ablation_results.json`
 
 ## 🚀 **Previous Update: Adaptive Semantic Augmentation Pipeline with GPU Acceleration**
 
-The annotation-type models have been **completely rearchitected** with an adaptive semantic augmentation pipeline that combines all advanced features: adaptive semantic augmentation with 27 transformation methods, balanced training with real code examples, GPU acceleration, batching support, graph inputs, and sophisticated graph embeddings.
+The annotation-type models have been **completely rearchitected** with an adaptive semantic augmentation pipeline that combines all advanced features: adaptive semantic augmentation with 20 transformation methods (10 Enhanced + 10 Simple), balanced training with real code examples, GPU acceleration, batching support, graph inputs, and sophisticated graph embeddings.
 
 ### **Adaptive Semantic Augmentation Pipeline Features**
-- **✅ Adaptive Semantic Augmentation**: 27 transformation methods (17 Enhanced + 10 Simple) with automatic complexity-based selection
-- **✅ Enhanced Semantic Augmentation**: 17 methods for complex Java code (loops, streams, lambdas)
+- **✅ Adaptive Semantic Augmentation**: 20 transformation methods (10 Enhanced + 10 Simple) with automatic complexity-based selection
+- **✅ Enhanced Semantic Augmentation**: 10 methods for complex Java code (loops, streams, lambdas)
 - **✅ Simple Code Semantic Augmentation**: 10 methods optimized for Checker Framework test cases
 - **✅ Automatic System Selection**: Complexity analysis determines optimal augmentation approach
 - **✅ Balanced Training**: 50/50 positive/negative examples using real code patterns
@@ -54,15 +57,16 @@ The annotation-type models have been **completely rearchitected** with an adapti
 - **✅ Training Episodes**: 100 episodes per model with consistent performance
 - **✅ Prediction Generation**: 3.0 average predictions per episode across all models
 - **✅ GPU Optimization**: NVIDIA GeForce RTX 4070 Ti SUPER with CUDA acceleration
-- **✅ Adaptive Augmentation**: Automatic complexity-based selection between Enhanced (17 methods) and Simple (10 methods)
+- **✅ Adaptive Augmentation**: Automatic complexity-based selection between Enhanced (10 methods) and Simple (10 methods)
 - **✅ Slicer Resistance**: Very High resistance for Enhanced, High to Very High for Simple
-- **✅ Semantic Preservation**: Perfect semantic equivalence across all 27 transformation methods
+- **✅ Semantic Preservation**: Perfect semantic equivalence across all 20 transformation methods
+- **✅ Data Reuse**: Datasets are not regenerated if they already exist, saving time on subsequent runs
 
 ## 📊 **Adaptive Semantic Augmentation Models Performance Analysis**
 
 ### **Current Status (Production Ready)**
-- **✅ Adaptive Semantic Augmentation Pipeline**: Fully implemented with 27 transformation methods
-- **✅ Enhanced Semantic Augmentation**: 17 methods for complex Java code with very high slicer resistance
+- **✅ Adaptive Semantic Augmentation Pipeline**: Fully implemented with 20 transformation methods
+- **✅ Enhanced Semantic Augmentation**: 10 methods for complex Java code with very high slicer resistance
 - **✅ Simple Code Semantic Augmentation**: 10 methods for Checker Framework test cases with high slicer resistance
 - **✅ Automatic Complexity Analysis**: Intelligent selection between Enhanced and Simple augmentation systems
 - **✅ GPU Acceleration**: NVIDIA GeForce RTX 4070 Ti SUPER (16.7 GB memory)
@@ -96,46 +100,39 @@ The annotation-type models have been **completely rearchitected** with an adapti
 
 ## 🚀 **Adaptive Semantic Augmentation System**
 
-### **27 Transformation Methods (17 Enhanced + 10 Simple)**
+### **20 Transformation Methods (10 Enhanced + 10 Simple)**
 
-#### **Enhanced Semantic Augmentation (17 Methods)**
+#### **Enhanced Semantic Augmentation (10 Methods)**
 For complex Java code with advanced features:
-1. **Loop Conversions** (For ↔ While)
-2. **Guard Reversals** (If-else condition flipping)
-3. **Mathematical Properties** (Commutativity, associativity, identity)
-4. **De Morgan's Laws** (Logical operator distribution)
-5. **Ternary ↔ If-Else** (Conditional expression restructuring)
-6. **Switch ↔ If-Else** (Control structure conversion)
-7. **Variable Operations** (Variable inlining/extraction)
-8. **Method Extraction and Inlining** (Extract complex expressions into methods)
-9. **Conditional Expression Restructuring** (Complex conditional logic variations)
-10. **Array Access Pattern Variations** (Different array indexing expressions)
-11. **String Concatenation Alternatives** (Different string building approaches)
-12. **Numeric Literal Transformations** (Different numeric representations)
-13. **Exception Handling Restructuring** (Different exception handling patterns)
-14. **Lambda Expression Conversions** (Lambda ↔ Anonymous class conversion)
-15. **Stream API Alternatives** (Stream ↔ Traditional loop conversion)
-16. **Builder Pattern Variations** (Constructor ↔ Builder pattern)
-17. **Functional Programming Conversions** (Method references ↔ Lambda expressions)
+1. **Loop Conversions** (`loop_conversion`) - For ↔ While conversions
+2. **Guard Reversals** (`guard_reversal`) - If-else condition flipping
+3. **Mathematical Properties** (`mathematical_expression`) - Commutativity, associativity, identity
+4. **De Morgan's Laws** (`logical_expression`) - Logical operator distribution
+5. **Ternary ↔ If-Else** (`ternary_operator`) - Conditional expression restructuring
+6. **Switch ↔ If-Else** (`switch_statement`) - Control structure conversion
+7. **Variable Operations** (`variable_operation`) - Variable inlining/extraction
+8. **Brace Normalization** (`brace_normalization`) - Code formatting variations
+9. **String Concatenation Alternatives** (`string_concatenation`) - Different string building approaches
+10. **Numeric Literal Transformations** (`numeric_literal`) - Different numeric representations
 
 #### **Simple Code Semantic Augmentation (10 Methods)**
 For Checker Framework test cases and simple Java code:
-1. **Simple Method Call Variations** (Parentheses and spacing)
-2. **Simple Assignment Transformations** (Spacing and compound assignments)
-3. **Simple Conditional Restructuring** (Simple condition reversals)
-4. **Simple Array Access Patterns** (Index arithmetic variations)
-5. **Simple Return Statement Variations** (Parentheses and arithmetic)
-6. **Simple Variable Declaration Changes** (Final modifier and type casting)
-7. **Simple Constructor Call Variations** (Parentheses and argument variations)
-8. **Simple Field Access Patterns** (Parentheses and spacing)
-9. **Simple String Operation Alternatives** (String literal variations)
-10. **Simple Numeric Operation Transformations** (Arithmetic identity operations)
+1. **Simple Method Call Variations** (`simple_method_call`) - Parentheses and spacing
+2. **Simple Assignment Transformations** (`simple_assignment`) - Spacing and compound assignments
+3. **Simple Conditional Restructuring** (`simple_conditional`) - Simple condition reversals
+4. **Simple Array Access Patterns** (`simple_array_access`) - Index arithmetic variations
+5. **Simple Return Statement Variations** (`simple_return_statement`) - Parentheses and arithmetic
+6. **Simple Variable Declaration Changes** (`simple_variable_declaration`) - Final modifier and type casting
+7. **Simple Constructor Call Variations** (`simple_constructor_call`) - Parentheses and argument variations
+8. **Simple Field Access Patterns** (`simple_field_access`) - Parentheses and spacing
+9. **Simple String Operation Alternatives** (`simple_string_operation`) - String literal variations
+10. **Simple Numeric Operation Transformations** (`simple_numeric_operation`) - Arithmetic identity operations
 
 ### **Automatic Complexity-Based Selection**
 - **Complexity Analysis**: Analyzes code for modern Java features (loops, streams, lambdas, etc.)
-- **Enhanced System**: Used for complex code (complexity score ≥ 3)
-- **Simple System**: Used for Checker Framework test cases (complexity score < 3)
-- **Perfect Semantic Preservation**: 100% semantic equivalence across all transformations
+- **Enhanced System**: Used for complex code (complexity score ≥ 3) - 10 transformation methods
+- **Simple System**: Used for Checker Framework test cases (complexity score < 3) - 10 transformation methods
+- **Perfect Semantic Preservation**: 100% semantic equivalence across all 20 transformations
 - **High Slicer Resistance**: Very High for Enhanced, High to Very High for Simple
 
 ### **Pipeline Integration**
@@ -147,9 +144,9 @@ For Checker Framework test cases and simple Java code:
 ## Core Components
 
 ### Adaptive Semantic Augmentation Pipeline (DEFAULT)
-- `augment_first_pipeline.py` - **UPDATED**: Augment-first pipeline with adaptive semantic augmentation (27 methods)
-- `simple_annotation_type_pipeline.py` - **UPDATED**: Traditional pipeline with adaptive semantic augmentation (27 methods)
-- `enhanced_semantic_augment_slices.py` - **NEW**: Enhanced semantic augmentation with 17 transformation methods
+- `augment_first_pipeline.py` - **UPDATED**: Augment-first pipeline with adaptive semantic augmentation (20 methods)
+- `simple_annotation_type_pipeline.py` - **UPDATED**: Traditional pipeline with adaptive semantic augmentation (20 methods)
+- `enhanced_semantic_augment_slices.py` - **NEW**: Enhanced semantic augmentation with 10 transformation methods
 - `simple_code_semantic_augment_slices.py` - **NEW**: Simple code semantic augmentation with 10 transformation methods
 - `enhanced_balanced_pipeline.py` - Complete enhanced balanced pipeline with all features
 - `improved_balanced_dataset_generator.py` - Generates balanced datasets with real code examples
@@ -301,16 +298,26 @@ python predict_with_enhanced_pipeline.py --target_file /path/to/MyClass.java
 python predict_with_enhanced_pipeline.py --target_file /path/to/MyClass.java --no_run_checker
 
 # Ablation studies with separate datasets (DEFAULT)
+# Results saved to: ablation_augmentation_comparison_final/augmentation_comparison_results.json
 python run_augmentation_comparison_study.py \
     --cfg_dir cfg_output_specimin \
-    --cfg_dir_no_aug cfg_output_no_aug \
+    --cfg_dir_no_aug ablation_studies/no_augmentation/cfg_output \
     --episodes 10
 
 # Transformation ablation with separate datasets per transformation
+# Results saved to: ablation_transformations_final/transformation_ablation_results.json
 python run_transformation_ablation_final.py \
     --cfg_dir cfg_output_specimin \
-    --cfg_dir_base_pattern "cfg_output_ablate_{transform}" \
+    --cfg_dir_base_pattern "ablation_studies/ablate_{transform}/cfg_output" \
     --episodes 10
+
+# Complete ablation pipeline (generates CFGs if needed, skips if exist)
+python complete_ablation_studies.py \
+    --slices_dir slices_specimin \
+    --cfg_dir cfg_output_specimin \
+    --episodes 10 \
+    --device cpu \
+    --log_file ablation_full_pipeline.log
 ```
 
 ### **Checker Framework Configuration**
@@ -361,62 +368,29 @@ python simple_annotation_type_pipeline.py --mode predict \
   --warnings_file /home/ubuntu/checker-framework/checker/tests/index/index1.out
 ```
 
-## 📊 **Complete 21 Model Training Results (2025-10-05)**
+## 📊 **Latest Ablation Study Results (December 2025)**
 
-### **Training Success Summary**
-- ✅ **21 models trained successfully** (100% success rate)
-- 📁 **21 model files** (.pth) generated
-- 📁 **21 statistics files** (.json) generated
-- 🎯 **All annotation types covered**: @Positive, @NonNegative, @GTENegativeOne
-- 🎯 **All base models covered**: gcn, gbt, causal, enhanced_causal, hgt, gcsn, dg2n
+### **Augmentation Comparison Study**
+**Results File**: `ablation_augmentation_comparison_final/augmentation_comparison_results.json`
 
-### **Detailed Model Results**
+- **With Augmentation**: Average validation accuracy 0.7561 (21 models)
+- **Without Augmentation**: Average validation accuracy 0.7514 (21 models)
+- **Overall Improvement**: +0.63% (small positive impact)
+- **All Models Return Metrics**: ✅ Graph models (GCN, HGT, GCSN) now return accuracy metrics
 
-#### **@Positive Models (7 models)**
-| Model | Episodes | Avg Predictions | Status |
-|-------|----------|-----------------|--------|
-| **GCN** | 100 | 3.0 | ✅ Trained |
-| **GBT** | 100 | 3.0 | ✅ Trained |
-| **Causal** | 100 | 3.0 | ✅ Trained |
-| **Enhanced Causal** | 100 | 3.0 | ✅ Trained |
-| **HGT** | 100 | 3.0 | ✅ Trained |
-| **GCSN** | 100 | 3.0 | ✅ Trained |
-| **DG2N** | 100 | 3.0 | ✅ Trained |
+### **Transformation Ablation Study**
+**Results File**: `ablation_transformations_final/transformation_ablation_results.json`
 
-#### **@NonNegative Models (7 models)**
-| Model | Episodes | Avg Predictions | Status |
-|-------|----------|-----------------|--------|
-| **GCN** | 100 | 3.0 | ✅ Trained |
-| **GBT** | 100 | 3.0 | ✅ Trained |
-| **Causal** | 100 | 3.0 | ✅ Trained |
-| **Enhanced Causal** | 100 | 3.0 | ✅ Trained |
-| **HGT** | 100 | 3.0 | ✅ Trained |
-| **GCSN** | 100 | 3.0 | ✅ Trained |
-| **DG2N** | 100 | 3.0 | ✅ Trained |
+- **Baseline Average**: 0.7012 validation accuracy (all 20 transformations enabled)
+- **Top 5 Most Impactful Transformations** (by performance loss when disabled):
+  1. `numeric_literal`: -6.30% performance loss
+  2. `simple_field_access`: -5.84% performance loss
+  3. `simple_string_operation`: -4.78% performance loss
+  4. `string_concatenation`: -3.51% performance loss
+  5. `guard_reversal`: +2.03% performance gain (improves when disabled)
 
-#### **@GTENegativeOne Models (7 models)**
-| Model | Episodes | Avg Predictions | Status |
-|-------|----------|-----------------|--------|
-| **GCN** | 100 | 3.0 | ✅ Trained |
-| **GBT** | 100 | 3.0 | ✅ Trained |
-| **Causal** | 100 | 3.0 | ✅ Trained |
-| **Enhanced Causal** | 100 | 3.0 | ✅ Trained |
-| **HGT** | 100 | 3.0 | ✅ Trained |
-| **GCSN** | 100 | 3.0 | ✅ Trained |
-| **DG2N** | 100 | 3.0 | ✅ Trained |
-
-### **Prediction Results**
-- ✅ **2,398 prediction files** generated
-- 🎯 **146 annotation predictions** made across 146 files
-- 🚀 **GPU acceleration used**: NVIDIA GeForce RTX 4070 Ti SUPER
-- ⚡ **Processing rate**: ~12 files/second
-
-### **Pipeline Features**
-- ✅ **Semantic Augmentation**: Factor 10 (reduced from 50 for faster training)
-- ✅ **Augment-First Approach**: Code augmented before slicing
-- ✅ **Enhanced Soot Slicing**: Forward/backward/combined slicing
-- ✅ **No Mock Data**: All components use real pipeline data
-- ✅ **Original Code Preservation**: Read-only access with integrity checks
+- **All 20 Transformations Tested**: Complete ablation results available for all transformations
+- **Separate Datasets**: Each transformation uses its own dataset directory
 
 ### **Enhanced Balanced Model Architecture**
 The enhanced balanced pipeline uses a sophisticated architecture with all advanced features:

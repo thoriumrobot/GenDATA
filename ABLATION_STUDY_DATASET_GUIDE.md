@@ -59,13 +59,14 @@ GenDATA/
 ### Augmentation Comparison Study
 
 ```
-ablation_augmentation_comparison/
+ablation_augmentation_comparison_final/
 ├── with_augmentation/          # Training results with augmentation
 ├── without_augmentation/       # Training results without augmentation
-└── no_augmentation_datasets/   # Datasets generated from non-augmented CFGs
-    ├── positive_real_balanced_dataset.json
-    ├── nonnegative_real_balanced_dataset.json
-    └── gtenegativeone_real_balanced_dataset.json
+├── no_augmentation_datasets/   # Datasets generated from non-augmented CFGs
+│   ├── positive_real_balanced_dataset.json
+│   ├── nonnegative_real_balanced_dataset.json
+│   └── gtenegativeone_real_balanced_dataset.json
+└── augmentation_comparison_results.json  # Final comparison results
 ```
 
 ### Transformation Ablation Study
@@ -73,12 +74,13 @@ ablation_augmentation_comparison/
 ```
 ablation_transformations_final/
 ├── baseline/                   # Baseline training results
-└── ablate_{transform_name}/
-    ├── datasets/              # Dataset for this transformation ablation
-    │   ├── positive_real_balanced_dataset.json
-    │   ├── nonnegative_real_balanced_dataset.json
-    │   └── gtenegativeone_real_balanced_dataset.json
-    └── {annotation_type}_{model}_training.log
+├── ablate_{transform_name}/
+│   ├── datasets/              # Dataset for this transformation ablation
+│   │   ├── positive_real_balanced_dataset.json
+│   │   ├── nonnegative_real_balanced_dataset.json
+│   │   └── gtenegativeone_real_balanced_dataset.json
+│   └── {annotation_type}_{model}_training.log
+└── transformation_ablation_results.json  # Final ablation results
 ```
 
 ## Usage
@@ -87,22 +89,26 @@ ablation_transformations_final/
 
 ```bash
 python run_augmentation_comparison_study.py \
-    --output_dir ablation_augmentation_comparison \
+    --output_dir ablation_augmentation_comparison_final \
     --balanced_dataset_dir real_balanced_datasets \
     --cfg_dir cfg_output_specimin \
-    --cfg_dir_no_aug cfg_output_no_aug \
+    --cfg_dir_no_aug ablation_studies/no_augmentation/cfg_output \
     --episodes 10 \
     --device cpu
 ```
 
 **Required Arguments:**
 - `--cfg_dir_no_aug`: CFG directory for non-augmented slices (required for generating no-augmentation dataset)
+  - Default: `ablation_studies/no_augmentation/cfg_output`
 
 **Process:**
 1. Uses existing `real_balanced_datasets` for with-augmentation training
-2. Generates new dataset in `no_augmentation_datasets/` from `cfg_dir_no_aug`
-3. Trains models separately on each dataset
-4. Compares results
+2. Checks if datasets exist in `no_augmentation_datasets/` - skips generation if they already exist
+3. Generates new dataset in `no_augmentation_datasets/` from `cfg_dir_no_aug` if needed
+4. Trains models separately on each dataset
+5. Compares results and saves to `augmentation_comparison_results.json`
+
+**Data Reuse**: Datasets are not regenerated if they already exist, saving time on subsequent runs.
 
 ### Transformation Ablation Study
 
@@ -111,24 +117,28 @@ python run_transformation_ablation_final.py \
     --output_dir ablation_transformations_final \
     --balanced_dataset_dir real_balanced_datasets \
     --cfg_dir cfg_output_specimin \
-    --cfg_dir_base_pattern "cfg_output_ablate_{transform}" \
+    --cfg_dir_base_pattern "ablation_studies/ablate_{transform}/cfg_output" \
     --episodes 10 \
-    --device cpu \
-    --transformations loop_conversion guard_reversal
+    --device cpu
 ```
 
 **Required Arguments:**
 - `--cfg_dir_base_pattern`: Pattern for CFG directories with transformations disabled
-  - Use `{transform}` placeholder, e.g., `"cfg_output_ablate_{transform}"`
-  - For `loop_conversion`, this becomes `cfg_output_ablate_loop_conversion`
+  - Use `{transform}` placeholder, e.g., `"ablation_studies/ablate_{transform}/cfg_output"`
+  - For `loop_conversion`, this becomes `ablation_studies/ablate_loop_conversion/cfg_output`
+  - Default: Tests all 20 transformations automatically
 
 **Process:**
 1. Trains baseline using `real_balanced_datasets`
 2. For each transformation:
    - Constructs CFG directory path from pattern
-   - Generates dataset in `ablate_{transform}/datasets/`
+   - Checks if dataset exists in `ablate_{transform}/datasets/` - skips generation if it exists
+   - Generates dataset in `ablate_{transform}/datasets/` if needed
    - Trains models on generated dataset
    - Compares against baseline
+3. Saves results to `transformation_ablation_results.json`
+
+**Data Reuse**: Datasets are not regenerated if they already exist, saving time on subsequent runs.
 
 ### Unified Ablation Study
 
@@ -290,8 +300,15 @@ To verify that random seeds are working correctly:
 
 ## Latest Results
 
-See `ABLATION_STUDY_RESULTS_LATEST.md` for the most recent ablation study results, including:
-- Augmentation comparison baseline: 92.35% average validation accuracy (12 models)
-- Transformation ablation baseline: 92.75% average validation accuracy (12 models)
-- Implementation verification and known limitations
+**Primary Result Files** (December 2025):
+- **Augmentation Comparison**: `ablation_augmentation_comparison_final/augmentation_comparison_results.json`
+  - With augmentation: 0.7561 average validation accuracy (21 models)
+  - Without augmentation: 0.7514 average validation accuracy (21 models)
+  - Overall improvement: +0.63%
+- **Transformation Ablation**: `ablation_transformations_final/transformation_ablation_results.json`
+  - Baseline: 0.7012 average validation accuracy
+  - All 20 transformations tested
+  - Top 5 most impactful: numeric_literal (-6.30%), simple_field_access (-5.84%), simple_string_operation (-4.78%), string_concatenation (-3.51%), guard_reversal (+2.03%)
+
+See `ABLATION_STUDY_RESULTS_LATEST.md` for detailed analysis and `ablation_full_pipeline.log` for complete execution logs.
 

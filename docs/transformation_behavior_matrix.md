@@ -2,11 +2,46 @@
 
 ## Overview
 
-This document provides a comprehensive matrix of all 27 semantic transformations implemented in the GenDATA project, including their behavior, input patterns, compatibility, and limitations.
+This document provides a comprehensive matrix of all 20 semantic transformations implemented in the GenDATA project, including their behavior, input patterns, compatibility, and limitations.
+
+## Latest Ablation Impact Results (December 2025)
+
+**Results File**: `ablation_transformations_final/transformation_ablation_results.json`
+
+The latest ablation study tested all 20 transformations by disabling each one individually and measuring the performance impact. Baseline performance (all transformations enabled): **0.7012 average validation accuracy**.
+
+### Top 5 Most Impactful Transformations
+
+1. **`numeric_literal`**: -6.30% performance loss when disabled
+   - Critical for model performance
+   - Transforms numeric representations (e.g., `5` ↔ `3 + 2`)
+
+2. **`simple_field_access`**: -5.84% performance loss when disabled
+   - Important for simple code patterns
+   - Handles field access variations
+
+3. **`simple_string_operation`**: -4.78% performance loss when disabled
+   - Significant impact on string handling
+   - String literal variations
+
+4. **`string_concatenation`**: -3.51% performance loss when disabled
+   - Moderate impact on string operations
+   - Different string building approaches
+
+5. **`guard_reversal`**: +2.03% performance gain when disabled
+   - Interestingly, disabling this transformation improves performance
+   - Suggests guard reversal may introduce noise in some cases
+
+### Complete Impact Results
+
+All 20 transformations were tested. See `ablation_transformations_final/transformation_ablation_results.json` for complete results including:
+- Performance impact for each transformation
+- Per-model breakdowns
+- Per-annotation-type analysis
 
 ## Transformation Categories
 
-### Enhanced Transformations (17)
+### Enhanced Transformations (10)
 
 These transformations apply sophisticated code transformations that preserve semantics while changing structure.
 

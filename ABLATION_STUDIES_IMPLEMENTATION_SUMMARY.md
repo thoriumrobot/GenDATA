@@ -62,8 +62,8 @@ The existing log parser correctly extracts:
   - Datasets: `ablation_transformations_final/ablate_{transform}/datasets/`
 
 **Transformations Tested**: 20 total (10 enhanced + 10 simple)
-- Enhanced: loop_conversion, guard_reversal, mathematical_expression, logical_expression, ternary_operator, switch_statement, variable_operation, brace_normalization, string_concatenation, numeric_literal
-- Simple: simple_method_call, simple_assignment, simple_conditional, simple_array_access, simple_return_statement, simple_variable_declaration, simple_constructor_call, simple_field_access, simple_string_operation, simple_numeric_operation
+- **Enhanced (10)**: loop_conversion, guard_reversal, mathematical_expression, logical_expression, ternary_operator, switch_statement, variable_operation, brace_normalization, string_concatenation, numeric_literal
+- **Simple (10)**: simple_method_call, simple_assignment, simple_conditional, simple_array_access, simple_return_statement, simple_variable_declaration, simple_constructor_call, simple_field_access, simple_string_operation, simple_numeric_operation
 
 ### 5. Directory Separation ✅
 
@@ -166,11 +166,17 @@ python run_transformation_ablation_final.py \
 
 **Output**: `ablation_augmentation_comparison_final/augmentation_comparison_results.json`
 
+**Latest Results (December 2025)**:
+- **With Augmentation**: Average validation accuracy 0.7561 (21 models, range: 0.023-0.985)
+- **Without Augmentation**: Average validation accuracy 0.7514 (21 models, range: 0.0-1.0)
+- **Overall Improvement**: +0.63% (small positive impact)
+- **All Models Return Metrics**: ✅ All 21 models (including graph models) return accuracy metrics
+
 Contains:
 - `with_augmentation`: Results for all 21 models (7 models × 3 annotation types) with augmentation
 - `without_augmentation`: Results for all 21 models without augmentation
 - `comparison`: 
-  - Overall average improvement
+  - Overall average improvement (+0.63%)
   - Per-model improvements
   - Per-annotation-type improvements
   - Summary statistics
@@ -179,11 +185,21 @@ Contains:
 
 **Output**: `ablation_transformations_final/transformation_ablation_results.json`
 
+**Latest Results (December 2025)**:
+- **Baseline Average**: 0.7012 validation accuracy (all 20 transformations enabled)
+- **Top 5 Most Impactful Transformations** (by performance loss when disabled):
+  1. `numeric_literal`: -6.30% performance loss
+  2. `simple_field_access`: -5.84% performance loss
+  3. `simple_string_operation`: -4.78% performance loss
+  4. `string_concatenation`: -3.51% performance loss
+  5. `guard_reversal`: +2.03% performance gain (improves when disabled)
+- **All 20 Transformations Tested**: Complete ablation results available
+
 Contains:
 - `baseline`: Results for all 21 models with all transformations enabled
 - `ablations`: Results for each of 20 transformations (all models trained with that transformation disabled)
 - `comparison`:
-  - Baseline average validation accuracy
+  - Baseline average validation accuracy (0.7012)
   - Transformation impact (cost in performance for each transformation)
   - Ranking of transformations by cost
   - Per-model and per-annotation-type breakdowns
@@ -197,14 +213,33 @@ All models now return:
 - `training_time`: Time taken to train (seconds)
 - `success`: Whether training succeeded (boolean)
 
+## Latest Results Summary (December 2025)
+
+### Augmentation Comparison Study
+- **Status**: ✅ Complete - Both with and without augmentation results available
+- **With Augmentation**: 0.7561 average validation accuracy (21 models)
+- **Without Augmentation**: 0.7514 average validation accuracy (21 models)
+- **Improvement**: +0.63% overall (small positive impact)
+- **Key Finding**: Augmentation provides modest improvement, with some models showing larger gains (e.g., @NonNegative models: +22.67%)
+
+### Transformation Ablation Study
+- **Status**: ✅ Complete - All 20 transformations tested
+- **Baseline**: 0.7012 average validation accuracy
+- **Key Findings**:
+  - `numeric_literal` is most critical (-6.30% when disabled)
+  - `simple_field_access` and `simple_string_operation` are also important (-5.84%, -4.78%)
+  - `guard_reversal` actually improves performance when disabled (+2.03%)
+- **Data Reuse**: Datasets are not regenerated if they already exist, saving time
+
 ## Verification
 
-- ✅ All models return non-null accuracy metrics
+- ✅ All models return non-null accuracy metrics (including graph models)
 - ✅ Augmentation comparison shows WITH vs WITHOUT metrics
 - ✅ Transformation ablation shows cost for all 20 transformations
 - ✅ All conditions use separate directories
 - ✅ No mock data or mock results
 - ✅ All errors fixed, all warnings addressed
+- ✅ Data reuse implemented (datasets not regenerated if exist)
 
 ## Notes
 
@@ -212,4 +247,5 @@ All models now return:
 - Each transformation requires: augmentation → CFG generation → dataset generation → model training
 - Total time depends on number of transformations and training episodes
 - All random operations use seed 42 for reproducibility
+- **Data Reuse**: The pipeline checks for existing datasets and CFG directories, skipping regeneration if files already exist
 
