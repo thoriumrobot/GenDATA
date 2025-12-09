@@ -41,6 +41,7 @@ We introduce **GenDATA (Generic Detection of Annotations in Type Analysis)**, a 
 
 * **Data Generation Pipeline**: We present a novel, generalizable approach to generate an annotated corpus from code that produces warnings, circumventing the challenge that we lack human-annotated datasets.  
 * **Random Code Augmentation**: We systematically inject random snippets into code slices, augmenting the training data and **improving model robustness** by simulating diverse real-world variations of code.  
+* **Multi-Checker Infrastructure**: We introduce a unified, extensible architecture for evaluating GenDATA across multiple Checker Framework checkers, enabling systematic comparison and validation of our approach across different type systems with varying complexity levels.
 * **Initial Empirical Evaluation**: We demonstrate that our approach reduces Checker Framework warnings in unseen code for multiple checkers. We chose to evaluate on three checkers: the Lower Bound Checker, the SQL Quotes Checker and the Signature String Checker. We compare GenDATA's performance not only against simpler baselines but also NullGTN\[1\], to illustrate how the approaches differ when annotation data is scarce.
 
 ---
@@ -89,6 +90,8 @@ Although modern best practice is to rely on prepared statements that avoid manua
 The Signature String Checker ensures that string representations of Java types match the exact formats expected by certain Java methods and internal JVM structures. Java defines multiple string formats for describing types—such as fully qualified names, binary names, internal names, and field descriptors—and mixing them up can cause run-time errors or unexpected behavior. For instance, \`Class.forName(String)\` requires a slightly different string format than \`MethodDescriptor\` or field-descriptor formats. Since this checker tracks multiple mutually-exclusive string format, it is the hardest to reason about.
 
 By annotating method parameters with the appropriate signature annotation (e.g., **@FullyQualifiedName**, **@BinaryName**, **@FieldDescriptor**), the checker guarantees that the code passes the correct format. This reduces errors where a programmer might pass a dotted name (\`mypkg.MyClass\`) instead of a slashed name (\`mypkg/MyClass\`), or vice versa. Whenever a method like \`Class.forName\` or \`Class.getName\` demands a specific representation, the checker flags any mismatch, thereby preventing subtle mistakes.
+
+**Internal String Feature Extraction**: GenDATA implements a comprehensive 30-feature extraction system for the Signature String Checker that analyzes Java source code to distinguish between the three annotation types. The system extracts features from actual string values in source code (when available) and analyzes format patterns, structural characteristics, usage context, and CFG relationships. Features include format detection (dotted vs slashed vs descriptor), package depth, class name patterns, character-level patterns, and context indicators (Class.forName usage, reflection APIs, etc.). This enables ML models to accurately predict which annotation type (@FullyQualifiedName, @BinaryName, or @FieldDescriptor) should be placed at each location.
 
 ### **2.3 Slicing**
 
@@ -244,6 +247,28 @@ We developed a command-line pipeline in Java and Python:
 
 * **Hardware**: Training the heterogeneous graph transformer requires GPUs (e.g., NVIDIA RTX-series). GBT experiments can be performed on CPU or GPU.  
 * **Software**: Python 3.9, Java 11, XGBoost/LightGBM libraries, PyTorch Geometric or DGL for graph-based neural networks, Soot for slicing, Eclipse JDT for AST parsing and semantic transformations.
+
+### **4.3 Multi-Checker Evaluation Infrastructure**
+
+To enable systematic evaluation across multiple checkers, GenDATA implements a unified, extensible architecture:
+
+* **Checker Interface Abstraction**: All checkers implement a common `CheckerInterface` that defines methods for checker identification, warning parsing, feature extraction, and annotation validation. This abstraction enables the pipeline to work uniformly across different checkers.
+
+* **Dynamic Checker Selection**: The `CheckerFrameworkRunner` supports dynamic checker selection via a `checker_name` parameter, automatically loading checker-specific configurations and processors from a centralized registry.
+
+* **Checker-Specific Components**: Each checker (Lower Bound, SQL Quotes, Signature String) implements checker-specific warning parsers, feature extractors, and validation logic while conforming to the unified interface.
+
+* **Signature String Internal Feature Extraction**: The Signature String Checker uses a sophisticated 30-feature extraction system that analyzes Java source code to extract internal string features. The system includes:
+  - **Format Detection**: Analyzes string patterns to detect FullyQualifiedName (dotted), BinaryName (slashed), and FieldDescriptor (L...;) formats with confidence scores
+  - **Structural Analysis**: Extracts package depth, class name patterns, array/method indicators, and type information
+  - **Pattern Analysis**: Character-level analysis (dot count, slash count, semicolon count, capitalization patterns)
+  - **Context Analysis**: Detects usage patterns (Class.forName, Class.getName, reflection APIs, type conversion)
+  - **Source Code Extraction**: Extracts actual string values from Java source files using AST parsing (Eclipse JDT) with regex fallback
+  - **CFG Integration**: Combines source-based features with CFG context (node types, control/dataflow relationships)
+
+* **Unified Evaluation Pipeline**: The multi-checker evaluation infrastructure enables running the complete GenDATA pipeline (warning generation, slicing, CFG generation, prediction, metrics computation) across all supported checkers using the same codebase and evaluation scripts.
+
+* **Cross-Checker Comparison**: The infrastructure generates comprehensive reports comparing model performance, warning reduction, and other metrics across all evaluated checkers, facilitating systematic analysis of GenDATA's generalization capabilities.
 
 ---
 

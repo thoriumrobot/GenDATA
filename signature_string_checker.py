@@ -81,12 +81,62 @@ class SignatureStringChecker(CheckerInterface):
         """
         Extract Signature String Checker-specific features.
         
+        Uses comprehensive string feature extraction from source code when available,
+        falling back to CFG label analysis. Returns 30 features total.
+        
         Features include:
-        - String format patterns (dotted vs slashed)
-        - Type name patterns
-        - Method signature patterns
-        - Class.forName usage
+        - Format detection (FullyQualifiedName, BinaryName, FieldDescriptor)
+        - Structural features (package depth, class name patterns)
+        - Pattern features (character counts, format indicators)
+        - Context features (usage patterns, method calls)
+        - CFG context features (node type, control/dataflow)
         """
+        try:
+            from signature_string_feature_extractor import SignatureStringFeatureExtractor
+            from source_code_feature_extractor import SourceCodeFeatureExtractor
+            
+            # Initialize extractors
+            string_feature_extractor = SignatureStringFeatureExtractor()
+            source_extractor = SourceCodeFeatureExtractor()
+            
+            # Get node information
+            label = node.get('label', '')
+            node_type = node.get('node_type', '')
+            line_number = node.get('line', 0)
+            # Handle None case - if line is None, default to 0
+            if line_number is None:
+                line_number = 0
+            
+            # Try to extract actual string value from source code
+            string_value = None
+            java_file = cfg_data.get('java_file', '')
+            if java_file and line_number is not None and line_number > 0:
+                try:
+                    string_value = source_extractor.extract_string_at_line(java_file, line_number)
+                except Exception as e:
+                    logger.debug(f"Failed to extract string from source: {e}")
+            
+            # Extract comprehensive features
+            features = string_feature_extractor.extract_features(
+                string_value=string_value,
+                label=label,
+                node_type=node_type,
+                cfg_data=cfg_data,
+                node=node
+            )
+            
+            return features
+            
+        except ImportError as e:
+            logger.warning(f"Signature string feature extractor not available, using basic features: {e}")
+            # Fallback to basic feature extraction
+            return self._extract_basic_features(cfg_data, node)
+        except Exception as e:
+            logger.error(f"Error extracting signature string features: {e}")
+            return self._extract_basic_features(cfg_data, node)
+    
+    def _extract_basic_features(self, cfg_data: Dict[str, Any], node: Dict[str, Any]) -> List[float]:
+        """Fallback basic feature extraction (original implementation)"""
         features = []
         label = node.get('label', '').lower()
         node_type = node.get('node_type', '').lower()
@@ -122,6 +172,10 @@ class SignatureStringChecker(CheckerInterface):
         # Feature 8: Array type pattern
         is_array_type = '[' in label
         features.append(1.0 if is_array_type else 0.0)
+        
+        # Pad to 30 features with zeros
+        while len(features) < 30:
+            features.append(0.0)
         
         return features
     

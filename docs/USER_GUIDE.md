@@ -521,8 +521,67 @@ Built-in performance benchmarking provides:
 - Scalability analysis
 - Success rate measurements
 
+## Multi-Checker Annotation Placement
+
+GenDATA supports annotation placement for multiple Checker Framework checkers with confidence-based selection.
+
+### Supported Checkers
+
+1. **Lower Bound Checker**: `@Positive`, `@NonNegative`, `@GTENegativeOne`
+2. **SQL Quotes Checker**: `@SqlEvenQuotes`, `@SqlOddQuotes`
+3. **Signature String Checker**: `@FullyQualifiedName`, `@BinaryName`, `@FieldDescriptor`
+
+### Confidence-Based Selection
+
+The system uses `MultiCheckerPredictor` for unified prediction:
+
+- **Single Annotation Per Location**: Only one annotation is placed per location (the highest confidence one)
+- **Automatic Checker Detection**: Checker is detected from warnings file path
+- **Highest Confidence Selection**: If multiple models predict annotations, only the highest confidence annotation is placed
+
+### Usage Examples
+
+```bash
+# Place annotations for Lower Bound Checker
+python3 place_annotations.py \
+    --project_root /path/to/project \
+    --predictions_file predictions.json \
+    --output_dir output/ \
+    --checker_name lower_bound
+
+# Place annotations for SQL Quotes Checker
+python3 place_annotations.py \
+    --project_root /path/to/project \
+    --predictions_file predictions.json \
+    --output_dir output/ \
+    --checker_name sql_quotes
+
+# Place annotations for Signature String Checker
+python3 place_annotations.py \
+    --project_root /path/to/project \
+    --predictions_file predictions.json \
+    --output_dir output/ \
+    --checker_name signature_string
+```
+
+### Prediction Pipeline
+
+```bash
+# Predict and place annotations using simple pipeline
+python3 simple_annotation_type_pipeline.py \
+    --mode predict \
+    --project_root /path/to/project \
+    --warnings_file lower_bound_warnings.out
+
+# Checker is automatically detected from warnings file name
+# For SQL Quotes: sql_quotes_warnings.out
+# For Signature String: signature_string_warnings.out
+```
+
 ## Conclusion
 
 The GenDATA semantic transformation system provides a powerful and flexible way to generate diverse code variants while preserving program semantics. With 38 different transformation types, comprehensive compatibility checking, and advanced features like diagnostics and meta-testing, it's well-suited for machine learning training and code analysis applications.
+
+GenDATA also provides multi-checker annotation placement with confidence-based selection, supporting Lower Bound, SQL Quotes, and Signature String checkers.
 
 For more detailed information, see the [Developer Guide](DEVELOPER_GUIDE.md) and [Transformation Behavior Matrix](transformation_behavior_matrix.md).

@@ -41,15 +41,37 @@ class SignatureStringModelsTrainer:
         logger.info(f"🚀 Training {model_name} model...")
         
         # Build command
+        # Determine device (cuda if available, else cpu)
+        import torch
+        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        
+        # Use standardized warning file name
+        warnings_file = '/home/ubuntu/GenDATA/signature_string_warnings.out'
+        
+        # Validate warning file exists
+        if not os.path.exists(warnings_file):
+            logger.error(f"❌ Warning file not found: {warnings_file}")
+            logger.error(f"   Please run: python3 generate_checker_warning_files.py --checker signature_string")
+            return False
+        
+        # Determine checker-specific models directory
+        from simple_annotation_type_pipeline import SimpleAnnotationTypePipeline
+        temp_pipeline = SimpleAnnotationTypePipeline(
+            project_root=self.project_root,
+            warnings_file=warnings_file,
+            cfwr_root='/home/ubuntu/GenDATA'
+        )
+        models_dir = temp_pipeline.models_dir
+        
         cmd = [
             'python3', script_path,
             '--project_root', self.project_root,
-            '--warnings_file', f'/home/ubuntu/GenDATA/signature_string_warnings.out',
+            '--warnings_file', warnings_file,
             '--cfwr_root', '/home/ubuntu/GenDATA',
             '--episodes', str(self.episodes),
             '--base_model', base_model,
-            '--device', 'auto',
-            '--checker_type', 'signature_string'
+            '--device', device,
+            '--models_dir', models_dir
         ]
         
         try:

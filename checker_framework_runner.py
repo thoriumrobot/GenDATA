@@ -10,6 +10,7 @@ for use in the GenDATA prediction pipeline.
 import os
 import subprocess
 import logging
+import re
 import tempfile
 from pathlib import Path
 from typing import List, Optional, Dict, Any
@@ -145,7 +146,8 @@ class CheckerFrameworkRunner:
         Returns:
             True if checker ran successfully, False otherwise
         """
-        logger.info(f"Running Lower Bound Checker on project: {project_root}")
+        checker_display_name = self.checker_name.replace('_', ' ').title() if self.checker_name else "Checker"
+        logger.info(f"Running {checker_display_name} on project: {project_root}")
         logger.info(f"Output will be saved to: {output_file}")
         
         # Validate project root
@@ -203,17 +205,78 @@ class CheckerFrameworkRunner:
             )
             
             # Save warnings to output file
+            # Format should match index1.out: file:line:column: level: [checker.message] message
+            # Extract only warning/error lines and normalize paths to be relative to project_root
+            project_root_path = Path(project_root).resolve()
+            
+            warning_lines = []
+            
+            # Process stdout and stderr to extract warning lines
+            for output in [result.stdout, result.stderr]:
+                for line in output.split('\n'):
+                    line = line.strip()
+                    if not line:
+                        continue
+                    
+                    # Skip header comments and section markers
+                    if line.startswith('#') or line.startswith('==='):
+                        continue
+                    
+                    # Check if this looks like a warning/error line
+                    # Format: file:line:column: level: [checker.message] message
+                    # Or: file:line: level: [checker.message] message (no column)
+                    warning_pattern = re.compile(r'^(.+?):(\d+)(?::(\d+))?:\s*(error|warning|compiler\.(?:err|warn)\.proc\.messager):\s*\[(.+?)\]\s*(.+)$')
+                    match = warning_pattern.match(line)
+                    if match:
+                        file_path, line_num, col_num, level, checker_msg, message = match.groups()
+                        
+                        # Convert absolute paths to relative paths
+                        file_path_obj = Path(file_path)
+                        if file_path_obj.is_absolute():
+                            try:
+                                # Try to make it relative to project_root
+                                relative_path = file_path_obj.relative_to(project_root_path)
+                                file_path = str(relative_path)
+                            except ValueError:
+                                # If not under project_root, keep as is but try to extract just filename
+                                file_path = file_path_obj.name
+                        
+                        # Reconstruct warning line in standard format
+                        if col_num:
+                            warning_line = f"{file_path}:{line_num}:{col_num}: {level}: [{checker_msg}] {message}"
+                        else:
+                            # If no column, use 0 as default
+                            warning_line = f"{file_path}:{line_num}:0: {level}: [{checker_msg}] {message}"
+                        
+                        warning_lines.append(warning_line)
+                    elif 'error:' in line or 'warning:' in line:
+                        # Try to parse as warning even if format is slightly different
+                        # This handles variations in javac output
+                        parts = line.split(':', 3)
+                        if len(parts) >= 3:
+                            file_path = parts[0]
+                            try:
+                                line_num = int(parts[1])
+                                rest = ':'.join(parts[2:])
+                                
+                                # Convert to relative path
+                                file_path_obj = Path(file_path)
+                                if file_path_obj.is_absolute():
+                                    try:
+                                        relative_path = file_path_obj.relative_to(project_root_path)
+                                        file_path = str(relative_path)
+                                    except ValueError:
+                                        file_path = file_path_obj.name
+                                
+                                warning_line = f"{file_path}:{line_num}:0: {rest}"
+                                warning_lines.append(warning_line)
+                            except ValueError:
+                                pass
+            
+            # Write warnings to file (no header comments, just warnings)
             with open(output_file, 'w') as f:
-                f.write(f"# Checker Framework Lower Bound Checker Output\n")
-                f.write(f"# Project: {project_root}\n")
-                f.write(f"# Files processed: {len(java_files)}\n")
-                f.write(f"# Command: {' '.join(cmd[:10])}{'...' if len(cmd) > 10 else ''}\n")
-                f.write(f"# Return code: {result.returncode}\n\n")
-                
-                f.write("=== STDOUT ===\n")
-                f.write(result.stdout)
-                f.write("\n=== STDERR ===\n")
-                f.write(result.stderr)
+                for warning_line in warning_lines:
+                    f.write(warning_line + '\n')
             
             if result.returncode == 0:
                 logger.info(f"Checker Framework completed successfully. Warnings saved to {output_file}")

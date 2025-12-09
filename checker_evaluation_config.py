@@ -28,7 +28,7 @@ CHECKER_CONFIGS = {
     'sql_quotes': {
         'name': 'SQL Quotes Checker',
         'processor': 'org.checkerframework.checker.quotes.QuotesChecker',
-        'test_suite': '/home/ubuntu/checker-framework/checker/tests/quotes',
+        'test_suite': '/home/ubuntu/checker-framework/checker/tests/sqlquotes',
         'annotation_types': ['@SqlEvenQuotes', '@SqlOddQuotes'],
         'base_models': ['gcn', 'hgt', 'gbt', 'causal', 'enhanced_causal', 'gcsn', 'dg2n'],
         'expected_models': 14,  # 7 base models × 2 annotation types

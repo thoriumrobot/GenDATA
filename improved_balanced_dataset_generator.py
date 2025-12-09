@@ -49,7 +49,7 @@ class RealBalancedExample:
 class ImprovedBalancedDatasetGenerator:
     """Generates balanced training datasets using real code examples"""
     
-    def __init__(self, target_balance: float = 0.5, random_seed: int = 42, checker_type: Optional[CheckerType] = None):
+    def __init__(self, target_balance: float = 0.5, random_seed: int = 42, checker_type: Optional[CheckerType] = None, checker_name: Optional[str] = None):
         """
         Initialize the improved balanced dataset generator
         
@@ -57,6 +57,7 @@ class ImprovedBalancedDatasetGenerator:
             target_balance: Target ratio of positive examples (0.5 = 50% positive, 50% negative)
             random_seed: Random seed for reproducible results
             checker_type: Optional checker type for checker-specific value pattern extraction
+            checker_name: Optional checker name ('lower_bound', 'sql_quotes', 'signature_string') to determine annotation types
         """
         self.target_balance = target_balance
         self.random_seed = random_seed
@@ -65,13 +66,19 @@ class ImprovedBalancedDatasetGenerator:
         
         # Checker type for value pattern extraction
         self.checker_type = checker_type
+        self.checker_name = checker_name or 'lower_bound'  # Default to lower_bound
         if CHECKER_MODULES_AVAILABLE and checker_type is not None:
             self.pattern_detector = ValuePatternDetector()
         else:
             self.pattern_detector = None
         
-        # Annotation types to balance
-        self.annotation_types = ['@Positive', '@NonNegative', '@GTENegativeOne']
+        # Annotation types to balance - determined by checker name
+        if self.checker_name == 'sql_quotes':
+            self.annotation_types = ['@SqlEvenQuotes', '@SqlOddQuotes']
+        elif self.checker_name == 'signature_string':
+            self.annotation_types = ['@FullyQualifiedName', '@BinaryName', '@FieldDescriptor']
+        else:  # Default: lower_bound
+            self.annotation_types = ['@Positive', '@NonNegative', '@GTENegativeOne']
         
         # Statistics tracking
         self.generation_stats = {
@@ -124,6 +131,13 @@ class ImprovedBalancedDatasetGenerator:
         Returns:
             List of feature values
         """
+        # Use checker-specific feature extraction if available
+        if self.checker_name == 'sql_quotes':
+            return self._extract_sql_quotes_features(node, cfg_data)
+        elif self.checker_name == 'signature_string':
+            return self._extract_signature_string_features(node, cfg_data)
+        
+        # Default: Lower Bound Checker features
         label = node.get('label', '').lower()
         node_type = node.get('type', '').lower()
         line = node.get('line', 0)
@@ -260,6 +274,113 @@ class ImprovedBalancedDatasetGenerator:
         
         return features
     
+    def _extract_sql_quotes_features(self, node: Dict, cfg_data: Dict) -> List[float]:
+        """Extract SQL Quotes Checker-specific features"""
+        label = node.get('label', '')
+        node_type = node.get('type', '').lower()
+        label_lower = label.lower()
+        
+        # Quote-related features
+        single_quote_count = label.count("'")
+        double_quote_count = label.count('"')
+        total_quotes = single_quote_count + double_quote_count
+        is_even_quotes = (total_quotes % 2 == 0) if total_quotes > 0 else True
+        
+        # SQL method patterns
+        has_sql_method = any(pattern in label_lower for pattern in [
+            'executequery', 'executeprepared', 'executeupdate', 'preparedstatement',
+            'statement.execute', 'connection.prepare'
+        ])
+        
+        # String concatenation
+        has_concatenation = '+' in label and ('string' in node_type or 'str' in label_lower)
+        
+        # Prepared statement
+        has_prepared = 'preparedstatement' in label_lower or 'preparestatement' in label_lower
+        
+        # Sanitization
+        has_sanitization = any(pattern in label_lower for pattern in [
+            'quote(', 'escape(', 'sanitize(', 'escapeSql'
+        ])
+        
+        features = [
+            float(len(label)),  # label_length
+            float(node.get('line', 0) if node.get('line') is not None else 0),  # line_number
+            float('method' in node_type),  # is_method
+            float('field' in node_type),  # is_field
+            float('parameter' in node_type),  # is_parameter
+            float('variable' in node_type),  # is_variable
+            float(total_quotes > 0),  # has_quotes
+            float(is_even_quotes),  # is_even_quotes
+            float(total_quotes),  # quote_count
+            float(has_concatenation),  # has_concatenation
+            float(has_sql_method),  # has_sql_method
+            float(has_sanitization),  # has_sanitization
+            float(has_prepared),  # has_prepared_statement
+        ]
+        
+        return features
+    
+    def _extract_signature_string_features(self, node: Dict, cfg_data: Dict) -> List[float]:
+        """Extract Signature String Checker-specific features"""
+        try:
+            from signature_string_feature_extractor import SignatureStringFeatureExtractor
+            from source_code_feature_extractor import SourceCodeFeatureExtractor
+            
+            string_feature_extractor = SignatureStringFeatureExtractor()
+            source_extractor = SourceCodeFeatureExtractor()
+            
+            label = node.get('label', '')
+            node_type = node.get('type', '')
+            line_number = node.get('line', 0)
+            if line_number is None:
+                line_number = 0
+            
+            # Try to extract actual string value from source code
+            string_value = None
+            java_file = cfg_data.get('java_file', '')
+            if java_file and line_number > 0:
+                try:
+                    string_value = source_extractor.extract_string_at_line(java_file, line_number)
+                except Exception:
+                    pass
+            
+            # Extract comprehensive features
+            features = string_feature_extractor.extract_features(
+                string_value=string_value,
+                label=label,
+                node_type=node_type,
+                cfg_data=cfg_data,
+                node=node
+            )
+            
+            return features
+        except ImportError:
+            # Fallback to basic features
+            label = node.get('label', '')
+            node_type = node.get('type', '').lower()
+            
+            has_dots = '.' in label and not label.startswith('.')
+            has_slashes = '/' in label
+            is_field_descriptor = label.startswith('L') and label.endswith(';') and '/' in label
+            
+            features = [
+                float(len(label)),  # label_length
+                float(node.get('line', 0) if node.get('line') is not None else 0),  # line_number
+                float('method' in node_type),  # is_method
+                float('field' in node_type),  # is_field
+                float('parameter' in node_type),  # is_parameter
+                float('variable' in node_type),  # is_variable
+                float(has_dots),  # has_dots
+                float(has_slashes),  # has_slashes
+                float(is_field_descriptor),  # is_field_descriptor_format
+                float(label.count('.')),  # dot_count
+                float(label.count('/')),  # slash_count
+                float(label.count(';')),  # semicolon_count
+            ]
+            
+            return features
+    
     def get_code_context(self, node: Dict, cfg_data: Dict) -> str:
         """Extract the actual code context for a node"""
         label = node.get('label', '')
@@ -365,43 +486,214 @@ class ImprovedBalancedDatasetGenerator:
         Returns:
             (is_positive, confidence): Whether the node needs the annotation and confidence score
         """
-        predicted_annotation = self.determine_annotation_type(node, cfg_data)
+        # Use checker-specific classification methods
+        if self.checker_name == 'sql_quotes':
+            return self.classify_node_for_sql_quotes_annotation(node, cfg_data, target_annotation)
+        elif self.checker_name == 'signature_string':
+            return self.classify_node_for_signature_string_annotation(node, cfg_data, target_annotation)
+        else:
+            # Default: Lower Bound Checker classification
+            predicted_annotation = self.determine_annotation_type(node, cfg_data)
+            
+            # Check if the node actually needs this annotation type
+            is_positive = (predicted_annotation == target_annotation)
+            
+            # Calculate confidence based on how well the node matches the target annotation
+            label = node.get('label', '').lower()
+            node_type = node.get('type', '').lower()
+            
+            confidence = 0.5  # Base confidence
+            
+            if target_annotation == '@Positive':
+                # Features that suggest @Positive annotation
+                if any(keyword in label for keyword in ['size', 'length', 'count', 'capacity']):
+                    confidence += 0.3
+                if 'parameter' in node_type:
+                    confidence += 0.2
+                if any(keyword in label for keyword in ['int', 'long', 'double']):
+                    confidence += 0.1
+            
+            elif target_annotation == '@NonNegative':
+                # Features that suggest @NonNegative annotation
+                if any(keyword in label for keyword in ['index', 'offset', 'position']):
+                    confidence += 0.3
+                if any(keyword in label for keyword in ['array', 'list']):
+                    confidence += 0.2
+                if 'parameter' in node_type:
+                    confidence += 0.2
+            
+            elif target_annotation == '@GTENegativeOne':
+                # Features that suggest @GTENegativeOne annotation
+                if any(keyword in label for keyword in ['bound', 'limit', 'capacity']):
+                    confidence += 0.3
+                if any(keyword in label for keyword in ['variable', 'temp', 'result']):
+                    confidence += 0.2
+                if any(keyword in label for keyword in ['count', 'size']):
+                    confidence += 0.1
+            
+            # Ensure confidence is in [0.1, 1.0] range
+            confidence = max(0.1, min(1.0, confidence))
+            
+            return is_positive, confidence
+    
+    def classify_node_for_sql_quotes_annotation(self, node: Dict, cfg_data: Dict, target_annotation: str) -> Tuple[bool, float]:
+        """
+        Classify whether a node should have SQL Quotes annotation type
         
-        # Check if the node actually needs this annotation type
-        is_positive = (predicted_annotation == target_annotation)
+        Args:
+            node: CFG node dictionary
+            cfg_data: Full CFG data dictionary
+            target_annotation: '@SqlEvenQuotes' or '@SqlOddQuotes'
+            
+        Returns:
+            (is_positive, confidence): Whether the node needs the annotation and confidence score
+        """
+        label = node.get('label', '')
+        node_type = node.get('type', '').lower()
+        label_lower = label.lower()
         
-        # Calculate confidence based on how well the node matches the target annotation
-        label = node.get('label', '').lower()
+        # Count single quotes in string literals
+        single_quote_count = label.count("'")
+        double_quote_count = label.count('"')
+        total_quotes = single_quote_count + double_quote_count
+        
+        # Determine quote parity
+        is_even_quotes = (total_quotes % 2 == 0) if total_quotes > 0 else True
+        
+        # Check for SQL-related patterns
+        has_sql_method = any(pattern in label_lower for pattern in [
+            'executequery', 'executeprepared', 'executeupdate', 'preparedstatement',
+            'statement.execute', 'connection.prepare', 'sql', 'query'
+        ])
+        
+        has_string_concatenation = '+' in label and ('string' in node_type or 'str' in label_lower)
+        has_prepared_statement = 'preparedstatement' in label_lower or 'preparestatement' in label_lower
+        
+        # Classify based on target annotation
+        if target_annotation == '@SqlEvenQuotes':
+            # Positive if even quotes or prepared statement (safe)
+            is_positive = is_even_quotes or has_prepared_statement
+            confidence = 0.5
+            
+            if is_even_quotes and total_quotes > 0:
+                confidence += 0.3
+            if has_prepared_statement:
+                confidence += 0.2
+            if has_sql_method and is_even_quotes:
+                confidence += 0.1
+                
+        elif target_annotation == '@SqlOddQuotes':
+            # Positive if odd quotes (unsafe)
+            is_positive = not is_even_quotes and total_quotes > 0
+            confidence = 0.5
+            
+            if not is_even_quotes and total_quotes > 0:
+                confidence += 0.3
+            if has_string_concatenation and not is_even_quotes:
+                confidence += 0.2
+            if has_sql_method and not is_even_quotes:
+                confidence += 0.1
+        else:
+            # Unknown annotation type
+            is_positive = False
+            confidence = 0.1
+        
+        # Ensure confidence is in [0.1, 1.0] range
+        confidence = max(0.1, min(1.0, confidence))
+        
+        return is_positive, confidence
+    
+    def classify_node_for_signature_string_annotation(self, node: Dict, cfg_data: Dict, target_annotation: str) -> Tuple[bool, float]:
+        """
+        Classify whether a node should have Signature String annotation type
+        
+        Args:
+            node: CFG node dictionary
+            cfg_data: Full CFG data dictionary
+            target_annotation: '@FullyQualifiedName', '@BinaryName', or '@FieldDescriptor'
+            
+        Returns:
+            (is_positive, confidence): Whether the node needs the annotation and confidence score
+        """
+        label = node.get('label', '')
         node_type = node.get('type', '').lower()
         
-        confidence = 0.5  # Base confidence
+        # Try to extract string value from source code if available
+        string_value = None
+        try:
+            from source_code_feature_extractor import SourceCodeFeatureExtractor
+            java_file = cfg_data.get('java_file', '')
+            line_number = node.get('line', 0)
+            if java_file and line_number and line_number > 0:
+                source_extractor = SourceCodeFeatureExtractor()
+                string_value = source_extractor.extract_string_at_line(java_file, line_number)
+        except Exception:
+            pass
         
-        if target_annotation == '@Positive':
-            # Features that suggest @Positive annotation
-            if any(keyword in label for keyword in ['size', 'length', 'count', 'capacity']):
-                confidence += 0.3
-            if 'parameter' in node_type:
+        # If no string value from source, try to extract from label
+        if not string_value:
+            # Look for string literals in label
+            import re
+            string_match = re.search(r'["\']([^"\']*)["\']', label)
+            if string_match:
+                string_value = string_match.group(1)
+        
+        # Use format detector if available
+        try:
+            from signature_string_feature_extractor import FormatDetector
+            format_detector = FormatDetector()
+            format_scores = format_detector.detect_format(string_value or label)
+        except Exception:
+            format_scores = {
+                'fully_qualified_confidence': 0.0,
+                'binary_confidence': 0.0,
+                'field_descriptor_confidence': 0.0
+            }
+        
+        # Check for reflection API patterns
+        has_reflection = any(pattern in label.lower() for pattern in [
+            'class.forname', 'getclass', 'getname', 'getsignature',
+            'classloader', 'reflection', 'method.invoke'
+        ])
+        
+        # Classify based on target annotation
+        if target_annotation == '@FullyQualifiedName':
+            # Positive if dotted format (package.Class)
+            has_dots = '.' in (string_value or label) and not (string_value or label).startswith('.')
+            is_positive = has_dots or format_scores.get('fully_qualified_confidence', 0.0) > 0.5
+            confidence = format_scores.get('fully_qualified_confidence', 0.5)
+            
+            if has_dots:
                 confidence += 0.2
-            if any(keyword in label for keyword in ['int', 'long', 'double']):
+            if 'getname' in label.lower() or 'class.getname' in label.lower():
                 confidence += 0.1
-        
-        elif target_annotation == '@NonNegative':
-            # Features that suggest @NonNegative annotation
-            if any(keyword in label for keyword in ['index', 'offset', 'position']):
-                confidence += 0.3
-            if any(keyword in label for keyword in ['array', 'list']):
+                
+        elif target_annotation == '@BinaryName':
+            # Positive if slashed format (package/Class)
+            has_slashes = '/' in (string_value or label)
+            is_positive = has_slashes or format_scores.get('binary_confidence', 0.0) > 0.5
+            confidence = format_scores.get('binary_confidence', 0.5)
+            
+            if has_slashes:
                 confidence += 0.2
-            if 'parameter' in node_type:
-                confidence += 0.2
-        
-        elif target_annotation == '@GTENegativeOne':
-            # Features that suggest @GTENegativeOne annotation
-            if any(keyword in label for keyword in ['bound', 'limit', 'capacity']):
-                confidence += 0.3
-            if any(keyword in label for keyword in ['variable', 'temp', 'result']):
-                confidence += 0.2
-            if any(keyword in label for keyword in ['count', 'size']):
+            if 'class.forname' in label.lower() or has_reflection:
                 confidence += 0.1
+                
+        elif target_annotation == '@FieldDescriptor':
+            # Positive if JVM format (Lpackage/Class;)
+            string_val = string_value or label
+            is_field_descriptor = string_val.startswith('L') and string_val.endswith(';') and '/' in string_val
+            is_positive = is_field_descriptor or format_scores.get('field_descriptor_confidence', 0.0) > 0.5
+            confidence = format_scores.get('field_descriptor_confidence', 0.5)
+            
+            if is_field_descriptor:
+                confidence += 0.3
+            if has_reflection:
+                confidence += 0.1
+        else:
+            # Unknown annotation type
+            is_positive = False
+            confidence = 0.1
         
         # Ensure confidence is in [0.1, 1.0] range
         confidence = max(0.1, min(1.0, confidence))
@@ -642,13 +934,17 @@ def main():
                        help='Target balance ratio for positive examples (0.5 = 50 percent positive)')
     parser.add_argument('--random_seed', type=int, default=42,
                        help='Random seed for reproducible results')
+    parser.add_argument('--checker_name', type=str, default='lower_bound',
+                       choices=['lower_bound', 'sql_quotes', 'signature_string'],
+                       help='Checker name to determine annotation types')
     
     args = parser.parse_args()
     
     # Create generator
     generator = ImprovedBalancedDatasetGenerator(
         target_balance=args.target_balance,
-        random_seed=args.random_seed
+        random_seed=args.random_seed,
+        checker_name=args.checker_name
     )
     
     # Load CFG files

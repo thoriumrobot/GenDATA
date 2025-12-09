@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide provides detailed information for developers working on the GenDATA semantic transformation system. It covers the architecture, implementation details, extension points, and best practices for contributing to the project.
+This guide provides detailed information for developers working on the GenDATA semantic transformation system and multi-checker annotation placement. It covers the architecture, implementation details, extension points, and best practices for contributing to the project.
 
 ## Architecture
 
@@ -637,6 +637,140 @@ feat: add bitwise operation transformation
    - Better semantic equivalence checking
    - Formal verification of transformations
    - Automated test generation
+
+## Multi-Checker Annotation Placement Implementation
+
+### Architecture
+
+The multi-checker annotation placement system uses a unified architecture:
+
+1. **MultiCheckerPredictor** (`multi_checker_predictor.py`): Unified predictor for all checkers
+2. **ComprehensiveAnnotationPlacer** (`place_annotations.py`): Annotation placement engine
+3. **SimpleAnnotationTypePipeline** (`simple_annotation_type_pipeline.py`): Pipeline with automatic checker detection
+
+### Key Components
+
+#### MultiCheckerPredictor
+
+```python
+from multi_checker_predictor import MultiCheckerPredictor
+
+# Initialize for a specific checker
+predictor = MultiCheckerPredictor(
+    checker_name='lower_bound',  # or 'sql_quotes', 'signature_string'
+    models_dir=None,  # Uses checker-specific directory by default
+    device='auto'
+)
+
+# Load models
+predictor.load_checker_models()
+
+# Predict for a location
+prediction = predictor.predict_for_location(cfg_data, node, line_number, threshold=0.3)
+# Returns: {'annotation_type': '@Positive', 'confidence': 0.85, ...} or None
+```
+
+**Key Features:**
+- Confidence-based selection: Selects highest confidence annotation
+- Checker-specific model loading: Loads from checker-specific directories
+- Unified interface: Same API for all checkers
+
+#### Confidence-Based Selection
+
+The system implements confidence-based selection:
+
+1. **Run All Models**: For each location, all annotation type models for the checker are evaluated
+2. **Collect Positive Predictions**: Gather predictions where model says "yes" (confidence >= threshold)
+3. **Select Highest Confidence**: Choose the annotation with highest confidence
+4. **Place Single Annotation**: Only one annotation is placed per location
+
+**Implementation:**
+```python
+# In MultiCheckerPredictor.predict_for_location()
+predictions = []
+for annotation_type in self.annotation_types:
+    for base_model in self.base_models:
+        is_positive, confidence, reason = self._get_model_prediction(...)
+        if is_positive and confidence >= threshold:
+            predictions.append({
+                'annotation_type': annotation_type,
+                'confidence': confidence,
+                'model_type': base_model,
+                ...
+            })
+
+# Select highest confidence
+if predictions:
+    best_prediction = max(predictions, key=lambda p: p['confidence'])
+    return best_prediction
+```
+
+#### Checker Detection
+
+The pipeline automatically detects checker from warnings file path:
+
+```python
+# In SimpleAnnotationTypePipeline._determine_checker_name()
+if 'lower_bound' in warnings_file_lower or 'index1' in warnings_file_lower:
+    return 'lower_bound'
+elif 'sql_quotes' in warnings_file_lower or 'quotes' in warnings_file_lower:
+    return 'sql_quotes'
+elif 'signature_string' in warnings_file_lower or 'signature' in warnings_file_lower:
+    return 'signature_string'
+```
+
+### Adding Support for New Checkers
+
+To add support for a new checker:
+
+1. **Update `checker_evaluation_config.py`**:
+   ```python
+   'new_checker': {
+       'name': 'New Checker',
+       'processor': 'org.checkerframework.checker.new.NewChecker',
+       'annotation_types': ['@Annotation1', '@Annotation2'],
+       'base_models': ['gcn', 'hgt', 'gbt', ...],
+       ...
+   }
+   ```
+
+2. **Train Models**: Use balanced training scripts to train models for all annotation types
+
+3. **Update Feature Extraction**: Ensure `ImprovedBalancedDatasetGenerator` supports the checker
+
+4. **Test**: Verify prediction and placement work correctly
+
+### Path Configuration
+
+The system uses `GEN_DATA_ROOT` from `checker_evaluation_config.py` instead of hardcoded paths:
+
+```python
+from checker_evaluation_config import GEN_DATA_ROOT
+
+# Checker-specific directories
+if checker_name == 'lower_bound':
+    models_dir = GEN_DATA_ROOT / 'models_annotation_types'
+else:
+    models_dir = GEN_DATA_ROOT / f'models_annotation_types_{checker_name}'
+```
+
+### Single Annotation Verification
+
+The placement system includes explicit verification:
+
+```python
+# In ComprehensiveAnnotationPlacer.process_predictions()
+# Group by location and select highest confidence
+predictions_by_location = {}
+for pred in predictions:
+    location_key = (file_path, pred.line_number)
+    predictions_by_location[location_key].append(pred)
+
+# Select highest confidence per location
+for location_key, location_predictions in predictions_by_location.items():
+    best_prediction = max(location_predictions, key=lambda p: p.confidence)
+    # Only one annotation placed per location
+```
 
 ## Conclusion
 

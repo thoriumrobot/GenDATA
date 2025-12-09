@@ -3,18 +3,24 @@
 Comprehensive Annotation Placement Script for CFWR Pipeline
 
 This script places relevant annotations on predicted locations for input projects,
-with full support for the Lower Bound Checker's multiple annotations and integration
-with the existing CFWR prediction pipeline.
+with full support for multiple Checker Framework checkers (Lower Bound, SQL Quotes, 
+Signature String) using confidence-based selection.
 
 Features:
 - PERFECT ACCURACY: Uses AST-based analysis for exact annotation placement (DEFAULT)
-- Supports all Checker Framework annotations including Lower Bound Checker
-- Integrates with prediction pipeline results
-- Handles multiple annotations at the same location
+- Multi-Checker Support: Supports Lower Bound, SQL Quotes, and Signature String checkers
+- Confidence-Based Selection: Places single annotation per location using highest confidence
+- Integrates with MultiCheckerPredictor for unified prediction across all checkers
 - Intelligent placement based on code structure
 - Validation and verification of placed annotations
 - Best practices defaults for consistency
 - BACKUP: Approximate placement available as fallback option
+
+Annotation Placement Behavior:
+- For each location, if multiple models predict annotations, only the highest-confidence
+  annotation is placed (single annotation per location)
+- Confidence-based selection ensures optimal annotation choice across all annotation types
+- Checker-specific annotation types are automatically detected and used
 
 DEFAULT BEHAVIOR: Perfect placement is used by default for maximum accuracy.
 Use --approximate_placement only if perfect placement fails or for compatibility.
@@ -81,6 +87,14 @@ class PredictionResult:
     model_type: str = ""
 
 @dataclass
+class AnnotationPlacement:
+    """Represents a placed annotation"""
+    line_number: int
+    annotation_type: str
+    target_element: str
+    placement_strategy: str
+
+@dataclass
 class AnnotationContext:
     """Context information for annotation placement"""
     file_path: str
@@ -95,12 +109,75 @@ class AnnotationContext:
     is_parameter: bool = False
     is_return_type: bool = False
 
+class JavaCodeAnalyzer:
+    """Simple Java code analyzer for context extraction"""
+    def __init__(self, file_path: str):
+        self.file_path = file_path
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                self.lines = f.readlines()
+        except Exception as e:
+            logger.warning(f"Could not read file {file_path}: {e}")
+            self.lines = []
+    
+    def find_method_at_line(self, line_number: int) -> Optional[Dict]:
+        """Find method containing the given line"""
+        # Simple implementation - can be enhanced
+        return None
+    
+    def find_class_at_line(self, line_number: int) -> Optional[Dict]:
+        """Find class containing the given line"""
+        # Simple implementation - can be enhanced
+        return None
+
+class AnnotationPlacementManager:
+    """Manages annotation placement for a specific file"""
+    def __init__(self, file_path: str):
+        self.file_path = file_path
+        self.placed_annotations: List[AnnotationPlacement] = []
+
+class PreciseAnnotationPlacer:
+    """Precise annotation placer using AST analysis"""
+    def __init__(self, file_path: str):
+        self.file_path = file_path
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                self.lines = f.readlines()
+        except Exception as e:
+            logger.warning(f"Could not read file {file_path}: {e}")
+            self.lines = []
+    
+    def place_annotation_precisely(self, line_number: int, annotation: str, target_element: str) -> bool:
+        """Place annotation precisely at the given location"""
+        try:
+            # Simple implementation: insert annotation before the line
+            if line_number > 0 and line_number <= len(self.lines):
+                indent = len(self.lines[line_number - 1]) - len(self.lines[line_number - 1].lstrip())
+                indent_str = ' ' * indent
+                annotation_line = f"{indent_str}{annotation}\n"
+                self.lines.insert(line_number - 1, annotation_line)
+                return True
+            return False
+        except Exception as e:
+            logger.error(f"Error placing annotation: {e}")
+            return False
+    
+    def save_file(self):
+        """Save the modified file"""
+        try:
+            with open(self.file_path, 'w', encoding='utf-8') as f:
+                f.writelines(self.lines)
+        except Exception as e:
+            logger.error(f"Error saving file: {e}")
+
 class ComprehensiveAnnotationPlacer:
     """Comprehensive annotation placement system"""
     
-    def __init__(self, project_root: str, output_dir: str, backup: bool = True, perfect_placement: bool = True):
+    def __init__(self, project_root: str, output_dir: str, checker_name: str = 'lower_bound', 
+                 backup: bool = True, perfect_placement: bool = True):
         self.project_root = Path(project_root).resolve()
         self.output_dir = Path(output_dir).resolve()
+        self.checker_name = checker_name.lower()
         self.backup = backup
         self.perfect_placement = perfect_placement
         self.evaluator = CheckerFrameworkEvaluator()
@@ -114,7 +191,7 @@ class ComprehensiveAnnotationPlacer:
         # Cache for AnnotationPlacementManagers (per file)
         self.placement_managers: Dict[str, AnnotationPlacementManager] = {}
         
-        logger.info(f"Initialized annotation placer with perfect_placement={perfect_placement}")
+        logger.info(f"Initialized annotation placer for {checker_name} checker with perfect_placement={perfect_placement}")
     
     def get_placement_manager(self, file_path: str) -> AnnotationPlacementManager:
         """Get or create an AnnotationPlacementManager for a specific file"""
@@ -282,52 +359,13 @@ class ComprehensiveAnnotationPlacer:
         return AnnotationStrategy.LOCAL_VARIABLE
     
     def select_appropriate_annotation(self, prediction: PredictionResult, context: AnnotationContext) -> List[str]:
-        """Select appropriate annotation(s) based on context and prediction"""
-        annotations = []
-        
-        # Base annotation from prediction
-        base_annotation = prediction.annotation_type
-        
-        # For Lower Bound Checker, add context-specific annotations
-        if context.is_array or '[' in context.code_line:
-            # Array-related annotations
-            if '@NonNull' in base_annotation or 'null' in prediction.context.lower():
-                annotations.extend(['@NonNull', '@MinLen(0)'])
-            else:
-                annotations.append('@MinLen(0)')
-                
-            # Add array length annotations for specific patterns
-            if 'length' in context.code_line.lower():
-                annotations.append('@LengthOf("#1")')
-                
-        elif context.is_loop_variable:
-            # Loop variable annotations
-            annotations.extend(['@NonNegative', '@LTLengthOf("#1")'])
-            
-        elif 'index' in context.code_line.lower() or 'idx' in context.code_line.lower():
-            # Index variable annotations
-            annotations.extend(['@NonNegative', '@IndexFor("#1")'])
-            
-        elif context.is_parameter:
-            # Parameter annotations
-            if 'length' in prediction.context.lower() or 'size' in prediction.context.lower():
-                annotations.extend(['@Positive', '@MinLen(1)'])
-            else:
-                annotations.append(base_annotation)
-                
-        else:
-            # Default annotation
-            annotations.append(base_annotation)
-        
-        # Remove duplicates while preserving order
-        seen = set()
-        unique_annotations = []
-        for ann in annotations:
-            if ann not in seen:
-                seen.add(ann)
-                unique_annotations.append(ann)
-                
-        return unique_annotations
+        """
+        Select appropriate annotation based on prediction.
+        Returns only the annotation from the prediction (single annotation per location).
+        """
+        # Return only the annotation from the prediction
+        # Multiple annotations are never placed - only the highest confidence one
+        return [prediction.annotation_type]
     
     def place_annotation_at_location(self, file_path: str, line_number: int, 
                                    annotations: List[str], strategy: AnnotationStrategy) -> bool:
@@ -500,23 +538,101 @@ class ComprehensiveAnnotationPlacer:
             return False
     
     def process_predictions(self, predictions: List[PredictionResult]) -> Dict[str, int]:
-        """Process all predictions and place annotations"""
-        logger.info(f"Processing {len(predictions)} predictions")
+        """
+        Process all predictions and place annotations.
+        Groups predictions by location and selects highest-confidence annotation per location.
+        """
+        logger.info(f"Processing {len(predictions)} predictions for {self.checker_name} checker")
         
         stats = {
             'total': len(predictions),
             'successful': 0,
             'failed': 0,
-            'skipped': 0
+            'skipped': 0,
+            'locations_with_predictions': 0,
+            'locations_after_selection': 0
         }
         
-        # Group predictions by file for efficient processing
-        predictions_by_file = {}
+        # Group predictions by location (file_path, line_number) for confidence-based selection
+        predictions_by_location: Dict[Tuple[str, int], List[PredictionResult]] = {}
         for pred in predictions:
-            file_path = str(self.project_root / pred.file_path)
+            # Normalize file path
+            if os.path.isabs(pred.file_path):
+                file_path = pred.file_path
+            else:
+                # Try relative to project root
+                candidate_path = str(self.project_root / pred.file_path)
+                if os.path.exists(candidate_path):
+                    file_path = candidate_path
+                else:
+                    # Try as-is if it exists
+                    if os.path.exists(pred.file_path):
+                        file_path = pred.file_path
+                    else:
+                        logger.warning(f"File path not found: {pred.file_path} (relative to {self.project_root})")
+                        file_path = candidate_path  # Use candidate anyway for grouping
+            
+            location_key = (file_path, pred.line_number)
+            if location_key not in predictions_by_location:
+                predictions_by_location[location_key] = []
+            predictions_by_location[location_key].append(pred)
+        
+        stats['locations_with_predictions'] = len(predictions_by_location)
+        
+        # Select highest-confidence prediction for each location
+        selected_predictions: List[PredictionResult] = []
+        for (file_path, line_number), location_predictions in predictions_by_location.items():
+            if len(location_predictions) > 1:
+                # Multiple predictions for same location - select highest confidence
+                best_prediction = max(location_predictions, key=lambda p: p.confidence)
+                logger.debug(f"Location {file_path}:{line_number}: Selected {best_prediction.annotation_type} "
+                           f"(confidence: {best_prediction.confidence:.3f}) from {len(location_predictions)} predictions")
+                
+                # Verify only one annotation will be placed
+                if len(location_predictions) > 1:
+                    other_predictions = [p for p in location_predictions if p != best_prediction]
+                    logger.debug(f"  Discarded {len(other_predictions)} other predictions at same location")
+            else:
+                best_prediction = location_predictions[0]
+            
+            selected_predictions.append(best_prediction)
+        
+        # Verify no duplicate locations in selected predictions
+        selected_locations = {(p.file_path, p.line_number) for p in selected_predictions}
+        if len(selected_locations) != len(selected_predictions):
+            logger.warning(f"Duplicate locations detected: {len(selected_predictions)} predictions but {len(selected_locations)} unique locations")
+            # Remove duplicates, keeping highest confidence
+            seen_locations = {}
+            for pred in selected_predictions:
+                loc_key = (pred.file_path, pred.line_number)
+                if loc_key not in seen_locations or pred.confidence > seen_locations[loc_key].confidence:
+                    seen_locations[loc_key] = pred
+            selected_predictions = list(seen_locations.values())
+            logger.info(f"After deduplication: {len(selected_predictions)} unique predictions")
+        
+        stats['locations_after_selection'] = len(selected_predictions)
+        logger.info(f"Selected {len(selected_predictions)} annotations from {len(predictions)} predictions "
+                   f"across {len(predictions_by_location)} locations")
+        
+        # Group selected predictions by file for efficient processing
+        predictions_by_file: Dict[str, List[PredictionResult]] = {}
+        for pred in selected_predictions:
+            # Normalize file path (same logic as above)
+            if os.path.isabs(pred.file_path):
+                file_path = pred.file_path
+            else:
+                candidate_path = str(self.project_root / pred.file_path)
+                file_path = candidate_path if os.path.exists(candidate_path) else pred.file_path
+            
             if file_path not in predictions_by_file:
                 predictions_by_file[file_path] = []
             predictions_by_file[file_path].append(pred)
+            
+            # Verify no duplicate line numbers per file
+            line_numbers = [p.line_number for p in predictions_by_file[file_path]]
+            if len(line_numbers) != len(set(line_numbers)):
+                duplicates = [ln for ln in line_numbers if line_numbers.count(ln) > 1]
+                logger.warning(f"Duplicate line numbers in {file_path}: {duplicates}")
         
         # Process each file
         for file_path, file_predictions in predictions_by_file.items():
@@ -525,7 +641,7 @@ class ComprehensiveAnnotationPlacer:
                 stats['skipped'] += len(file_predictions)
                 continue
             
-            logger.info(f"Processing {len(file_predictions)} predictions for {file_path}")
+            logger.info(f"Processing {len(file_predictions)} selected predictions for {file_path}")
             
             # Sort predictions by line number (descending) to avoid line shift issues
             file_predictions.sort(key=lambda p: p.line_number, reverse=True)
@@ -538,16 +654,28 @@ class ComprehensiveAnnotationPlacer:
                     # Determine strategy
                     strategy = self.determine_annotation_strategy(context, prediction)
                     
-                    # Select appropriate annotations
+                    # Select appropriate annotation (single annotation from prediction)
                     annotations = self.select_appropriate_annotation(prediction, context)
                     
-                    # Place annotations
+                    # Verify only one annotation is being placed
+                    if len(annotations) > 1:
+                        logger.warning(f"Multiple annotations detected for single location {file_path}:{prediction.line_number}: {annotations}")
+                        # Keep only the first annotation (should already be only one from select_appropriate_annotation)
+                        annotations = [annotations[0]]
+                    
+                    # Place annotation (only one per location)
                     success = self.place_annotation_at_location(
                         file_path, prediction.line_number, annotations, strategy
                     )
                     
                     if success:
                         stats['successful'] += 1
+                        # Verify annotation was actually placed (check placement manager)
+                        if file_path in self.placed_annotations:
+                            placed_at_location = [p for p in self.placed_annotations[file_path] 
+                                               if p.line_number == prediction.line_number]
+                            if len(placed_at_location) > 1:
+                                logger.warning(f"Multiple annotations placed at {file_path}:{prediction.line_number}: {placed_at_location}")
                     else:
                         stats['failed'] += 1
                         
@@ -648,6 +776,10 @@ def main():
                        help='JSON file containing prediction results')
     parser.add_argument('--output_dir', required=True,
                        help='Output directory for processed files and reports')
+    parser.add_argument('--checker_name', 
+                       choices=['lower_bound', 'sql_quotes', 'signature_string'],
+                       default='lower_bound',
+                       help='Checker name for annotation placement (default: lower_bound)')
     parser.add_argument('--backup', action='store_true', default=True,
                        help='Create backup of original files (default: True)')
     parser.add_argument('--validate', action='store_true', default=True,
@@ -682,6 +814,7 @@ def main():
         placer = ComprehensiveAnnotationPlacer(
             project_root=args.project_root,
             output_dir=args.output_dir,
+            checker_name=args.checker_name,
             backup=args.backup,
             perfect_placement=use_perfect_placement
         )

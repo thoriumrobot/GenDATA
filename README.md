@@ -1,6 +1,34 @@
 # CFWR Adaptive Semantic Augmentation Pipeline - GenDATA
 
-This directory contains the essential files for the CFWR (Checker Framework Warning Resolver) adaptive semantic augmentation pipeline. This advanced system predicts specific Checker Framework annotation types (@Positive, @NonNegative, @GTENegativeOne) using 20 semantic augmentation methods (10 enhanced + 10 simple) with automatic complexity-based selection, balanced training, GPU acceleration, batching, and graph inputs.
+This directory contains the essential files for the CFWR (Checker Framework Warning Resolver) adaptive semantic augmentation pipeline. This advanced system predicts Checker Framework annotation types for multiple checkers (Lower Bound, SQL Quotes, Signature String) using 20 semantic augmentation methods (10 enhanced + 10 simple) with automatic complexity-based selection, balanced training, GPU acceleration, batching, graph inputs, and confidence-based annotation selection.
+
+## 🎯 **Multi-Checker Support with Confidence-Based Selection**
+
+GenDATA now supports **multiple Checker Framework checkers** with **confidence-based annotation selection**:
+
+### **Supported Checkers and Annotation Types**
+
+1. **Lower Bound Checker**:
+   - `@Positive` - Values greater than zero
+   - `@NonNegative` - Values greater than or equal to zero
+   - `@GTENegativeOne` - Values greater than or equal to -1
+
+2. **SQL Quotes Checker**:
+   - `@SqlEvenQuotes` - SQL strings with even number of quotes
+   - `@SqlOddQuotes` - SQL strings with odd number of quotes
+
+3. **Signature String Checker**:
+   - `@FullyQualifiedName` - Fully qualified class names (e.g., `java.lang.String`)
+   - `@BinaryName` - Binary class names (e.g., `java/lang/String`)
+   - `@FieldDescriptor` - Field descriptors (e.g., `Ljava/lang/String;`)
+
+### **Confidence-Based Selection**
+
+- **Single Annotation Per Location**: For each code location, only one annotation is placed (the highest confidence one)
+- **Multi-Model Prediction**: All annotation type models for a checker are evaluated
+- **Highest Confidence Wins**: If multiple models predict annotations, only the annotation with the highest confidence is placed
+- **Unified Predictor**: `MultiCheckerPredictor` handles all checkers with consistent confidence-based selection
+- **Automatic Checker Detection**: Checker is automatically detected from warnings file path or can be specified explicitly
 
 ## 🎉 **NEW: Eclipse JDT Implementation Complete**
 
@@ -187,7 +215,8 @@ These models predict whether ANY annotation should be placed (binary classificat
 - `graph_encoder.py` - Graph Transformer encoder with edge encodings; PNA/GAT fallback and global attention pooling
 - `annotation_graph_input.py` - Utility to embed CFG graphs for annotation-type trainers
 - `checker_framework_integration.py` - Checker Framework integration utilities
-- `place_annotations.py` - Annotation placement engine
+- `place_annotations.py` - Annotation placement engine with confidence-based selection and multi-checker support
+- `multi_checker_predictor.py` - Unified predictor for all checkers with confidence-based annotation selection
 - `predict_on_project.py` - Project-wide prediction
 - `prediction_saver.py` - Prediction saving utilities
 
@@ -243,16 +272,53 @@ Install with:
 pip install torch torch-geometric javalang scikit-learn joblib numpy
 ```
 
-### 2. Train All 21 Models (ENHANCED PIPELINE)
-```bash
-# Train all 21 models with enhanced pipeline (semantic augmentation, augment-first, enhanced Soot slicing)
-python train_all_21_models.py
+### 2. Generate Warning Files (REQUIRED FOR TRAINING)
 
-# This will train:
-# - 7 @Positive models: gcn, gbt, causal, enhanced_causal, hgt, gcsn, dg2n
-# - 7 @NonNegative models: gcn, gbt, causal, enhanced_causal, hgt, gcsn, dg2n  
-# - 7 @GTENegativeOne models: gcn, gbt, causal, enhanced_causal, hgt, gcsn, dg2n
+Before training models, you need to generate warning files from Checker Framework test suites:
+
+```bash
+# Generate warning files for all GenDATA checkers
+python3 generate_checker_warning_files.py
+
+# Generate warning file for specific checker
+python3 generate_checker_warning_files.py --checker lower_bound
+python3 generate_checker_warning_files.py --checker sql_quotes
+python3 generate_checker_warning_files.py --checker signature_string
+
+# Skip if files already exist
+python3 generate_checker_warning_files.py --skip-existing
 ```
+
+**Warning Files Generated:**
+- `lower_bound_warnings.out` - Lower Bound Checker warnings (or use existing `index1.out`)
+- `sql_quotes_warnings.out` - SQL Quotes Checker warnings (requires test suite at `/home/ubuntu/checker-framework/checker/tests/quotes/`)
+- `signature_string_warnings.out` - Signature String Checker warnings (from `/home/ubuntu/checker-framework/checker/tests/signature/`)
+
+**Note**: Only warning files for GenDATA checkers (Lower Bound, SQL Quotes, Signature String) are generated. Other Checker Framework checkers are not included.
+
+### 3. Train All Models (ENHANCED PIPELINE)
+
+```bash
+# Train all models for all checkers (with optional warning file generation)
+python3 train_all_checkers.py --generate-warnings
+
+# Train all models without generating warnings (assumes warning files exist)
+python3 train_all_checkers.py
+
+# Train Lower Bound Checker models only (21 models)
+python3 train_all_21_models.py
+
+# Train SQL Quotes Checker models (14 models)
+python3 train_sql_quotes_models.py
+
+# Train Signature String Checker models (21 models)
+python3 train_signature_string_models.py
+```
+
+**Models Trained:**
+- **Lower Bound Checker**: 21 models (7 base models × 3 annotation types: @Positive, @NonNegative, @GTENegativeOne)
+- **SQL Quotes Checker**: 14 models (7 base models × 2 annotation types: @SqlEvenQuotes, @SqlOddQuotes)
+- **Signature String Checker**: 21 models (7 base models × 3 annotation types: @FullyQualifiedName, @BinaryName, @FieldDescriptor)
 
 ### 3. Run Predictions (ENHANCED PIPELINE)
 ```bash
@@ -272,13 +338,130 @@ python simple_annotation_type_pipeline.py --mode predict --target_file /path/to/
 python simple_annotation_type_pipeline.py --mode predict --no_run_checker
 ```
 
+## 🔍 **Multi-Checker Evaluation Infrastructure**
+
+GenDATA now supports evaluation across multiple Checker Framework checkers through a unified, extensible infrastructure with confidence-based annotation selection:
+
+### **Supported Checkers**
+- **Lower Bound Checker**: Fully supported with 21 trained models (7 base models × 3 annotation types: @Positive, @NonNegative, @GTENegativeOne)
+- **SQL Quotes Checker**: Fully supported with 14 trained models (7 base models × 2 annotation types: @SqlEvenQuotes, @SqlOddQuotes)
+- **Signature String Checker**: Fully supported with 21 trained models (7 base models × 3 annotation types: @FullyQualifiedName, @BinaryName, @FieldDescriptor)
+
+### **Confidence-Based Annotation Selection**
+
+The system uses `MultiCheckerPredictor` for unified prediction across all checkers:
+
+- **Unified Prediction**: Single predictor handles all checkers with checker-specific model loading
+- **Confidence-Based Selection**: For each location, runs all annotation type models and selects highest confidence
+- **Single Annotation Placement**: Only one annotation is placed per location (the highest confidence one)
+- **Automatic Checker Detection**: Checker is detected from warnings file path or specified via `--checker_name` parameter
+- **Checker-Specific Models**: Models are loaded from checker-specific directories:
+  - Lower Bound: `models_annotation_types/`
+  - SQL Quotes: `models_annotation_types_sql_quotes/`
+  - Signature String: `models_annotation_types_signature_string/`
+
+### **Key Features**
+- **Checker Interface Abstraction**: Unified `CheckerInterface` for all checkers
+- **Dynamic Checker Selection**: `CheckerFrameworkRunner` supports any checker via `checker_name` parameter
+- **Checker-Specific Parsing**: Each checker implements its own warning parser
+- **Multi-Checker Evaluation**: Evaluate all checkers on the same projects
+- **Cross-Checker Comparison**: Comprehensive reports comparing results across checkers
+- **Signature String Internal Features**: Advanced 30-feature extraction system analyzing Java source code for string format patterns
+
+### **Signature String Internal Feature Extraction**
+
+The Signature String Checker uses a comprehensive internal string feature extraction system that analyzes Java source code to extract 30 features for distinguishing between `@FullyQualifiedName`, `@BinaryName`, and `@FieldDescriptor` annotation types.
+
+#### **Feature Categories (30 features total)**
+
+1. **Format Detection Features (6 features)**:
+   - Dotted format indicators (FullyQualifiedName)
+   - Slashed format indicators (BinaryName)
+   - Field descriptor format indicators (L...;)
+   - Format confidence scores
+   - Format ambiguity detection
+   - Format transition indicators
+
+2. **Structural Features (8 features)**:
+   - Package depth (number of segments)
+   - Class name length
+   - Array type indicators
+   - Method descriptor patterns
+   - Primitive type indicators
+   - Object type indicators
+   - String length
+   - Segment count
+
+3. **Pattern Features (6 features)**:
+   - Dot count, slash count, semicolon count
+   - Capital letter count (class name indicators)
+   - Lowercase letter count (package name indicators)
+   - Special character count
+
+4. **Context Features (6 features)**:
+   - Class.forName usage
+   - Class.getName usage
+   - Method parameter usage
+   - Return type usage
+   - Reflection API usage
+   - Type conversion context
+
+5. **CFG Context Features (4 features)**:
+   - Node type encoding
+   - Control flow in/out degrees
+   - Dataflow connections
+
+#### **Source Code Extraction**
+
+The system extracts string values directly from Java source code using:
+- **AST-based extraction**: Uses Eclipse JDT when available for accurate parsing
+- **Fallback extraction**: Regex-based extraction if AST parsing unavailable
+- **Context-aware analysis**: Analyzes surrounding code for usage patterns
+
+#### **Implementation Files**
+
+- `signature_string_feature_extractor.py`: Core feature extraction module with analyzers
+- `source_code_feature_extractor.py`: Source code access and string extraction utilities
+- `signature_string_checker.py`: Enhanced checker with integrated feature extraction
+- `test_signature_string_features.py`: Comprehensive unit tests (16 tests, all passing)
+
+#### **Training Scripts**
+
+Three training scripts are available for Signature String annotations:
+- `annotation_type_rl_signature_string_fullyqualified.py`: Training for @FullyQualifiedName
+- `annotation_type_rl_signature_string_binary.py`: Training for @BinaryName
+- `annotation_type_rl_signature_string_fielddescriptor.py`: Training for @FieldDescriptor
+
+All scripts support 7 base models (GCN, HGT, GBT, Causal, Enhanced Causal, GCSN, DG2N) with 30-feature input dimensions.
+
+### **Quick Start**
+
+```bash
+# Evaluate all checkers on all projects
+python3 run_multi_checker_evaluations.py
+
+# Evaluate specific checker
+python3 evaluate_multi_checker.py --checker lower_bound --projects guava jfreechart
+
+# Verify infrastructure
+python3 verify_multi_checker_infrastructure.py
+
+# Identify suitable projects for each checker
+python3 identify_checker_projects.py
+```
+
+### **Documentation**
+- **Multi-Checker Guide**: `MULTI_CHECKER_EVALUATION_GUIDE.md` - Complete guide to multi-checker evaluation
+- **Verification Report**: `MULTI_CHECKER_VERIFICATION_REPORT.md` - Infrastructure verification results
+- **Evaluation Report**: `multi_checker_results/MULTI_CHECKER_EVALUATION_REPORT.md` - Cross-checker comparison
+
 ## 🔍 **Lower Bound Checker Integration**
 
 The prediction pipeline now automatically integrates with the Checker Framework's Lower Bound Checker to provide more accurate predictions:
 
 ### **Automatic Checker Execution**
 By default, the prediction pipeline:
-1. **Runs Lower Bound Checker** on the target project before prediction
+1. **Runs appropriate Checker Framework checker** on the target project before prediction (automatically detected or specified)
 2. **Generates warnings** based on actual code analysis
 3. **Uses real warnings** to guide slicing and annotation placement
 4. **Produces accurate predictions** based on actual warning locations
@@ -500,9 +683,19 @@ This ensures optimal model performance with practical applicability to real code
 
 ## Supported Annotation Types
 
+### Lower Bound Checker
 - **@Positive**: For values that must be greater than zero (e.g., count, size, length)
 - **@NonNegative**: For values that must be greater than or equal to zero (e.g., index, offset, position)
 - **@GTENegativeOne**: For values that must be greater than or equal to -1 (e.g., capacity, limit, bound)
+
+### SQL Quotes Checker
+- **@SqlEvenQuotes**: For SQL strings with even number of quotes (balanced quote pairs)
+- **@SqlOddQuotes**: For SQL strings with odd number of quotes (unbalanced quotes)
+
+### Signature String Checker
+- **@FullyQualifiedName**: For fully qualified class names (e.g., `java.lang.String`)
+- **@BinaryName**: For binary class names (e.g., `java/lang/String`)
+- **@FieldDescriptor**: For field descriptors (e.g., `Ljava/lang/String;`)
 
 ## Enhanced Balanced Pipeline Performance
 

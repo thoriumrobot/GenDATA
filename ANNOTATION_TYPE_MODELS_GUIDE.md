@@ -1,16 +1,37 @@
 # Annotation Type Models Guide (Graph-Based Inputs)
 
-This guide explains how to use the new annotation-specific models that predict specific Checker Framework annotation types: `@Positive`, `@NonNegative`, and `@GTENegativeOne`, with CFG graph inputs. Graph models consume PyTorch Geometric graphs directly; non-graph models use a Graph Transformer encoder to obtain a fixed-length embedding.
+This guide explains how to use the annotation-specific models that predict Checker Framework annotation types for multiple checkers (Lower Bound, SQL Quotes, Signature String) with CFG graph inputs. Graph models consume PyTorch Geometric graphs directly; non-graph models use a Graph Transformer encoder to obtain a fixed-length embedding.
 
 ## Overview
 
-The annotation type models build upon the binary RL models to provide more precise annotation placement. Instead of just predicting whether an annotation should be placed, these models predict the specific type of annotation needed.
+The annotation type models build upon the binary RL models to provide more precise annotation placement. Instead of just predicting whether an annotation should be placed, these models predict the specific type of annotation needed. The system uses **confidence-based selection** to place only the highest-confidence annotation at each location.
 
-### Supported Annotation Types
+### Multi-Checker Support
 
+GenDATA supports multiple Checker Framework checkers, each with its own set of annotation types:
+
+#### Lower Bound Checker
 1. **`@Positive`** - For values that must be greater than zero (e.g., count, size, length)
 2. **`@NonNegative`** - For values that must be greater than or equal to zero (e.g., index, offset, position)
 3. **`@GTENegativeOne`** - For values that must be greater than or equal to -1 (e.g., capacity, limit, bound)
+
+#### SQL Quotes Checker
+1. **`@SqlEvenQuotes`** - For SQL strings with even number of quotes (balanced quote pairs)
+2. **`@SqlOddQuotes`** - For SQL strings with odd number of quotes (unbalanced quotes)
+
+#### Signature String Checker
+1. **`@FullyQualifiedName`** - For fully qualified class names (e.g., `java.lang.String`)
+2. **`@BinaryName`** - For binary class names (e.g., `java/lang/String`)
+3. **`@FieldDescriptor`** - For field descriptors (e.g., `Ljava/lang/String;`)
+
+### Confidence-Based Selection
+
+The system uses `MultiCheckerPredictor` for unified prediction across all checkers:
+
+- **Single Annotation Per Location**: For each code location, only one annotation is placed (the highest confidence one)
+- **Multi-Model Evaluation**: All annotation type models for a checker are evaluated at each location
+- **Highest Confidence Selection**: If multiple models predict annotations, only the annotation with the highest confidence is placed
+- **Automatic Checker Detection**: Checker is automatically detected from warnings file path or can be specified explicitly
 
 ## Architecture
 
@@ -29,8 +50,11 @@ This approach ensures that only valid annotation targets are considered for type
 
 ## Model-Based Prediction System
 
-The pipeline uses **trained machine learning models** for prediction by default. The system includes:
+The pipeline uses **MultiCheckerPredictor** for unified prediction across all checkers. The system includes:
 
+- **MultiCheckerPredictor**: Unified predictor that handles all checkers with confidence-based selection
+- **Checker-Specific Model Loading**: Models are loaded from checker-specific directories
+- **Confidence-Based Selection**: For each location, selects the annotation with highest confidence
 - **Enhanced Causal Model (Default)**
   - Graph-augmented features via embeddings
   - Dynamic confidence scores based on model certainty
@@ -42,15 +66,25 @@ The pipeline uses **trained machine learning models** for prediction by default.
 
 ### Individual Model Training Scripts
 
-- `annotation_type_rl_positive.py` - Trains model for `@Positive` annotations (now appends CFG graph embeddings)
-- `annotation_type_rl_nonnegative.py` - Trains model for `@NonNegative` annotations (with embeddings)
-- `annotation_type_rl_gtenegativeone.py` - Trains model for `@GTENegativeOne` annotations (with embeddings)
+#### Lower Bound Checker
+- `annotation_type_rl_positive.py` - Trains model for `@Positive` annotations
+- `annotation_type_rl_nonnegative.py` - Trains model for `@NonNegative` annotations
+- `annotation_type_rl_gtenegativeone.py` - Trains model for `@GTENegativeOne` annotations
+
+#### SQL Quotes Checker
+- `train_balanced_sql_quotes_models.py` - Trains models for `@SqlEvenQuotes` and `@SqlOddQuotes` annotations
+
+#### Signature String Checker
+- `annotation_type_rl_signature_string_fullyqualified.py` - Trains model for `@FullyQualifiedName` annotations
+- `annotation_type_rl_signature_string_binary.py` - Trains model for `@BinaryName` annotations
+- `annotation_type_rl_signature_string_fielddescriptor.py` - Trains model for `@FieldDescriptor` annotations
 
 ### Pipeline Scripts
 
-- `simple_annotation_type_pipeline.py` - Simplified pipeline for training and prediction (uses trained models by default)
+- `simple_annotation_type_pipeline.py` - Simplified pipeline for training and prediction (uses MultiCheckerPredictor by default, supports all checkers)
 - `annotation_type_pipeline.py` - Full pipeline with Specimin, augmentation, and CFG integration
-- `model_based_predictor.py` - Loads trained models; feeds CFG graphs to graph models and embeddings to non-graph models
+- `multi_checker_predictor.py` - Unified predictor for all checkers with confidence-based selection
+- `model_based_predictor.py` - Legacy predictor (superseded by MultiCheckerPredictor)
 
 ## Usage
 

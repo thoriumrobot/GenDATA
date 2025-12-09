@@ -56,14 +56,28 @@ class AllModelsTrainer:
         logger.info(f"🚀 Training {model_name} model using enhanced pipeline...")
         
         # Build command with enhanced pipeline parameters
+        # Determine device (cuda if available, else cpu)
+        import torch
+        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        
+        # Use index1.out for backward compatibility, but also check for lower_bound_warnings.out
+        warnings_file = '/home/ubuntu/GenDATA/index1.out'
+        if not os.path.exists(warnings_file):
+            # Fallback to standardized name if index1.out doesn't exist
+            warnings_file = '/home/ubuntu/GenDATA/lower_bound_warnings.out'
+            if not os.path.exists(warnings_file):
+                logger.warning(f"⚠️ Warning file not found: {warnings_file}")
+                logger.warning(f"   Please run: python3 generate_checker_warning_files.py --checker lower_bound")
+                # Continue anyway for backward compatibility
+        
         cmd = [
             'python3', script_path,
             '--project_root', self.project_root,
-            '--warnings_file', '/home/ubuntu/GenDATA/index1.out',
+            '--warnings_file', warnings_file,
             '--cfwr_root', '/home/ubuntu/GenDATA',
             '--episodes', str(self.episodes),
             '--base_model', base_model,
-            '--device', 'auto'
+            '--device', device
             # Note: --augment_first is now the default (True)
             # Note: Soot slicer is now the default
             # Note: Semantic augmentation is now the default

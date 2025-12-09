@@ -28,7 +28,13 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 class SimpleAnnotationTypePipeline:
-    """Simplified pipeline for training and testing annotation types"""
+    """
+    Simplified pipeline for training and testing annotation types across multiple checkers.
+    
+    Supports Lower Bound, SQL Quotes, and Signature String checkers with automatic
+    checker detection from warnings file path. Uses MultiCheckerPredictor for unified
+    prediction with confidence-based annotation selection.
+    """
     
     def __init__(self, project_root, warnings_file, cfwr_root, mode='train', no_auto_train=False, device='auto', augment_first=True, disable_random_walk=False, run_checker_on_target=True):
         self.project_root = project_root
@@ -49,15 +55,50 @@ class SimpleAnnotationTypePipeline:
         self.disable_random_walk = disable_random_walk
         self.run_checker_on_target = run_checker_on_target
         
-        # Set up directories for adaptive semantic augmentation
-        self.slices_dir = os.path.join(cfwr_root, 'slices_adaptive_specimin')
-        self.cfg_dir = os.path.join(cfwr_root, 'cfg_output_adaptive_specimin')
-        self.models_dir = os.path.join(cfwr_root, 'models_annotation_types')
-        self.predictions_dir = os.path.join(cfwr_root, 'predictions_annotation_types')
+        # Determine checker name from warnings_file path
+        # e.g., lower_bound_warnings.out -> lower_bound, index1.out -> lower_bound (default)
+        self.checker_name = self._determine_checker_name(warnings_file)
+        
+        # Set up directories for adaptive semantic augmentation with checker-specific names
+        # This ensures datasets for different checkers are stored separately
+        self.slices_dir = os.path.join(cfwr_root, f'slices_adaptive_specimin_{self.checker_name}')
+        self.cfg_dir = os.path.join(cfwr_root, f'cfg_output_adaptive_specimin_{self.checker_name}')
+        self.models_dir = os.path.join(cfwr_root, f'models_annotation_types_{self.checker_name}')
+        self.predictions_dir = os.path.join(cfwr_root, f'predictions_annotation_types_{self.checker_name}')
+        self.augmented_code_dir = os.path.join(cfwr_root, f'augmented_code_unified_{self.checker_name}')
         
         # Create directories
-        for dir_path in [self.slices_dir, self.cfg_dir, self.models_dir, self.predictions_dir]:
+        for dir_path in [self.slices_dir, self.cfg_dir, self.models_dir, self.predictions_dir, self.augmented_code_dir]:
             os.makedirs(dir_path, exist_ok=True)
+        
+        logger.info(f"Using checker-specific directories for {self.checker_name}:")
+        logger.info(f"  Slices: {self.slices_dir}")
+        logger.info(f"  CFGs: {self.cfg_dir}")
+        logger.info(f"  Models: {self.models_dir}")
+        logger.info(f"  Augmented code: {self.augmented_code_dir}")
+    
+    def _determine_checker_name(self, warnings_file: str) -> str:
+        """
+        Determine checker name from warnings file path.
+        
+        Examples:
+        - lower_bound_warnings.out -> lower_bound
+        - sql_quotes_warnings.out -> sql_quotes
+        - signature_string_warnings.out -> signature_string
+        - index1.out -> lower_bound (default/backward compatibility)
+        """
+        warnings_file_lower = warnings_file.lower()
+        
+        if 'lower_bound' in warnings_file_lower or 'index1' in warnings_file_lower:
+            return 'lower_bound'
+        elif 'sql_quotes' in warnings_file_lower or 'quotes' in warnings_file_lower:
+            return 'sql_quotes'
+        elif 'signature_string' in warnings_file_lower or 'signature' in warnings_file_lower:
+            return 'signature_string'
+        else:
+            # Default to lower_bound for backward compatibility
+            logger.warning(f"Could not determine checker name from {warnings_file}, defaulting to lower_bound")
+            return 'lower_bound'
         
         # Initialize unified augmentation registry
         self.unified_registry = UnifiedAugmentationRegistry(seed=42)
@@ -74,8 +115,15 @@ class SimpleAnnotationTypePipeline:
             self.random_walk_optimizer = None
             logger.info("Random walk optimizer disabled for ablation study")
         
-        # Annotation types
+        # Get annotation types from checker configuration
+        from checker_evaluation_config import get_checker_annotation_types
+        self.annotation_types = get_checker_annotation_types(self.checker_name)
+        if not self.annotation_types:
+            # Fallback to Lower Bound annotations for backward compatibility
+            logger.warning(f"No annotation types found for {self.checker_name}, using Lower Bound defaults")
         self.annotation_types = ['@Positive', '@NonNegative', '@GTENegativeOne']
+        
+        # Script mapping (legacy, may not be used for all checkers)
         self.script_mapping = {
             '@Positive': 'annotation_type_rl_positive.py',
             '@NonNegative': 'annotation_type_rl_nonnegative.py',
@@ -162,8 +210,8 @@ class SimpleAnnotationTypePipeline:
     def _augment_original_code(self):
         """Augment the original code with unified augmentation registry and location-aware random walk"""
         try:
-            # Create augmented code directory
-            self.augmented_code_dir = os.path.join(self.cfwr_root, 'augmented_code_unified')
+            # Use checker-specific augmented code directory (already set in __init__)
+            # Ensure it exists
             os.makedirs(self.augmented_code_dir, exist_ok=True)
             
             logger.info("Augmenting original code with UNIFIED augmentation registry and location-aware random walk")
@@ -805,21 +853,47 @@ class SimpleAnnotationTypePipeline:
             return False
     
     def _predict_annotations_for_file_with_cfg(self, java_file, models):
-        """Predict annotations for a single Java file using balanced models"""
+        """Predict annotations for a single Java file using MultiCheckerPredictor"""
         try:
-            # Check if we have balanced models
-            balanced_models_found = any(model.get('training_type') == 'balanced_real_code' for model in models.values())
+            # Use MultiCheckerPredictor for confidence-based selection
+            from multi_checker_predictor import MultiCheckerPredictor
             
-            if balanced_models_found:
-                logger.info("Using improved balanced models (trained on real code examples)")
-                return self._predict_with_balanced_models(java_file, models)
-            else:
-                logger.info("Using legacy models (fallback)")
+            # Create predictor for this checker
+            predictor = MultiCheckerPredictor(
+                checker_name=self.checker_name,
+                models_dir=str(self.models_dir),
+                device=self.device
+            )
+            
+            # Load models
+            if not predictor.load_checker_models():
+                logger.warning(f"No models loaded for {self.checker_name}, falling back to legacy prediction")
                 return self._predict_with_legacy_models(java_file, models)
+            
+            # Predict using MultiCheckerPredictor (handles confidence-based selection)
+            predictions = predictor.predict_for_file(java_file, self.cfg_dir, threshold=0.3)
+            
+            # Convert to expected format
+            formatted_predictions = []
+            for pred in predictions:
+                formatted_predictions.append({
+                    'line': pred.get('line_number', 0),  # Keep 'line' key for backward compatibility
+                    'line_number': pred.get('line_number', 0),  # Also include 'line_number' for consistency
+                    'annotation_type': pred.get('annotation_type', ''),
+                    'confidence': pred.get('confidence', 0.0),
+                    'model_type': pred.get('model_type', ''),
+                    'reason': pred.get('reason', ''),
+                    'file_path': pred.get('file_path', java_file)
+                })
+            
+            logger.info(f"Generated {len(formatted_predictions)} predictions using MultiCheckerPredictor for {self.checker_name}")
+            return formatted_predictions
                 
         except Exception as e:
-            logger.error(f"Error in prediction: {e}")
-            return []
+            logger.error(f"Error in prediction with MultiCheckerPredictor: {e}")
+            # Fallback to legacy prediction
+            logger.info("Falling back to legacy prediction")
+            return self._predict_with_legacy_models(java_file, models)
     
     def _predict_with_balanced_models(self, java_file, models):
         """Predict using improved balanced models"""

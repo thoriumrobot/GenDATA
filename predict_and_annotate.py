@@ -4,15 +4,21 @@ Integrated Prediction and Annotation Pipeline
 
 This script combines the CFWR prediction pipeline with comprehensive annotation placement,
 providing an end-to-end solution for predicting and placing Checker Framework annotations
-with full support for Lower Bound Checker annotations.
+with full support for multiple checkers (Lower Bound, SQL Quotes, Signature String).
 
 Features:
 - Integrates with existing prediction pipeline
-- Supports all Checker Framework annotation types
-- Places multiple annotations at the same location
+- Multi-Checker Support: Supports Lower Bound, SQL Quotes, and Signature String checkers
+- Confidence-Based Selection: Places single annotation per location using highest confidence
+- Uses MultiCheckerPredictor for unified prediction across all checkers
 - Validates annotations after placement
 - Generates comprehensive reports
 - Best practices defaults throughout
+
+Annotation Placement:
+- For each location, only the highest-confidence annotation is placed (single annotation)
+- Confidence-based selection ensures optimal annotation choice
+- Checker-specific annotation types are automatically detected
 """
 
 import os

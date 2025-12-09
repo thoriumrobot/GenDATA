@@ -18,8 +18,21 @@ logger = logging.getLogger(__name__)
 
 class SqlQuotesModelsTrainer:
     def __init__(self, project_root=None, episodes=100):
-        self.project_root = project_root or '/home/ubuntu/checker-framework/checker/tests/quotes'
+        # Default test suite location (corrected path)
+        default_test_suite = '/home/ubuntu/checker-framework/checker/tests/sqlquotes'
+        self.project_root = project_root or default_test_suite
         self.episodes = episodes
+        
+        # Verify test suite exists
+        from pathlib import Path
+        test_suite_path = Path(self.project_root)
+        if not test_suite_path.exists():
+            logger.warning(f"⚠️ SQL Quotes test suite not found at {self.project_root}")
+            logger.warning("SQL Quotes Checker training requires the test suite to be available.")
+            logger.warning("Please ensure the Checker Framework test suite is installed at the expected location.")
+            self.test_suite_available = False
+        else:
+            self.test_suite_available = True
         
         # Base model types
         self.base_models = ['gcn', 'gbt', 'causal', 'enhanced_causal', 'hgt', 'gcsn', 'dg2n']
@@ -38,16 +51,39 @@ class SqlQuotesModelsTrainer:
         model_name = f"{annotation_type.replace('@', '').lower()}_{base_model}"
         logger.info(f"🚀 Training {model_name} model...")
         
+        # Use standardized warning file name
+        warnings_file = '/home/ubuntu/GenDATA/sql_quotes_warnings.out'
+        
+        # Validate warning file exists
+        if not os.path.exists(warnings_file):
+            logger.error(f"❌ Warning file not found: {warnings_file}")
+            logger.error(f"   Please run: python3 generate_checker_warning_files.py --checker sql_quotes")
+            logger.error(f"   Note: SQL Quotes test suite may be missing. Check /home/ubuntu/checker-framework/checker/tests/quotes/")
+            return False
+        
         # Build command
+        # Determine device (cuda if available, else cpu)
+        import torch
+        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        
+        # Determine checker-specific models directory
+        from simple_annotation_type_pipeline import SimpleAnnotationTypePipeline
+        temp_pipeline = SimpleAnnotationTypePipeline(
+            project_root=self.project_root,
+            warnings_file=warnings_file,
+            cfwr_root='/home/ubuntu/GenDATA'
+        )
+        models_dir = temp_pipeline.models_dir
+        
         cmd = [
             'python3', script_path,
             '--project_root', self.project_root,
-            '--warnings_file', f'/home/ubuntu/GenDATA/sql_quotes_warnings.out',
+            '--warnings_file', warnings_file,
             '--cfwr_root', '/home/ubuntu/GenDATA',
             '--episodes', str(self.episodes),
             '--base_model', base_model,
-            '--device', 'auto',
-            '--checker_type', 'sql_quotes'
+            '--device', device,
+            '--models_dir', models_dir
         ]
         
         try:
@@ -70,6 +106,13 @@ class SqlQuotesModelsTrainer:
         """Train all 14 SQL Quotes models"""
         logger.info("🎯 Starting training of all 14 SQL Quotes Checker models...")
         logger.info("=" * 80)
+        
+        # Check if test suite is available
+        if not self.test_suite_available:
+            logger.error("❌ Cannot train SQL Quotes models: test suite not found")
+            logger.error(f"   Expected location: {self.project_root}")
+            logger.error("   Please install the Checker Framework test suite or update the path.")
+            return False
         
         total_models = len(self.base_models) * len(self.annotation_configs)
         success_count = 0

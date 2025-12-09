@@ -1,95 +1,53 @@
 # GenDATA Documentation Index
 
-## Current Status: Eclipse JDT Implementation Complete ✅
+## Balanced Training Documentation
 
-All regex-based parsing has been successfully replaced with robust Eclipse JDT AST parsing. The system now provides 100% accurate Java code analysis and transformation capabilities.
+### ⭐ Most Important - Start Here
 
-## Primary Documentation
+1. **`BALANCED_TRAINING_ACCURATE_DOCUMENTATION.md`** - **READ THIS FIRST**
+   - Verified facts only (no optimistic script outputs)
+   - Current actual status
+   - Important files to read
+   - Verification commands
 
-### 🎉 **JDT Implementation**
-- **[JDT_IMPLEMENTATION_COMPLETE.md](JDT_IMPLEMENTATION_COMPLETE.md)** - Complete documentation of the Eclipse JDT implementation
-- **[JDT_MIGRATION_SUMMARY.md](JDT_MIGRATION_SUMMARY.md)** - Summary of the migration from regex to JDT
+2. **`README_BALANCED_TRAINING.md`** - Quick reference
+   - Most important files
+   - Current status summary
+   - Verification commands
 
-### 📚 **System Documentation**
-- **[README.md](README.md)** - Main project overview and features
-- **[README_OPTIMIZED.md](README_OPTIMIZED.md)** - Optimized pipeline documentation
-- **[UPDATED_PIPELINE_DOCUMENTATION.md](UPDATED_PIPELINE_DOCUMENTATION.md)** - Current pipeline status
-- **[FINAL_IMPLEMENTATION_SUMMARY.md](FINAL_IMPLEMENTATION_SUMMARY.md)** - Implementation summary
+### Detailed Documentation
 
-### 🔧 **Technical Guides**
-- **[AUGMENT_FIRST_GUIDE.md](AUGMENT_FIRST_GUIDE.md)** - Augment-first pipeline guide
-- **[RANDOM_WALK_OPTIMIZATION_GUIDE.md](RANDOM_WALK_OPTIMIZATION_GUIDE.md)** - Random walk optimization
-- **[ENHANCED_SOOT_SLICER_GUIDE.md](ENHANCED_SOOT_SLICER_GUIDE.md)** - Enhanced Soot slicer
-- **[BALANCED_TRAINING_GUIDE.md](BALANCED_TRAINING_GUIDE.md)** - Balanced training system
-- **[ANNOTATION_TYPE_MODELS_GUIDE.md](ANNOTATION_TYPE_MODELS_GUIDE.md)** - Annotation-specific models
+3. **`BALANCED_TRAINING_ALL_CHECKERS_DOCUMENTATION.md`** - Comprehensive guide
+   - Complete system overview
+   - Usage instructions
+   - Implementation details
+   - Updated with verified information
 
-### 📊 **Evaluation and Results**
-- **[EVALUATION_GUIDE.md](EVALUATION_GUIDE.md)** - Evaluation system guide
-- **[ABLATION_STUDY_RESULTS.md](ABLATION_STUDY_RESULTS.md)** - Ablation study results
+4. **`BALANCED_TRAINING_IMPLEMENTATION_REPORT.md`** - Implementation report
+   - Detailed status
+   - Training progress
+   - Updated with verified information
 
-## Key Features
+5. **`BALANCED_TRAINING_FINAL_REPORT.md`** - Summary report
+   - Executive summary
+   - Key findings
+   - Updated with verified information
 
-### ✅ **Eclipse JDT Integration**
-- 100% AST-based Java parsing
-- 27 semantic transformations with AST rewriting
-- Robust error handling and validation
-- Full compatibility with random walk optimization
+### Auto-Generated (Verify Before Trusting)
 
-### ✅ **Enhanced Pipeline**
-- Lower Bound Checker integration
-- Warning-based slicing with Soot
-- Intelligent model selection
-- CFG generation for ML models
+6. **`BALANCED_TRAINING_METRICS_REPORT.md`** - Auto-generated metrics
+   - ⚠️ May contain inaccuracies
+   - Always verify by checking actual model files
+   - Some models may show 0% if stats are missing (not actual accuracy)
 
-### ✅ **Random Walk Optimization**
-- RL, MCTS, Graph-based, and Evolutionary methods
-- Optimal augmentation structure discovery
-- Full JDT compatibility verified
+## Core Implementation Files
 
-### ✅ **Performance**
-- GPU acceleration (NVIDIA GeForce RTX 4070 Ti SUPER)
-- Balanced training system
-- Comprehensive test coverage
+- `improved_balanced_dataset_generator.py` - Core dataset generator
+- `improved_balanced_annotation_type_trainer.py` - Training implementation
+- `train_balanced_sql_quotes_models.py` - SQL Quotes training
+- `train_balanced_signature_string_models.py` - Signature String training
+- `checker_evaluation_config.py` - Checker configurations
 
-## Quick Start
+## Key Principle
 
-1. **Build JDT Services:**
-   ```bash
-   ./gradlew jdtParserJar jdtTransformerJar
-   ```
-
-2. **Run Tests:**
-   ```bash
-   ./gradlew test
-   python3 -m unittest test_jdt_service
-   ```
-
-3. **Use JDT Services:**
-   ```python
-   from jdt_service import JdtParserService
-   from jdt_semantic_transformer import JdtSemanticTransformer
-   
-   # Parse code locations
-   service = JdtParserService()
-   locations = service.parse_code_locations_from_string(java_code)
-   
-   # Apply transformations
-   transformer = JdtSemanticTransformer(seed=42)
-   result = transformer.transform_code(java_code, ['guard_reversal'], 'enhanced')
-   ```
-
-## Architecture Overview
-
-```
-Python Layer (Wrappers)
-    ↓
-Java Services (JDT-based)
-    ↓
-Eclipse JDT Core (AST Parsing)
-```
-
-The system uses a clean separation between Python wrappers and Java services, maintaining the existing subprocess integration pattern for robustness while providing accurate AST-based parsing and transformation capabilities.
-
-## Status: Production Ready ✅
-
-All components have been thoroughly tested and are ready for production use. The JDT implementation provides significant improvements in accuracy and reliability while maintaining full compatibility with existing systems.
+**Always verify actual model files and training statistics rather than relying solely on script outputs or auto-generated reports.**

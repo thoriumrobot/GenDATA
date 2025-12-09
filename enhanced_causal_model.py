@@ -197,6 +197,7 @@ class EnhancedCausalFeatureExtractor:
         nodes = cfg_data.get('nodes', [])
         
         # Execution order causal patterns
+        line = line if line is not None else 0
         line_position = float(line) / max(1, len(nodes))  # Normalized line position
         
         # Sequential execution causal patterns
