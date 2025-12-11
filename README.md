@@ -467,10 +467,11 @@ By default, the prediction pipeline:
 4. **Produces accurate predictions** based on actual warning locations
 
 ### **Benefits**
-- ✅ **Real Warning Detection**: Uses actual Checker Framework warnings instead of dummy data
+- ✅ **Real Warning Detection**: Uses actual Checker Framework warnings from real checker runs
 - ✅ **Accurate Slicing**: Slices based on real warning locations in the target code
 - ✅ **Better Predictions**: Models trained on real warning patterns
 - ✅ **Automatic Integration**: No manual warning file preparation needed
+- ✅ **Preserved Annotations**: Annotated files preserved in `annotation_evaluation/temp_repos/` for inspection
 
 ### **Usage Examples**
 ```bash

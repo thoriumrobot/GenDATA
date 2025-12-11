@@ -125,54 +125,148 @@ class MultiCheckerPredictor:
                     # Load model checkpoint
                     checkpoint = torch.load(model_path, map_location=self.device, weights_only=False)
                     
+                    # Get state dict
+                    if 'model_state_dict' in checkpoint:
+                        state_dict = checkpoint['model_state_dict']
+                    else:
+                        state_dict = checkpoint
+                    
+                    # Detect model architecture from state dict keys
+                    state_dict_keys = list(state_dict.keys()) if isinstance(state_dict, dict) else []
+                    has_feature_extractor = any('feature_extractor' in key for key in state_dict_keys)
+                    has_network = any('network' in key for key in state_dict_keys)
+                    
                     # Extract metadata
-                    input_dim = checkpoint.get('input_dim', 21)  # Default to 21 for balanced models
-                    model_type = checkpoint.get('model_type', f'improved_balanced_{base_model}')
+                    input_dim = checkpoint.get('input_dim', 21)  # Default to 21
+                    model_type = checkpoint.get('model_type', 'unknown')
                     training_stats = checkpoint.get('training_stats', {})
                     
-                    # Create model architecture
-                    if 'improved_balanced' in model_type or base_model in ['gbt', 'causal', 'enhanced_causal', 'dg2n']:
-                        # Feature-based model
+                    # Determine model architecture and create appropriate model
+                    model = None
+                    
+                    if has_feature_extractor:
+                        # AnnotationType models with feature_extractor + classifier architecture
+                        # Determine actual input_dim from state_dict (feature_extractor.0.weight shape)
+                        feature_extractor_0_key = [k for k in state_dict_keys if 'feature_extractor.0.weight' in k]
+                        if feature_extractor_0_key:
+                            actual_input_dim = state_dict[feature_extractor_0_key[0]].shape[1]
+                            if actual_input_dim != input_dim:
+                                logger.debug(f"Detected input_dim={actual_input_dim} from state_dict (expected {input_dim})")
+                                input_dim = actual_input_dim
+                        
+                        # Determine hidden_dim from feature_extractor.0 output
+                        if feature_extractor_0_key:
+                            hidden_dim = state_dict[feature_extractor_0_key[0]].shape[0]
+                        else:
+                            hidden_dim = 128  # Default
+                        
+                        # Check classifier structure - single Linear or Sequential
+                        has_classifier_sequential = any('classifier.0' in k for k in state_dict_keys)
+                        
+                        # Import appropriate model class based on base_model
+                        if base_model == 'hgt':
+                            from annotation_type_rl_positive import AnnotationTypeHGTModel
+                            model = AnnotationTypeHGTModel(
+                                input_dim=input_dim,
+                                hidden_dim=hidden_dim,
+                                out_dim=2
+                            )
+                        elif base_model == 'gcsn':
+                            from annotation_type_rl_positive import AnnotationTypeGCSNModel
+                            model = AnnotationTypeGCSNModel(
+                                input_dim=input_dim,
+                                hidden_dim=hidden_dim,
+                                out_dim=2
+                            )
+                        elif base_model == 'dg2n':
+                            from annotation_type_rl_positive import AnnotationTypeDG2NModel
+                            model = AnnotationTypeDG2NModel(
+                                input_dim=input_dim,
+                                hidden_dim=hidden_dim,
+                                out_dim=2
+                            )
+                        elif base_model == 'enhanced_causal':
+                            from annotation_type_rl_positive import AnnotationTypeEnhancedCausalModel
+                            # Enhanced causal uses hidden_dim for feature_extractor, outputs hidden_dim // 2
+                            model = AnnotationTypeEnhancedCausalModel(
+                                input_dim=input_dim,
+                                hidden_dim=hidden_dim,
+                                out_dim=2
+                            )
+                        elif 'causal' in base_model:
+                            from annotation_type_rl_positive import AnnotationTypeCausalModel
+                            # Causal uses hidden_dim for feature_extractor, outputs hidden_dim // 2
+                            model = AnnotationTypeCausalModel(
+                                input_dim=input_dim,
+                                hidden_dim=hidden_dim,
+                                out_dim=2
+                            )
+                        else:
+                            # Default to GCN model
+                            from annotation_type_rl_positive import AnnotationTypeGCNModel
+                            model = AnnotationTypeGCNModel(
+                                input_dim=input_dim,
+                                hidden_dim=hidden_dim,
+                                out_dim=2
+                            )
+                        
+                        # Load state dict
+                        try:
+                            model.load_state_dict(state_dict, strict=True)
+                        except RuntimeError as e:
+                            logger.warning(f"Strict loading failed for {annotation_type} ({base_model}), trying non-strict: {e}")
+                            # Try non-strict loading
+                            missing_keys, unexpected_keys = model.load_state_dict(state_dict, strict=False)
+                            if missing_keys:
+                                logger.warning(f"Missing keys: {missing_keys[:3]}")
+                            if unexpected_keys:
+                                logger.warning(f"Unexpected keys: {unexpected_keys[:3]}")
+                            # If still fails, skip this model
+                            if any('weight' in k for k in missing_keys):
+                                logger.warning(f"Cannot load {annotation_type} ({base_model}) - critical weights missing")
+                                continue
+                        
+                    elif has_network:
+                        # ImprovedBalancedAnnotationTypeModel architecture
                         model = ImprovedBalancedAnnotationTypeModel(
                             input_dim=input_dim,
                             hidden_dims=[512, 256, 128, 64],
                             dropout_rate=0.4
                         )
-                        
-                        # Load state dict
-                        if 'model_state_dict' in checkpoint:
-                            model.load_state_dict(checkpoint['model_state_dict'])
-                        else:
-                            model.load_state_dict(checkpoint)
-                        
-                        model.eval()
-                        model = model.to(self.device)
-                        
-                        self.loaded_models[annotation_type][base_model] = {
-                            'model': model,
-                            'type': 'feature_based',
-                            'input_dim': input_dim
-                        }
+                        model.load_state_dict(state_dict)
                         
                     else:
-                        # Graph-based model (GCN, HGT, GCSN)
-                        # For now, skip graph models - they require different loading logic
-                        logger.debug(f"Skipping graph model {base_model} for {annotation_type} (requires graph loading)")
+                        logger.warning(f"Unknown model architecture for {annotation_type} ({base_model}): {state_dict_keys[:5]}")
                         continue
+                    
+                    if model is None:
+                        continue
+                    
+                    model.eval()
+                    model = model.to(self.device)
+                    
+                    self.loaded_models[annotation_type][base_model] = {
+                        'model': model,
+                        'type': 'feature_based',
+                        'input_dim': input_dim
+                    }
                     
                     # Store metadata
                     self.model_metadata[annotation_type][base_model] = {
                         'input_dim': input_dim,
                         'model_type': model_type,
                         'training_stats': training_stats,
-                        'model_path': str(model_path)
+                        'model_path': str(model_path),
+                        'architecture': 'feature_extractor' if has_feature_extractor else 'network'
                     }
                     
                     loaded_count += 1
-                    logger.debug(f"Loaded {annotation_type} ({base_model})")
+                    logger.debug(f"Loaded {annotation_type} ({base_model}) with {('feature_extractor' if has_feature_extractor else 'network')} architecture")
                     
                 except Exception as e:
                     logger.warning(f"Failed to load {annotation_type} ({base_model}): {e}")
+                    import traceback
+                    logger.debug(traceback.format_exc())
                     continue
         
         logger.info(f"Loaded {loaded_count}/{total_expected} models for {self.checker_name} checker")
@@ -351,71 +445,81 @@ class MultiCheckerPredictor:
             logger.warning("No models loaded. Call load_checker_models() first.")
             return []
         
-        # Find CFG file for this Java file
-        cfg_file = self._find_cfg_file(java_file, cfg_dir)
-        if not cfg_file:
-            logger.debug(f"No CFG file found for {java_file}")
+        # Find all CFG files for this Java file (may have multiple method-level CFGs)
+        cfg_files = self._find_all_cfg_files(java_file, cfg_dir)
+        if not cfg_files:
+            logger.debug(f"No CFG files found for {java_file}")
             return []
         
-        # Load CFG data
-        try:
-            with open(cfg_file, 'r', encoding='utf-8') as f:
-                cfg_data = json.load(f)
-        except json.JSONDecodeError as e:
-            logger.warning(f"Failed to parse CFG JSON file {cfg_file}: {e}")
-            return []
-        except FileNotFoundError:
-            logger.debug(f"CFG file not found: {cfg_file}")
-            return []
-        except Exception as e:
-            logger.warning(f"Failed to load CFG file {cfg_file}: {e}")
-            return []
-        
-        # Validate CFG structure
-        if not isinstance(cfg_data, dict):
-            logger.warning(f"Invalid CFG structure: expected dict, got {type(cfg_data)}")
-            return []
-        
-        # Get nodes from CFG
-        nodes = cfg_data.get('nodes', [])
-        if not nodes:
-            logger.debug(f"No nodes found in CFG file {cfg_file}")
-            return []
-        
-        if not isinstance(nodes, list):
-            logger.warning(f"Invalid CFG structure: 'nodes' should be a list, got {type(nodes)}")
-            return []
-        
-        # Predict for each node/location
+        # Predict for each node/location across all CFG files
         location_predictions: Dict[Tuple[str, int], List[Dict]] = {}
         
-        for node in nodes:
-            if not isinstance(node, dict):
-                logger.debug(f"Skipping invalid node: expected dict, got {type(node)}")
-                continue
-            
-            # Handle both 'line' and 'line_number' keys for compatibility
-            line_number = node.get('line_number') or node.get('line')
-            if not line_number:
-                logger.debug(f"Skipping node without line number: {node.get('id', 'unknown')}")
-                continue
-            
-            # Ensure line_number is an integer
+        for cfg_file in cfg_files:
+            # Load CFG data
             try:
-                line_number = int(line_number)
-            except (ValueError, TypeError):
-                logger.debug(f"Skipping node with invalid line number: {line_number}")
+                with open(cfg_file, 'r', encoding='utf-8') as f:
+                    cfg_data = json.load(f)
+            except json.JSONDecodeError as e:
+                logger.debug(f"Failed to parse CFG JSON file {cfg_file}: {e}")
+                continue
+            except FileNotFoundError:
+                logger.debug(f"CFG file not found: {cfg_file}")
+                continue
+            except Exception as e:
+                logger.debug(f"Failed to load CFG file {cfg_file}: {e}")
                 continue
             
-            # Predict for this location
-            prediction = self.predict_for_location(cfg_data, node, line_number, threshold)
+            # Validate CFG structure
+            if not isinstance(cfg_data, dict):
+                logger.debug(f"Invalid CFG structure: expected dict, got {type(cfg_data)}")
+                continue
             
-            if prediction:
-                # Group by location (file_path, line_number)
-                location_key = (java_file, line_number)
-                if location_key not in location_predictions:
-                    location_predictions[location_key] = []
-                location_predictions[location_key].append(prediction)
+            # Get nodes from CFG
+            nodes = cfg_data.get('nodes', [])
+            if not nodes:
+                continue
+            
+            if not isinstance(nodes, list):
+                continue
+            
+            # Get Java file path from CFG if available (for per-method CFGs)
+            cfg_java_file = cfg_data.get('java_file')
+            target_java_file = java_file
+            if cfg_java_file:
+                # Use the Java file from CFG, but verify it matches or is relative
+                if not Path(cfg_java_file).is_absolute():
+                    # Try to resolve relative to project
+                    cfg_java_file_resolved = str(Path(cfg_file).parent.parent / cfg_java_file)
+                    if Path(cfg_java_file_resolved).exists():
+                        target_java_file = cfg_java_file_resolved
+                elif Path(cfg_java_file).exists():
+                    target_java_file = cfg_java_file
+            
+            # Predict for each node/location in this CFG
+            for node in nodes:
+                if not isinstance(node, dict):
+                    continue
+                
+                # Handle both 'line' and 'line_number' keys for compatibility
+                line_number = node.get('line_number') or node.get('line')
+                if not line_number:
+                    continue
+                
+                # Ensure line_number is an integer
+                try:
+                    line_number = int(line_number)
+                except (ValueError, TypeError):
+                    continue
+                
+                # Predict for this location
+                prediction = self.predict_for_location(cfg_data, node, line_number, threshold)
+                
+                if prediction:
+                    # Group by location (file_path, line_number)
+                    location_key = (target_java_file, line_number)
+                    if location_key not in location_predictions:
+                        location_predictions[location_key] = []
+                    location_predictions[location_key].append(prediction)
         
         # Select highest confidence prediction for each location
         selected_predictions = []
@@ -432,38 +536,113 @@ class MultiCheckerPredictor:
         return selected_predictions
     
     def _find_cfg_file(self, java_file: str, cfg_dir: str) -> Optional[str]:
+        """Find a single CFG file (for backward compatibility)"""
+        cfg_files = self._find_all_cfg_files(java_file, cfg_dir)
+        return cfg_files[0] if cfg_files else None
+    
+    def _find_all_cfg_files(self, java_file: str, cfg_dir: str) -> List[str]:
         """
-        Find CFG file corresponding to a Java file.
+        Find all CFG files corresponding to a Java file.
+        May return multiple files if CFGs are stored per-method.
         
         Args:
             java_file: Path to Java file
             cfg_dir: Directory containing CFG files
             
         Returns:
-            Path to CFG file, or None if not found
+            List of paths to CFG files
         """
         java_basename = Path(java_file).stem
+        java_path = Path(java_file)
+        java_name = java_path.name
         
-        # Look for CFG file with matching name
         cfg_dir_path = Path(cfg_dir)
+        cfg_files = []
         
         # Try direct match
         cfg_file = cfg_dir_path / f"{java_basename}.json"
         if cfg_file.exists():
-            return str(cfg_file)
+            cfg_files.append(str(cfg_file))
         
-        # Try in subdirectories
-        for cfg_file in cfg_dir_path.rglob(f"{java_basename}.json"):
-            return str(cfg_file)
+        # Look for all JSON files in subdirectories
+        # Since CFGs may not have java_file field, match by directory structure
+        # CFGs are often in subdirectories named after the class/method
+        for cfg_file in cfg_dir_path.rglob("*.json"):
+            try:
+                # Check if CFG file is in a subdirectory that might match the Java file
+                # e.g., cfg_dir/ClassName/method.json or cfg_dir/ClassName/cfg.json
+                relative_path = cfg_file.relative_to(cfg_dir_path)
+                parent_dir = relative_path.parent
+                
+                # If CFG is in a subdirectory, check if subdirectory name matches Java file
+                if parent_dir != Path('.'):
+                    # Subdirectory name might match class name
+                    if (parent_dir.name == java_basename or 
+                        parent_dir.name.lower() == java_basename.lower() or
+                        java_basename in parent_dir.name):
+                        if str(cfg_file) not in cfg_files:
+                            cfg_files.append(str(cfg_file))
+                            continue
+                
+                # Also check if CFG file has java_file field that matches
+                with open(cfg_file, 'r') as f:
+                    cfg_data = json.load(f)
+                    cfg_java_file = cfg_data.get('java_file', '')
+                    if cfg_java_file:
+                        # Normalize paths for comparison
+                        cfg_java_path = Path(cfg_java_file)
+                        # Match by filename, stem, or if Java file path contains the CFG's Java file name
+                        matches = (
+                            cfg_java_path.name == java_name or 
+                            cfg_java_path.stem == java_basename or
+                            cfg_java_path.name.lower() == java_name.lower() or
+                            java_name in cfg_java_file or
+                            java_basename in cfg_java_file
+                        )
+                        if matches:
+                            if str(cfg_file) not in cfg_files:
+                                cfg_files.append(str(cfg_file))
+            except (json.JSONDecodeError, Exception) as e:
+                # Skip invalid JSON files
+                logger.debug(f"Skipping invalid CFG file {cfg_file}: {e}")
+                continue
         
-        # Try cfg.json in subdirectory
+        # Also try subdirectories matching Java file name or class name
+        # Extract class name from Java file path (last component before .java)
+        class_name = java_basename
+        # Also try matching by any part of the path
+        path_parts = java_path.parts
+        possible_names = {java_basename, class_name, java_name}
+        # Add any capitalized words from the path
+        for part in path_parts:
+            if part.endswith('.java'):
+                possible_names.add(part[:-5])  # Remove .java
+            elif part[0].isupper():
+                possible_names.add(part)
+        
         for subdir in cfg_dir_path.iterdir():
             if subdir.is_dir():
-                cfg_file = subdir / "cfg.json"
-                if cfg_file.exists():
-                    return str(cfg_file)
+                # Match if subdirectory name matches any possible name
+                if any(name == subdir.name or name.lower() == subdir.name.lower() 
+                       for name in possible_names):
+                    for cfg_file in subdir.glob("*.json"):
+                        if str(cfg_file) not in cfg_files:
+                            cfg_files.append(str(cfg_file))
         
-        return None
+        # If still no matches, try to match by checking all subdirectories
+        # and including all CFGs (they might be from the same project)
+        if not cfg_files:
+            logger.debug(f"No CFG files matched for {java_file}, trying all CFGs in directory")
+            # As a fallback, include all CFG files (they might be from the same project)
+            for cfg_file in cfg_dir_path.rglob("*.json"):
+                if str(cfg_file) not in cfg_files:
+                    cfg_files.append(str(cfg_file))
+            # Limit to first 50 to avoid processing too many
+            if len(cfg_files) > 50:
+                cfg_files = cfg_files[:50]
+                logger.debug(f"Limited to first 50 CFG files")
+        
+        return cfg_files
 
 
 def main():
