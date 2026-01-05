@@ -178,8 +178,51 @@ class LowerBoundWarningTester:
             # Combine stdout and stderr
             output = result.stdout + result.stderr
             
+            # #region agent log
+            import json
+            with open('/home/ubuntu/GenDATA/.cursor/debug.log', 'a') as f:
+                f.write(json.dumps({
+                    'sessionId': 'debug-session',
+                    'runId': 'checker-execution',
+                    'hypothesisId': 'A',
+                    'location': 'test_lower_bound_warnings.py:170',
+                    'message': 'Checker execution result',
+                    'data': {
+                        'returncode': result.returncode,
+                        'output_length': len(output),
+                        'stdout_length': len(result.stdout),
+                        'stderr_length': len(result.stderr),
+                        'output_preview': output[:500] if output else '',
+                        'has_compilation_error': 'error:' in output.lower() or 'compiler.err' in output.lower(),
+                        'has_checker_warning': '[index' in output.lower() or 'lowerbound' in output.lower()
+                    },
+                    'timestamp': int(__import__('time').time() * 1000)
+                }) + '\n')
+            # #endregion
+            
             # Success if checker ran (even if warnings were generated)
-            success = True  # Checker runs even if there are warnings
+            # BUT: Check return code to detect actual failures
+            # #region agent log
+            with open('/home/ubuntu/GenDATA/.cursor/debug.log', 'a') as f:
+                f.write(json.dumps({
+                    'sessionId': 'debug-session',
+                    'runId': 'checker-execution',
+                    'hypothesisId': 'B',
+                    'location': 'test_lower_bound_warnings.py:182',
+                    'message': 'Success determination',
+                    'data': {
+                        'returncode': result.returncode,
+                        'success_determined': result.returncode == 0 or (result.returncode != 0 and len(output) > 0),
+                        'output_empty': len(output) == 0,
+                        'returncode_nonzero': result.returncode != 0
+                    },
+                    'timestamp': int(__import__('time').time() * 1000)
+                }) + '\n')
+            # #endregion
+            
+            # Checker may return non-zero for warnings, but should have output
+            # If returncode is non-zero AND output is empty, that's a real failure
+            success = result.returncode == 0 or (result.returncode != 0 and len(output) > 0)
             
             return success, output
         
@@ -210,6 +253,25 @@ class LowerBoundWarningTester:
         )
         
         matches = warning_pattern.findall(output)
+        
+        # #region agent log
+        import json
+        with open('/home/ubuntu/GenDATA/.cursor/debug.log', 'a') as f:
+            f.write(json.dumps({
+                'sessionId': 'debug-session',
+                'runId': 'warning-parsing',
+                'hypothesisId': 'C',
+                'location': 'test_lower_bound_warnings.py:212',
+                'message': 'Warning pattern matching',
+                'data': {
+                    'output_length': len(output),
+                    'matches_found': len(matches),
+                    'output_preview': output[:1000] if output else '',
+                    'pattern_used': warning_pattern.pattern[:200]
+                },
+                'timestamp': int(__import__('time').time() * 1000)
+            }) + '\n')
+        # #endregion
         
         for match in matches:
             file_path, line_num, col_num, level, checker_msg, message = match
@@ -243,6 +305,25 @@ class LowerBoundWarningTester:
                 warnings_by_type['other'] = warnings_by_type.get('other', 0) + 1
                 files_with_warnings.add(file_path)
                 warning_lines.append(warning_line)
+        
+        # #region agent log
+        import json
+        with open('/home/ubuntu/GenDATA/.cursor/debug.log', 'a') as f:
+            f.write(json.dumps({
+                'sessionId': 'debug-session',
+                'runId': 'warning-parsing',
+                'hypothesisId': 'C',
+                'location': 'test_lower_bound_warnings.py:247',
+                'message': 'Warning parsing result',
+                'data': {
+                    'total_warnings': len(warning_lines),
+                    'warnings_by_type': warnings_by_type,
+                    'files_with_warnings': len(files_with_warnings),
+                    'sample_warning_lines': warning_lines[:5] if warning_lines else []
+                },
+                'timestamp': int(__import__('time').time() * 1000)
+            }) + '\n')
+        # #endregion
         
         return WarningStats(
             total_warnings=len(warning_lines),

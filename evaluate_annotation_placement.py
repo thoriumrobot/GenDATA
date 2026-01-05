@@ -252,8 +252,45 @@ class AnnotationPlacementEvaluator:
         # Run checker
         success, output = self.warning_tester.run_lower_bound_checker(project_dir, java_files)
         
+        # #region agent log
+        import json
+        with open('/home/ubuntu/GenDATA/.cursor/debug.log', 'a') as f:
+            f.write(json.dumps({
+                'sessionId': 'debug-session',
+                'runId': 'baseline-warnings',
+                'hypothesisId': 'D',
+                'location': 'evaluate_annotation_placement.py:253',
+                'message': 'Baseline checker execution',
+                'data': {
+                    'project_name': project_name,
+                    'success': success,
+                    'output_length': len(output) if output else 0,
+                    'output_preview': output[:500] if output else '',
+                    'java_files_count': len(java_files)
+                },
+                'timestamp': int(__import__('time').time() * 1000)
+            }) + '\n')
+        # #endregion
+        
         if not success:
             logger.warning(f"Failed to run checker for baseline: {output[:200]}")
+            # #region agent log
+            with open('/home/ubuntu/GenDATA/.cursor/debug.log', 'a') as f:
+                f.write(json.dumps({
+                    'sessionId': 'debug-session',
+                    'runId': 'baseline-warnings',
+                    'hypothesisId': 'B',
+                    'location': 'evaluate_annotation_placement.py:256',
+                    'message': 'Checker execution failed',
+                    'data': {
+                        'project_name': project_name,
+                        'error_output': output[:500] if output else '',
+                        'using_fallback': fallback_count is not None,
+                        'fallback_count': fallback_count
+                    },
+                    'timestamp': int(__import__('time').time() * 1000)
+                }) + '\n')
+            # #endregion
             if fallback_count is not None:
                 logger.info(f"Using fallback warning count: {fallback_count}")
                 return fallback_count
@@ -261,6 +298,24 @@ class AnnotationPlacementEvaluator:
         
         # Parse warnings
         stats = self.warning_tester.parse_warnings(output)
+        
+        # #region agent log
+        with open('/home/ubuntu/GenDATA/.cursor/debug.log', 'a') as f:
+            f.write(json.dumps({
+                'sessionId': 'debug-session',
+                'runId': 'baseline-warnings',
+                'hypothesisId': 'C',
+                'location': 'evaluate_annotation_placement.py:263',
+                'message': 'Baseline warning parsing',
+                'data': {
+                    'project_name': project_name,
+                    'total_warnings': stats.total_warnings,
+                    'warning_lines_count': len(stats.warning_lines),
+                    'sample_warnings': stats.warning_lines[:3] if stats.warning_lines else []
+                },
+                'timestamp': int(__import__('time').time() * 1000)
+            }) + '\n')
+        # #endregion
         
         # Check if we got valid warnings (not just compilation errors)
         # Filter out compilation errors - look for actual checker warnings
@@ -611,9 +666,66 @@ class AnnotationPlacementEvaluator:
             
             # Get warning count after placement
             try:
+                # #region agent log
+                import json
+                with open('/home/ubuntu/GenDATA/.cursor/debug.log', 'a') as f:
+                    f.write(json.dumps({
+                        'sessionId': 'debug-session',
+                        'runId': 'post-placement',
+                        'hypothesisId': 'E',
+                        'location': 'evaluate_annotation_placement.py:613',
+                        'message': 'Getting warnings after annotation placement',
+                        'data': {
+                            'project_name': project_name,
+                            'base_model': base_model,
+                            'annotations_placed': annotations_placed,
+                            'baseline_warnings': baseline_warnings
+                        },
+                        'timestamp': int(__import__('time').time() * 1000)
+                    }) + '\n')
+                # #endregion
+                
                 warnings_after = self.get_baseline_warnings(project_dir, project_name)
+                
+                # #region agent log
+                with open('/home/ubuntu/GenDATA/.cursor/debug.log', 'a') as f:
+                    f.write(json.dumps({
+                        'sessionId': 'debug-session',
+                        'runId': 'post-placement',
+                        'hypothesisId': 'E',
+                        'location': 'evaluate_annotation_placement.py:615',
+                        'message': 'Warnings after placement result',
+                        'data': {
+                            'project_name': project_name,
+                            'base_model': base_model,
+                            'warnings_after': warnings_after,
+                            'baseline_warnings': baseline_warnings,
+                            'reduction': baseline_warnings - warnings_after,
+                            'is_zero': warnings_after == 0
+                        },
+                        'timestamp': int(__import__('time').time() * 1000)
+                    }) + '\n')
+                # #endregion
             except Exception as e:
                 logger.error(f"Failed to get warnings after placement for {base_model}: {e}")
+                # #region agent log
+                import json
+                with open('/home/ubuntu/GenDATA/.cursor/debug.log', 'a') as f:
+                    f.write(json.dumps({
+                        'sessionId': 'debug-session',
+                        'runId': 'post-placement',
+                        'hypothesisId': 'B',
+                        'location': 'evaluate_annotation_placement.py:617',
+                        'message': 'Exception getting warnings after placement',
+                        'data': {
+                            'project_name': project_name,
+                            'base_model': base_model,
+                            'error': str(e),
+                            'using_baseline_as_fallback': True
+                        },
+                        'timestamp': int(__import__('time').time() * 1000)
+                    }) + '\n')
+                # #endregion
                 warnings_after = baseline_warnings  # Assume no improvement on error
             
             # Calculate reduction
