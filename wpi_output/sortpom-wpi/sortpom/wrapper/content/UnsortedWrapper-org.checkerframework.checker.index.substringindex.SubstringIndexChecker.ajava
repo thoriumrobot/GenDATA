@@ -1,0 +1,66 @@
+package sortpom.wrapper.content;
+
+import org.dom4j.Element;
+import org.dom4j.Node;
+import sortpom.content.NewlineText;
+
+/**
+ * A wrapper that lets is element be unsorted
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.index.substringindex.SubstringIndexChecker")
+public class UnsortedWrapper<T extends Node> implements Wrapper<T> {
+
+    public static final  UnsortedWrapper<Node> KEEP_NEWLINE_INSTANCE = new UnsortedWrapper<>(new NewlineText());
+
+    /**
+     * The wrapped dom content.
+     */
+    private final T content;
+
+    /**
+     * Instantiates a new unsorted wrapper.
+     *
+     * @param content the content
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public UnsortedWrapper(T content) {
+        this.content = content;
+    }
+
+    /**
+     * @see Wrapper#getContent()
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public T getContent( UnsortedWrapper<T> this) {
+        return content;
+    }
+
+    /**
+     * @see Wrapper#isBefore(Wrapper)
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public boolean isBefore( UnsortedWrapper<T> this,  Wrapper<? extends Node> wrapper) {
+        throw new UnsupportedOperationException("Cannot be sorted");
+    }
+
+    /**
+     * @see Wrapper#isContentElement()
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean isContentElement( UnsortedWrapper<T> this) {
+        return content instanceof Element;
+    }
+
+    /**
+     * @see Wrapper#isSortable()
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean isSortable( UnsortedWrapper<T> this) {
+        return false;
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public  String toString( UnsortedWrapper<T> this) {
+        return "UnsortedWrapper{content=" + (content == null ? "null" : content.toString().replaceAll(".+@[^ ]+ ", "")) + '}';
+    }
+}

@@ -1,0 +1,33 @@
+package sortpom.logger;
+
+/**
+ * @author bjorn
+ * @since 2012-12-21
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.common.value.ValueChecker")
+public interface SortPomLogger {
+
+    /**
+     * Send a message to the log in the <b>warn</b> error level.
+     *
+     * @param content warning message
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    void warn( SortPomLogger this,  String content);
+
+    /**
+     * Send a message to the log in the <b>info</b> error level.
+     *
+     * @param content info message
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    void info( SortPomLogger this,  String content);
+
+    /**
+     * Send a message to the log in the <b>error</b> error level.
+     *
+     * @param content error message
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    void error( SortPomLogger this,  String content);
+}

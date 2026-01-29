@@ -447,6 +447,63 @@ python3 generate_balanced_training_metrics_report.py
 cat BALANCED_TRAINING_METRICS_REPORT.md
 ```
 
+## Pipeline Evaluation Results (January 2026)
+
+### Placement Pipeline Execution
+
+The `run_placement_pipeline.py` script was executed to test the full pipeline:
+
+```bash
+python run_placement_pipeline.py --all
+```
+
+### Training Data (Checker Framework Test Suites)
+
+| Checker | Test Suite | Java Files | Warnings Generated |
+|---------|------------|------------|-------------------|
+| SQL Quotes | `cf_sqlquotes_tests` | 2 | 34 |
+| Signature String | `cf_signature_tests` | 14 | 100+ |
+
+These test suites contain intentionally incorrect annotations designed to validate the checkers, making them ideal sources of training data with known warning patterns.
+
+### Evaluation Results
+
+| Checker | Project | Java Files | Warnings | Notes |
+|---------|---------|------------|----------|-------|
+| SQL Quotes | commons-dbutils | 96 | 0 | Entry points annotated |
+| SQL Quotes | training_examples | 3 | 6 | Designed warning patterns |
+| Signature String | kryo | 290 | 7 | Some internal type mismatches |
+| Signature String | guice | 631 | 0 | Entry points annotated |
+| Signature String | training_examples | 3 | 8 | Designed warning patterns |
+
+### Warning Reduction Analysis
+
+The warning reduction mechanism works through **type refinement**:
+
+1. **Unannotated strings** default to top types (`@SqlQuotesUnknown`, `@SignatureUnknown`)
+2. **Entry point methods** require specific subtypes
+3. **Adding annotations** narrows types to match requirements
+4. **Type compatibility** is restored, eliminating warnings
+
+See `PROGRAM_ANALYSIS_WARNING_REDUCTION.md` for detailed program analysis.
+
+### Placement System Test Results
+
+| Test Suite | Tests | Status |
+|------------|-------|--------|
+| `tests/test_sql_quotes_placement.py` | 14 | All Passed |
+| `tests/test_signature_placement.py` | 21 | All Passed |
+| **Total** | **35** | **100% Pass Rate** |
+
+### Key Files
+
+| File | Description |
+|------|-------------|
+| `run_placement_pipeline.py` | Full pipeline runner |
+| `place_sql_quotes_annotations.py` | SQL Quotes placement |
+| `place_signature_annotations.py` | Signature String placement |
+| `placement_pipeline_results.json` | Pipeline execution results |
+
 ## Summary
 
 All GenDATA checkers (Lower Bound, SQL Quotes, and Signature String) now use balanced training infrastructure:

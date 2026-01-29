@@ -1,0 +1,81 @@
+package sortpom.processinstruction;
+
+import static sortpom.processinstruction.InstructionType.*;
+import sortpom.logger.SortPomLogger;
+
+/**
+ * Check the pom file for processing instructions and verifies that they are correct and balanced
+ *
+ * @author bjorn
+ * @since 2013-12-28
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.index.substringindex.SubstringIndexChecker")
+class SortpomPiScanner {
+
+    private final  SortPomLogger logger;
+
+    private  InstructionType expectedNextInstruction = IGNORE;
+
+    private  String errorString;
+
+    private   boolean containsIgnoredSections = false;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public SortpomPiScanner( SortPomLogger logger) {
+        this.logger = logger;
+    }
+
+    /**
+     * Scan and verifies the pom file for processing instructions
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void scan( SortpomPiScanner this,  String originalXml) {
+        var matcher = INSTRUCTION_PATTERN.matcher(originalXml);
+        while (matcher.find()) {
+            scanOneInstruction(matcher.group(1));
+            containsIgnoredSections = true;
+        }
+        if (expectedNextInstruction != IGNORE) {
+            addError(String.format("Xml processing instructions for sortpom was not properly terminated. Every <?sortpom %s?> must be followed with <?sortpom %s?>", IGNORE, RESUME));
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void scanOneInstruction( SortpomPiScanner this,  String instruction) {
+        if (!InstructionType.containsType(instruction)) {
+            addError(String.format("Xml contained unknown sortpom instruction '%s'. Please use <?sortpom %s?> or <?sortpom %s?>", instruction, IGNORE, RESUME));
+        } else {
+            if (!expectedNextInstruction.matches(instruction)) {
+                addError(String.format("Xml contained unexpected sortpom instruction '%s'. Please use expected instruction <?sortpom %s?>", instruction, expectedNextInstruction));
+            } else {
+                expectedNextInstruction = expectedNextInstruction.next();
+            }
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void addError( SortpomPiScanner this,  String msg) {
+        if (errorString == null) {
+            errorString = msg;
+        }
+        logger.error(msg);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean isScanError( SortpomPiScanner this) {
+        return errorString != null;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getFirstError( SortpomPiScanner this) {
+        return errorString;
+    }
+
+    /**
+     * Returns true if ignored sections where found the pon file
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean containsIgnoredSections( SortpomPiScanner this) {
+        return containsIgnoredSections;
+    }
+}

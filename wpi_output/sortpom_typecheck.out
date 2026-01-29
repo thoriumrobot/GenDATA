@@ -1,0 +1,153 @@
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] Inspecting build with total of 3 modules...
+[[1;34mINFO[m] Installing Nexus Staging features:
+[[1;34mINFO[m]   ... total of 3 executions of maven-deploy-plugin replaced with nexus-staging-maven-plugin
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1mReactor Build Order:[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] SortPom                                                            [pom]
+[[1;34mINFO[m] SortPom Sorter                                                     [jar]
+[[1;34mINFO[m] SortPom Plugin                                            [maven-plugin]
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--------------< [0;36mcom.github.ekryd.sortpom:sortpom-parent[0;1m >---------------[m
+[[1;34mINFO[m] [1mBuilding SortPom 4.0.1-SNAPSHOT                                    [1/3][m
+[[1;34mINFO[m] [1m--------------------------------[ pom ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.6.2:enforce[m [1m(enforce-plugin-versions)[m @ [36msortpom-parent[0;1m ---[m
+[[1;34mINFO[m] Skipping Rule Enforcement.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mecho-maven-plugin:2.1.0:echo[m [1m(welcome)[m @ [36msortpom-parent[0;1m ---[m
+[[1;34mINFO[m] 
+
+  ******************************************************************************
+  *  Use the following build options when building the SortPom Maven plugin:   *
+  *                                                                            *
+  *  mvn clean install    (compile without signing the jar-file)               *
+  *                                                                            *
+  *  mvn clean install    (to deploy new version of the plugin)                *
+  *  echo "test" | gpg --clearsign   (test the gpg first)                      *
+  *  mvn release:clean                                                         *
+  *  mvn release:prepare                                                       *
+  *  mvn release:perform                                                       *
+  *                                                                            *
+  *  mvn versions:display-plugin-updates                                       *
+  *  mvn versions:display-dependency-updates                                   *
+  *                                                                            *
+  ******************************************************************************
+
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mjacoco-maven-plugin:0.8.14:prepare-agent[m [1m(pre-unit-test)[m @ [36msortpom-parent[0;1m ---[m
+[[1;34mINFO[m] argLine set to -javaagent:/home/ubuntu/.m2/repository/org/jacoco/org.jacoco.agent/0.8.14/org.jacoco.agent-0.8.14-runtime.jar=destfile=/home/ubuntu/GenDATA/wpi_projects/sortpom/target/jacoco.exec,excludes=**/*HelpMojo.class -XX:+EnableDynamicAgentLoading
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-plugin-plugin:3.15.2:helpmojo[m [1m(help-goal)[m @ [36msortpom-parent[0;1m ---[m
+[[1;34mINFO[m] Unsupported packaging type pom, execution skipped
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mfmt-maven-plugin:2.29:format[m [1m(default)[m @ [36msortpom-parent[0;1m ---[m
+[[1;34mINFO[m] Skipping format check: project uses 'pom' packaging
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--------------< [0;36mcom.github.ekryd.sortpom:sortpom-sorter[0;1m >---------------[m
+[[1;34mINFO[m] [1mBuilding SortPom Sorter 4.0.1-SNAPSHOT                             [2/3][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.6.2:enforce[m [1m(enforce-plugin-versions)[m @ [36msortpom-sorter[0;1m ---[m
+[[1;34mINFO[m] Skipping Rule Enforcement.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mjacoco-maven-plugin:0.8.14:prepare-agent[m [1m(pre-unit-test)[m @ [36msortpom-sorter[0;1m ---[m
+[[1;34mINFO[m] argLine set to -javaagent:/home/ubuntu/.m2/repository/org/jacoco/org.jacoco.agent/0.8.14/org.jacoco.agent-0.8.14-runtime.jar=destfile=/home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/target/jacoco.exec,excludes=**/*HelpMojo.class -XX:+EnableDynamicAgentLoading
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-plugin-plugin:3.15.2:helpmojo[m [1m(help-goal)[m @ [36msortpom-sorter[0;1m ---[m
+[[1;34mINFO[m] Unsupported packaging type jar, execution skipped
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mfmt-maven-plugin:2.29:format[m [1m(default)[m @ [36msortpom-sorter[0;1m ---[m
+[[1;34mINFO[m] Skipping reflowing long strings
+[info] Processed 100 files (0 reformatted).
+[info] Processed 118 files (0 reformatted).
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:3.4.0:resources[m [1m(default-resources)[m @ [36msortpom-sorter[0;1m ---[m
+[[1;34mINFO[m] Copying 4 resources from src/main/resources to target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.14.1:compile[m [1m(default-compile)[m @ [36msortpom-sorter[0;1m ---[m
+[[1;34mINFO[m] Recompiling the module because of [1mchanged source code[m.
+[[1;34mINFO[m] Compiling 54 source files with javac [forked debug release 17] to target/classes
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/parameter/DependencySortOrder.java:[66,79] [substringindex:purity.not.sideeffectfree.call] call to side-effecting getChildElementNames not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/parameter/DependencySortOrder.java:[66,79] [value:purity.not.sideeffectfree.call] call to side-effecting getChildElementNames not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/parameter/DependencySortOrder.java:[66,79] [searchindex:purity.not.sideeffectfree.call] call to side-effecting getChildElementNames not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/parameter/DependencySortOrder.java:[66,79] [samelen:purity.not.sideeffectfree.call] call to side-effecting getChildElementNames not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/parameter/DependencySortOrder.java:[66,79] [lessthan:purity.not.sideeffectfree.call] call to side-effecting getChildElementNames not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/parameter/DependencySortOrder.java:[66,79] [lowerbound:purity.not.sideeffectfree.call] call to side-effecting getChildElementNames not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/parameter/DependencySortOrder.java:[66,79] [index:purity.not.sideeffectfree.call] call to side-effecting getChildElementNames not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/wrapper/WrapperFactoryImpl.java:[99,39] [value:argument] incompatible argument for parameter baseSortOrder of WrapperFactoryImpl.addElementsToSortOrderMap.
+  found   : @IntRange(from=-2147483648, to=2147483647) int
+  required: @IntVal(1000) int
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/wrapper/WrapperFactoryImpl.java:[99,39] [index:argument] incompatible argument for parameter baseSortOrder of WrapperFactoryImpl.addElementsToSortOrderMap.
+  found   : int
+  required: @UpperBoundLiteral(1000) int
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/processinstruction/XmlProcessingInstructionParser.java:[24,23] [samelen:assignment] incompatible types in assignment.
+  found   : @SameLen("originalXml") String
+  required: @SameLen("this.originalXml") String
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/wrapper/content/ThrowAwayNewlineWrapper.java:[30,9] [value:override.return] Incompatible return type.
+  found   : boolean
+  required: @BoolVal({false, true}) boolean
+  Consequence: method in ThrowAwayNewlineWrapper
+    boolean isSortable(ThrowAwayNewlineWrapper this)
+  cannot override method in Wrapper<Node>
+    @BoolVal({false, true}) boolean isSortable(Wrapper<Node> this)
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/wrapper/operation/HierarchyWrapper.java:[93,20] [substringindex:purity.not.sideeffectfree.call] call to side-effecting ToStringOperation not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/wrapper/operation/HierarchyWrapper.java:[93,20] [value:purity.not.sideeffectfree.call] call to side-effecting ToStringOperation not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/wrapper/operation/HierarchyWrapper.java:[93,20] [searchindex:purity.not.sideeffectfree.call] call to side-effecting ToStringOperation not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/wrapper/operation/HierarchyWrapper.java:[93,20] [samelen:purity.not.sideeffectfree.call] call to side-effecting ToStringOperation not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/wrapper/operation/HierarchyWrapper.java:[93,20] [lessthan:purity.not.sideeffectfree.call] call to side-effecting ToStringOperation not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/wrapper/operation/HierarchyWrapper.java:[93,20] [lowerbound:purity.not.sideeffectfree.call] call to side-effecting ToStringOperation not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/wrapper/operation/HierarchyWrapper.java:[93,20] [index:purity.not.sideeffectfree.call] call to side-effecting ToStringOperation not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/wrapper/operation/HierarchyWrapper.java:[94,20] [substringindex:purity.not.sideeffectfree.call] call to side-effecting processOperation not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/wrapper/operation/HierarchyWrapper.java:[94,20] [value:purity.not.sideeffectfree.call] call to side-effecting processOperation not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/wrapper/operation/HierarchyWrapper.java:[94,20] [searchindex:purity.not.sideeffectfree.call] call to side-effecting processOperation not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/wrapper/operation/HierarchyWrapper.java:[94,20] [samelen:purity.not.sideeffectfree.call] call to side-effecting processOperation not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/wrapper/operation/HierarchyWrapper.java:[94,20] [lessthan:purity.not.sideeffectfree.call] call to side-effecting processOperation not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/wrapper/operation/HierarchyWrapper.java:[94,20] [lowerbound:purity.not.sideeffectfree.call] call to side-effecting processOperation not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/wrapper/operation/HierarchyWrapper.java:[94,20] [index:purity.not.sideeffectfree.call] call to side-effecting processOperation not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/parameter/IndentCharacters.java:[35,25] [lowerbound:array.length.negative] Variable used in array creation could be negative.
+  found   : @GTENegativeOne int
+  required: an integer >= 0 (@NonNegative or @Positive)
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/util/StringLineSeparatorWriter.java:[82,24] [substringindex:purity.not.sideeffectfree.call] call to side-effecting writeCharacterBuffer not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/util/StringLineSeparatorWriter.java:[82,24] [value:purity.not.sideeffectfree.call] call to side-effecting writeCharacterBuffer not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/util/StringLineSeparatorWriter.java:[82,24] [searchindex:purity.not.sideeffectfree.call] call to side-effecting writeCharacterBuffer not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/util/StringLineSeparatorWriter.java:[82,24] [samelen:purity.not.sideeffectfree.call] call to side-effecting writeCharacterBuffer not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/util/StringLineSeparatorWriter.java:[82,24] [lessthan:purity.not.sideeffectfree.call] call to side-effecting writeCharacterBuffer not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/util/StringLineSeparatorWriter.java:[82,24] [lowerbound:purity.not.sideeffectfree.call] call to side-effecting writeCharacterBuffer not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/sortpom/sorter/src/main/java/sortpom/util/StringLineSeparatorWriter.java:[82,24] [index:purity.not.sideeffectfree.call] call to side-effecting writeCharacterBuffer not allowed in side-effect-free method
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-----------< [0;36mcom.github.ekryd.sortpom:sortpom-maven-plugin[0;1m >------------[m
+[[1;34mINFO[m] [1mBuilding SortPom Plugin 4.0.1-SNAPSHOT                             [3/3][m
+[[1;34mINFO[m] [1m----------------------------[ maven-plugin ]----------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-enforcer-plugin:3.6.2:enforce[m [1m(enforce-plugin-versions)[m @ [36msortpom-maven-plugin[0;1m ---[m
+[[1;34mINFO[m] Skipping Rule Enforcement.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mjacoco-maven-plugin:0.8.14:prepare-agent[m [1m(pre-unit-test)[m @ [36msortpom-maven-plugin[0;1m ---[m
+[[1;34mINFO[m] argLine set to -javaagent:/home/ubuntu/.m2/repository/org/jacoco/org.jacoco.agent/0.8.14/org.jacoco.agent-0.8.14-runtime.jar=destfile=/home/ubuntu/GenDATA/wpi_projects/sortpom/maven-plugin/target/jacoco.exec,excludes=**/*HelpMojo.class -XX:+EnableDynamicAgentLoading
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-plugin-plugin:3.15.2:helpmojo[m [1m(help-goal)[m @ [36msortpom-maven-plugin[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mfmt-maven-plugin:2.29:format[m [1m(default)[m @ [36msortpom-maven-plugin[0;1m ---[m
+[[1;34mINFO[m] Skipping reflowing long strings
+[info] Processed 11 files (0 reformatted).
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:3.4.0:resources[m [1m(default-resources)[m @ [36msortpom-maven-plugin[0;1m ---[m
+[[1;34mINFO[m] Copying 1 resource from src/main/resources to target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.14.1:compile[m [1m(default-compile)[m @ [36msortpom-maven-plugin[0;1m ---[m
+[[1;34mINFO[m] Recompiling the module because of [1mchanged dependency[m.
+[[1;34mINFO[m] Compiling 6 source files with javac [forked debug release 17] to target/classes
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1mReactor Summary for SortPom 4.0.1-SNAPSHOT:[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] SortPom ............................................ [1;32mSUCCESS[m [  0.392 s]
+[[1;34mINFO[m] SortPom Sorter ..................................... [1;32mSUCCESS[m [ 12.892 s]
+[[1;34mINFO[m] SortPom Plugin ..................................... [1;32mSUCCESS[m [  1.271 s]
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;32mBUILD SUCCESS[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  14.916 s
+[[1;34mINFO[m] Finished at: 2026-01-22T20:59:52Z
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m

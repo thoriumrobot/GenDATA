@@ -1,0 +1,45 @@
+=== STDOUT ===
+Starting wpi.sh
+Finished configuring wpi.sh.
+==== Start of DLJC standard out/err (/home/ubuntu/GenDATA/annotation_evaluation/wpi_backups/pom-tuner/dljc-out/dljc-stdout-20260122-204635-OrZ) ====
+WORKING DIR: /home/ubuntu/GenDATA/annotation_evaluation/wpi_backups/pom-tuner
+JAVA_HOME: /usr/lib/jvm/java-21-openjdk-amd64
+PATH: /usr/lib/jvm/java-21-openjdk-amd64/bin:/usr/lib/jvm/java-21-openjdk-amd64/bin:/usr/lib/jvm/java-21-openjdk-amd64/bin:/home/ubuntu/checker-framework-3.42.0/checker/bin:/home/ubuntu/.venvs/cfwr/bin:/home/ubuntu/.cursor-server/bin/linux-x64/20b56586b0785b8843487045393c57c6d89b7100/bin/remote-cli:/usr/lib/jvm/java-21-openjdk-amd64/bin:/usr/lib/jvm/java-21-openjdk-amd64/bin:/home/ubuntu/checker-framework-3.42.0/checker/bin:/home/ubuntu/.venvs/cfwr/bin:/home/ubuntu/.cursor-server/bin/linux-x64/20b56586b0785b8843487045393c57c6d89b7100/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+DLJC_CMD: timeout 1800 /home/ubuntu/checker-framework/checker/bin/.do-like-javac/dljc -t wpi --jdkVersion 11 --checker org.checkerframework.checker.index.IndexChecker  -- ./mvnw clean compile -Djava.home=/usr/lib/jvm/java-21-openjdk-amd64 -DskipTests -Deditorconfig.skip=true -Dspotless.check.skip=true -Denforcer.skip=true -Dcheckstyle.skip=true
+Directory for generated annotation files: /tmp/wpi-ajava-20260122-204643-9e462g00
+No WPI outputs were discovered; it is likely that WPI failed or the Checker Framework crashed.
+Check the file /home/ubuntu/GenDATA/annotation_evaluation/wpi_backups/pom-tuner/dljc-out/wpi.log for more information.
+Traceback (most recent call last):
+  File "/home/ubuntu/checker-framework/checker/bin/.do-like-javac/dljc", line 5, in <module>
+    do_like_javac.run()
+  File "/home/ubuntu/checker-framework/checker/bin/.do-like-javac/do_like_javac/command.py", line 36, in main
+    tools.run(args, javac_commands, jars)
+  File "/home/ubuntu/checker-framework/checker/bin/.do-like-javac/do_like_javac/tools/__init__.py", line 35, in run
+    TOOLS[tool].run(args, javac_commands, jars)
+  File "/home/ubuntu/checker-framework/checker/bin/.do-like-javac/do_like_javac/tools/wpi.py", line 203, in run
+    raise e
+  File "/home/ubuntu/checker-framework/checker/bin/.do-like-javac/do_like_javac/tools/wpi.py", line 199, in run
+    ajavaFiles = os.listdir(wpiDir)
+                 ^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/ubuntu/GenDATA/annotation_evaluation/wpi_backups/pom-tuner/build/whole-program-inference'
+==== End of DLJC standard out/err (/home/ubuntu/GenDATA/annotation_evaluation/wpi_backups/pom-tuner/dljc-out/dljc-stdout-20260122-204635-OrZ) ====
+=== No WPI outputs were discovered; it is likely that WPI failed or the Checker Framework crashed: start of /home/ubuntu/GenDATA/annotation_evaluation/wpi_backups/pom-tuner/dljc-out/wpi-stdout.log ===
+Running for wpi: 'true' '=== Beginning of WPI run for extracted javac command: {'java_files': [], 'javac_switches': {'d': '/home/ubuntu/GenDATA/annotation_evaluation/wpi_backups/pom-tuner/pom-tuner/target/classes', 'classpath': '/home/ubuntu/GenDATA/annotation_evaluation/wpi_backups/pom-tuner/pom-tuner/target/classes:/home/ubuntu/.m2/repository/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar:', 'sourcepath': '/home/ubuntu/GenDATA/annotation_evaluation/wpi_backups/pom-tuner/pom-tuner/src/main/java:', 's': '/home/ubuntu/GenDATA/annotation_evaluation/wpi_backups/pom-tuner/pom-tuner/target/generated-sources/annotations', 'g': True, 'target': '1.8', 'source': '1.8', 'encoding': 'UTF-8'}}  ==='
+
+Running for wpi: 'true' '=== Starting WPI iteration 0: ==='
+
+Running for wpi: '/home/ubuntu/checker-framework/checker/bin/javac' '-Xmaxerrs' '10000' '-Xmaxwarns' '10000' '-classpath' '/home/ubuntu/GenDATA/annotation_evaluation/wpi_backups/pom-tuner/pom-tuner/target/classes:/home/ubuntu/.m2/repository/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar:' '-processor' 'org.checkerframework.checker.index.IndexChecker' '-d' '/home/ubuntu/GenDATA/annotation_evaluation/wpi_backups/pom-tuner/pom-tuner/target/classes' '-sourcepath' '/home/ubuntu/GenDATA/annotation_evaluation/wpi_backups/pom-tuner/pom-tuner/src/main/java:' '-s' '/home/ubuntu/GenDATA/annotation_evaluation/wpi_backups/pom-tuner/pom-tuner/target/generated-sources/annotations' '-g' '--release' '8' '--release' '8' '-encoding' 'UTF-8' '-Ainfer=ajava' '-Awarns'
+
+error: no source files or class names
+=== end of /home/ubuntu/GenDATA/annotation_evaluation/wpi_backups/pom-tuner/dljc-out/wpi-stdout.log ===
+dljc output is in /home/ubuntu/GenDATA/annotation_evaluation/wpi_backups/pom-tuner/dljc-out/
+typecheck output is in /home/ubuntu/GenDATA/annotation_evaluation/wpi_backups/pom-tuner/dljc-out/typecheck.out
+stdout is in /home/ubuntu/GenDATA/annotation_evaluation/wpi_backups/pom-tuner/dljc-out/dljc-stdout-20260122-204635-OrZ
+First run configure_and_exec_dljc with JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64: WPI_RESULTS_AVAILABLE=yes
+Exiting wpi.sh successfully; pwd=/home/ubuntu/GenDATA/annotation_evaluation/wpi_backups/pom-tuner
+
+
+=== STDERR ===
+
+
+=== RETURN CODE: 0 ===

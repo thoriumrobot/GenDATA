@@ -1,0 +1,21 @@
+/home/ubuntu/GenDATA/case_studies/training_sql_quotes/SqlQuotesBeforeAnnotation.java:23: warning: [argument] incompatible argument for parameter sql of SqlQuotesBeforeAnnotation.executeQuery.
+        executeQuery(query1);       // WARNING: incompatible argument
+                     ^
+  found   : @SqlQuotesUnknown String
+  required: @SqlEvenQuotes String
+/home/ubuntu/GenDATA/case_studies/training_sql_quotes/SqlQuotesBeforeAnnotation.java:24: warning: [argument] incompatible argument for parameter sql of SqlQuotesBeforeAnnotation.executeQuery.
+        executeQuery(buildQuery()); // WARNING: incompatible argument
+                               ^
+  found   : @SqlQuotesUnknown String
+  required: @SqlEvenQuotes String
+/home/ubuntu/GenDATA/case_studies/training_sql_quotes/SqlQuotesTrainingExample.java:37: warning: [argument] incompatible argument for parameter sql of SqlQuotesTrainingExample.executeQuery.
+        executeQuery(query1);  // WARNING: [argument] incompatible
+                     ^
+  found   : @SqlQuotesUnknown String
+  required: @SqlEvenQuotes String
+/home/ubuntu/GenDATA/case_studies/training_sql_quotes/SqlQuotesTrainingExample.java:54: warning: [argument] incompatible argument for parameter sql of SqlQuotesTrainingExample.executeUpdate.
+        executeUpdate(buildQuery());  // WARNING: [argument] incompatible
+                                ^
+  found   : @SqlQuotesUnknown String
+  required: @SqlEvenQuotes String
+4 warnings

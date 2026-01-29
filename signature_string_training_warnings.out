@@ -1,0 +1,502 @@
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/FakeOverridePoly.java:9: warning: [assignment] incompatible types in assignment.
+    @CanonicalName String s = n.toString();
+                                        ^
+  found   : @SignatureUnknown String
+  required: @CanonicalName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/CanonicalNameNonEmptyTest.java:26: warning: [return] incompatible types in return.
+      return s;
+             ^
+  type of expression: @FullyQualifiedName String
+  method return type: @CanonicalName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:22: warning: [assignment] incompatible types in assignment.
+    @PrimitiveType String s4b = Boolean.class.getName();
+                                                     ^
+  found   : @DotSeparatedIdentifiers String
+  required: @PrimitiveType String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:25: warning: [assignment] incompatible types in assignment.
+    @DotSeparatedIdentifiers String s12 = Nested.class.getName();
+                                                              ^
+  found   : @ClassGetName String
+  required: @DotSeparatedIdentifiers String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:28: warning: [assignment] incompatible types in assignment.
+    @DotSeparatedIdentifiers String s13 = Inner.class.getName();
+                                                             ^
+  found   : @ClassGetName String
+  required: @DotSeparatedIdentifiers String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:35: warning: [assignment] incompatible types in assignment.
+    @DotSeparatedIdentifiers String prim2 = int.class.getName();
+                                                             ^
+  found   : @PrimitiveType String
+  required: @DotSeparatedIdentifiers String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:40: warning: [assignment] incompatible types in assignment.
+    @DotSeparatedIdentifiers String prim4 = boolean.class.getName();
+                                                                 ^
+  found   : @PrimitiveType String
+  required: @DotSeparatedIdentifiers String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:43: warning: [assignment] incompatible types in assignment.
+    @DotSeparatedIdentifiers String prim5 = void.class.getName();
+                                                              ^
+  found   : @ClassGetName String
+  required: @DotSeparatedIdentifiers String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:46: warning: [assignment] incompatible types in assignment.
+    @PrimitiveType String prim6 = void.class.getName();
+                                                    ^
+  found   : @ClassGetName String
+  required: @PrimitiveType String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:51: warning: [assignment] incompatible types in assignment.
+    @DotSeparatedIdentifiers String s6 = int[].class.getName();
+                                                            ^
+  found   : @ClassGetName String
+  required: @DotSeparatedIdentifiers String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:54: warning: [assignment] incompatible types in assignment.
+    @DotSeparatedIdentifiers String s7 = int[][].class.getName();
+                                                              ^
+  found   : @ClassGetName String
+  required: @DotSeparatedIdentifiers String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:57: warning: [assignment] incompatible types in assignment.
+    @DotSeparatedIdentifiers String s8 = boolean[].class.getName();
+                                                                ^
+  found   : @ClassGetName String
+  required: @DotSeparatedIdentifiers String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:60: warning: [assignment] incompatible types in assignment.
+    @DotSeparatedIdentifiers String s9 = Integer[].class.getName();
+                                                                ^
+  found   : @ClassGetName String
+  required: @DotSeparatedIdentifiers String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:63: warning: [assignment] incompatible types in assignment.
+    @DotSeparatedIdentifiers String s10 = Boolean[].class.getName();
+                                                                 ^
+  found   : @ClassGetName String
+  required: @DotSeparatedIdentifiers String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:77: warning: [assignment] incompatible types in assignment.
+    @PrimitiveType String s4b = Boolean.class.getCanonicalName();
+                                                              ^
+  found   : @CanonicalNameAndBinaryName String
+  required: @PrimitiveType String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:80: warning: [assignment] incompatible types in assignment.
+    @CanonicalNameAndBinaryName String s12 = Nested.class.getCanonicalName();
+                                                                          ^
+  found   : @CanonicalName String
+  required: @CanonicalNameAndBinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:83: warning: [assignment] incompatible types in assignment.
+    @CanonicalNameAndBinaryName String s13 = Inner.class.getName();
+                                                                ^
+  found   : @ClassGetName String
+  required: @CanonicalNameAndBinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:90: warning: [assignment] incompatible types in assignment.
+    @CanonicalNameAndBinaryName String prim2 = int.class.getCanonicalName();
+                                                                         ^
+  found   : @PrimitiveType String
+  required: @CanonicalNameAndBinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:95: warning: [assignment] incompatible types in assignment.
+    @CanonicalNameAndBinaryName String prim4 = boolean.class.getCanonicalName();
+                                                                             ^
+  found   : @PrimitiveType String
+  required: @CanonicalNameAndBinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:98: warning: [assignment] incompatible types in assignment.
+    @CanonicalNameAndBinaryName String prim5 = void.class.getCanonicalName();
+                                                                          ^
+  found   : @CanonicalName String
+  required: @CanonicalNameAndBinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:101: warning: [assignment] incompatible types in assignment.
+    @PrimitiveType String prim6 = void.class.getCanonicalName();
+                                                             ^
+  found   : @CanonicalName String
+  required: @PrimitiveType String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:106: warning: [assignment] incompatible types in assignment.
+    @CanonicalNameAndBinaryName String s6 = int[].class.getCanonicalName();
+                                                                        ^
+  found   : @CanonicalName String
+  required: @CanonicalNameAndBinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:109: warning: [assignment] incompatible types in assignment.
+    @CanonicalNameAndBinaryName String s7 = int[][].class.getCanonicalName();
+                                                                          ^
+  found   : @CanonicalName String
+  required: @CanonicalNameAndBinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:112: warning: [assignment] incompatible types in assignment.
+    @CanonicalNameAndBinaryName String s8 = boolean[].class.getCanonicalName();
+                                                                            ^
+  found   : @CanonicalName String
+  required: @CanonicalNameAndBinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:115: warning: [assignment] incompatible types in assignment.
+    @CanonicalNameAndBinaryName String s9 = Integer[].class.getCanonicalName();
+                                                                            ^
+  found   : @CanonicalName String
+  required: @CanonicalNameAndBinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/ClassGetNameBinaryName.java:118: warning: [assignment] incompatible types in assignment.
+    @CanonicalNameAndBinaryName String s10 = Boolean[].class.getCanonicalName();
+                                                                             ^
+  found   : @CanonicalName String
+  required: @CanonicalNameAndBinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/Conversion.java:16: warning: [return] incompatible types in return.
+      return bn.replace('/', '.');
+                       ^
+  type of expression: @SignatureUnknown String
+  method return type: @InternalForm String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/Conversion.java:21: warning: [return] incompatible types in return.
+      return bn.replace(':', '/');
+                       ^
+  type of expression: @SignatureUnknown String
+  method return type: @InternalForm String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/Conversion.java:26: warning: [return] incompatible types in return.
+      return bn.replace('.', '/');
+                       ^
+  type of expression: @SignatureUnknown String
+  method return type: @InternalForm String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/Conversion.java:31: warning: [return] incompatible types in return.
+      return iform.replace('.', '/');
+                          ^
+  type of expression: @SignatureUnknown String
+  method return type: @BinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/Conversion.java:36: warning: [return] incompatible types in return.
+      return iform.replace('/', ':');
+                          ^
+  type of expression: @SignatureUnknown String
+  method return type: @BinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/Conversion.java:41: warning: [return] incompatible types in return.
+      return iform.replace('/', '.');
+                          ^
+  type of expression: @SignatureUnknown String
+  method return type: @BinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/Conversion.java:46: warning: [return] incompatible types in return.
+      return bn.replace('$', '.');
+                       ^
+  type of expression: @SignatureUnknown String
+  method return type: @DotSeparatedIdentifiers String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/Conversion.java:51: warning: [return] incompatible types in return.
+      return bn.replace('$', '.');
+                       ^
+  type of expression: @SignatureUnknown String
+  method return type: @FullyQualifiedName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/Conversion.java:66: warning: [return] incompatible types in return.
+      return bn.replace("/", ".");
+                       ^
+  type of expression: @SignatureUnknown String
+  method return type: @InternalForm String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/Conversion.java:71: warning: [return] incompatible types in return.
+      return bn.replace(":", "/");
+                       ^
+  type of expression: @SignatureUnknown String
+  method return type: @InternalForm String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/Conversion.java:76: warning: [return] incompatible types in return.
+      return bn.replace(".", "/");
+                       ^
+  type of expression: @SignatureUnknown String
+  method return type: @InternalForm String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/Conversion.java:81: warning: [return] incompatible types in return.
+      return iform.replace(".", "/");
+                          ^
+  type of expression: @SignatureUnknown String
+  method return type: @BinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/Conversion.java:86: warning: [return] incompatible types in return.
+      return iform.replace("/", ":");
+                          ^
+  type of expression: @SignatureUnknown String
+  method return type: @BinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/Conversion.java:91: warning: [return] incompatible types in return.
+      return iform.replace("/", ".");
+                          ^
+  type of expression: @SignatureUnknown String
+  method return type: @BinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/Conversion.java:96: warning: [return] incompatible types in return.
+      return bn.replace("$", ".");
+                       ^
+  type of expression: @SignatureUnknown String
+  method return type: @DotSeparatedIdentifiers String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/Conversion.java:101: warning: [return] incompatible types in return.
+      return bn.replace("$", ".");
+                       ^
+  type of expression: @SignatureUnknown String
+  method return type: @FullyQualifiedName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/PolySignatureTest2.java:16: warning: [return] incompatible types in return.
+    return n.toString();
+                     ^
+  type of expression: @SignatureUnknown String
+  method return type: @DotSeparatedIdentifiers String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:114: warning: [assignment] incompatible types in assignment.
+    fd = s1;
+         ^
+  found   : @Identifier String
+  required: @FieldDescriptor String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:125: warning: [assignment] incompatible types in assignment.
+    fd = s2;
+         ^
+  found   : @DotSeparatedIdentifiers String
+  required: @FieldDescriptor String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:127: warning: [assignment] incompatible types in assignment.
+    iform = s2;
+            ^
+  found   : @DotSeparatedIdentifiers String
+  required: @InternalForm String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:129: warning: [assignment] incompatible types in assignment.
+    sn = s2;
+         ^
+  found   : @DotSeparatedIdentifiers String
+  required: @ClassGetSimpleName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:133: warning: [assignment] incompatible types in assignment.
+    i = s2;
+        ^
+  found   : @DotSeparatedIdentifiers String
+  required: @Identifier String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:139: warning: [assignment] incompatible types in assignment.
+    fd = s3;
+         ^
+  found   : @DotSeparatedIdentifiers String
+  required: @FieldDescriptor String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:141: warning: [assignment] incompatible types in assignment.
+    iform = s3;
+            ^
+  found   : @DotSeparatedIdentifiers String
+  required: @InternalForm String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:143: warning: [assignment] incompatible types in assignment.
+    sn = s3;
+         ^
+  found   : @DotSeparatedIdentifiers String
+  required: @ClassGetSimpleName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:147: warning: [assignment] incompatible types in assignment.
+    i = s3;
+        ^
+  found   : @DotSeparatedIdentifiers String
+  required: @Identifier String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:161: warning: [assignment] incompatible types in assignment.
+    fqn = s5;
+          ^
+  found   : @FieldDescriptorWithoutPackage String
+  required: @FullyQualifiedName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:165: warning: [assignment] incompatible types in assignment.
+    iform = s5;
+            ^
+  found   : @FieldDescriptorWithoutPackage String
+  required: @InternalForm String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:167: warning: [assignment] incompatible types in assignment.
+    sn = s5;
+         ^
+  found   : @FieldDescriptorWithoutPackage String
+  required: @ClassGetSimpleName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:169: warning: [assignment] incompatible types in assignment.
+    bn = s5;
+         ^
+  found   : @FieldDescriptorWithoutPackage String
+  required: @BinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:171: warning: [assignment] incompatible types in assignment.
+    fbn = s5;
+          ^
+  found   : @FieldDescriptorWithoutPackage String
+  required: @FqBinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:173: warning: [assignment] incompatible types in assignment.
+    i = s5;
+        ^
+  found   : @FieldDescriptorWithoutPackage String
+  required: @Identifier String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:177: warning: [assignment] incompatible types in assignment.
+    fqn = s6;
+          ^
+  found   : @FieldDescriptor String
+  required: @FullyQualifiedName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:179: warning: [assignment] incompatible types in assignment.
+    cgn = s6;
+          ^
+  found   : @FieldDescriptor String
+  required: @ClassGetName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:182: warning: [assignment] incompatible types in assignment.
+    iform = s6;
+            ^
+  found   : @FieldDescriptor String
+  required: @InternalForm String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:184: warning: [assignment] incompatible types in assignment.
+    sn = s6;
+         ^
+  found   : @FieldDescriptor String
+  required: @ClassGetSimpleName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:186: warning: [assignment] incompatible types in assignment.
+    bn = s6;
+         ^
+  found   : @FieldDescriptor String
+  required: @BinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:188: warning: [assignment] incompatible types in assignment.
+    fbn = s6;
+          ^
+  found   : @FieldDescriptor String
+  required: @FqBinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:190: warning: [assignment] incompatible types in assignment.
+    i = s6;
+        ^
+  found   : @FieldDescriptor String
+  required: @Identifier String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:194: warning: [assignment] incompatible types in assignment.
+    fqn = s7;
+          ^
+  found   : @InternalForm String
+  required: @FullyQualifiedName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:196: warning: [assignment] incompatible types in assignment.
+    cgn = s7;
+          ^
+  found   : @InternalForm String
+  required: @ClassGetName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:198: warning: [assignment] incompatible types in assignment.
+    fd = s7;
+         ^
+  found   : @InternalForm String
+  required: @FieldDescriptor String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:201: warning: [assignment] incompatible types in assignment.
+    sn = s7;
+         ^
+  found   : @InternalForm String
+  required: @ClassGetSimpleName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:203: warning: [assignment] incompatible types in assignment.
+    bn = s7;
+         ^
+  found   : @InternalForm String
+  required: @BinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:205: warning: [assignment] incompatible types in assignment.
+    fbn = s7;
+          ^
+  found   : @InternalForm String
+  required: @FqBinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:207: warning: [assignment] incompatible types in assignment.
+    i = s7;
+        ^
+  found   : @InternalForm String
+  required: @Identifier String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:211: warning: [assignment] incompatible types in assignment.
+    fqn = s8;
+          ^
+  found   : @SignatureUnknown String
+  required: @FullyQualifiedName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:213: warning: [assignment] incompatible types in assignment.
+    cgn = s8;
+          ^
+  found   : @SignatureUnknown String
+  required: @ClassGetName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:215: warning: [assignment] incompatible types in assignment.
+    fd = s8;
+         ^
+  found   : @SignatureUnknown String
+  required: @FieldDescriptor String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:217: warning: [assignment] incompatible types in assignment.
+    iform = s8;
+            ^
+  found   : @SignatureUnknown String
+  required: @InternalForm String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:219: warning: [assignment] incompatible types in assignment.
+    sn = s8;
+         ^
+  found   : @SignatureUnknown String
+  required: @ClassGetSimpleName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:221: warning: [assignment] incompatible types in assignment.
+    bn = s8;
+         ^
+  found   : @SignatureUnknown String
+  required: @BinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:223: warning: [assignment] incompatible types in assignment.
+    fbn = s8;
+          ^
+  found   : @SignatureUnknown String
+  required: @FqBinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:225: warning: [assignment] incompatible types in assignment.
+    i = s8;
+        ^
+  found   : @SignatureUnknown String
+  required: @Identifier String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:231: warning: [assignment] incompatible types in assignment.
+    fd = s9;
+         ^
+  found   : @DotSeparatedIdentifiers String
+  required: @FieldDescriptor String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:233: warning: [assignment] incompatible types in assignment.
+    iform = s9;
+            ^
+  found   : @DotSeparatedIdentifiers String
+  required: @InternalForm String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:235: warning: [assignment] incompatible types in assignment.
+    sn = s9;
+         ^
+  found   : @DotSeparatedIdentifiers String
+  required: @ClassGetSimpleName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:239: warning: [assignment] incompatible types in assignment.
+    i = s9;
+        ^
+  found   : @DotSeparatedIdentifiers String
+  required: @Identifier String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:245: warning: [assignment] incompatible types in assignment.
+    fd = s10;
+         ^
+  found   : @Identifier String
+  required: @FieldDescriptor String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:265: warning: [assignment] incompatible types in assignment.
+    cgn = s12;
+          ^
+  found   : @FullyQualifiedName String
+  required: @ClassGetName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:267: warning: [assignment] incompatible types in assignment.
+    fd = s12;
+         ^
+  found   : @FullyQualifiedName String
+  required: @FieldDescriptor String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:269: warning: [assignment] incompatible types in assignment.
+    iform = s12;
+            ^
+  found   : @FullyQualifiedName String
+  required: @InternalForm String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:271: warning: [assignment] incompatible types in assignment.
+    sn = s12;
+         ^
+  found   : @FullyQualifiedName String
+  required: @ClassGetSimpleName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:273: warning: [assignment] incompatible types in assignment.
+    bn = s12;
+         ^
+  found   : @FullyQualifiedName String
+  required: @BinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:276: warning: [assignment] incompatible types in assignment.
+    i = s12;
+        ^
+  found   : @FullyQualifiedName String
+  required: @Identifier String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:281: warning: [assignment] incompatible types in assignment.
+    cgn = s13;
+          ^
+  found   : @FullyQualifiedName String
+  required: @ClassGetName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:283: warning: [assignment] incompatible types in assignment.
+    fd = s13;
+         ^
+  found   : @FullyQualifiedName String
+  required: @FieldDescriptor String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:285: warning: [assignment] incompatible types in assignment.
+    iform = s13;
+            ^
+  found   : @FullyQualifiedName String
+  required: @InternalForm String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:287: warning: [assignment] incompatible types in assignment.
+    sn = s13;
+         ^
+  found   : @FullyQualifiedName String
+  required: @ClassGetSimpleName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:289: warning: [assignment] incompatible types in assignment.
+    bn = s13;
+         ^
+  found   : @FullyQualifiedName String
+  required: @BinaryName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:292: warning: [assignment] incompatible types in assignment.
+    i = s13;
+        ^
+  found   : @FullyQualifiedName String
+  required: @Identifier String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:296: warning: [assignment] incompatible types in assignment.
+    fqn = s14;
+          ^
+  found   : @FieldDescriptor String
+  required: @FullyQualifiedName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:298: warning: [assignment] incompatible types in assignment.
+    cgn = s14;
+          ^
+  found   : @FieldDescriptor String
+  required: @ClassGetName String
+/home/ubuntu/GenDATA/case_studies/cf_signature_tests/SignatureTypeFactoryTest.java:301: warning: [assignment] incompatible types in assignment.
+    iform = s14;
+            ^
+  found   : @FieldDescriptor String
+  required: @InternalForm String
+100 warnings
+only showing the first 100 warnings, of 358 total; use -Xmaxwarns if you would like to see more

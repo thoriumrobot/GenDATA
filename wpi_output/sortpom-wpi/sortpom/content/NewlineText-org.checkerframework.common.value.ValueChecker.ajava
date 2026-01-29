@@ -1,0 +1,27 @@
+package sortpom.content;
+
+import org.dom4j.tree.AbstractText;
+
+/**
+ * The NewlineText is not really a special case of text, it is a placeholder that we want to keep a
+ * newline i the pom. The special handling of NewlineText is done in XmlProcessor.PatchedXMLWriter
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.common.value.ValueChecker")
+public class NewlineText extends AbstractText {
+
+    private static final  @org.checkerframework.common.value.qual.IntVal({ -7552189498553321263L }) long serialVersionUID = -7552189498553321263L;
+
+    /**
+     * This returns a <code>String</code> representation of the <code>NewlineText</code>, suitable for
+     * debugging.
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.common.value.qual.StringVal({ "[NewLine]" }) String toString( NewlineText this) {
+        return "[NewLine]";
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.common.value.qual.StringVal({ "" }) String getText( NewlineText this) {
+        return "";
+    }
+}

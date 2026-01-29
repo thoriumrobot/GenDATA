@@ -1,0 +1,40 @@
+package sortpom.wrapper.content;
+
+import org.dom4j.Node;
+import org.dom4j.Text;
+
+/**
+ * A singleton wrapper that contains a single newline. The content will be thrown away.
+ *
+ * @author Bjorn
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.common.value.ValueChecker")
+public enum ThrowAwayNewlineWrapper implements Wrapper<Node> {
+
+    THROW_AWAY_NEWLINE_INSTANCE;
+
+    @org.checkerframework.dataflow.qual.Pure
+    public Text getContent( ThrowAwayNewlineWrapper this) {
+        throw new UnsupportedOperationException();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public boolean isBefore( ThrowAwayNewlineWrapper this,  Wrapper<? extends Node> wrapper) {
+        throw new UnsupportedOperationException();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public boolean isContentElement( ThrowAwayNewlineWrapper this) {
+        throw new UnsupportedOperationException();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public boolean isSortable( ThrowAwayNewlineWrapper this) {
+        throw new UnsupportedOperationException();
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.common.value.qual.StringVal({ "SingleNewlineInTextWrapper" }) String toString( ThrowAwayNewlineWrapper this) {
+        return "SingleNewlineInTextWrapper";
+    }
+}

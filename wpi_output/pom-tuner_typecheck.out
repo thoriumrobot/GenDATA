@@ -1,0 +1,233 @@
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] Inspecting build with total of 3 modules
+[[1;34mINFO[m] Installing Central Publishing features
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1mReactor Build Order:[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] org.l2x6.pom-tuner:pom-tuner-parent                                [pom]
+[[1;34mINFO[m] org.l2x6.pom-tuner:pom-tuner                                       [jar]
+[[1;34mINFO[m] org.l2x6.pom-tuner:pom-tuner-tests                                 [jar]
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m----------------< [0;36morg.l2x6.pom-tuner:pom-tuner-parent[0;1m >-----------------[m
+[[1;34mINFO[m] [1mBuilding org.l2x6.pom-tuner:pom-tuner-parent 4.8.1-SNAPSHOT        [1/3][m
+[[1;34mINFO[m] [1m--------------------------------[ pom ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mbuildnumber-maven-plugin:3.2.1:create[m [1m(default)[m @ [36mpom-tuner-parent[0;1m ---[m
+[[1;34mINFO[m] Executing: /bin/sh -c cd '/home/ubuntu/GenDATA/wpi_projects/pom-tuner' && 'git' 'log' '-1' '--no-merges' '--format=format:%H %aI %aE %aN'
+[[1;34mINFO[m] Working directory: /home/ubuntu/GenDATA/wpi_projects/pom-tuner
+[[1;34mINFO[m] Storing buildNumber: 95541e46a833a0c77f62aebb53859f1b9238847b at timestamp: 2026-01-22T21:05:03Z
+[[1;34mINFO[m] Executing: /bin/sh -c cd '/home/ubuntu/GenDATA/wpi_projects/pom-tuner' && 'git' 'symbolic-ref' 'HEAD'
+[[1;34mINFO[m] Working directory: /home/ubuntu/GenDATA/wpi_projects/pom-tuner
+[[1;34mINFO[m] Storing scmBranch: main
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32meditorconfig-maven-plugin:0.2.0:check[m [1m(check)[m @ [36mpom-tuner-parent[0;1m ---[m
+[[1;34mINFO[m] Skipping execution, as demanded by user.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mformatter-maven-plugin:2.29.0:format[m [1m(format)[m @ [36mpom-tuner-parent[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mimpsort-maven-plugin:1.12.0:sort[m [1m(sort-imports)[m @ [36mpom-tuner-parent[0;1m ---[m
+[[1;34mINFO[m] Processed 0 files in 00:00.000 (Already Sorted: 0, Needed Sorting: 0)
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--------------------< [0;36morg.l2x6.pom-tuner:pom-tuner[0;1m >--------------------[m
+[[1;34mINFO[m] [1mBuilding org.l2x6.pom-tuner:pom-tuner 4.8.1-SNAPSHOT               [2/3][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mbuildnumber-maven-plugin:3.2.1:create[m [1m(default)[m @ [36mpom-tuner[0;1m ---[m
+[[1;34mINFO[m] Executing: /bin/sh -c cd '/home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner' && 'git' 'log' '-1' '--no-merges' '--format=format:%H %aI %aE %aN'
+[[1;34mINFO[m] Working directory: /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner
+[[1;34mINFO[m] Storing buildNumber: 95541e46a833a0c77f62aebb53859f1b9238847b at timestamp: 2026-01-22T21:05:04Z
+[[1;34mINFO[m] Executing: /bin/sh -c cd '/home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner' && 'git' 'symbolic-ref' 'HEAD'
+[[1;34mINFO[m] Working directory: /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner
+[[1;34mINFO[m] Storing scmBranch: main
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32meditorconfig-maven-plugin:0.2.0:check[m [1m(check)[m @ [36mpom-tuner[0;1m ---[m
+[[1;34mINFO[m] Skipping execution, as demanded by user.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mformatter-maven-plugin:2.29.0:format[m [1m(format)[m @ [36mpom-tuner[0;1m ---[m
+[[1;34mINFO[m] Processed 22 files in 834ms (Formatted: 0, Skipped: 0, Unchanged: 22, Failed: 0, Readonly: 0)
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mimpsort-maven-plugin:1.12.0:sort[m [1m(sort-imports)[m @ [36mpom-tuner[0;1m ---[m
+[[1;34mINFO[m] Processed 22 files in 00:00.351 (Already Sorted: 22, Needed Sorting: 0)
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:3.4.0:resources[m [1m(default-resources)[m @ [36mpom-tuner[0;1m ---[m
+[[1;34mINFO[m] skip non existing resourceDirectory /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.14.1:compile[m [1m(default-compile)[m @ [36mpom-tuner[0;1m ---[m
+[[1;34mINFO[m] Recompiling the module because of [1mchanged source code[m.
+[[1;34mINFO[m] Compiling 21 source files with javac [forked debug target 1.8] to target/classes
+[[1;33mWARNING[m] [options] bootstrap class path not set in conjunction with -source 8
+[[1;33mWARNING[m] [options] source value 8 is obsolete and will be removed in a future release
+[[1;33mWARNING[m] [options] target value 8 is obsolete and will be removed in a future release
+[[1;33mWARNING[m] [options] To suppress warnings about obsolete options, use -Xlint:-options.
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Expression.java:[105,32] [samelen:assignment] incompatible types in assignment.
+  found   : @SameLen("propertyName") String
+  required: @SameLen("this.propertyName") String
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[103,55] [substringindex:purity.not.deterministic.not.sideeffectfree.call] call to non-deterministic side-effecting Gavtc.SAFE_STRING_COMPARATOR.compare not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[103,55] [value:purity.not.deterministic.not.sideeffectfree.call] call to non-deterministic side-effecting Gavtc.SAFE_STRING_COMPARATOR.compare not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[103,55] [searchindex:purity.not.deterministic.not.sideeffectfree.call] call to non-deterministic side-effecting Gavtc.SAFE_STRING_COMPARATOR.compare not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[103,55] [samelen:purity.not.deterministic.not.sideeffectfree.call] call to non-deterministic side-effecting Gavtc.SAFE_STRING_COMPARATOR.compare not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[103,55] [lessthan:purity.not.deterministic.not.sideeffectfree.call] call to non-deterministic side-effecting Gavtc.SAFE_STRING_COMPARATOR.compare not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[103,55] [lowerbound:purity.not.deterministic.not.sideeffectfree.call] call to non-deterministic side-effecting Gavtc.SAFE_STRING_COMPARATOR.compare not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[103,55] [index:purity.not.deterministic.not.sideeffectfree.call] call to non-deterministic side-effecting Gavtc.SAFE_STRING_COMPARATOR.compare not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[147,23] [substringindex:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[147,23] [value:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[147,23] [searchindex:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[147,23] [samelen:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[147,23] [lessthan:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[147,23] [lowerbound:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[147,23] [index:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[147,24] [substringindex:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[147,24] [value:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[147,24] [searchindex:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[147,24] [samelen:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[147,24] [lessthan:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[147,24] [lowerbound:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gav.java:[147,24] [index:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtc.java:[180,23] [substringindex:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtc.java:[180,23] [value:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtc.java:[180,23] [searchindex:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtc.java:[180,23] [samelen:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtc.java:[180,23] [lessthan:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtc.java:[180,23] [lowerbound:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtc.java:[180,23] [index:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtc.java:[180,24] [substringindex:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtc.java:[180,24] [value:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtc.java:[180,24] [searchindex:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtc.java:[180,24] [samelen:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtc.java:[180,24] [lessthan:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtc.java:[180,24] [lowerbound:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtc.java:[180,24] [index:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtcs.java:[284,23] [substringindex:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtcs.java:[284,23] [value:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtcs.java:[284,23] [searchindex:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtcs.java:[284,23] [samelen:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtcs.java:[284,23] [lessthan:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtcs.java:[284,23] [lowerbound:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtcs.java:[284,23] [index:purity.not.sideeffectfree.call] call to side-effecting toString not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtcs.java:[284,24] [substringindex:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtcs.java:[284,24] [value:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtcs.java:[284,24] [searchindex:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtcs.java:[284,24] [samelen:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtcs.java:[284,24] [lessthan:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtcs.java:[284,24] [lowerbound:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtcs.java:[284,24] [index:purity.not.sideeffectfree.call] call to side-effecting StringBuilder not allowed in side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[831,66] [lowerbound:argument] incompatible argument for parameter endIndex of String.substring.
+  found   : @GTENegativeOne int
+  required: @NonNegative int
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[984,20] [substringindex:purity.not.deterministic.not.sideeffectfree.assign.field] field assignment not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[984,20] [value:purity.not.deterministic.not.sideeffectfree.assign.field] field assignment not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[984,20] [searchindex:purity.not.deterministic.not.sideeffectfree.assign.field] field assignment not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[984,20] [samelen:purity.not.deterministic.not.sideeffectfree.assign.field] field assignment not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[984,20] [lessthan:purity.not.deterministic.not.sideeffectfree.assign.field] field assignment not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[984,20] [lowerbound:purity.not.deterministic.not.sideeffectfree.assign.field] field assignment not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[984,20] [index:purity.not.deterministic.not.sideeffectfree.assign.field] field assignment not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[984,41] [substringindex:purity.not.deterministic.not.sideeffectfree.call] call to non-deterministic side-effecting moveCurrent not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[984,41] [value:purity.not.deterministic.not.sideeffectfree.call] call to non-deterministic side-effecting moveCurrent not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[984,41] [searchindex:purity.not.deterministic.not.sideeffectfree.call] call to non-deterministic side-effecting moveCurrent not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[984,41] [samelen:purity.not.deterministic.not.sideeffectfree.call] call to non-deterministic side-effecting moveCurrent not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[984,41] [lessthan:purity.not.deterministic.not.sideeffectfree.call] call to non-deterministic side-effecting moveCurrent not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[984,41] [lowerbound:purity.not.deterministic.not.sideeffectfree.call] call to non-deterministic side-effecting moveCurrent not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[984,41] [index:purity.not.deterministic.not.sideeffectfree.call] call to non-deterministic side-effecting moveCurrent not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[985,20] [substringindex:purity.not.deterministic.not.sideeffectfree.assign.field] field assignment not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[985,20] [value:purity.not.deterministic.not.sideeffectfree.assign.field] field assignment not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[985,20] [searchindex:purity.not.deterministic.not.sideeffectfree.assign.field] field assignment not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[985,20] [samelen:purity.not.deterministic.not.sideeffectfree.assign.field] field assignment not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[985,20] [lessthan:purity.not.deterministic.not.sideeffectfree.assign.field] field assignment not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[985,20] [lowerbound:purity.not.deterministic.not.sideeffectfree.assign.field] field assignment not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[985,20] [index:purity.not.deterministic.not.sideeffectfree.assign.field] field assignment not allowed in deterministic side-effect-free method
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[1115,57] [lowerbound:argument] incompatible argument for parameter capacity of StringBuilder constructor.
+  found   : int
+  required: @NonNegative int
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[1798,81] [index:argument] incompatible argument for parameter beginIndex of String.substring.
+  found   : @UpperBoundLiteral(1) int
+  required: @LTEqLengthOf("org.l2x6.pom.tuner.PomTunerUtils.anyNs("modules", "module")") int
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[1944,22] [index:array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+  found   : String []
+  required: @MinLen(1) -- an array guaranteed to have at least 1 elements
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[1945,22] [index:array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 1 could be larger than the array's bound
+  found   : String []
+  required: @MinLen(2) -- an array guaranteed to have at least 2 elements
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[1947,26] [index:array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+  found   : int
+  required: @IndexFor("path") or @LTLengthOf("path") -- an integer less than path's length
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[2022,98] [index:argument] incompatible argument for parameter beginIndex of String.substring.
+  found   : @LTEqLengthOf("org.l2x6.pom.tuner.PomTransformer.MODULE_COMMENT_PREFIX") int
+  required: @LTEqLengthOf("wholeText") int
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:[2023,106] [lowerbound:argument] incompatible argument for parameter endIndex of String.substring.
+  found   : int
+  required: @NonNegative int
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/MavenSourceTree.java:[355,57] [index:argument] incompatible argument for parameter beginIndex of String.substring.
+  found   : int
+  required: @LTEqLengthOf("src") int
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/MavenSourceTree.java:[355,72] [index:argument] incompatible argument for parameter endIndex of String.substring.
+  found   : int
+  required: @LTEqLengthOf("src") int
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Module.java:[102,89] [lowerbound:argument] incompatible argument for parameter index of Vector.get.
+  found   : int
+  required: @NonNegative int
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Module.java:[125,99] [lowerbound:argument] incompatible argument for parameter index of Vector.get.
+  found   : int
+  required: @NonNegative int
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Profile.java:[95,22] [samelen:assignment] incompatible types in assignment.
+  found   : @SameLen("id") String
+  required: @SameLen("this.id") String
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Profile.java:[119,23] [samelen:assignment] incompatible types in assignment.
+  found   : @SameLen("key") String
+  required: @SameLen("this.key") String
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Profile.java:[145,18] [samelen:assignment] incompatible types in assignment.
+  found   : @SameLen("id") String
+  required: @SameLen("this.id") String
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:[126,35] [index:array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+  found   : int []
+  required: @MinLen(1) -- an array guaranteed to have at least 1 elements
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:[126,56] [index:array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 1 could be larger than the array's bound
+  found   : int []
+  required: @MinLen(2) -- an array guaranteed to have at least 2 elements
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:[187,63] [index:argument] incompatible argument for parameter beginIndex of String.substring.
+  found   : int
+  required: @LTEqLengthOf("globString") int
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:[187,66] [index:argument] incompatible argument for parameter endIndex of String.substring.
+  found   : int
+  required: @LTEqLengthOf("globString") int
+[[1;33mWARNING[m] /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:[194,43] [samelen:argument] incompatible argument for parameter globString of Glob.convertGlobToRegEx.
+  found   : @SameLen({"choice", "globString.substring(i, -j)"}) String
+  required: @SameLen({"choice", "org.l2x6.pom.tuner.model.Glob.ESCAPED_COMMENT_SIGNS.matcher(choice).replaceAll("$1")"}) String
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m-----------------< [0;36morg.l2x6.pom-tuner:pom-tuner-tests[0;1m >-----------------[m
+[[1;34mINFO[m] [1mBuilding org.l2x6.pom-tuner:pom-tuner-tests 4.8.1-SNAPSHOT         [3/3][m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mbuildnumber-maven-plugin:3.2.1:create[m [1m(default)[m @ [36mpom-tuner-tests[0;1m ---[m
+[[1;34mINFO[m] Executing: /bin/sh -c cd '/home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner-tests' && 'git' 'log' '-1' '--no-merges' '--format=format:%H %aI %aE %aN'
+[[1;34mINFO[m] Working directory: /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner-tests
+[[1;34mINFO[m] Storing buildNumber: 95541e46a833a0c77f62aebb53859f1b9238847b at timestamp: 2026-01-22T21:05:34Z
+[[1;34mINFO[m] Executing: /bin/sh -c cd '/home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner-tests' && 'git' 'symbolic-ref' 'HEAD'
+[[1;34mINFO[m] Working directory: /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner-tests
+[[1;34mINFO[m] Storing scmBranch: main
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32meditorconfig-maven-plugin:0.2.0:check[m [1m(check)[m @ [36mpom-tuner-tests[0;1m ---[m
+[[1;34mINFO[m] Skipping execution, as demanded by user.
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mformatter-maven-plugin:2.29.0:format[m [1m(format)[m @ [36mpom-tuner-tests[0;1m ---[m
+[[1;34mINFO[m] Processed 20 files in 116ms (Formatted: 0, Skipped: 0, Unchanged: 20, Failed: 0, Readonly: 0)
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mimpsort-maven-plugin:1.12.0:sort[m [1m(sort-imports)[m @ [36mpom-tuner-tests[0;1m ---[m
+[[1;34mINFO[m] Processed 20 files in 00:00.174 (Already Sorted: 20, Needed Sorting: 0)
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:3.4.0:resources[m [1m(default-resources)[m @ [36mpom-tuner-tests[0;1m ---[m
+[[1;34mINFO[m] skip non existing resourceDirectory /home/ubuntu/GenDATA/wpi_projects/pom-tuner/pom-tuner-tests/src/main/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.14.1:compile[m [1m(default-compile)[m @ [36mpom-tuner-tests[0;1m ---[m
+[[1;34mINFO[m] No sources to compile
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1mReactor Summary for org.l2x6.pom-tuner:pom-tuner-parent 4.8.1-SNAPSHOT:[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] org.l2x6.pom-tuner:pom-tuner-parent ................ [1;32mSUCCESS[m [  0.429 s]
+[[1;34mINFO[m] org.l2x6.pom-tuner:pom-tuner ....................... [1;32mSUCCESS[m [ 30.904 s]
+[[1;34mINFO[m] org.l2x6.pom-tuner:pom-tuner-tests ................. [1;32mSUCCESS[m [  0.312 s]
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;32mBUILD SUCCESS[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  31.808 s
+[[1;34mINFO[m] Finished at: 2026-01-22T21:05:35Z
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m

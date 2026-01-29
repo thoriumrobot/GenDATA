@@ -1,0 +1,14 @@
+/home/ubuntu/GenDATA/case_studies/training_sql_quotes/SqlQuotesBeforeAnnotation.java:26: warning: [argument] incompatible argument for parameter sql of SqlQuotesBeforeAnnotation.executeQuery.
+        executeQuery(buildQuery()); // WARNING: incompatible argument
+                               ^
+  found   : @SqlQuotesUnknown String
+  required: @SqlEvenQuotes String
+/home/ubuntu/GenDATA/case_studies/training_sql_quotes/SqlQuotesTrainingExample.java:34: warning: [type.anno.before.modifier] write type annotation @SqlEvenQuotes immediately before type, after modifiers [private]
+    private String query1 = "SELECT * FROM users";
+                   ^
+/home/ubuntu/GenDATA/case_studies/training_sql_quotes/SqlQuotesTrainingExample.java:55: warning: [argument] incompatible argument for parameter sql of SqlQuotesTrainingExample.executeUpdate.
+        executeUpdate(buildQuery());  // WARNING: [argument] incompatible
+                                ^
+  found   : @SqlQuotesUnknown String
+  required: @SqlEvenQuotes String
+3 warnings

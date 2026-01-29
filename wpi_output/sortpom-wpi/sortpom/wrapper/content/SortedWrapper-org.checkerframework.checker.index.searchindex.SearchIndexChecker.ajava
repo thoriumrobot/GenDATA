@@ -1,0 +1,47 @@
+package sortpom.wrapper.content;
+
+import org.dom4j.Element;
+import org.dom4j.Node;
+
+/**
+ * A wrapper that contains an element. The element is sorted according to a predetermined order.
+ *
+ * @author Bjorn Ekryd
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.index.searchindex.SearchIndexChecker")
+public class SortedWrapper implements Wrapper<Element> {
+
+    private final   int sortOrder;
+
+    private final @org.checkerframework.checker.index.qual.SearchIndexBottom Element element;
+
+    /**
+     * @param element The wrapped element
+     * @param sortOrder The sort order, lower value is placed higher up
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public SortedWrapper(@org.checkerframework.checker.index.qual.SearchIndexBottom Element element,   int sortOrder) {
+        this.element = element;
+        this.sortOrder = sortOrder;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.checker.index.qual.SearchIndexBottom Element getContent( SortedWrapper this) {
+        return element;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   boolean isBefore( SortedWrapper this,  Wrapper<? extends Node> wrapper) {
+        return !(wrapper instanceof SortedWrapper) || isBeforeSortedWrapper((SortedWrapper) wrapper);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private   boolean isBeforeSortedWrapper( SortedWrapper this,  SortedWrapper wrapper) {
+        return wrapper.sortOrder > sortOrder;
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public  String toString( SortedWrapper this) {
+        return "SortedWrapper{element=" + (element == null ? "null" : element.toString().replaceAll(".+@[^ ]+ ", "")) + '}';
+    }
+}

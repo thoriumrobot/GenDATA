@@ -1,0 +1,40 @@
+package sortpom.util;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+/**
+ * Wraps the java URL class so that it exposes methods to determine if entered values are urls or
+ * not.
+ *
+ * @author bjorn
+ * @since 2013-08-16
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.index.searchindex.SearchIndexChecker")
+class UrlWrapper {
+
+    private final  String spec;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public UrlWrapper( String spec) {
+        this.spec = spec;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   boolean isUrl( UrlWrapper this) {
+        try {
+            new URL(spec);
+            return true;
+        } catch (MalformedURLException e) {
+            return false;
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  InputStream openStream( UrlWrapper this) throws IOException {
+        var url = new URL(spec);
+        return url.openStream();
+    }
+}

@@ -111,8 +111,11 @@ class LowerBoundWarningTester:
             return None
     
     def find_java_files(self, repo_dir: Path, max_files: Optional[int] = None) -> List[str]:
-        """Find Java files in repository"""
+        """Find Java files in repository - returns ABSOLUTE paths"""
         java_files = []
+        # FIXED: Ensure repo_dir is absolute to avoid path resolution issues
+        repo_dir = Path(repo_dir).resolve()
+        
         exclude_dirs = {
             '.git', 'target', 'build', 'bin', 'out', 'dist',
             'test', 'tests', 'test-src', 'test-sources',
@@ -124,7 +127,9 @@ class LowerBoundWarningTester:
             
             for file in files:
                 if file.endswith('.java'):
-                    java_files.append(os.path.join(root, file))
+                    # FIXED: Use absolute path to avoid CWD issues when javac runs
+                    abs_path = str(Path(root, file).resolve())
+                    java_files.append(abs_path)
                     if max_files and len(java_files) >= max_files:
                         break
             
@@ -152,15 +157,52 @@ class LowerBoundWarningTester:
             output_dir = repo_dir / 'checker_output'
             output_dir.mkdir(exist_ok=True)
             
-            # Build javac command
+            # FIXED: Resolve Maven dependencies if this is a Maven project
+            classpath = self.checker_cp
+            try:
+                from maven_classpath_resolver import MavenClasspathResolver
+                resolver = MavenClasspathResolver(timeout=self.timeout)
+                
+                if resolver.is_maven_project(repo_dir):
+                    logger.info(f"Detected Maven project, resolving dependencies...")
+                    result = resolver.prepare_project(repo_dir, self.checker_cp)
+                    
+                    if result.success:
+                        classpath = result.classpath
+                        logger.info(f"Using Maven classpath with {len(result.target_dirs)} target directories")
+                    else:
+                        logger.warning(f"Maven preparation failed: {result.error_message}")
+                        # Continue with default classpath, but log the issue
+            except ImportError:
+                logger.debug("Maven classpath resolver not available")
+            except Exception as e:
+                logger.warning(f"Error resolving Maven dependencies: {e}")
+            
+            # Build javac command with resolved classpath
+            # Add JVM module exports for Java 9+ compatibility with Checker Framework
+            jvm_args = [
+                '-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED',
+                '-J--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED',
+                '-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED',
+                '-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED',
+                '-J--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED',
+                '-J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED',
+                '-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED',
+                '-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED',
+                '-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED',
+            ]
+            
             cmd = [
                 'javac',
-                '-cp', self.checker_cp,
+            ]
+            cmd.extend(jvm_args)
+            cmd.extend([
+                '-cp', classpath,
                 '-processor', 'org.checkerframework.checker.index.IndexChecker',
                 '-Xmaxwarns', '10000',
                 '-d', str(output_dir),
                 '-sourcepath', str(repo_dir)
-            ]
+            ])
             
             # Add Java files
             cmd.extend(java_files)
@@ -222,7 +264,38 @@ class LowerBoundWarningTester:
             
             # Checker may return non-zero for warnings, but should have output
             # If returncode is non-zero AND output is empty, that's a real failure
-            success = result.returncode == 0 or (result.returncode != 0 and len(output) > 0)
+            # FIXED: Also check for crashes using crash detector
+            try:
+                from checker_crash_detector import detect_checker_crash, has_valid_checker_output
+                crash_result = detect_checker_crash(output, returncode=result.returncode)
+                
+                # Success requires: either return code 0 OR valid checker output
+                # AND no crash detected
+                has_output = len(output) > 0
+                has_valid_output = has_valid_checker_output(output)
+                no_crash = not crash_result.crashed
+                
+                success = (result.returncode == 0 or (has_output and has_valid_output)) and no_crash
+                
+                # Log crash detection result
+                with open('/home/ubuntu/GenDATA/.cursor/debug.log', 'a') as f:
+                    f.write(json.dumps({
+                        'sessionId': 'debug-session',
+                        'runId': 'checker-execution',
+                        'hypothesisId': 'CRASH_CHECK',
+                        'location': 'test_lower_bound_warnings.py:225',
+                        'message': 'Crash detection applied',
+                        'data': {
+                            'crashed': crash_result.crashed,
+                            'crash_reason': crash_result.crash_reason,
+                            'has_valid_output': has_valid_output,
+                            'final_success': success
+                        },
+                        'timestamp': int(__import__('time').time() * 1000)
+                    }) + '\n')
+            except ImportError:
+                # Fallback to old behavior if crash detector not available
+                success = result.returncode == 0 or (result.returncode != 0 and len(output) > 0)
             
             return success, output
         

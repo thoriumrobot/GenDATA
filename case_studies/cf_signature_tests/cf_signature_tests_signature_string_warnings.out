@@ -1,0 +1,502 @@
+CanonicalNameNonEmptyTest.java:26: error: [return] incompatible types in return.
+      return s;
+             ^
+  type of expression: @FullyQualifiedName String
+  method return type: @CanonicalName String
+ClassGetNameBinaryName.java:22: error: [assignment] incompatible types in assignment.
+    @PrimitiveType String s4b = Boolean.class.getName();
+                                                     ^
+  found   : @DotSeparatedIdentifiers String
+  required: @PrimitiveType String
+ClassGetNameBinaryName.java:25: error: [assignment] incompatible types in assignment.
+    @DotSeparatedIdentifiers String s12 = Nested.class.getName();
+                                                              ^
+  found   : @ClassGetName String
+  required: @DotSeparatedIdentifiers String
+ClassGetNameBinaryName.java:28: error: [assignment] incompatible types in assignment.
+    @DotSeparatedIdentifiers String s13 = Inner.class.getName();
+                                                             ^
+  found   : @ClassGetName String
+  required: @DotSeparatedIdentifiers String
+ClassGetNameBinaryName.java:35: error: [assignment] incompatible types in assignment.
+    @DotSeparatedIdentifiers String prim2 = int.class.getName();
+                                                             ^
+  found   : @PrimitiveType String
+  required: @DotSeparatedIdentifiers String
+ClassGetNameBinaryName.java:40: error: [assignment] incompatible types in assignment.
+    @DotSeparatedIdentifiers String prim4 = boolean.class.getName();
+                                                                 ^
+  found   : @PrimitiveType String
+  required: @DotSeparatedIdentifiers String
+ClassGetNameBinaryName.java:43: error: [assignment] incompatible types in assignment.
+    @DotSeparatedIdentifiers String prim5 = void.class.getName();
+                                                              ^
+  found   : @ClassGetName String
+  required: @DotSeparatedIdentifiers String
+ClassGetNameBinaryName.java:46: error: [assignment] incompatible types in assignment.
+    @PrimitiveType String prim6 = void.class.getName();
+                                                    ^
+  found   : @ClassGetName String
+  required: @PrimitiveType String
+ClassGetNameBinaryName.java:51: error: [assignment] incompatible types in assignment.
+    @DotSeparatedIdentifiers String s6 = int[].class.getName();
+                                                            ^
+  found   : @ClassGetName String
+  required: @DotSeparatedIdentifiers String
+ClassGetNameBinaryName.java:54: error: [assignment] incompatible types in assignment.
+    @DotSeparatedIdentifiers String s7 = int[][].class.getName();
+                                                              ^
+  found   : @ClassGetName String
+  required: @DotSeparatedIdentifiers String
+ClassGetNameBinaryName.java:57: error: [assignment] incompatible types in assignment.
+    @DotSeparatedIdentifiers String s8 = boolean[].class.getName();
+                                                                ^
+  found   : @ClassGetName String
+  required: @DotSeparatedIdentifiers String
+ClassGetNameBinaryName.java:60: error: [assignment] incompatible types in assignment.
+    @DotSeparatedIdentifiers String s9 = Integer[].class.getName();
+                                                                ^
+  found   : @ClassGetName String
+  required: @DotSeparatedIdentifiers String
+ClassGetNameBinaryName.java:63: error: [assignment] incompatible types in assignment.
+    @DotSeparatedIdentifiers String s10 = Boolean[].class.getName();
+                                                                 ^
+  found   : @ClassGetName String
+  required: @DotSeparatedIdentifiers String
+ClassGetNameBinaryName.java:77: error: [assignment] incompatible types in assignment.
+    @PrimitiveType String s4b = Boolean.class.getCanonicalName();
+                                                              ^
+  found   : @CanonicalNameAndBinaryName String
+  required: @PrimitiveType String
+ClassGetNameBinaryName.java:80: error: [assignment] incompatible types in assignment.
+    @CanonicalNameAndBinaryName String s12 = Nested.class.getCanonicalName();
+                                                                          ^
+  found   : @CanonicalName String
+  required: @CanonicalNameAndBinaryName String
+ClassGetNameBinaryName.java:83: error: [assignment] incompatible types in assignment.
+    @CanonicalNameAndBinaryName String s13 = Inner.class.getName();
+                                                                ^
+  found   : @ClassGetName String
+  required: @CanonicalNameAndBinaryName String
+ClassGetNameBinaryName.java:90: error: [assignment] incompatible types in assignment.
+    @CanonicalNameAndBinaryName String prim2 = int.class.getCanonicalName();
+                                                                         ^
+  found   : @PrimitiveType String
+  required: @CanonicalNameAndBinaryName String
+ClassGetNameBinaryName.java:95: error: [assignment] incompatible types in assignment.
+    @CanonicalNameAndBinaryName String prim4 = boolean.class.getCanonicalName();
+                                                                             ^
+  found   : @PrimitiveType String
+  required: @CanonicalNameAndBinaryName String
+ClassGetNameBinaryName.java:98: error: [assignment] incompatible types in assignment.
+    @CanonicalNameAndBinaryName String prim5 = void.class.getCanonicalName();
+                                                                          ^
+  found   : @CanonicalName String
+  required: @CanonicalNameAndBinaryName String
+ClassGetNameBinaryName.java:101: error: [assignment] incompatible types in assignment.
+    @PrimitiveType String prim6 = void.class.getCanonicalName();
+                                                             ^
+  found   : @CanonicalName String
+  required: @PrimitiveType String
+ClassGetNameBinaryName.java:106: error: [assignment] incompatible types in assignment.
+    @CanonicalNameAndBinaryName String s6 = int[].class.getCanonicalName();
+                                                                        ^
+  found   : @CanonicalName String
+  required: @CanonicalNameAndBinaryName String
+ClassGetNameBinaryName.java:109: error: [assignment] incompatible types in assignment.
+    @CanonicalNameAndBinaryName String s7 = int[][].class.getCanonicalName();
+                                                                          ^
+  found   : @CanonicalName String
+  required: @CanonicalNameAndBinaryName String
+ClassGetNameBinaryName.java:112: error: [assignment] incompatible types in assignment.
+    @CanonicalNameAndBinaryName String s8 = boolean[].class.getCanonicalName();
+                                                                            ^
+  found   : @CanonicalName String
+  required: @CanonicalNameAndBinaryName String
+ClassGetNameBinaryName.java:115: error: [assignment] incompatible types in assignment.
+    @CanonicalNameAndBinaryName String s9 = Integer[].class.getCanonicalName();
+                                                                            ^
+  found   : @CanonicalName String
+  required: @CanonicalNameAndBinaryName String
+ClassGetNameBinaryName.java:118: error: [assignment] incompatible types in assignment.
+    @CanonicalNameAndBinaryName String s10 = Boolean[].class.getCanonicalName();
+                                                                             ^
+  found   : @CanonicalName String
+  required: @CanonicalNameAndBinaryName String
+Conversion.java:16: error: [return] incompatible types in return.
+      return bn.replace('/', '.');
+                       ^
+  type of expression: @SignatureUnknown String
+  method return type: @InternalForm String
+Conversion.java:21: error: [return] incompatible types in return.
+      return bn.replace(':', '/');
+                       ^
+  type of expression: @SignatureUnknown String
+  method return type: @InternalForm String
+Conversion.java:26: error: [return] incompatible types in return.
+      return bn.replace('.', '/');
+                       ^
+  type of expression: @SignatureUnknown String
+  method return type: @InternalForm String
+Conversion.java:31: error: [return] incompatible types in return.
+      return iform.replace('.', '/');
+                          ^
+  type of expression: @SignatureUnknown String
+  method return type: @BinaryName String
+Conversion.java:36: error: [return] incompatible types in return.
+      return iform.replace('/', ':');
+                          ^
+  type of expression: @SignatureUnknown String
+  method return type: @BinaryName String
+Conversion.java:41: error: [return] incompatible types in return.
+      return iform.replace('/', '.');
+                          ^
+  type of expression: @SignatureUnknown String
+  method return type: @BinaryName String
+Conversion.java:46: error: [return] incompatible types in return.
+      return bn.replace('$', '.');
+                       ^
+  type of expression: @SignatureUnknown String
+  method return type: @DotSeparatedIdentifiers String
+Conversion.java:51: error: [return] incompatible types in return.
+      return bn.replace('$', '.');
+                       ^
+  type of expression: @SignatureUnknown String
+  method return type: @FullyQualifiedName String
+Conversion.java:66: error: [return] incompatible types in return.
+      return bn.replace("/", ".");
+                       ^
+  type of expression: @SignatureUnknown String
+  method return type: @InternalForm String
+Conversion.java:71: error: [return] incompatible types in return.
+      return bn.replace(":", "/");
+                       ^
+  type of expression: @SignatureUnknown String
+  method return type: @InternalForm String
+Conversion.java:76: error: [return] incompatible types in return.
+      return bn.replace(".", "/");
+                       ^
+  type of expression: @SignatureUnknown String
+  method return type: @InternalForm String
+Conversion.java:81: error: [return] incompatible types in return.
+      return iform.replace(".", "/");
+                          ^
+  type of expression: @SignatureUnknown String
+  method return type: @BinaryName String
+Conversion.java:86: error: [return] incompatible types in return.
+      return iform.replace("/", ":");
+                          ^
+  type of expression: @SignatureUnknown String
+  method return type: @BinaryName String
+Conversion.java:91: error: [return] incompatible types in return.
+      return iform.replace("/", ".");
+                          ^
+  type of expression: @SignatureUnknown String
+  method return type: @BinaryName String
+Conversion.java:96: error: [return] incompatible types in return.
+      return bn.replace("$", ".");
+                       ^
+  type of expression: @SignatureUnknown String
+  method return type: @DotSeparatedIdentifiers String
+Conversion.java:101: error: [return] incompatible types in return.
+      return bn.replace("$", ".");
+                       ^
+  type of expression: @SignatureUnknown String
+  method return type: @FullyQualifiedName String
+FakeOverridePoly.java:9: error: [assignment] incompatible types in assignment.
+    @CanonicalName String s = n.toString();
+                                        ^
+  found   : @SignatureUnknown String
+  required: @CanonicalName String
+PolySignatureTest2.java:16: error: [return] incompatible types in return.
+    return n.toString();
+                     ^
+  type of expression: @SignatureUnknown String
+  method return type: @DotSeparatedIdentifiers String
+SignatureConcatenation.java:7: error: [return] incompatible types in return.
+    return arg1 + arg2;
+                ^
+  type of expression: @SignatureUnknown String
+  method return type: @ClassGetSimpleName String
+SignatureTypeFactoryTest.java:114: error: [assignment] incompatible types in assignment.
+    fd = s1;
+         ^
+  found   : @Identifier String
+  required: @FieldDescriptor String
+SignatureTypeFactoryTest.java:125: error: [assignment] incompatible types in assignment.
+    fd = s2;
+         ^
+  found   : @DotSeparatedIdentifiers String
+  required: @FieldDescriptor String
+SignatureTypeFactoryTest.java:127: error: [assignment] incompatible types in assignment.
+    iform = s2;
+            ^
+  found   : @DotSeparatedIdentifiers String
+  required: @InternalForm String
+SignatureTypeFactoryTest.java:129: error: [assignment] incompatible types in assignment.
+    sn = s2;
+         ^
+  found   : @DotSeparatedIdentifiers String
+  required: @ClassGetSimpleName String
+SignatureTypeFactoryTest.java:133: error: [assignment] incompatible types in assignment.
+    i = s2;
+        ^
+  found   : @DotSeparatedIdentifiers String
+  required: @Identifier String
+SignatureTypeFactoryTest.java:139: error: [assignment] incompatible types in assignment.
+    fd = s3;
+         ^
+  found   : @DotSeparatedIdentifiers String
+  required: @FieldDescriptor String
+SignatureTypeFactoryTest.java:141: error: [assignment] incompatible types in assignment.
+    iform = s3;
+            ^
+  found   : @DotSeparatedIdentifiers String
+  required: @InternalForm String
+SignatureTypeFactoryTest.java:143: error: [assignment] incompatible types in assignment.
+    sn = s3;
+         ^
+  found   : @DotSeparatedIdentifiers String
+  required: @ClassGetSimpleName String
+SignatureTypeFactoryTest.java:147: error: [assignment] incompatible types in assignment.
+    i = s3;
+        ^
+  found   : @DotSeparatedIdentifiers String
+  required: @Identifier String
+SignatureTypeFactoryTest.java:161: error: [assignment] incompatible types in assignment.
+    fqn = s5;
+          ^
+  found   : @FieldDescriptorWithoutPackage String
+  required: @FullyQualifiedName String
+SignatureTypeFactoryTest.java:165: error: [assignment] incompatible types in assignment.
+    iform = s5;
+            ^
+  found   : @FieldDescriptorWithoutPackage String
+  required: @InternalForm String
+SignatureTypeFactoryTest.java:167: error: [assignment] incompatible types in assignment.
+    sn = s5;
+         ^
+  found   : @FieldDescriptorWithoutPackage String
+  required: @ClassGetSimpleName String
+SignatureTypeFactoryTest.java:169: error: [assignment] incompatible types in assignment.
+    bn = s5;
+         ^
+  found   : @FieldDescriptorWithoutPackage String
+  required: @BinaryName String
+SignatureTypeFactoryTest.java:171: error: [assignment] incompatible types in assignment.
+    fbn = s5;
+          ^
+  found   : @FieldDescriptorWithoutPackage String
+  required: @FqBinaryName String
+SignatureTypeFactoryTest.java:173: error: [assignment] incompatible types in assignment.
+    i = s5;
+        ^
+  found   : @FieldDescriptorWithoutPackage String
+  required: @Identifier String
+SignatureTypeFactoryTest.java:177: error: [assignment] incompatible types in assignment.
+    fqn = s6;
+          ^
+  found   : @FieldDescriptor String
+  required: @FullyQualifiedName String
+SignatureTypeFactoryTest.java:179: error: [assignment] incompatible types in assignment.
+    cgn = s6;
+          ^
+  found   : @FieldDescriptor String
+  required: @ClassGetName String
+SignatureTypeFactoryTest.java:182: error: [assignment] incompatible types in assignment.
+    iform = s6;
+            ^
+  found   : @FieldDescriptor String
+  required: @InternalForm String
+SignatureTypeFactoryTest.java:184: error: [assignment] incompatible types in assignment.
+    sn = s6;
+         ^
+  found   : @FieldDescriptor String
+  required: @ClassGetSimpleName String
+SignatureTypeFactoryTest.java:186: error: [assignment] incompatible types in assignment.
+    bn = s6;
+         ^
+  found   : @FieldDescriptor String
+  required: @BinaryName String
+SignatureTypeFactoryTest.java:188: error: [assignment] incompatible types in assignment.
+    fbn = s6;
+          ^
+  found   : @FieldDescriptor String
+  required: @FqBinaryName String
+SignatureTypeFactoryTest.java:190: error: [assignment] incompatible types in assignment.
+    i = s6;
+        ^
+  found   : @FieldDescriptor String
+  required: @Identifier String
+SignatureTypeFactoryTest.java:194: error: [assignment] incompatible types in assignment.
+    fqn = s7;
+          ^
+  found   : @InternalForm String
+  required: @FullyQualifiedName String
+SignatureTypeFactoryTest.java:196: error: [assignment] incompatible types in assignment.
+    cgn = s7;
+          ^
+  found   : @InternalForm String
+  required: @ClassGetName String
+SignatureTypeFactoryTest.java:198: error: [assignment] incompatible types in assignment.
+    fd = s7;
+         ^
+  found   : @InternalForm String
+  required: @FieldDescriptor String
+SignatureTypeFactoryTest.java:201: error: [assignment] incompatible types in assignment.
+    sn = s7;
+         ^
+  found   : @InternalForm String
+  required: @ClassGetSimpleName String
+SignatureTypeFactoryTest.java:203: error: [assignment] incompatible types in assignment.
+    bn = s7;
+         ^
+  found   : @InternalForm String
+  required: @BinaryName String
+SignatureTypeFactoryTest.java:205: error: [assignment] incompatible types in assignment.
+    fbn = s7;
+          ^
+  found   : @InternalForm String
+  required: @FqBinaryName String
+SignatureTypeFactoryTest.java:207: error: [assignment] incompatible types in assignment.
+    i = s7;
+        ^
+  found   : @InternalForm String
+  required: @Identifier String
+SignatureTypeFactoryTest.java:211: error: [assignment] incompatible types in assignment.
+    fqn = s8;
+          ^
+  found   : @SignatureUnknown String
+  required: @FullyQualifiedName String
+SignatureTypeFactoryTest.java:213: error: [assignment] incompatible types in assignment.
+    cgn = s8;
+          ^
+  found   : @SignatureUnknown String
+  required: @ClassGetName String
+SignatureTypeFactoryTest.java:215: error: [assignment] incompatible types in assignment.
+    fd = s8;
+         ^
+  found   : @SignatureUnknown String
+  required: @FieldDescriptor String
+SignatureTypeFactoryTest.java:217: error: [assignment] incompatible types in assignment.
+    iform = s8;
+            ^
+  found   : @SignatureUnknown String
+  required: @InternalForm String
+SignatureTypeFactoryTest.java:219: error: [assignment] incompatible types in assignment.
+    sn = s8;
+         ^
+  found   : @SignatureUnknown String
+  required: @ClassGetSimpleName String
+SignatureTypeFactoryTest.java:221: error: [assignment] incompatible types in assignment.
+    bn = s8;
+         ^
+  found   : @SignatureUnknown String
+  required: @BinaryName String
+SignatureTypeFactoryTest.java:223: error: [assignment] incompatible types in assignment.
+    fbn = s8;
+          ^
+  found   : @SignatureUnknown String
+  required: @FqBinaryName String
+SignatureTypeFactoryTest.java:225: error: [assignment] incompatible types in assignment.
+    i = s8;
+        ^
+  found   : @SignatureUnknown String
+  required: @Identifier String
+SignatureTypeFactoryTest.java:231: error: [assignment] incompatible types in assignment.
+    fd = s9;
+         ^
+  found   : @DotSeparatedIdentifiers String
+  required: @FieldDescriptor String
+SignatureTypeFactoryTest.java:233: error: [assignment] incompatible types in assignment.
+    iform = s9;
+            ^
+  found   : @DotSeparatedIdentifiers String
+  required: @InternalForm String
+SignatureTypeFactoryTest.java:235: error: [assignment] incompatible types in assignment.
+    sn = s9;
+         ^
+  found   : @DotSeparatedIdentifiers String
+  required: @ClassGetSimpleName String
+SignatureTypeFactoryTest.java:239: error: [assignment] incompatible types in assignment.
+    i = s9;
+        ^
+  found   : @DotSeparatedIdentifiers String
+  required: @Identifier String
+SignatureTypeFactoryTest.java:245: error: [assignment] incompatible types in assignment.
+    fd = s10;
+         ^
+  found   : @Identifier String
+  required: @FieldDescriptor String
+SignatureTypeFactoryTest.java:265: error: [assignment] incompatible types in assignment.
+    cgn = s12;
+          ^
+  found   : @FullyQualifiedName String
+  required: @ClassGetName String
+SignatureTypeFactoryTest.java:267: error: [assignment] incompatible types in assignment.
+    fd = s12;
+         ^
+  found   : @FullyQualifiedName String
+  required: @FieldDescriptor String
+SignatureTypeFactoryTest.java:269: error: [assignment] incompatible types in assignment.
+    iform = s12;
+            ^
+  found   : @FullyQualifiedName String
+  required: @InternalForm String
+SignatureTypeFactoryTest.java:271: error: [assignment] incompatible types in assignment.
+    sn = s12;
+         ^
+  found   : @FullyQualifiedName String
+  required: @ClassGetSimpleName String
+SignatureTypeFactoryTest.java:273: error: [assignment] incompatible types in assignment.
+    bn = s12;
+         ^
+  found   : @FullyQualifiedName String
+  required: @BinaryName String
+SignatureTypeFactoryTest.java:276: error: [assignment] incompatible types in assignment.
+    i = s12;
+        ^
+  found   : @FullyQualifiedName String
+  required: @Identifier String
+SignatureTypeFactoryTest.java:281: error: [assignment] incompatible types in assignment.
+    cgn = s13;
+          ^
+  found   : @FullyQualifiedName String
+  required: @ClassGetName String
+SignatureTypeFactoryTest.java:283: error: [assignment] incompatible types in assignment.
+    fd = s13;
+         ^
+  found   : @FullyQualifiedName String
+  required: @FieldDescriptor String
+SignatureTypeFactoryTest.java:285: error: [assignment] incompatible types in assignment.
+    iform = s13;
+            ^
+  found   : @FullyQualifiedName String
+  required: @InternalForm String
+SignatureTypeFactoryTest.java:287: error: [assignment] incompatible types in assignment.
+    sn = s13;
+         ^
+  found   : @FullyQualifiedName String
+  required: @ClassGetSimpleName String
+SignatureTypeFactoryTest.java:289: error: [assignment] incompatible types in assignment.
+    bn = s13;
+         ^
+  found   : @FullyQualifiedName String
+  required: @BinaryName String
+SignatureTypeFactoryTest.java:292: error: [assignment] incompatible types in assignment.
+    i = s13;
+        ^
+  found   : @FullyQualifiedName String
+  required: @Identifier String
+SignatureTypeFactoryTest.java:296: error: [assignment] incompatible types in assignment.
+    fqn = s14;
+          ^
+  found   : @FieldDescriptor String
+  required: @FullyQualifiedName String
+SignatureTypeFactoryTest.java:298: error: [assignment] incompatible types in assignment.
+    cgn = s14;
+          ^
+  found   : @FieldDescriptor String
+  required: @ClassGetName String
+100 errors
+only showing the first 100 errors, of 358 total; use -Xmaxerrs if you would like to see more

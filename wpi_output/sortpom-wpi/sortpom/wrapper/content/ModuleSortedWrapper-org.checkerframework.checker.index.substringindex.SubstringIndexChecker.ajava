@@ -1,0 +1,50 @@
+package sortpom.wrapper.content;
+
+import org.dom4j.Element;
+import org.dom4j.Node;
+
+/**
+ * A wrapper that contains a module element. The module is sorted alphabetically.
+ *
+ * @author msbg
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.index.substringindex.SubstringIndexChecker")
+public class ModuleSortedWrapper extends SortedWrapper {
+
+    private final  String text;
+
+    /**
+     * Instantiates a new child element sorted wrapper with a module element.
+     *
+     * @param element the element
+     * @param sortOrder the sort order
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public ModuleSortedWrapper(@org.checkerframework.checker.index.qual.SubstringIndexBottom Element element,   int sortOrder) {
+        super(element, sortOrder);
+        text = element.getTextTrim();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   boolean isBefore( ModuleSortedWrapper this,  Wrapper<? extends Node> wrapper) {
+        if (wrapper instanceof ModuleSortedWrapper) {
+            return isBeforeAlphabeticalTextSortedWrapper((ModuleSortedWrapper) wrapper);
+        }
+        return super.isBefore(wrapper);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private   boolean isBeforeAlphabeticalTextSortedWrapper( ModuleSortedWrapper this,  ModuleSortedWrapper wrapper) {
+        // SortOrder will always be same for both ModuleSortedWrapper because there is only one tag
+        // under modules
+        // that is named module, see sortpom.wrapper.ElementWrapperCreator.isModuleElement.
+        // So comparing getSortOrder is not needed.
+        return wrapper.text.compareTo(text) >= 0;
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public  String toString( ModuleSortedWrapper this) {
+        var element = getContent();
+        return "ModuleSortedWrapper{content=" + (element == null ? "null" : element.toString().replaceAll(".+@[^ ]+ ", "")) + '}';
+    }
+}

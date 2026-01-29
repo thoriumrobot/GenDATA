@@ -21,7 +21,7 @@ class SqlQuotesChecker(CheckerInterface):
         return "SqlQuotes"
     
     def get_checker_processor(self) -> str:
-        return "org.checkerframework.checker.quotes.QuotesChecker"
+        return "org.checkerframework.checker.sqlquotes.SqlQuotesChecker"
     
     def get_annotation_types(self) -> List[str]:
         return ['@SqlEvenQuotes', '@SqlOddQuotes']

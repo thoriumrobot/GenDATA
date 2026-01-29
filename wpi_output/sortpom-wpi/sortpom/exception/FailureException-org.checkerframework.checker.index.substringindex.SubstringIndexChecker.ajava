@@ -1,0 +1,22 @@
+package sortpom.exception;
+
+/**
+ * An exception occurring during the execution of the sort (such as a compilation failure). Throwing
+ * this exception should cause a "BUILD FAILURE" message to be displayed.
+ *
+ * @author bjorn
+ * @since 2012-12-21
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.index.substringindex.SubstringIndexChecker")
+public class FailureException extends RuntimeException {
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public FailureException( String msg,  Throwable cause) {
+        super(msg, cause);
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public FailureException( String msg) {
+        super(msg);
+    }
+}

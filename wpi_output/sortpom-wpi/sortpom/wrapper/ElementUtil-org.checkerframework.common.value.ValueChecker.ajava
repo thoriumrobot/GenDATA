@@ -1,0 +1,51 @@
+package sortpom.wrapper;
+
+import org.dom4j.Element;
+
+/**
+ * Contains utility methods for Xml elements
+ *
+ * @author bjorn
+ * @since 2013-10-21
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.common.value.ValueChecker")
+class ElementUtil {
+
+    /**
+     * Hidden constructor
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    private ElementUtil() {
+    }
+
+    /**
+     * Returns fully qualified name for an Xml element.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    static @org.checkerframework.common.value.qual.ArrayLenRange(from = 0, to = 2147483647) String getDeepName( Element element) {
+        if (element == null) {
+            return "";
+        }
+        return getDeepName(element.getParent()) + '/' + element.getName();
+    }
+
+    /**
+     * Returns true if an elements parents name is same as argument
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    static   boolean isElementParentName( Element element, @org.checkerframework.common.value.qual.StringVal({ "dependencies", "dependencyManagement", "exclusions", "executions", "modules", "plugins", "properties", "reportPlugins" }) String name) {
+        var parent = element.getParent();
+        if (parent == null) {
+            return false;
+        }
+        return isElementName(parent, name);
+    }
+
+    /**
+     * Returns true if an elements name is same as argument
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    static   boolean isElementName( Element element, @org.checkerframework.common.value.qual.ArrayLen({ 6, 7, 9, 10, 12, 13, 20 }) String name) {
+        return element.getName().equals(name);
+    }
+}

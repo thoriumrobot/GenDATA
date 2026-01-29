@@ -1,0 +1,11 @@
+package sortpom.util;
+
+/**
+ * Added supplier that can return a checked exception
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.index.inequality.LessThanChecker")
+interface CheckedSupplier<T, E extends Exception> {
+
+    @org.checkerframework.dataflow.qual.Pure
+    T get( CheckedSupplier<T, E> this) throws E;
+}

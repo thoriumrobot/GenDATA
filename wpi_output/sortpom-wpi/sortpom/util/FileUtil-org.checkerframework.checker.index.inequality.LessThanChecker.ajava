@@ -1,0 +1,220 @@
+package sortpom.util;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
+import java.nio.file.Files;
+import java.util.Optional;
+import sortpom.exception.FailureException;
+import sortpom.parameter.PluginParameters;
+
+/**
+ * Used to interface with file system
+ *
+ * @author Bjorn
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.index.inequality.LessThanChecker")
+public class FileUtil {
+
+    private static final  String XML_FILE_EXTENSION = ".xml";
+
+    private  File pomFile;
+
+    private  String backupFileExtension;
+
+    private  String encoding;
+
+    private  String customSortOrderFile;
+
+    private  String predefinedSortOrder;
+
+    private  String newName;
+
+    private  File backupFile;
+
+    private  String violationFilename;
+
+    private   long timestamp;
+
+    private   boolean keepTimestamp;
+
+    private final  FileAttributeUtil fileAttrUtils = new FileAttributeUtil();
+
+    /**
+     * Initializes the class with sortpom parameters.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void setup( FileUtil this,  PluginParameters parameters) {
+        this.pomFile = parameters.pomFile;
+        this.backupFileExtension = parameters.backupFileExtension;
+        this.encoding = parameters.encoding;
+        this.customSortOrderFile = parameters.customSortOrderFile;
+        this.predefinedSortOrder = parameters.predefinedSortOrder;
+        this.violationFilename = parameters.violationFilename;
+        this.keepTimestamp = parameters.keepTimestamp;
+    }
+
+    /**
+     * Saves a backup of the pom file before sorting.
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void backupFile( FileUtil this) {
+        createFileHandle();
+        checkBackupFileAccess();
+        createBackupFile();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    void createFileHandle( FileUtil this) {
+        newName = pomFile.getAbsolutePath() + backupFileExtension;
+        backupFile = new File(newName);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void checkBackupFileAccess( FileUtil this) {
+        try {
+            Files.deleteIfExists(backupFile.toPath());
+        } catch (IOException e) {
+            throw new FailureException("Could not remove old backup file, filename: " + newName, e);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void createBackupFile( FileUtil this) {
+        try {
+            Files.copy(pomFile.toPath(), backupFile.toPath());
+        } catch (IOException e) {
+            throw new FailureException("Could not create backup file to filename: " + newName, e);
+        }
+    }
+
+    /**
+     * Loads the pom file that will be sorted.
+     *
+     * @return Content of the file
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public  String getPomFileContent( FileUtil this) {
+        String content;
+        try (InputStream inputStream = new FileInputStream(pomFile)) {
+            var charset = Charset.forName(encoding);
+            content = new String(inputStream.readAllBytes(), charset);
+        } catch (UnsupportedCharsetException ex) {
+            throw new FailureException("Could not handle encoding: " + encoding, ex);
+        } catch (IOException ex) {
+            throw new FailureException("Could not read pom file: " + pomFile.getAbsolutePath(), ex);
+        }
+        savePomfileTimestamp();
+        return content;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void savePomfileTimestamp( FileUtil this) {
+        if (keepTimestamp) {
+            timestamp = fileAttrUtils.getLastModifiedTimestamp(pomFile);
+            if (timestamp == 0) {
+                throw new FailureException("Could not retrieve the timestamp of the pom file: " + pomFile.getAbsolutePath());
+            }
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void saveViolationFile( FileUtil this,  String violationXml) {
+        var violationFile = new File(violationFilename);
+        saveFile(violationFile, violationXml, "Could not save violation file: " + violationFile.getAbsolutePath());
+    }
+
+    /**
+     * Saves sorted pom file.
+     *
+     * @param sortedXml The content to save
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void savePomFile( FileUtil this,  String sortedXml) {
+        saveFile(pomFile, sortedXml, "Could not save sorted pom file: " + pomFile.getAbsolutePath());
+        setPomfileTimestamp();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void saveFile( FileUtil this,  File fileToSave,  String content,  String errorMessage) {
+        try {
+            Files.createDirectories(fileToSave.getParentFile().toPath());
+            Files.write(fileToSave.toPath(), content.getBytes(encoding));
+        } catch (IOException e) {
+            throw new FailureException(errorMessage, e);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private void setPomfileTimestamp( FileUtil this) {
+        // when requested, keep the original's file timestamps for the created files
+        if (keepTimestamp) {
+            try {
+                fileAttrUtils.setTimestamps(pomFile, timestamp);
+            } catch (IOException e) {
+                throw new FailureException("Could not change timestamp of new pom file: " + pomFile.getAbsolutePath(), e);
+            }
+        }
+    }
+
+    /**
+     * Retrieves the default sort order for sortpom. A custom sort order file must always be in UTF-8
+     *
+     * @return Content of the default sort order file
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public  String getDefaultSortOrderXml( FileUtil this) throws IOException {
+        CheckedSupplier<InputStream, IOException> createStreamFunc = () -> {
+            if (customSortOrderFile != null) {
+                var urlWrapper = new UrlWrapper(customSortOrderFile);
+                if (urlWrapper.isUrl()) {
+                    return urlWrapper.openStream();
+                } else {
+                    return openCustomSortOrderFile();
+                }
+            }
+            return getPredefinedSortOrder(predefinedSortOrder);
+        };
+        try (var inputStream = createStreamFunc.get()) {
+            return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        }
+    }
+
+    /**
+     * Load custom sort order file from absolute or class path.
+     *
+     * @return a stream to the opened resource
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    private  InputStream openCustomSortOrderFile( FileUtil this) throws FileNotFoundException {
+        InputStream inputStream;
+        try {
+            inputStream = new FileInputStream(customSortOrderFile);
+        } catch (FileNotFoundException ex) {
+            // try classpath
+            try {
+                var resource = this.getClass().getClassLoader().getResource(customSortOrderFile);
+                if (resource == null) {
+                    throw new IOException("Cannot find resource");
+                }
+                inputStream = resource.openStream();
+            } catch (IOException e1) {
+                throw new FileNotFoundException(String.format("Could not find %s or %s in classpath", new File(customSortOrderFile).getAbsolutePath(), customSortOrderFile));
+            }
+        }
+        return inputStream;
+    }
+
+    @org.checkerframework.framework.qual.RequiresQualifier(expression = { "this.customSortOrderFile" }, qualifier = org.checkerframework.checker.index.qual.LessThanBottom.class)
+    @org.checkerframework.dataflow.qual.Impure
+    private  InputStream getPredefinedSortOrder( FileUtil this,  String predefinedSortOrder) throws IOException {
+        var resourceOptional = Optional.of(getClass()).map(Class::getClassLoader).map(classLoader -> classLoader.getResource(predefinedSortOrder + XML_FILE_EXTENSION));
+        var resource = resourceOptional.orElseThrow(() -> new IllegalArgumentException(String.format("Cannot find %s among the predefined plugin resources", predefinedSortOrder + XML_FILE_EXTENSION)));
+        return resource.openStream();
+    }
+}

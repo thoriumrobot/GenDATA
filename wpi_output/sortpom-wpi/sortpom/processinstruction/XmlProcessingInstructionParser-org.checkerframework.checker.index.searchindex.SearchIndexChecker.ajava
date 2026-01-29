@@ -1,0 +1,71 @@
+package sortpom.processinstruction;
+
+import sortpom.exception.FailureException;
+import sortpom.logger.SortPomLogger;
+
+/**
+ * Handling for xml processing instructions in the pom file. Supports ignore and resume
+ *
+ * @author bjorn
+ * @since 2013-12-28
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.index.searchindex.SearchIndexChecker")
+public class XmlProcessingInstructionParser {
+
+    private final  IgnoredSectionsStore ignoredSectionsStore = new IgnoredSectionsStore();
+
+    private  String originalXml;
+
+    private  SortPomLogger logger;
+
+    private   boolean containsIgnoredSections = false;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setup( XmlProcessingInstructionParser this,  SortPomLogger logger) {
+        this.logger = logger;
+    }
+
+    /**
+     * Checks if pom file contains any processing instructions
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void scanForIgnoredSections( XmlProcessingInstructionParser this,  String originalXml) {
+        this.originalXml = originalXml;
+        var sortpomPiScanner = new SortpomPiScanner(logger);
+        sortpomPiScanner.scan(originalXml);
+        if (sortpomPiScanner.isScanError()) {
+            throw new FailureException(sortpomPiScanner.getFirstError());
+        }
+        containsIgnoredSections = sortpomPiScanner.containsIgnoredSections();
+    }
+
+    /**
+     * Returns true if sortpom processing instructions exists
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean existsIgnoredSections( XmlProcessingInstructionParser this) {
+        return containsIgnoredSections;
+    }
+
+    /**
+     * Stores all ignored sections and replaces each with a processing instruction token
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public  String replaceIgnoredSections( XmlProcessingInstructionParser this) {
+        if (containsIgnoredSections) {
+            return ignoredSectionsStore.replaceIgnoredSections(originalXml);
+        }
+        return originalXml;
+    }
+
+    /**
+     * Reverts the processing instruction token back to original content
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public  String revertIgnoredSections( XmlProcessingInstructionParser this,  String sortedXml) {
+        if (containsIgnoredSections) {
+            return ignoredSectionsStore.revertIgnoredSections(sortedXml);
+        }
+        return sortedXml;
+    }
+}

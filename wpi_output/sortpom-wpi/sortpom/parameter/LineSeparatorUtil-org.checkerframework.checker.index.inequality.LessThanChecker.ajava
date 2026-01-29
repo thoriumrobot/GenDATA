@@ -1,0 +1,39 @@
+package sortpom.parameter;
+
+import java.nio.charset.Charset;
+import java.util.Arrays;
+import sortpom.exception.FailureException;
+
+/**
+ * Encapsulates LineSeparation logic.
+ *
+ * @author bjorn
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.index.inequality.LessThanChecker")
+public class LineSeparatorUtil {
+
+    private final  String string;
+
+    /**
+     * Creates a line separator and makes sure that it is either &#92;n, &#92;r or &#92;r&#92;n
+     *
+     * @param lineSeparatorString The line separator characters
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    LineSeparatorUtil( String lineSeparatorString) {
+        string = lineSeparatorString.replace("\\r", "\r").replace("\\n", "\n");
+        if (isIllegalString()) {
+            throw new FailureException("LineSeparator must be either \\n, \\r or \\r\\n, but separator characters were " + Arrays.toString(lineSeparatorString.getBytes(Charset.defaultCharset())));
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private   boolean isIllegalString( LineSeparatorUtil this) {
+        return !("\n".equalsIgnoreCase(string) || "\r".equalsIgnoreCase(string) || "\r\n".equalsIgnoreCase(string));
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  String toString( LineSeparatorUtil this) {
+        return string;
+    }
+}

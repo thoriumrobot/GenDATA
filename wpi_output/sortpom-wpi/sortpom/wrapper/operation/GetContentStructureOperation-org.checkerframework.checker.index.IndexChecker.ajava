@@ -1,0 +1,65 @@
+package sortpom.wrapper.operation;
+
+import org.dom4j.Element;
+import org.dom4j.Node;
+import sortpom.wrapper.content.Wrapper;
+
+/**
+ * Xml hierarchy operation that returns xml content from wrappers. Used by Used in
+ * HierarchyWrapper.processOperation(HierarchyWrapperOperation operation)
+ *
+ * @author bjorn
+ * @since 2013-11-02
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.index.IndexChecker")
+class GetContentStructureOperation implements HierarchyWrapperOperation {
+
+    private  Element activeElement;
+
+    private final  Element parentElement;
+
+    /**
+     * Initial element does not have any parent
+     */
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.parentElement" }, qualifier = org.checkerframework.checker.index.qual.UpperBoundBottom.class)
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    GetContentStructureOperation() {
+        this.parentElement = null;
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    private GetContentStructureOperation( Element parentElement) {
+        this.parentElement = parentElement;
+    }
+
+    /**
+     * Add all 'other content' to the parent xml element
+     */
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.parentElement" }, qualifier = org.checkerframework.checker.index.qual.UpperBoundBottom.class)
+    @org.checkerframework.dataflow.qual.Impure
+    public void processOtherContent( GetContentStructureOperation this,  Wrapper<Node> content) {
+        if (parentElement != null) {
+            parentElement.add(content.getContent());
+        }
+    }
+
+    /**
+     * Add the element to its parent
+     */
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.parentElement" }, qualifier = org.checkerframework.checker.index.qual.UpperBoundBottom.class)
+    @org.checkerframework.dataflow.qual.Impure
+    public void processElement( GetContentStructureOperation this,  Wrapper<Element> element) {
+        activeElement = element.getContent();
+        if (parentElement != null) {
+            parentElement.add(activeElement);
+        }
+    }
+
+    /**
+     * The sub operation gets active element as parent element
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public  HierarchyWrapperOperation createSubOperation( GetContentStructureOperation this) {
+        return new GetContentStructureOperation(activeElement);
+    }
+}

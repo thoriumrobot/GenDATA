@@ -1,0 +1,55 @@
+package sortpom.verify;
+
+import java.util.List;
+import org.dom4j.Element;
+import sortpom.util.XmlOrderedResult;
+
+/**
+ * @author bjorn
+ * @since 2012-07-01
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.index.searchindex.SearchIndexChecker")
+public class ElementComparator {
+
+    private final  Element originalElement;
+
+    private final  Element newElement;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public ElementComparator( Element originalElement,  Element newElement) {
+        this.originalElement = originalElement;
+        this.newElement = newElement;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  XmlOrderedResult isElementOrdered( ElementComparator this) {
+        if (!originalElement.getName().equals(newElement.getName())) {
+            return XmlOrderedResult.nameDiffers(originalElement.getName(), newElement.getName());
+        }
+        if (isEqualsIgnoringWhitespace()) {
+            return XmlOrderedResult.textContentDiffers(originalElement.getName(), originalElement.getText(), newElement.getText());
+        }
+        return isChildrenOrdered(originalElement.getName(), originalElement.elements(), newElement.elements());
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private   boolean isEqualsIgnoringWhitespace( ElementComparator this) {
+        return !originalElement.getText().replaceAll("\\s", "").equals(newElement.getText().replaceAll("\\s", ""));
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private  XmlOrderedResult isChildrenOrdered( ElementComparator this,  String name,  List<Element> originalElementChildren,  List<Element> newElementChildren) {
+        var size = Math.min(originalElementChildren.size(), newElementChildren.size());
+        for (var i = 0; i < size; i++) {
+            var elementComparator = new ElementComparator(originalElementChildren.get(i), newElementChildren.get(i));
+            var elementOrdered = elementComparator.isElementOrdered();
+            if (!elementOrdered.isOrdered()) {
+                return elementOrdered;
+            }
+        }
+        if (originalElementChildren.size() != newElementChildren.size()) {
+            return XmlOrderedResult.childElementDiffers(name, originalElementChildren.size(), newElementChildren.size());
+        }
+        return XmlOrderedResult.ordered();
+    }
+}

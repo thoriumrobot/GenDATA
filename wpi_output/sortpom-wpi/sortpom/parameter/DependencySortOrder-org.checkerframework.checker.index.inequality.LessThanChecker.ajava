@@ -1,0 +1,86 @@
+package sortpom.parameter;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
+/**
+ * The plugin parameter 'sortDependencies' is parsed by this class to determine if dependencies
+ * should be sorted and in that case in which order.
+ *
+ * @author bjorn
+ * @since 2012-09-14
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.index.inequality.LessThanChecker")
+public class DependencySortOrder {
+
+    private final  String childElementNameList;
+
+    private  Collection<String> childElementNames;
+
+    /**
+     * Create an instance of the DependencySortOrder
+     *
+     * @param childElementNameList the plugin parameter argument
+     */
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "#1" }, qualifier = org.checkerframework.checker.index.qual.LessThanBottom.class)
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public DependencySortOrder( String childElementNameList) {
+        this.childElementNameList = childElementNameList == null ? "" : childElementNameList;
+    }
+
+    /**
+     * Gets a list of which elements the dependencies should be sorted after. Example: If the list
+     * returns "scope, groupId" then the dependencies should be sorted first by scope and then by
+     * groupId.
+     *
+     * @return a list of xml element names
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public  Collection<String> getChildElementNames( DependencySortOrder this) {
+        if (childElementNames == null) {
+            childElementNames = Collections.unmodifiableList(Arrays.asList(parseChildElementNameList()));
+        }
+        return childElementNames;
+    }
+
+    @org.checkerframework.framework.qual.RequiresQualifier(expression = { "this.childElementNames" }, qualifier = org.checkerframework.checker.index.qual.LessThanBottom.class)
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.childElementNames" }, qualifier = org.checkerframework.checker.index.qual.LessThanBottom.class)
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    private  String  [] parseChildElementNameList( DependencySortOrder this) {
+        var list = childElementNameList.replaceAll("\\s", "");
+        if (list.isEmpty()) {
+            return new String[0];
+        }
+        return list.split("[;,:]");
+    }
+
+    /**
+     * Earlier versions only accepted the values 'true' and 'false' as parameter values
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean isDeprecatedValueTrue( DependencySortOrder this) {
+        return "true".equalsIgnoreCase(childElementNameList);
+    }
+
+    /**
+     * Earlier versions only accepted the values 'true' and 'false' as parameter values
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public   boolean isDeprecatedValueFalse( DependencySortOrder this) {
+        return "false".equalsIgnoreCase(childElementNameList);
+    }
+
+    /**
+     * If the dependencies should be unsorted
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public   boolean isNoSorting( DependencySortOrder this) {
+        return getChildElementNames().isEmpty();
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  String toString( DependencySortOrder this) {
+        return "DependencySortOrder{childElementNames=" + getChildElementNames() + '}';
+    }
+}

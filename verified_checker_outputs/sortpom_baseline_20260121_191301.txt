@@ -1,0 +1,18 @@
+
+
+An annotation processor threw an uncaught exception.
+Consult the following stack trace for details.
+java.lang.IllegalAccessError: class org.checkerframework.javacutil.AbstractTypeProcessor (in unnamed module @0x887af79) cannot access class com.sun.tools.javac.processing.JavacProcessingEnvironment (in module jdk.compiler) because module jdk.compiler does not export com.sun.tools.javac.processing to unnamed module @0x887af79
+	at org.checkerframework.javacutil.AbstractTypeProcessor.init(AbstractTypeProcessor.java:97)
+	at org.checkerframework.framework.source.SourceChecker.init(SourceChecker.java:590)
+	at jdk.compiler/com.sun.tools.javac.processing.JavacProcessingEnvironment$ProcessorState.<init>(JavacProcessingEnvironment.java:699)
+	at jdk.compiler/com.sun.tools.javac.processing.JavacProcessingEnvironment$DiscoveredProcessors$ProcessorStateIterator.next(JavacProcessingEnvironment.java:826)
+	at jdk.compiler/com.sun.tools.javac.processing.JavacProcessingEnvironment.discoverAndRunProcs(JavacProcessingEnvironment.java:922)
+	at jdk.compiler/com.sun.tools.javac.processing.JavacProcessingEnvironment$Round.run(JavacProcessingEnvironment.java:1265)
+	at jdk.compiler/com.sun.tools.javac.processing.JavacProcessingEnvironment.doProcessing(JavacProcessingEnvironment.java:1380)
+	at jdk.compiler/com.sun.tools.javac.main.JavaCompiler.processAnnotations(JavaCompiler.java:1272)
+	at jdk.compiler/com.sun.tools.javac.main.JavaCompiler.compile(JavaCompiler.java:946)
+	at jdk.compiler/com.sun.tools.javac.main.Main.compile(Main.java:319)
+	at jdk.compiler/com.sun.tools.javac.main.Main.compile(Main.java:178)
+	at jdk.compiler/com.sun.tools.javac.Main.compile(Main.java:64)
+	at jdk.compiler/com.sun.tools.javac.Main.main(Main.java:50)

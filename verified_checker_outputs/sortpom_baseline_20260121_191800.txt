@@ -1,0 +1,11 @@
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/parameter/IndentCharacters.java:35: error: [array.length.negative] Variable used in array creation could be negative.
+    var chars = new char[nrOfIndentSpace];
+                         ^
+  found   : @GTENegativeOne int
+  required: an integer >= 0 (@NonNegative or @Positive)
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/wrapper/operation/ToStringOperation.java:35: error: [argument] incompatible argument for parameter beginIndex of String.substring.
+    var previousBaseIndent = baseIndent.substring(INDENT_LENGTH);
+                                                  ^
+  found   : @LTEqLengthOf("sortpom.wrapper.operation.ToStringOperation.INDENT") int
+  required: @LTEqLengthOf("this.baseIndent") int
+2 errors

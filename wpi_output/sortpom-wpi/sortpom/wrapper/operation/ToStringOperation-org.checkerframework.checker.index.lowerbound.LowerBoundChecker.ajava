@@ -1,0 +1,100 @@
+package sortpom.wrapper.operation;
+
+import java.util.List;
+import org.dom4j.Element;
+import org.dom4j.Node;
+import sortpom.wrapper.content.Wrapper;
+
+/**
+ * Xml hierarchy operation that returns xml content as readable text. Used by Used in
+ * HierarchyWrapper.processOperation(HierarchyWrapperOperation operation)
+ *
+ * @author bjorn
+ * @since 2013-11-02
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.index.lowerbound.LowerBoundChecker")
+class ToStringOperation implements HierarchyWrapperOperation {
+
+    private static final  String INDENT = "  ";
+
+    private static final  @org.checkerframework.checker.index.qual.Positive int INDENT_LENGTH = INDENT.length();
+
+    private final  StringBuilder builder;
+
+    private final  String baseIndent;
+
+    private   boolean processFirstOtherContent;
+
+    @org.checkerframework.dataflow.qual.Impure
+    ToStringOperation() {
+        builder = new StringBuilder();
+        baseIndent = INDENT;
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    private ToStringOperation( StringBuilder builder,  String baseIndent) {
+        this.builder = builder;
+        this.baseIndent = INDENT + baseIndent;
+    }
+
+    /**
+     * Add text before each element
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void startOfProcess( ToStringOperation this) {
+        var previousBaseIndent = baseIndent.substring(INDENT_LENGTH);
+        builder.append(previousBaseIndent).append("HierarchyWrapper{\n");
+        processFirstOtherContent = true;
+    }
+
+    /**
+     * Add each 'other element' to string
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void processOtherContent( ToStringOperation this,  Wrapper<Node> content) {
+        if (processFirstOtherContent) {
+            builder.append(baseIndent).append("otherContentList=").append("\n");
+            processFirstOtherContent = false;
+        }
+        builder.append(content.toString(baseIndent)).append("\n");
+    }
+
+    /**
+     * Add each element to string
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void processElement( ToStringOperation this,  Wrapper<Element> elementWrapper) {
+        builder.append(baseIndent).append("elementContent=").append(elementWrapper).append("\n");
+    }
+
+    /**
+     * Add text before processing each child
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void manipulateChildElements( ToStringOperation this,  List<HierarchyWrapper> children) {
+        if (!children.isEmpty()) {
+            builder.append(baseIndent).append("children=").append("\n");
+        }
+    }
+
+    /**
+     * Add the string to build and growing indent to sub operation
+     */
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public  HierarchyWrapperOperation createSubOperation( ToStringOperation this) {
+        return new ToStringOperation(builder, baseIndent);
+    }
+
+    /**
+     * Add text after processing each element
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void endOfProcess( ToStringOperation this) {
+        builder.append(baseIndent).append('}').append("\n");
+    }
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public  String toString( ToStringOperation this) {
+        return builder.toString();
+    }
+}

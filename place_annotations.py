@@ -65,6 +65,50 @@ class LowerBoundAnnotationType(Enum):
     SEARCH_INDEX_BOTTOM = "@SearchIndexBottom"
     SEARCH_INDEX_UNKNOWN = "@SearchIndexUnknown"
 
+
+class SqlQuotesAnnotationType(Enum):
+    """SQL Quotes Checker specific annotations"""
+    SQL_EVEN_QUOTES = "@SqlEvenQuotes"
+    SQL_ODD_QUOTES = "@SqlOddQuotes"
+
+
+class SignatureAnnotationType(Enum):
+    """Signature String Checker specific annotations"""
+    BINARY_NAME = "@BinaryName"
+    FULLY_QUALIFIED_NAME = "@FullyQualifiedName"
+    FIELD_DESCRIPTOR = "@FieldDescriptor"
+    CLASS_GET_NAME = "@ClassGetName"
+    INTERNAL_FORM = "@InternalForm"
+
+
+# Mapping of checker types to their annotation types
+CHECKER_ANNOTATION_TYPES = {
+    'lower_bound': LowerBoundAnnotationType,
+    'sql_quotes': SqlQuotesAnnotationType,
+    'signature_string': SignatureAnnotationType,
+}
+
+# Import statements for each checker
+CHECKER_IMPORTS = {
+    'lower_bound': [
+        "import org.checkerframework.checker.index.qual.Positive;",
+        "import org.checkerframework.checker.index.qual.NonNegative;",
+        "import org.checkerframework.checker.index.qual.GTENegativeOne;",
+    ],
+    'sql_quotes': [
+        "import org.checkerframework.checker.sqlquotes.qual.SqlEvenQuotes;",
+        "import org.checkerframework.checker.sqlquotes.qual.SqlOddQuotes;",
+    ],
+    'signature_string': [
+        "import org.checkerframework.checker.signature.qual.BinaryName;",
+        "import org.checkerframework.checker.signature.qual.FullyQualifiedName;",
+        "import org.checkerframework.checker.signature.qual.FieldDescriptor;",
+        "import org.checkerframework.checker.signature.qual.ClassGetName;",
+        "import org.checkerframework.checker.signature.qual.InternalForm;",
+    ],
+}
+
+
 class AnnotationStrategy(Enum):
     """Strategies for placing annotations"""
     VARIABLE_DECLARATION = "variable_declaration"
@@ -147,11 +191,85 @@ class PreciseAnnotationPlacer:
             logger.warning(f"Could not read file {file_path}: {e}")
             self.lines = []
     
+    def _is_valid_annotation_target(self, line_number: int) -> bool:
+        """
+        Check if the line is a valid annotation target.
+        
+        FIXED: Prevent placing annotations on invalid locations like
+        new statements, return statements, if/for/while loops, etc.
+        """
+        if line_number < 1 or line_number > len(self.lines):
+            return False
+        
+        line = self.lines[line_number - 1].strip()
+        
+        # Skip empty lines or comments
+        if not line or line.startswith('//') or line.startswith('/*') or line.startswith('*'):
+            return False
+        
+        # Invalid targets - these are statements, not declarations
+        invalid_patterns = [
+            r'^new\s+',              # new statements
+            r'^return\s*',           # return statements
+            r'^if\s*\(',             # if statements
+            r'^else\s*',             # else clauses
+            r'^for\s*\(',            # for loops
+            r'^while\s*\(',          # while loops
+            r'^do\s*\{',             # do-while loops
+            r'^switch\s*\(',         # switch statements
+            r'^case\s+',             # case labels
+            r'^default\s*:',         # default label
+            r'^throw\s+',            # throw statements
+            r'^try\s*\{',            # try blocks
+            r'^catch\s*\(',          # catch clauses
+            r'^finally\s*\{',        # finally blocks
+            r'^break\s*;',           # break statements
+            r'^continue\s*;',        # continue statements
+            r'^assert\s+',           # assert statements
+            r'^synchronized\s*\(',   # synchronized blocks
+            r'^\}\s*$',              # closing braces
+            r'^\{\s*$',              # opening braces alone
+            r'^[a-zA-Z_]\w*\s*\.\s*\w+\s*\(',  # method calls like obj.method()
+            r'^[a-zA-Z_]\w*\s*\(',   # method/constructor calls like method()
+            r'^\)\s*[;{]?\s*$',      # closing parenthesis
+            r'^super\s*\(',          # super() calls
+            r'^this\s*\(',           # this() calls
+        ]
+        
+        import re
+        for pattern in invalid_patterns:
+            if re.match(pattern, line):
+                logger.debug(f"Line {line_number} is invalid annotation target (matches {pattern}): {line[:50]}")
+                return False
+        
+        # Valid targets - declarations that can have type annotations
+        valid_patterns = [
+            r'^(public|private|protected|static|final|abstract|synchronized|native|transient|volatile)\s+',  # Modifiers
+            r'^@\w+',                              # Existing annotations (can add more)
+            r'^\w+(\s*<[^>]+>)?\s+\w+\s*[=;,\)]',  # Variable declarations: Type var = or Type var;
+            r'^\w+(\s*<[^>]+>)?\s+\w+\s*\(',      # Method declarations: Type methodName(
+            r'^\w+\s*\[\]\s+\w+',                  # Array declarations: Type[] var
+        ]
+        
+        for pattern in valid_patterns:
+            if re.match(pattern, line):
+                return True
+        
+        # If we can't determine, reject to be safe
+        logger.debug(f"Line {line_number} rejected (no valid pattern match): {line[:50]}")
+        return False
+    
     def place_annotation_precisely(self, line_number: int, annotation: str, target_element: str) -> bool:
         """Place annotation precisely at the given location"""
         try:
-            # Simple implementation: insert annotation before the line
+            # FIXED: Validate the target before placing annotation
             if line_number > 0 and line_number <= len(self.lines):
+                # Check if this is a valid annotation target
+                if not self._is_valid_annotation_target(line_number):
+                    logger.warning(f"Skipping invalid annotation target at line {line_number}: "
+                                 f"{self.lines[line_number - 1].strip()[:50]}")
+                    return False
+                
                 indent = len(self.lines[line_number - 1]) - len(self.lines[line_number - 1].lstrip())
                 indent_str = ' ' * indent
                 annotation_line = f"{indent_str}{annotation}\n"

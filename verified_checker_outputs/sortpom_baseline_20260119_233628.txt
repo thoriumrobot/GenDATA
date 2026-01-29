@@ -1,0 +1,427 @@
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/SortMojo.java:3: error: package org.apache.maven.plugin does not exist
+import org.apache.maven.plugin.MojoFailureException;
+                              ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/SortMojo.java:4: error: package org.apache.maven.plugins.annotations does not exist
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+                                           ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/SortMojo.java:5: error: package org.apache.maven.plugins.annotations does not exist
+import org.apache.maven.plugins.annotations.Mojo;
+                                           ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/SortMojo.java:7: error: cannot find symbol
+import sortpom.logger.SortPomLogger;
+                     ^
+  symbol:   class SortPomLogger
+  location: package sortpom.logger
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/SortMojo.java:8: error: package sortpom.parameter does not exist
+import sortpom.parameter.PluginParameters;
+                        ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/AbstractParentMojo.java:4: error: package org.apache.maven.plugin does not exist
+import org.apache.maven.plugin.AbstractMojo;
+                              ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/AbstractParentMojo.java:5: error: package org.apache.maven.plugin does not exist
+import org.apache.maven.plugin.MojoFailureException;
+                              ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/AbstractParentMojo.java:6: error: package org.apache.maven.plugins.annotations does not exist
+import org.apache.maven.plugins.annotations.Parameter;
+                                           ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/AbstractParentMojo.java:8: error: cannot find symbol
+import sortpom.logger.SortPomLogger;
+                     ^
+  symbol:   class SortPomLogger
+  location: package sortpom.logger
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/AbstractParentMojo.java:11: error: cannot find symbol
+abstract class AbstractParentMojo extends AbstractMojo {
+                                          ^
+  symbol: class AbstractMojo
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/SortMojo.java:15: error: cannot find symbol
+@Mojo(name = "sort", threadSafe = true, defaultPhase = LifecyclePhase.VALIDATE)
+ ^
+  symbol: class Mojo
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/SortMojo.java:19: error: cannot find symbol
+  public void setup(SortPomLogger mavenLogger) throws MojoFailureException {
+                    ^
+  symbol:   class SortPomLogger
+  location: class SortMojo
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/SortMojo.java:19: error: cannot find symbol
+  public void setup(SortPomLogger mavenLogger) throws MojoFailureException {
+                                                      ^
+  symbol:   class MojoFailureException
+  location: class SortMojo
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/SortMojo.java:52: error: cannot find symbol
+  protected void sortPom() throws MojoFailureException {
+                                  ^
+  symbol:   class MojoFailureException
+  location: class SortMojo
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomImpl.java:4: error: cannot find symbol
+import sortpom.exception.FailureException;
+                        ^
+  symbol:   class FailureException
+  location: package sortpom.exception
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomImpl.java:5: error: cannot find symbol
+import sortpom.logger.SortPomLogger;
+                     ^
+  symbol:   class SortPomLogger
+  location: package sortpom.logger
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomImpl.java:6: error: package sortpom.parameter does not exist
+import sortpom.parameter.PluginParameters;
+                        ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomImpl.java:7: error: package sortpom.parameter does not exist
+import sortpom.parameter.VerifyFailOnType;
+                        ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomImpl.java:8: error: package sortpom.parameter does not exist
+import sortpom.parameter.VerifyFailType;
+                        ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomImpl.java:9: error: package sortpom.util does not exist
+import sortpom.util.XmlOrderedResult;
+                   ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/AbstractParentMojo.java:159: error: cannot find symbol
+  public void execute() throws MojoFailureException {
+                               ^
+  symbol:   class MojoFailureException
+  location: class AbstractParentMojo
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/AbstractParentMojo.java:169: error: cannot find symbol
+  protected abstract void sortPom() throws MojoFailureException;
+                                           ^
+  symbol:   class MojoFailureException
+  location: class AbstractParentMojo
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/AbstractParentMojo.java:171: error: cannot find symbol
+  protected abstract void setup(SortPomLogger mavenLogger) throws MojoFailureException;
+                                ^
+  symbol:   class SortPomLogger
+  location: class AbstractParentMojo
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/AbstractParentMojo.java:171: error: cannot find symbol
+  protected abstract void setup(SortPomLogger mavenLogger) throws MojoFailureException;
+                                                                  ^
+  symbol:   class MojoFailureException
+  location: class AbstractParentMojo
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomService.java:8: error: package org.dom4j does not exist
+import org.dom4j.DocumentException;
+                ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomService.java:10: error: cannot find symbol
+import sortpom.exception.FailureException;
+                        ^
+  symbol:   class FailureException
+  location: package sortpom.exception
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomService.java:11: error: cannot find symbol
+import sortpom.logger.SortPomLogger;
+                     ^
+  symbol:   class SortPomLogger
+  location: package sortpom.logger
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomService.java:12: error: cannot find symbol
+import sortpom.output.XmlOutputGenerator;
+                     ^
+  symbol:   class XmlOutputGenerator
+  location: package sortpom.output
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomService.java:13: error: package sortpom.parameter does not exist
+import sortpom.parameter.PluginParameters;
+                        ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomService.java:14: error: package sortpom.processinstruction does not exist
+import sortpom.processinstruction.XmlProcessingInstructionParser;
+                                 ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomService.java:15: error: package sortpom.util does not exist
+import sortpom.util.FileUtil;
+                   ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomService.java:16: error: package sortpom.util does not exist
+import sortpom.util.XmlOrderedResult;
+                   ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomService.java:17: error: package sortpom.wrapper does not exist
+import sortpom.wrapper.WrapperFactoryImpl;
+                      ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomImpl.java:17: error: cannot find symbol
+  private SortPomLogger log;
+          ^
+  symbol:   class SortPomLogger
+  location: class SortPomImpl
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomImpl.java:19: error: cannot find symbol
+  private VerifyFailType verifyFailType;
+          ^
+  symbol:   class VerifyFailType
+  location: class SortPomImpl
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomImpl.java:20: error: cannot find symbol
+  private VerifyFailOnType verifyFailOn;
+          ^
+  symbol:   class VerifyFailOnType
+  location: class SortPomImpl
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomImpl.java:26: error: cannot find symbol
+  public void setup(SortPomLogger log, PluginParameters pluginParameters) {
+                    ^
+  symbol:   class SortPomLogger
+  location: class SortPomImpl
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomImpl.java:26: error: cannot find symbol
+  public void setup(SortPomLogger log, PluginParameters pluginParameters) {
+                                       ^
+  symbol:   class PluginParameters
+  location: class SortPomImpl
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomImpl.java:37: error: cannot find symbol
+  private void warnAboutDeprecatedArguments(PluginParameters pluginParameters) {
+                                            ^
+  symbol:   class PluginParameters
+  location: class SortPomImpl
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomImpl.java:89: error: cannot find symbol
+  private XmlOrderedResult getVerificationResult() {
+          ^
+  symbol:   class XmlOrderedResult
+  location: class SortPomImpl
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomImpl.java:104: error: cannot find symbol
+  private void performVerfificationResult(XmlOrderedResult xmlOrderedResult) {
+                                          ^
+  symbol:   class XmlOrderedResult
+  location: class SortPomImpl
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomService.java:25: error: cannot find symbol
+  private final FileUtil fileUtil;
+                ^
+  symbol:   class FileUtil
+  location: class SortPomService
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/XmlProcessor.java:4: error: package org.dom4j does not exist
+import org.dom4j.Document;
+                ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/XmlProcessor.java:5: error: package org.dom4j does not exist
+import org.dom4j.DocumentException;
+                ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/XmlProcessor.java:6: error: package org.dom4j does not exist
+import org.dom4j.Element;
+                ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/XmlProcessor.java:7: error: package org.dom4j.io does not exist
+import org.dom4j.io.SAXReader;
+                   ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/XmlProcessor.java:9: error: package sortpom.util does not exist
+import sortpom.util.XmlOrderedResult;
+                   ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/XmlProcessor.java:10: error: package sortpom.verify does not exist
+import sortpom.verify.ElementComparator;
+                     ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/XmlProcessor.java:11: error: package sortpom.wrapper.operation does not exist
+import sortpom.wrapper.operation.WrapperFactory;
+                                ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomService.java:27: error: cannot find symbol
+  private final WrapperFactoryImpl wrapperFactory;
+                ^
+  symbol:   class WrapperFactoryImpl
+  location: class SortPomService
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomService.java:28: error: cannot find symbol
+  private final XmlProcessingInstructionParser xmlProcessingInstructionParser;
+                ^
+  symbol:   class XmlProcessingInstructionParser
+  location: class SortPomService
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomService.java:29: error: cannot find symbol
+  private final XmlOutputGenerator xmlOutputGenerator;
+                ^
+  symbol:   class XmlOutputGenerator
+  location: class SortPomService
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomService.java:31: error: cannot find symbol
+  private SortPomLogger log;
+          ^
+  symbol:   class SortPomLogger
+  location: class SortPomService
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomService.java:51: error: cannot find symbol
+  public void setup(SortPomLogger log, PluginParameters pluginParameters) {
+                    ^
+  symbol:   class SortPomLogger
+  location: class SortPomService
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomService.java:51: error: cannot find symbol
+  public void setup(SortPomLogger log, PluginParameters pluginParameters) {
+                                       ^
+  symbol:   class PluginParameters
+  location: class SortPomService
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomService.java:111: error: cannot find symbol
+  XmlOrderedResult isOriginalXmlStringSorted() {
+  ^
+  symbol:   class XmlOrderedResult
+  location: class SortPomService
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomService.java:139: error: cannot find symbol
+  XmlOrderedResult isOriginalXmlElementsSorted() {
+  ^
+  symbol:   class XmlOrderedResult
+  location: class SortPomService
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/SortPomService.java:143: error: cannot find symbol
+  void saveViolationFile(XmlOrderedResult xmlOrderedResult) {
+                         ^
+  symbol:   class XmlOrderedResult
+  location: class SortPomService
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/XmlProcessor.java:22: error: cannot find symbol
+  private final WrapperFactory factory;
+                ^
+  symbol:   class WrapperFactory
+  location: class XmlProcessor
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/XmlProcessor.java:24: error: cannot find symbol
+  private Document originalDocument;
+          ^
+  symbol:   class Document
+  location: class XmlProcessor
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/XmlProcessor.java:25: error: cannot find symbol
+  private Document newDocument;
+          ^
+  symbol:   class Document
+  location: class XmlProcessor
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/XmlProcessor.java:27: error: cannot find symbol
+  public XmlProcessor(WrapperFactory factory) {
+                      ^
+  symbol:   class WrapperFactory
+  location: class XmlProcessor
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/XmlProcessor.java:36: error: cannot find symbol
+  public void setOriginalXml(InputStream originalXml) throws DocumentException, SAXException {
+                                                             ^
+  symbol:   class DocumentException
+  location: class XmlProcessor
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/XmlProcessor.java:60: error: cannot find symbol
+  private void replaceRootElementInNewDocument(Element newElement) {
+                                               ^
+  symbol:   class Element
+  location: class XmlProcessor
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/XmlProcessor.java:75: error: cannot find symbol
+  public Document getNewDocument() {
+         ^
+  symbol:   class Document
+  location: class XmlProcessor
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/XmlProcessor.java:79: error: cannot find symbol
+  public XmlOrderedResult isXmlOrdered() {
+         ^
+  symbol:   class XmlOrderedResult
+  location: class XmlProcessor
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/VerifyMojo.java:3: error: package org.apache.maven.plugin does not exist
+import org.apache.maven.plugin.MojoFailureException;
+                              ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/VerifyMojo.java:4: error: package org.apache.maven.plugins.annotations does not exist
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+                                           ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/VerifyMojo.java:5: error: package org.apache.maven.plugins.annotations does not exist
+import org.apache.maven.plugins.annotations.Mojo;
+                                           ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/VerifyMojo.java:6: error: package org.apache.maven.plugins.annotations does not exist
+import org.apache.maven.plugins.annotations.Parameter;
+                                           ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/VerifyMojo.java:8: error: cannot find symbol
+import sortpom.logger.SortPomLogger;
+                     ^
+  symbol:   class SortPomLogger
+  location: package sortpom.logger
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/VerifyMojo.java:9: error: package sortpom.parameter does not exist
+import sortpom.parameter.PluginParameters;
+                        ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/VerifyMojo.java:16: error: cannot find symbol
+@Mojo(name = "verify", threadSafe = true, defaultPhase = LifecyclePhase.VALIDATE)
+ ^
+  symbol: class Mojo
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/VerifyMojo.java:38: error: cannot find symbol
+  public void setup(SortPomLogger mavenLogger) throws MojoFailureException {
+                    ^
+  symbol:   class SortPomLogger
+  location: class VerifyMojo
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/VerifyMojo.java:38: error: cannot find symbol
+  public void setup(SortPomLogger mavenLogger) throws MojoFailureException {
+                                                      ^
+  symbol:   class MojoFailureException
+  location: class VerifyMojo
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/VerifyMojo.java:73: error: cannot find symbol
+  protected void sortPom() throws MojoFailureException {
+                                  ^
+  symbol:   class MojoFailureException
+  location: class VerifyMojo
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/logger/MavenLogger.java:3: error: package org.apache.maven.plugin.logging does not exist
+import org.apache.maven.plugin.logging.Log;
+                                      ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/logger/MavenLogger.java:9: error: cannot find symbol
+public class MavenLogger implements SortPomLogger {
+                                    ^
+  symbol: class SortPomLogger
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/logger/MavenLogger.java:10: error: cannot find symbol
+  private final Log pluginLogger;
+                ^
+  symbol:   class Log
+  location: class MavenLogger
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/logger/MavenLogger.java:13: error: cannot find symbol
+  public MavenLogger(Log pluginLogger, boolean quiet) {
+                     ^
+  symbol:   class Log
+  location: class MavenLogger
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/exception/ExceptionConverter.java:3: error: package org.apache.maven.plugin does not exist
+import org.apache.maven.plugin.MojoFailureException;
+                              ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/maven-plugin/src/main/java/sortpom/exception/ExceptionConverter.java:16: error: cannot find symbol
+  public void executeAndConvertException() throws MojoFailureException {
+                                                  ^
+  symbol:   class MojoFailureException
+  location: class ExceptionConverter
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/ViolationXmlProcessor.java:4: error: package org.dom4j does not exist
+import org.dom4j.Document;
+                ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/ViolationXmlProcessor.java:5: error: package org.dom4j does not exist
+import org.dom4j.Element;
+                ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/ViolationXmlProcessor.java:6: error: package org.dom4j.tree does not exist
+import org.dom4j.tree.BaseElement;
+                     ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/ViolationXmlProcessor.java:7: error: package org.dom4j.tree does not exist
+import org.dom4j.tree.DefaultDocument;
+                     ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/ViolationXmlProcessor.java:16: error: cannot find symbol
+  Document createViolationXmlContent(File pomFileLocation, String violationMessage) {
+  ^
+  symbol:   class Document
+  location: class ViolationXmlProcessor
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/output/PatchedXMLWriter.java:7: error: package org.dom4j does not exist
+import org.dom4j.Attribute;
+                ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/output/PatchedXMLWriter.java:8: error: package org.dom4j does not exist
+import org.dom4j.Document;
+                ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/output/PatchedXMLWriter.java:9: error: package org.dom4j does not exist
+import org.dom4j.Node;
+                ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/output/PatchedXMLWriter.java:10: error: package org.dom4j does not exist
+import org.dom4j.ProcessingInstruction;
+                ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/output/PatchedXMLWriter.java:11: error: package org.dom4j.io does not exist
+import org.dom4j.io.OutputFormat;
+                   ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/output/PatchedXMLWriter.java:12: error: package org.dom4j.io does not exist
+import org.dom4j.io.XMLWriter;
+                   ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/output/PatchedXMLWriter.java:13: error: package org.dom4j.tree does not exist
+import org.dom4j.tree.DefaultText;
+                     ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/output/PatchedXMLWriter.java:14: error: package sortpom.content does not exist
+import sortpom.content.NewlineText;
+                      ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/output/PatchedXMLWriter.java:15: error: package sortpom.parameter does not exist
+import sortpom.parameter.IndentAttribute;
+                        ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/output/PatchedXMLWriter.java:18: error: cannot find symbol
+class PatchedXMLWriter extends XMLWriter {
+                               ^
+  symbol: class XMLWriter
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/output/PatchedXMLWriter.java:20: error: cannot find symbol
+  private final OutputFormat format;
+                ^
+  symbol:   class OutputFormat
+  location: class PatchedXMLWriter
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/output/PatchedXMLWriter.java:22: error: cannot find symbol
+  private final IndentAttribute indentAttribute;
+                ^
+  symbol:   class IndentAttribute
+  location: class PatchedXMLWriter
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/sortpom/sorter/src/main/java/sortpom/output/PatchedXMLWriter.java:28: error: cannot find symbol
+      OutputFormat format,
+      ^
+  symbol:   class OutputFormat
+  location: class PatchedXMLWriter
+100 errors
+only showing the first 100 errors, of 137 total; use -Xmaxerrs if you would like to see more
+
+
+An annotation processor threw an uncaught exception.
+Consult the following stack trace for details.
+java.lang.IllegalAccessError: class org.checkerframework.javacutil.AbstractTypeProcessor (in unnamed module @0x490ab905) cannot access class com.sun.tools.javac.processing.JavacProcessingEnvironment (in module jdk.compiler) because module jdk.compiler does not export com.sun.tools.javac.processing to unnamed module @0x490ab905
+	at org.checkerframework.javacutil.AbstractTypeProcessor.init(AbstractTypeProcessor.java:97)
+	at org.checkerframework.framework.source.SourceChecker.init(SourceChecker.java:590)
+	at jdk.compiler/com.sun.tools.javac.processing.JavacProcessingEnvironment$ProcessorState.<init>(JavacProcessingEnvironment.java:699)
+	at jdk.compiler/com.sun.tools.javac.processing.JavacProcessingEnvironment$DiscoveredProcessors$ProcessorStateIterator.next(JavacProcessingEnvironment.java:826)
+	at jdk.compiler/com.sun.tools.javac.processing.JavacProcessingEnvironment.discoverAndRunProcs(JavacProcessingEnvironment.java:922)
+	at jdk.compiler/com.sun.tools.javac.processing.JavacProcessingEnvironment$Round.run(JavacProcessingEnvironment.java:1265)
+	at jdk.compiler/com.sun.tools.javac.processing.JavacProcessingEnvironment.doProcessing(JavacProcessingEnvironment.java:1380)
+	at jdk.compiler/com.sun.tools.javac.main.JavaCompiler.processAnnotations(JavaCompiler.java:1272)
+	at jdk.compiler/com.sun.tools.javac.main.JavaCompiler.compile(JavaCompiler.java:946)
+	at jdk.compiler/com.sun.tools.javac.main.Main.compile(Main.java:319)
+	at jdk.compiler/com.sun.tools.javac.main.Main.compile(Main.java:178)
+	at jdk.compiler/com.sun.tools.javac.Main.compile(Main.java:64)
+	at jdk.compiler/com.sun.tools.javac.Main.main(Main.java:50)

@@ -1,0 +1,389 @@
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/unsafe/UnsafeUtil.java:32: warning: Unsafe is internal proprietary API and may be removed in a future release
+import sun.misc.Unsafe;
+               ^
+/home/ubuntu/GenDATA/case_studies/kryo/test-jdk17/com/esotericsoftware/kryo/TestDataJava17.java:22: error: package org.apache.commons.lang3.builder does not exist
+import org.apache.commons.lang3.builder.EqualsBuilder;
+                                       ^
+/home/ubuntu/GenDATA/case_studies/kryo/test-jdk17/com/esotericsoftware/kryo/TestDataJava17.java:23: error: package org.apache.commons.lang3.builder does not exist
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+                                       ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/SerializationCompatTestData.java:23: error: package org.apache.commons.lang3.builder does not exist
+import org.apache.commons.lang3.builder.EqualsBuilder;
+                                       ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/SerializationCompatTestData.java:24: error: package org.apache.commons.lang3.builder does not exist
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+                                       ^
+/home/ubuntu/GenDATA/case_studies/kryo/test-jdk17/com/esotericsoftware/kryo/serializers/RecordSerializerTest.java:22: error: package org.junit.jupiter.api does not exist
+import static org.junit.jupiter.api.Assertions.*;
+                                   ^
+/home/ubuntu/GenDATA/case_studies/kryo/test-jdk17/com/esotericsoftware/kryo/serializers/RecordSerializerTest.java:32: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.Test;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/KryoTestCase.java:22: error: package com.esotericsoftware.minlog does not exist
+import static com.esotericsoftware.minlog.Log.*;
+                                         ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/KryoTestCase.java:23: error: package org.junit.jupiter.api does not exist
+import static org.junit.jupiter.api.Assertions.*;
+                                   ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/KryoTestCase.java:45: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.BeforeEach;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/util/Util.java:22: error: package com.esotericsoftware.minlog does not exist
+import static com.esotericsoftware.minlog.Log.*;
+                                         ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/Kryo.java:23: error: package com.esotericsoftware.minlog does not exist
+import static com.esotericsoftware.minlog.Log.*;
+                                         ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/serializers/CompatibleFieldSerializer.java:23: error: package com.esotericsoftware.minlog does not exist
+import static com.esotericsoftware.minlog.Log.*;
+                                         ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/serializers/FieldSerializer.java:23: error: package com.esotericsoftware.minlog does not exist
+import static com.esotericsoftware.minlog.Log.*;
+                                         ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/serializers/FieldSerializer.java:34: error: package com.esotericsoftware.reflectasm does not exist
+import com.esotericsoftware.reflectasm.FieldAccess;
+                                      ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/serializers/TaggedFieldSerializer.java:24: error: package com.esotericsoftware.minlog does not exist
+import static com.esotericsoftware.minlog.Log.*;
+                                         ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/serializers/VersionFieldSerializer.java:23: error: package com.esotericsoftware.minlog does not exist
+import static com.esotericsoftware.minlog.Log.*;
+                                         ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/serializers/ClosureSerializer.java:30: error: package com.esotericsoftware.minlog does not exist
+import com.esotericsoftware.minlog.Log;
+                                  ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/Kryo.java:124: error: package org.objenesis.instantiator does not exist
+import org.objenesis.instantiator.ObjectInstantiator;
+                                 ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/Kryo.java:125: error: package org.objenesis.strategy does not exist
+import org.objenesis.strategy.InstantiatorStrategy;
+                             ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/Kryo.java:126: error: package org.objenesis.strategy does not exist
+import org.objenesis.strategy.SerializingInstantiatorStrategy;
+                             ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/Kryo.java:127: error: package org.objenesis.strategy does not exist
+import org.objenesis.strategy.StdInstantiatorStrategy;
+                             ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/Kryo.java:146: error: cannot find symbol
+	private InstantiatorStrategy strategy = new DefaultInstantiatorStrategy();
+	        ^
+  symbol:   class InstantiatorStrategy
+  location: class Kryo
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/Registration.java:23: error: package com.esotericsoftware.minlog does not exist
+import static com.esotericsoftware.minlog.Log.*;
+                                         ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/Registration.java:25: error: package org.objenesis.instantiator does not exist
+import org.objenesis.instantiator.ObjectInstantiator;
+                                 ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/Kryo.java:1178: error: cannot find symbol
+	public void setInstantiatorStrategy (InstantiatorStrategy strategy) {
+	                                     ^
+  symbol:   class InstantiatorStrategy
+  location: class Kryo
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/Kryo.java:1182: error: cannot find symbol
+	public InstantiatorStrategy getInstantiatorStrategy () {
+	       ^
+  symbol:   class InstantiatorStrategy
+  location: class Kryo
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/Kryo.java:1189: error: cannot find symbol
+	protected ObjectInstantiator newInstantiator (Class type) {
+	          ^
+  symbol:   class ObjectInstantiator
+  location: class Kryo
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/Registration.java:34: error: cannot find symbol
+	private ObjectInstantiator instantiator;
+	        ^
+  symbol:   class ObjectInstantiator
+  location: class Registration
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/Registration.java:70: error: cannot find symbol
+	public ObjectInstantiator getInstantiator () {
+	       ^
+  symbol:   class ObjectInstantiator
+  location: class Registration
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/Registration.java:75: error: cannot find symbol
+	public void setInstantiator (ObjectInstantiator instantiator) {
+	                             ^
+  symbol:   class ObjectInstantiator
+  location: class Registration
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/serializers/FieldSerializer.java:244: error: cannot find symbol
+		FieldAccess access;
+		^
+  symbol:   class FieldAccess
+  location: class CachedField
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/serializers/CachedFields.java:23: error: package com.esotericsoftware.minlog does not exist
+import static com.esotericsoftware.minlog.Log.*;
+                                         ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/unsafe/UnsafeUtil.java:22: error: package com.esotericsoftware.minlog does not exist
+import static com.esotericsoftware.minlog.Log.*;
+                                         ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/unsafe/UnsafeUtil.java:32: warning: Unsafe is internal proprietary API and may be removed in a future release
+import sun.misc.Unsafe;
+               ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/unsafe/UnsafeUtil.java:33: error: package sun.nio.ch is not visible
+import sun.nio.ch.DirectBuffer;
+              ^
+  (package sun.nio.ch is declared in module java.base, which does not export it to the unnamed module)
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/serializers/CachedFields.java:61: error: package com.esotericsoftware.reflectasm does not exist
+import com.esotericsoftware.reflectasm.FieldAccess;
+                                      ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/ReferenceTest.java:22: error: package org.junit.jupiter.api does not exist
+import static org.junit.jupiter.api.Assertions.*;
+                                   ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/ReferenceTest.java:33: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.Test;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/KryoAssert.java:22: error: package org.junit.jupiter.api does not exist
+import static org.junit.jupiter.api.Assertions.*;
+                                   ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/WarnUnregisteredClassesTest.java:22: error: package org.junit.jupiter.api does not exist
+import static org.junit.jupiter.api.Assertions.*;
+                                   ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/WarnUnregisteredClassesTest.java:25: error: package com.esotericsoftware.minlog does not exist
+import com.esotericsoftware.minlog.Log;
+                                  ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/WarnUnregisteredClassesTest.java:26: error: package com.esotericsoftware.minlog.Log does not exist
+import com.esotericsoftware.minlog.Log.Logger;
+                                      ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/WarnUnregisteredClassesTest.java:32: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.BeforeEach;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/WarnUnregisteredClassesTest.java:33: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.Test;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/WarnUnregisteredClassesTest.java:128: error: cannot find symbol
+	class LoggerStub extends Logger {
+	                         ^
+  symbol:   class Logger
+  location: class WarnUnregisteredClassesTest
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/CopyTest.java:22: error: package org.junit.jupiter.api does not exist
+import static org.junit.jupiter.api.Assertions.*;
+                                   ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/CopyTest.java:26: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.BeforeEach;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/CopyTest.java:27: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.Test;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/DepthTest.java:22: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.Test;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/Unsafe.java:27: error: package org.junit.jupiter.api.condition does not exist
+import org.junit.jupiter.api.condition.EnabledIf;
+                                      ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/Unsafe.java:32: error: cannot find symbol
+@EnabledIf("com.esotericsoftware.kryo.util.Util#isUnsafeAvailable")
+ ^
+  symbol: class EnabledIf
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/SerializationBenchmarkTest.java:30: error: package com.esotericsoftware.minlog does not exist
+import com.esotericsoftware.minlog.Log;
+                                  ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/SerializationBenchmarkTest.java:39: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.MethodOrderer;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/SerializationBenchmarkTest.java:40: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.Test;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/SerializationBenchmarkTest.java:41: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.TestMethodOrder;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/SerializationBenchmarkTest.java:46: error: cannot find symbol
+@TestMethodOrder(MethodOrderer.Alphanumeric.class)
+ ^
+  symbol: class TestMethodOrder
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/RegistrationTest.java:22: error: package org.junit.jupiter.api does not exist
+import static org.junit.jupiter.api.Assertions.*;
+                                   ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/RegistrationTest.java:31: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.Test;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/GarbageCollectionTest.java:22: error: package org.junit.jupiter.api does not exist
+import static org.junit.jupiter.api.Assertions.*;
+                                   ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/GarbageCollectionTest.java:29: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.Test;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/DefaultInstantiatorStrategyTest.java:23: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.Test;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/DefaultInstantiatorStrategyTest.java:25: error: package org.junit.jupiter.api does not exist
+import static org.junit.jupiter.api.Assertions.assertThrows;
+                                   ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/DefaultInstantiatorStrategyTest.java:25: error: static import only from classes and interfaces
+import static org.junit.jupiter.api.Assertions.assertThrows;
+^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/DefaultInstantiatorStrategyTest.java:26: error: package org.junit.jupiter.api does not exist
+import static org.junit.jupiter.api.Assertions.assertTrue;
+                                   ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/DefaultInstantiatorStrategyTest.java:26: error: static import only from classes and interfaces
+import static org.junit.jupiter.api.Assertions.assertTrue;
+^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/util/DefaultInstantiatorStrategy.java:25: error: package com.esotericsoftware.reflectasm does not exist
+import com.esotericsoftware.reflectasm.ConstructorAccess;
+                                      ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/util/DefaultInstantiatorStrategy.java:30: error: package org.objenesis.instantiator does not exist
+import org.objenesis.instantiator.ObjectInstantiator;
+                                 ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/util/DefaultInstantiatorStrategy.java:31: error: package org.objenesis.strategy does not exist
+import org.objenesis.strategy.InstantiatorStrategy;
+                             ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/util/DefaultInstantiatorStrategy.java:33: error: package org.objenesis.strategy does not exist
+public class DefaultInstantiatorStrategy implements org.objenesis.strategy.InstantiatorStrategy {
+                                                                          ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/util/DefaultInstantiatorStrategy.java:34: error: cannot find symbol
+	private InstantiatorStrategy fallbackStrategy;
+	        ^
+  symbol:   class InstantiatorStrategy
+  location: class DefaultInstantiatorStrategy
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/util/DefaultInstantiatorStrategy.java:39: error: cannot find symbol
+	public DefaultInstantiatorStrategy (InstantiatorStrategy fallbackStrategy) {
+	                                    ^
+  symbol:   class InstantiatorStrategy
+  location: class DefaultInstantiatorStrategy
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/util/DefaultInstantiatorStrategy.java:43: error: cannot find symbol
+	public void setFallbackInstantiatorStrategy (final InstantiatorStrategy fallbackStrategy) {
+	                                                   ^
+  symbol:   class InstantiatorStrategy
+  location: class DefaultInstantiatorStrategy
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/util/DefaultInstantiatorStrategy.java:47: error: cannot find symbol
+	public InstantiatorStrategy getFallbackInstantiatorStrategy () {
+	       ^
+  symbol:   class InstantiatorStrategy
+  location: class DefaultInstantiatorStrategy
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/util/DefaultInstantiatorStrategy.java:51: error: cannot find symbol
+	public ObjectInstantiator newInstantiatorOf (final Class type) {
+	       ^
+  symbol:   class ObjectInstantiator
+  location: class DefaultInstantiatorStrategy
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/ReflectionAssert.java:22: error: package org.apache.commons.lang3 does not exist
+import org.apache.commons.lang3.StringUtils;
+                               ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/ReflectionAssert.java:24: error: package org.junit.jupiter.api does not exist
+import static org.junit.jupiter.api.Assertions.*;
+                                   ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/SerializationCompatTest.java:24: error: package org.junit.jupiter.api does not exist
+import static org.junit.jupiter.api.Assertions.*;
+                                   ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/SerializationCompatTest.java:33: error: package com.esotericsoftware.minlog does not exist
+import com.esotericsoftware.minlog.Log;
+                                  ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/SerializationCompatTest.java:44: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.BeforeEach;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/SerializationCompatTest.java:45: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.Test;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/SerializationCompatTest.java:46: error: package org.objenesis.strategy does not exist
+import org.objenesis.strategy.StdInstantiatorStrategy;
+                             ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/util/UtilTest.java:22: error: package org.junit.jupiter.api does not exist
+import static org.junit.jupiter.api.Assertions.*;
+                                   ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/util/UtilTest.java:24: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.Test;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/util/PoolTest.java:22: error: package org.junit.jupiter.api does not exist
+import static org.junit.jupiter.api.Assertions.*;
+                                   ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/util/PoolTest.java:33: error: package org.junit.jupiter.params does not exist
+import org.junit.jupiter.params.ParameterizedTest;
+                               ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/util/PoolTest.java:34: error: package org.junit.jupiter.params.provider does not exist
+import org.junit.jupiter.params.provider.MethodSource;
+                                        ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/util/GenericsUtilTest.java:23: error: package org.junit.jupiter.api does not exist
+import static org.junit.jupiter.api.Assertions.*;
+                                   ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/util/GenericsUtilTest.java:31: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.Test;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/serializers/BlowfishSerializerTest.java:27: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.Test;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/serializers/FieldSerializerGenericsTest.java:35: error: package org.apache.commons.lang3.builder does not exist
+import org.apache.commons.lang3.builder.EqualsBuilder;
+                                       ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/serializers/FieldSerializerGenericsTest.java:36: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.Test;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/serializers/FieldSerializerGenericsTest.java:37: error: package org.objenesis.strategy does not exist
+import org.objenesis.strategy.StdInstantiatorStrategy;
+                             ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/serializers/TaggedFieldSerializerTest.java:22: error: package org.junit.jupiter.api does not exist
+import static org.junit.jupiter.api.Assertions.*;
+                                   ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/serializers/TaggedFieldSerializerTest.java:35: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.Test;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/serializers/DefaultSerializersTest.java:22: error: package org.junit.jupiter.api does not exist
+import static org.junit.jupiter.api.Assertions.*;
+                                   ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/serializers/DefaultSerializersTest.java:56: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.Test;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/serializers/DefaultSerializersTest.java:57: error: package org.objenesis.strategy does not exist
+import org.objenesis.strategy.StdInstantiatorStrategy;
+                             ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/serializers/SerializerPriorityTest.java:22: error: package org.junit.jupiter.api does not exist
+import static org.junit.jupiter.api.Assertions.*;
+                                   ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/serializers/SerializerPriorityTest.java:35: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.Test;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/serializers/FieldSerializerTest.java:22: error: package org.junit.jupiter.api does not exist
+import static org.junit.jupiter.api.Assertions.*;
+                                   ^
+/home/ubuntu/GenDATA/case_studies/kryo/test/com/esotericsoftware/kryo/serializers/FieldSerializerTest.java:53: error: package org.junit.jupiter.api does not exist
+import org.junit.jupiter.api.Test;
+                            ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/unsafe/UnsafeUtil.java:32: warning: Unsafe is internal proprietary API and may be removed in a future release
+import sun.misc.Unsafe;
+               ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/unsafe/UnsafeUtil.java:42: warning: Unsafe is internal proprietary API and may be removed in a future release
+	public static final Unsafe unsafe;
+	                    ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/unsafe/UnsafeUtil.java:42: warning: Unsafe is internal proprietary API and may be removed in a future release
+	public static final Unsafe unsafe;
+	                    ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/unsafe/UnsafeUtil.java:42: warning: Unsafe is internal proprietary API and may be removed in a future release
+	public static final Unsafe unsafe;
+	                    ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/unsafe/UnsafeUtil.java:53: warning: Unsafe is internal proprietary API and may be removed in a future release
+		Unsafe tempUnsafe = null;
+		^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/unsafe/UnsafeUtil.java:65: warning: Unsafe is internal proprietary API and may be removed in a future release
+				Field field = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
+				                      ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/unsafe/UnsafeUtil.java:67: warning: Unsafe is internal proprietary API and may be removed in a future release
+				tempUnsafe = (sun.misc.Unsafe)field.get(null);
+				                      ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/serializers/CachedFields.java:124: warning: [removal] AccessControlException in java.security has been deprecated and marked for removal
+			} catch (AccessControlException ex) {
+			         ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/io/ByteBufferOutput.java:97: warning: [dep-ann] deprecated item is not annotated with @Deprecated
+	public byte[] getBuffer () {
+	              ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/io/ByteBufferOutput.java:104: warning: [dep-ann] deprecated item is not annotated with @Deprecated
+	public void setBuffer (byte[] buffer) {
+	            ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/io/ByteBufferOutput.java:111: warning: [dep-ann] deprecated item is not annotated with @Deprecated
+	public void setBuffer (byte[] buffer, int maxBufferSize) {
+	            ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/io/KryoDataInput.java:101: warning: [dep-ann] deprecated item is not annotated with @Deprecated
+	public String readLine () throws UnsupportedOperationException {
+	              ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/io/ByteBufferInput.java:93: warning: [dep-ann] deprecated item is not annotated with @Deprecated
+	public byte[] getBuffer () {
+	              ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/io/ByteBufferInput.java:100: warning: [dep-ann] deprecated item is not annotated with @Deprecated
+	public void setBuffer (byte[] bytes) {
+	            ^
+/home/ubuntu/GenDATA/case_studies/kryo/src/com/esotericsoftware/kryo/io/ByteBufferInput.java:107: warning: [dep-ann] deprecated item is not annotated with @Deprecated
+	public void setBuffer (byte[] bytes, int offset, int count) {
+	            ^
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+100 errors
+17 warnings
+only showing the first 100 errors, of 2344 total; use -Xmaxerrs if you would like to see more

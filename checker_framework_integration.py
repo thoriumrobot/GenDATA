@@ -164,11 +164,24 @@ class CheckerFrameworkEvaluator:
             return warnings
             
         except subprocess.TimeoutExpired:
-            print(f"Timeout running Checker Framework on {java_file}")
-            return []
+            # FIXED: Raise exception instead of returning empty list
+            # Empty list would be misinterpreted as 0 warnings (success)
+            from checker_crash_detector import CheckerTimeoutError
+            raise CheckerTimeoutError(f"Timeout running Checker Framework on {java_file}")
         except Exception as e:
-            print(f"Error running Checker Framework: {e}")
-            return []
+            # FIXED: Raise exception instead of returning empty list
+            # This ensures callers know the checker failed vs had 0 warnings
+            from checker_crash_detector import CheckerCrashError, CrashDetectionResult
+            crash_result = CrashDetectionResult(
+                crashed=True,
+                crash_reason=str(e),
+                crash_indicators_found=[],
+                has_stack_trace=False,
+                has_compilation_errors=False,
+                has_success_indicators=False,
+                confidence=0.9
+            )
+            raise CheckerCrashError(f"Error running Checker Framework: {e}", crash_result)
     
     def _parse_warnings(self, stderr: str, file_path: str, checker_type: CheckerType) -> List[WarningInfo]:
         """Parse warnings from Checker Framework stderr output"""

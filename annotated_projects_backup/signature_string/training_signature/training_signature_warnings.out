@@ -1,0 +1,16 @@
+SignatureTrainingExample.java:38: error: [argument] incompatible argument for parameter className of SignatureTrainingExample.loadClass.
+        loadClass(className1);  // WARNING: [argument] incompatible
+                  ^
+  found   : @SignatureUnknown String
+  required: @BinaryName String
+SignatureTrainingExample.java:55: error: [argument] incompatible argument for parameter typeName of SignatureTrainingExample.registerType.
+        registerType(getTypeName());  // WARNING: [argument] incompatible
+                                ^
+  found   : @SignatureUnknown String
+  required: @FullyQualifiedName String
+SignatureTrainingExample.java:71: error: [argument] incompatible argument for parameter className of SignatureTrainingExample.loadClass.
+        loadClass(fullName);  // WARNING: [argument] incompatible
+                  ^
+  found   : @SignatureUnknown String
+  required: @BinaryName String
+3 errors

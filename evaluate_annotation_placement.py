@@ -14,7 +14,7 @@ import tempfile
 import logging
 import argparse
 from pathlib import Path
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any, Optional, Tuple
 from dataclasses import dataclass, asdict
 from datetime import datetime
 
@@ -68,11 +68,26 @@ class EvaluationReport:
 class AnnotationPlacementEvaluator:
     """Evaluates annotation placement effectiveness by base model"""
     
+    # Checker processor mapping
+    CHECKER_PROCESSORS = {
+        'lower_bound': 'org.checkerframework.checker.index.IndexChecker',
+        'sql_quotes': 'org.checkerframework.checker.sqlquotes.SqlQuotesChecker',
+        'signature_string': 'org.checkerframework.checker.signature.SignatureChecker',
+    }
+    
+    # Backup directories that should never be modified
+    BACKUP_DIRECTORIES = [
+        Path('/home/ubuntu/GenDATA/case_studies_backup'),
+        Path('/home/ubuntu/GenDATA/annotation_evaluation/backups'),
+        Path('/home/ubuntu/GenDATA/annotated_projects_backup'),
+    ]
+    
     def __init__(self, 
                  work_dir: str = './annotation_evaluation',
                  checker_cp: Optional[str] = None,
                  cfg_dir: Optional[str] = None,
-                 timeout: int = 600):
+                 timeout: int = 600,
+                 checker_name: str = 'lower_bound'):
         """
         Initialize evaluator.
         
@@ -81,6 +96,7 @@ class AnnotationPlacementEvaluator:
             checker_cp: Checker Framework classpath
             cfg_dir: Directory containing CFG files (if None, will try to find/generate)
             timeout: Timeout for compilation/checker runs
+            checker_name: Name of the checker ('lower_bound', 'sql_quotes', 'signature_string')
         """
         self.work_dir = Path(work_dir)
         self.work_dir.mkdir(parents=True, exist_ok=True)
@@ -88,12 +104,18 @@ class AnnotationPlacementEvaluator:
         self.checker_cp = checker_cp or os.environ.get('CHECKERFRAMEWORK_CP', '')
         self.cfg_dir = cfg_dir
         self.timeout = timeout
+        self.checker_name = checker_name.lower()
+        
+        # Validate checker name
+        if self.checker_name not in self.CHECKER_PROCESSORS:
+            raise ValueError(f"Unknown checker: {checker_name}. "
+                           f"Supported: {list(self.CHECKER_PROCESSORS.keys())}")
         
         # Base models to test
-        config = get_checker_config('lower_bound')
+        config = get_checker_config(self.checker_name)
         self.base_models = config.get('base_models', ['gcn', 'hgt', 'gbt', 'causal', 'enhanced_causal', 'gcsn', 'dg2n'])
         
-        # Initialize warning tester
+        # Initialize warning tester (still uses LowerBoundWarningTester but we override the processor)
         self.warning_tester = LowerBoundWarningTester(
             checker_cp=self.checker_cp,
             temp_dir=str(self.work_dir / 'temp_repos'),
@@ -101,8 +123,21 @@ class AnnotationPlacementEvaluator:
         )
         
         logger.info(f"Initialized AnnotationPlacementEvaluator")
+        logger.info(f"  Checker: {self.checker_name}")
         logger.info(f"  Work directory: {self.work_dir}")
         logger.info(f"  Base models to test: {self.base_models}")
+    
+    def verify_not_backup_dir(self, path: Path) -> bool:
+        """Verify that a path is not inside a backup directory (safety check)"""
+        for backup_dir in self.BACKUP_DIRECTORIES:
+            if backup_dir.exists():
+                try:
+                    path.relative_to(backup_dir)
+                    logger.error(f"SAFETY: Attempted to modify backup directory: {path}")
+                    return False
+                except ValueError:
+                    continue
+        return True
     
     def load_qualifying_projects(self, candidates_file: str) -> List[Dict[str, Any]]:
         """
@@ -129,6 +164,79 @@ class AnnotationPlacementEvaluator:
             logger.info(f"  - {proj['project_name']}: {proj['warning_count']} warnings")
         
         return qualifying
+    
+    def verify_project_compilable(self, project_dir: Path, project_name: str) -> Tuple[bool, str]:
+        """
+        Verify that a project can compile and be analyzed by the Checker Framework.
+        
+        This pre-flight check ensures:
+        1. Maven projects compile successfully with dependencies resolved
+        2. The Checker Framework can run without crashing
+        3. Files are actually processed (not 0 due to errors)
+        
+        Args:
+            project_dir: Path to project directory
+            project_name: Name of the project
+            
+        Returns:
+            Tuple of (success, message)
+        """
+        logger.info(f"Pre-flight check for {project_name}...")
+        
+        # Step 1: Check if Maven project and compile it
+        try:
+            from maven_classpath_resolver import MavenClasspathResolver
+            resolver = MavenClasspathResolver(timeout=self.timeout)
+            
+            if resolver.is_maven_project(project_dir):
+                logger.info(f"  Compiling Maven project...")
+                success, error = resolver.compile_project(project_dir)
+                if not success:
+                    return False, f"Maven compilation failed: {error}"
+                logger.info(f"  Maven compilation successful")
+        except ImportError:
+            logger.debug("Maven resolver not available")
+        except Exception as e:
+            logger.warning(f"  Maven check failed: {e}")
+        
+        # Step 2: Run checker on a sample of files
+        try:
+            java_files = self.warning_tester.find_java_files(project_dir, max_files=5)
+            if not java_files:
+                return False, "No Java files found"
+            
+            logger.info(f"  Testing checker on {len(java_files)} sample files...")
+            success, output = self.warning_tester.run_lower_bound_checker(project_dir, java_files)
+            
+            # Step 3: Verify checker actually ran
+            try:
+                from checker_crash_detector import detect_checker_crash
+                # Pass return code (0 if success, 1 if not)
+                returncode = 0 if success else 1
+                crash_result = detect_checker_crash(output, returncode=returncode)
+                
+                if crash_result.crashed:
+                    return False, f"Checker crashed: {crash_result.crash_reason}"
+                
+                if crash_result.no_files_processed:
+                    return False, "Checker did not process any files"
+                
+                if not crash_result.checker_analysis_succeeded():
+                    if crash_result.has_compilation_errors:
+                        return False, f"Compilation errors prevent analysis ({crash_result.compilation_error_count} errors)"
+                    return False, "Checker analysis did not complete successfully"
+                
+                logger.info(f"  Pre-flight check passed")
+                return True, "Project compiles and checker runs successfully"
+                
+            except ImportError:
+                # If crash detector not available, just check success flag
+                if success:
+                    return True, "Checker ran (crash detection not available)"
+                return False, f"Checker failed: {output[:200]}"
+                
+        except Exception as e:
+            return False, f"Pre-flight check error: {e}"
     
     def backup_project(self, project_dir: Path, project_name: str) -> Path:
         """
@@ -252,6 +360,35 @@ class AnnotationPlacementEvaluator:
         # Run checker
         success, output = self.warning_tester.run_lower_bound_checker(project_dir, java_files)
         
+        # FIXED: Verify checker actually ran using crash detector before parsing warnings
+        try:
+            from checker_crash_detector import detect_checker_crash
+            returncode = 0 if success else 1
+            crash_result = detect_checker_crash(output, returncode=returncode)
+            
+            if crash_result.crashed or crash_result.no_files_processed:
+                logger.error(f"Checker failed for {project_name}: {crash_result.crash_reason}")
+                if fallback_count is not None:
+                    logger.info(f"Using fallback warning count: {fallback_count}")
+                    return fallback_count
+                # Raise error instead of returning 0 silently
+                raise RuntimeError(f"Checker failed: {crash_result.crash_reason}")
+            
+            # Check if checker analysis actually succeeded
+            if not crash_result.checker_analysis_succeeded():
+                logger.warning(f"Checker analysis may not have run for {project_name}: "
+                             f"compilation_errors={crash_result.has_compilation_errors}, "
+                             f"success_indicators={crash_result.has_success_indicators}")
+                if fallback_count is not None and crash_result.has_compilation_errors:
+                    logger.info(f"Using fallback due to compilation errors: {fallback_count}")
+                    return fallback_count
+        except ImportError:
+            logger.debug("Crash detector not available")
+        except RuntimeError:
+            raise  # Re-raise our own errors
+        except Exception as e:
+            logger.warning(f"Error checking crash status: {e}")
+        
         # #region agent log
         import json
         with open('/home/ubuntu/GenDATA/.cursor/debug.log', 'a') as f:
@@ -327,9 +464,23 @@ class AnnotationPlacementEvaluator:
                 if any(err in line.lower() for err in ['package', 'does not exist', 'cannot find symbol', 
                                                        'error:', 'compiler.err']):
                     continue
-                # Count actual checker warnings
-                if '[index' in line.lower() or 'lowerbound' in line.lower() or 'array' in line.lower():
-                    actual_warnings += 1
+                # Count actual Lower Bound Checker warnings
+                # These include: [argument], [array.access...], [samelen], [lowerbound], [index...]
+                # Format: file:line:col: [checker-key] message
+                if '[' in line and ']' in line:
+                    # Extract checker key: look for [something] pattern
+                    import re
+                    match = re.search(r'\[([^\]]+)\]', line)
+                    if match:
+                        checker_key = match.group(1).lower()
+                        # Count all Index/Lower Bound checker warnings
+                        if any(key in checker_key for key in ['index', 'lower', 'array', 'argument', 
+                                                               'samelen', 'substringgfrom', 'offset', 
+                                                               'length', 'searchfrom', 'dep-ann']):
+                            actual_warnings += 1
+                        elif not any(err in checker_key for err in ['error', 'compiler']):
+                            # Count other checker warnings that aren't compilation errors
+                            actual_warnings += 1
         
         # If we have actual warnings, use them; otherwise use total (which might include errors)
         warning_count = actual_warnings if actual_warnings > 0 else stats.total_warnings
@@ -463,9 +614,9 @@ class AnnotationPlacementEvaluator:
         try:
             logger.info(f"Generating predictions using {base_model} model")
             
-            # Create filtered predictor
+            # Create filtered predictor for the configured checker
             predictor = FilteredMultiCheckerPredictor(
-                checker_name='lower_bound',
+                checker_name=self.checker_name,
                 base_model_filter=base_model
             )
             
@@ -549,10 +700,14 @@ class AnnotationPlacementEvaluator:
             if not predictions_file.exists():
                 raise ValueError(f"Predictions file does not exist: {predictions_file}")
             
+            # Safety check: never modify backups
+            if not self.verify_not_backup_dir(project_dir):
+                raise ValueError(f"Safety check failed: {project_dir} is a backup directory")
+            
             placer = ComprehensiveAnnotationPlacer(
                 project_root=str(project_dir.resolve()),  # Use resolved absolute path
                 output_dir=str(output_dir),
-                checker_name='lower_bound',
+                checker_name=self.checker_name,
                 backup=False,  # We handle backups ourselves
                 perfect_placement=True
             )
@@ -665,6 +820,10 @@ class AnnotationPlacementEvaluator:
             annotations_placed = placement_stats.get('successful', 0)
             
             # Get warning count after placement
+            # FIXED: Track actual compilation success instead of hardcoding True
+            compilation_success = True
+            checker_crashed = False
+            
             try:
                 # #region agent log
                 import json
@@ -687,6 +846,32 @@ class AnnotationPlacementEvaluator:
                 
                 warnings_after = self.get_baseline_warnings(project_dir, project_name)
                 
+                # FIXED: Verify the result is valid using crash detector
+                # Run a quick check to see if the checker actually ran successfully
+                java_files = self.warning_tester.find_java_files(project_dir, max_files=10)
+                if java_files:
+                    success, output = self.warning_tester.run_lower_bound_checker(project_dir, java_files)
+                    try:
+                        from checker_crash_detector import detect_checker_crash
+                        crash_result = detect_checker_crash(output)
+                        
+                        if crash_result.crashed or crash_result.no_files_processed:
+                            # Checker failed - don't claim warning reduction
+                            logger.error(f"Checker verification failed: {crash_result.crash_reason}")
+                            warnings_after = baseline_warnings
+                            compilation_success = False
+                            checker_crashed = True
+                        elif crash_result.has_compilation_errors and warnings_after == 0:
+                            # Suspicious: compilation errors but 0 warnings
+                            # This likely means checker never ran analysis
+                            if crash_result.compilation_error_count > 0:
+                                logger.warning(f"Suspicious result: {crash_result.compilation_error_count} "
+                                             f"compilation errors but 0 warnings")
+                                warnings_after = baseline_warnings
+                                compilation_success = False
+                    except ImportError:
+                        pass  # Crash detector not available
+                
                 # #region agent log
                 with open('/home/ubuntu/GenDATA/.cursor/debug.log', 'a') as f:
                     f.write(json.dumps({
@@ -701,13 +886,20 @@ class AnnotationPlacementEvaluator:
                             'warnings_after': warnings_after,
                             'baseline_warnings': baseline_warnings,
                             'reduction': baseline_warnings - warnings_after,
-                            'is_zero': warnings_after == 0
+                            'is_zero': warnings_after == 0,
+                            'compilation_success': compilation_success
                         },
                         'timestamp': int(__import__('time').time() * 1000)
                     }) + '\n')
                 # #endregion
             except Exception as e:
                 logger.error(f"Failed to get warnings after placement for {base_model}: {e}")
+                # FIXED: Check if this is a checker crash vs other error
+                error_str = str(e).lower()
+                if 'timeout' in error_str or 'crash' in error_str or 'exception in thread' in error_str:
+                    checker_crashed = True
+                    compilation_success = False
+                
                 # #region agent log
                 import json
                 with open('/home/ubuntu/GenDATA/.cursor/debug.log', 'a') as f:
@@ -721,6 +913,7 @@ class AnnotationPlacementEvaluator:
                             'project_name': project_name,
                             'base_model': base_model,
                             'error': str(e),
+                            'checker_crashed': checker_crashed,
                             'using_baseline_as_fallback': True
                         },
                         'timestamp': int(__import__('time').time() * 1000)
@@ -739,7 +932,7 @@ class AnnotationPlacementEvaluator:
                 warning_reduction=warning_reduction,
                 reduction_percentage=reduction_percentage,
                 placement_success=annotations_placed > 0,
-                compilation_success=True
+                compilation_success=compilation_success  # FIXED: Use actual value
             )
             
         except Exception as e:
@@ -816,6 +1009,18 @@ class AnnotationPlacementEvaluator:
             )
         
         try:
+            # FIXED: Run pre-flight check to ensure project compiles before evaluation
+            compilable, message = self.verify_project_compilable(project_dir, project_name)
+            if not compilable:
+                logger.error(f"Pre-flight check failed for {project_name}: {message}")
+                return ProjectEvaluationResult(
+                    project_name=project_name,
+                    project_url=project_url,
+                    baseline_warnings=0,
+                    model_results=[],
+                    error_message=f"Pre-flight check failed: {message}"
+                )
+            
             # Get baseline warnings BEFORE backup (to ensure clean state)
             # Note: This may create checker output files, but we'll clean them up
             # Use warning count from candidates file as fallback
@@ -890,6 +1095,13 @@ class AnnotationPlacementEvaluator:
                         error_message=f"Unexpected error: {e}"
                     ))
             
+            # FIXED: Restore project to clean state after all model evaluations
+            try:
+                self.restore_project(project_dir, backup_dir)
+                logger.info(f"Restored {project_name} to clean state after evaluation")
+            except Exception as restore_error:
+                logger.error(f"Failed to restore {project_name} after evaluation: {restore_error}")
+            
             return ProjectEvaluationResult(
                 project_name=project_name,
                 project_url=project_url,
@@ -901,6 +1113,14 @@ class AnnotationPlacementEvaluator:
             logger.error(f"Error evaluating project {project_name}: {e}")
             import traceback
             logger.debug(traceback.format_exc())
+            
+            # FIXED: Try to restore project on error as well
+            try:
+                if backup_dir and backup_dir.exists():
+                    self.restore_project(project_dir, backup_dir)
+                    logger.info(f"Restored {project_name} after error")
+            except Exception as restore_error:
+                logger.warning(f"Could not restore {project_name} after error: {restore_error}")
             
             # Try to preserve backup even on error
             if backup_dir and backup_dir.exists():
@@ -1010,15 +1230,20 @@ def main():
                        type=int,
                        default=600,
                        help='Timeout for compilation/checker runs (seconds)')
+    parser.add_argument('--checker',
+                       choices=['lower_bound', 'sql_quotes', 'signature_string'],
+                       default='lower_bound',
+                       help='Checker to evaluate (default: lower_bound)')
     
     args = parser.parse_args()
     
-    # Create evaluator
+    # Create evaluator with specified checker
     evaluator = AnnotationPlacementEvaluator(
         work_dir=args.work_dir,
         checker_cp=args.checker_cp,
         cfg_dir=args.cfg_dir,
-        timeout=args.timeout
+        timeout=args.timeout,
+        checker_name=args.checker
     )
     
     # Run evaluation

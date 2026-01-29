@@ -1,0 +1,77 @@
+package sortpom.output;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import org.dom4j.Document;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
+import sortpom.exception.FailureException;
+import sortpom.parameter.IndentAttribute;
+import sortpom.parameter.PluginParameters;
+import sortpom.util.StringLineSeparatorWriter;
+
+/**
+ * Handles all generation of xml.
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.index.samelen.SameLenChecker")
+public class XmlOutputGenerator {
+
+    private  String encoding;
+
+    private  String indentCharacters;
+
+    private   boolean expandEmptyElements;
+
+    private   boolean indentBlankLines;
+
+    private  IndentAttribute indentAttribute;
+
+    private   boolean spaceBeforeCloseEmptyElement;
+
+    private  String lineSeparator;
+
+    private   boolean endWithNewline;
+
+    /**
+     * Setup default configuration
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void setup( XmlOutputGenerator this,  PluginParameters pluginParameters) {
+        this.indentCharacters = pluginParameters.indentCharacters;
+        this.encoding = pluginParameters.encoding;
+        this.expandEmptyElements = pluginParameters.expandEmptyElements;
+        this.indentBlankLines = pluginParameters.indentBlankLines;
+        this.indentAttribute = pluginParameters.indentAttribute;
+        this.spaceBeforeCloseEmptyElement = pluginParameters.spaceBeforeCloseEmptyElement;
+        this.lineSeparator = pluginParameters.lineSeparatorUtil.toString();
+        this.endWithNewline = pluginParameters.endWithNewline;
+    }
+
+    /**
+     * Returns the sorted xml as an OutputStream.
+     *
+     * @return the sorted xml
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public  String getSortedXml( XmlOutputGenerator this,  Document newDocument) {
+        try (var out = new StringWriter();
+            var writer = new StringLineSeparatorWriter(out, lineSeparator)) {
+            XMLWriter xmlWriter = new PatchedXMLWriter(writer, createPrettyFormat(), spaceBeforeCloseEmptyElement, indentBlankLines, indentAttribute, endWithNewline);
+            xmlWriter.write(newDocument);
+            writer.writeDelayedNewline();
+            return writer.toString();
+        } catch (IOException ioex) {
+            throw new FailureException("Could not format pom files content", ioex);
+        }
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private  OutputFormat createPrettyFormat( XmlOutputGenerator this) {
+        var outputFormat = new OutputFormat(indentCharacters);
+        outputFormat.setNewlines(true);
+        outputFormat.setExpandEmptyElements(expandEmptyElements);
+        outputFormat.setNewLineAfterDeclaration(false);
+        outputFormat.setEncoding(encoding);
+        return outputFormat;
+    }
+}

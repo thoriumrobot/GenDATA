@@ -1,0 +1,61 @@
+package sortpom.wrapper;
+
+import static sortpom.wrapper.content.ThrowAwayNewlineWrapper.THROW_AWAY_NEWLINE_INSTANCE;
+import static sortpom.wrapper.content.UnsortedWrapper.*;
+import java.util.regex.Pattern;
+import org.dom4j.Element;
+import org.dom4j.Node;
+import org.dom4j.Text;
+import sortpom.parameter.PluginParameters;
+import sortpom.wrapper.content.UnsortedWrapper;
+import sortpom.wrapper.content.Wrapper;
+
+/**
+ * @author bjorn
+ * @since 2012-05-19
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.index.substringindex.SubstringIndexChecker")
+public class TextWrapperCreator {
+
+    public static final  Pattern REGEX_ONE_OR_MORE_NEWLINE = Pattern.compile("(\\r\\n|\\r|\\n)+?");
+
+    private   boolean keepBlankLines;
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void setup( TextWrapperCreator this,  PluginParameters pluginParameters) {
+        keepBlankLines = pluginParameters.keepBlankLines;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+     Wrapper<Node> createWrapper( TextWrapperCreator this,  Text text) {
+        if (!text.getText().isBlank() || isElementSpacePreserved(text.getParent())) {
+            return new UnsortedWrapper<>(text);
+        }
+        return blankTextNode(text);
+    }
+
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "#1" }, qualifier = org.checkerframework.checker.index.qual.SubstringIndexBottom.class)
+    @org.checkerframework.dataflow.qual.Impure
+      boolean isElementSpacePreserved( TextWrapperCreator this,  Element element) {
+        if (element == null) {
+            return false;
+        }
+        var attr = element.attribute("space");
+        return attr != null && "xml".equals(attr.getNamespacePrefix()) && "preserve".equals(attr.getText());
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+     Wrapper<Node> blankTextNode( TextWrapperCreator this,  Text text) {
+        if (!keepBlankLines) {
+            return THROW_AWAY_NEWLINE_INSTANCE;
+        }
+        var textContent = text.getText();
+        var newLineCount = REGEX_ONE_OR_MORE_NEWLINE.matcher(textContent).results().count();
+        if (newLineCount <= 1) {
+            // One newline is just the linebreak between two XML elements
+            return THROW_AWAY_NEWLINE_INSTANCE;
+        }
+        // Multiple linebreaks between XML elements indicate that a newline should be kept
+        return KEEP_NEWLINE_INSTANCE;
+    }
+}

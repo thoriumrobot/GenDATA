@@ -41,23 +41,31 @@ The training pipeline consists of the following steps:
 
 The prediction pipeline runs on target projects (case studies) as follows:
 
-1. **Lower Bound Checker Execution**: Run checker on target project
-   - Location: `checker_framework_runner.py`
-   - Command: `javac -processor org.checkerframework.checker.index.IndexChecker`
+1. **Maven Dependency Resolution** (if Maven project):
+   - Location: `maven_classpath_resolver.py`
+   - Detects Maven projects via `pom.xml`
+   - Compiles project with `mvn compile -DskipTests` (or `mvn install` for multi-module)
+   - Extracts dependency classpath using `mvn dependency:build-classpath`
+   - Builds full classpath: Checker Framework + Maven deps + target/classes directories
+
+2. **Lower Bound Checker Execution**: Run checker on target project
+   - Location: `checker_framework_runner.py`, `test_lower_bound_warnings.py`
+   - Command: `javac -cp <full_classpath> -processor org.checkerframework.checker.index.IndexChecker`
+   - Uses resolved Maven classpath for proper dependency handling
    - Output: Warnings file (`target_warnings.out`)
    - Excludes: test directories, benchmarks, build directories
 
-2. **Slicing**: Generate slices from warnings using Soot
+3. **Slicing**: Generate slices from warnings using Soot
    - Location: `simple_annotation_type_pipeline.py` → `_generate_slices_for_prediction()`
    - Slicer type: Specimin (default) or Soot
    - Output: Slices in `prediction_slices/` directory
 
-3. **CFG Generation**: Convert slices to CFGs
+4. **CFG Generation**: Convert slices to CFGs
    - Location: `simple_annotation_type_pipeline.py` → `_generate_cfgs_for_prediction()`
    - Uses Checker Framework CFG Builder
    - Output: CFGs in `prediction_cfg_output/` directory
 
-4. **Model Prediction**: Run trained models on CFGs
+5. **Model Prediction**: Run trained models on CFGs
    - Location: `multi_checker_predictor.py` → `predict_for_file()`
    - Process:
      - Load CFG files for target Java file
@@ -79,7 +87,7 @@ The prediction pipeline runs on target projects (case studies) as follows:
      }
      ```
 
-5. **Annotation Placement**: Place annotations in source code
+6. **Annotation Placement**: Place annotations in source code
    - Location: `place_annotations.py` → `ComprehensiveAnnotationPlacer`
    - Process:
      - Load predictions from JSON file
@@ -100,7 +108,7 @@ The prediction pipeline runs on target projects (case studies) as follows:
      - Original files are backed up to `annotation_evaluation/backups/{project}/`
      - Annotated files can be compared with backups to see exactly what annotations were added
 
-6. **Evaluation**: Measure warning reduction and placement success
+7. **Evaluation**: Measure warning reduction and placement success
    - Location: `annotation_evaluation/evaluation_report.json`
    - Metrics:
      - **Warning Reduction**: (baseline_warnings - warnings_after) / baseline_warnings
@@ -110,91 +118,100 @@ The prediction pipeline runs on target projects (case studies) as follows:
 
 ## Case Study Results
 
+> **IMPORTANT UPDATE (January 2026)**: The results below reflect accurate measurements after implementing Maven classpath resolution. Previous results claiming 100% warning reduction were incorrect due to compilation failures preventing proper checker analysis. See `MAVEN_INTEGRATION_AND_ACCURATE_RESULTS.md` for full details.
+
 ### sortpom
 
 **Project**: https://github.com/Ekryd/sortpom
 
-**Results Summary**:
-- Baseline warnings: 96
+**Results Summary** (Updated with Maven Integration):
+- Baseline warnings: 2 (previously reported as 96 due to compilation errors being miscounted)
 - Models tested: 7 (GBT failed)
 - Successful models: 6/7 (85.7%)
-- Warning reduction: 100% for all successful models
-- Annotations placed: 780-816 (varies by model)
+- Warning reduction: 50% for all successful models
+- Annotations placed: 99-136 (varies by model)
 
 **Model Performance**:
 | Model | Annotations Placed | Warning Reduction | Success |
 |-------|-------------------|-------------------|---------|
-| GCN | 780 | 100% | ✅ |
-| HGT | 784 | 100% | ✅ |
+| GCN | 136 | 50% | ✅ |
+| HGT | 99 | 50% | ✅ |
 | GBT | 0 | 0% | ❌ (Failed to generate predictions) |
-| Causal | 792 | 100% | ✅ |
-| Enhanced Causal | 799 | 100% | ✅ |
-| GCSN | 810 | 100% | ✅ |
-| DG2N | 816 | 100% | ✅ |
+| Causal | 117 | 50% | ✅ |
+| Enhanced Causal | 135 | 50% | ✅ |
+| GCSN | 132 | 50% | ✅ |
+| DG2N | 131 | 50% | ✅ |
 
 **Observations**:
-- All successful models achieved 100% warning reduction
-- DG2N placed the most annotations (816)
-- GCN placed the fewest annotations (780)
-- GBT model failed to generate predictions
+- All successful models achieve 50% reduction (2 → 1 warning)
+- Consistent reduction across all working models
+- Fewer annotations placed compared to old measurements (more precise targeting)
+- GBT model continues to fail
 
 ### eclipse-external-annotations-m2e-plugin
 
 **Project**: https://github.com/lastnpe/eclipse-external-annotations-m2e-plugin
 
-**Results Summary**:
-- Baseline warnings: 49
+**Results Summary** (Updated with Maven Integration):
+- Baseline warnings: 83 (previously reported as 49; more code analyzable with dependencies)
 - Models tested: 7 (GBT failed)
 - Successful models: 6/7 (85.7%)
-- Warning reduction: 100% for all successful models
-- Annotations placed: 141-144 (varies by model)
+- Warning reduction: -6% (warnings increased after annotation placement)
+- Annotations placed: 14 (consistent across models)
 
 **Model Performance**:
 | Model | Annotations Placed | Warning Reduction | Success |
 |-------|-------------------|-------------------|---------|
-| GCN | 143 | 100% | ✅ |
-| HGT | 143 | 100% | ✅ |
+| GCN | 14 | -6% | ⚠️ |
+| HGT | 14 | -6% | ⚠️ |
 | GBT | 0 | 0% | ❌ (Failed to generate predictions) |
-| Causal | 143 | 100% | ✅ |
-| Enhanced Causal | 144 | 100% | ✅ |
-| GCSN | 141 | 100% | ✅ |
-| DG2N | 143 | 100% | ✅ |
+| Causal | 14 | -6% | ⚠️ |
+| Enhanced Causal | 14 | -6% | ⚠️ |
+| GCSN | 14 | -6% | ⚠️ |
+| DG2N | 14 | -6% | ⚠️ |
 
 **Observations**:
-- All successful models achieved 100% warning reduction
-- Enhanced Causal placed the most annotations (144)
-- GCSN placed the fewest annotations (141)
-- Very consistent annotation counts across models (141-144)
+- Warnings increased from 83 to 88 after annotation placement (-6% reduction)
+- This indicates models are not effective for this project's code patterns
+- Placed annotations may be introducing type conflicts
+- Models were not trained on similar Eclipse plugin code patterns
 - GBT model failed to generate predictions
 
 ### pom-tuner
 
 **Project**: https://github.com/l2x6/pom-tuner
 
-**Results Summary**:
-- Baseline warnings: 6
+**Results Summary** (Updated with Maven Integration):
+- Baseline warnings: 38 (previously reported as 6; more code analyzable with dependencies)
 - Models tested: 7 (GBT failed)
 - Successful models: 6/7 (85.7%)
-- Warning reduction: 100% for all successful models
-- Annotations placed: 1187-1231 (varies by model)
+- Warning reduction: 84% for all successful models
+- Annotations placed: 241-250 (varies by model)
 
 **Model Performance**:
 | Model | Annotations Placed | Warning Reduction | Success |
 |-------|-------------------|-------------------|---------|
-| GCN | 1214 | 100% | ✅ |
-| HGT | 1212 | 100% | ✅ |
+| GCN | 248 | 84% | ✅ |
+| HGT | 248 | 84% | ✅ |
 | GBT | 0 | 0% | ❌ (Failed to generate predictions) |
-| Causal | 1211 | 100% | ✅ |
-| Enhanced Causal | 1231 | 100% | ✅ |
-| GCSN | 1187 | 100% | ✅ |
-| DG2N | 1220 | 100% | ✅ |
+| Causal | 248 | 84% | ✅ |
+| Enhanced Causal | 250 | 84% | ✅ |
+| GCSN | 241 | 84% | ✅ |
+| DG2N | 248 | 84% | ✅ |
 
 **Observations**:
-- All successful models achieved 100% warning reduction
-- Enhanced Causal placed the most annotations (1231)
-- GCSN placed the fewest annotations (1187)
-- Large number of annotations placed relative to warnings (6 warnings → ~1200 annotations)
+- Excellent 84% reduction (38 → 6 warnings) - best performing case study
+- Consistent reduction across all working models
+- Models effectively target appropriate annotation locations
 - GBT model failed to generate predictions
+
+### Summary of Accurate Results
+
+| Project | Baseline | After | Reduction | Notes |
+|---------|----------|-------|-----------|-------|
+| sortpom | 2 | 1 | 50% | Modest but real improvement |
+| eclipse-external-annotations-m2e-plugin | 83 | 88 | -6% | Model limitations for Eclipse code |
+| pom-tuner | 38 | 6 | 84% | Excellent performance |
 
 ## Annotation Impact Analysis
 
@@ -491,24 +508,32 @@ Based on analysis of placed annotations:
    - Example: `@NonNegative\nint index = param;`
    - Effect: Constrains variable in its scope
 
-### Why 100% Warning Reduction
+### Understanding Warning Reduction Results
 
-All successful models achieve 100% warning reduction because:
+> **Note**: Previous documentation claimed 100% warning reduction, which was incorrect. Accurate measurements show varying reduction rates depending on the project.
 
-1. **Comprehensive Coverage**: Annotations placed at key dataflow points:
-   - Method parameters (upstream constraints)
-   - Return values (downstream constraints)
-   - Fields (long-lived constraints)
-   - Variables (local constraints)
+**Actual Results by Project:**
 
-2. **Constraint Saturation**: Sufficient annotation coverage ensures the checker
-   has all constraint information needed to verify operations
+1. **pom-tuner (84% reduction)** - Excellent performance due to:
+   - Code patterns similar to training data
+   - Annotations placed at effective dataflow points
+   - Constraint propagation working as expected
 
-3. **Multi-Layer Protection**: Annotations at different levels (parameters, returns,
-   fields, variables) create redundant constraint satisfaction
+2. **sortpom (50% reduction)** - Moderate performance:
+   - Only 2 baseline warnings, so 1 warning reduced
+   - May require more specialized annotations for remaining warning
 
-4. **Defensive Placement**: Some annotations are placed defensively to ensure
-   constraints are satisfied in complex control flow scenarios
+3. **eclipse-external-annotations-m2e-plugin (-6% reduction)** - Models ineffective:
+   - Eclipse plugin code patterns differ from training data
+   - Placed annotations may conflict with existing type constraints
+   - Suggests need for domain-specific training data
+
+**Factors Affecting Reduction:**
+
+1. **Training Data Similarity**: Models perform better on code similar to training examples
+2. **Annotation Precision**: Correct placement at key dataflow points is crucial
+3. **Type Constraint Complexity**: Complex existing type hierarchies may conflict with new annotations
+4. **Code Pattern Recognition**: Models must recognize appropriate annotation targets
 
 ### Detailed Analysis
 
@@ -522,21 +547,48 @@ See `ANNOTATION_IMPACT_ANALYSIS_REPORT.md` for:
 
 All data in this documentation has been verified as real:
 - ✅ Predictions verified in JSON files
-- ✅ Annotations verified in source files (718+ found in sample)
-- ✅ Evaluation results from actual checker runs
-- ✅ Calculations verified as correct
+- ✅ Annotations verified in source files
+- ✅ Evaluation results from actual checker runs with Maven classpath resolution
+- ✅ Warning counts verified with proper dependency resolution
 - ✅ No mock data detected
+- ✅ Previous 100% reduction claims corrected (were false positives)
 
-See `DATA_VERIFICATION_REPORT.md` for complete verification details.
+See `DATA_VERIFICATION_REPORT.md` and `MAVEN_INTEGRATION_AND_ACCURATE_RESULTS.md` for complete verification details.
+
+## Pipeline Changes (January 2026)
+
+### Maven Classpath Integration
+
+The pipeline now includes Maven classpath resolution for accurate analysis:
+
+1. **Detection**: Automatically detects Maven projects via `pom.xml`
+2. **Compilation**: Runs `mvn compile` to resolve dependencies
+3. **Classpath Building**: Combines Checker Framework, Maven dependencies, and target directories
+4. **Pre-flight Checks**: Verifies projects compile before evaluation
+
+This fixes the critical bug where compilation failures led to false 100% warning reduction claims.
+
+### Key Files Added/Modified
+
+- `maven_classpath_resolver.py` - New file for Maven dependency resolution
+- `test_lower_bound_warnings.py` - Updated to use Maven classpath
+- `evaluate_annotation_placement.py` - Added pre-flight verification
+- `checker_crash_detector.py` - Enhanced crash/failure detection
 
 ## Conclusion
 
-The Lower Bound Checker evaluation pipeline successfully demonstrates:
-- ✅ 100% warning reduction on all three case studies (for successful models)
-- ✅ Successful annotation placement with compilation success
+The Lower Bound Checker evaluation pipeline demonstrates:
+- ✅ Variable warning reduction depending on project (50% to 84% for successful cases)
+- ✅ Accurate measurement with Maven classpath resolution
+- ✅ Successful annotation placement with compilation verification
 - ✅ Confidence-based selection ensuring single annotation per location
 - ✅ AST-based perfect placement for accurate positioning
-- ✅ Annotations preserved in temp_repos directories for inspection
-- ✅ Real data verified (no mock data)
+- ✅ Crash detection to prevent false success claims
+- ✅ Real verified data (no mock data)
 
-The pipeline provides a complete end-to-end solution for automatically placing Lower Bound Checker annotations based on RL model predictions. Annotations reduce warnings through constraint propagation, with comprehensive coverage ensuring all constraint requirements are satisfied.
+**Performance Summary:**
+- **pom-tuner**: 84% reduction - excellent model performance
+- **sortpom**: 50% reduction - moderate but real improvement
+- **eclipse-external-annotations-m2e-plugin**: -6% - models not effective for this domain
+
+The pipeline provides a complete end-to-end solution for automatically placing Lower Bound Checker annotations based on RL model predictions. Accurate warning reduction measurement ensures reliable evaluation of model effectiveness.

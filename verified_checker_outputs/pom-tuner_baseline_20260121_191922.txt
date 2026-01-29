@@ -1,0 +1,173 @@
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:2064: warning: [dep-ann] deprecated item is not annotated with @Deprecated
+        public static Transformation removePlugin(boolean removePrecedingComments, boolean removePrecedingWhitespace,
+                                     ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:2107: warning: [dep-ann] deprecated item is not annotated with @Deprecated
+        public static Transformation removeDependency(boolean removePrecedingComments, boolean removePrecedingWhitespace,
+                                     ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:2148: warning: [dep-ann] deprecated item is not annotated with @Deprecated
+        public static Transformation removeManagedDependencies(boolean removePrecedingComments,
+                                     ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:239: error: [argument] incompatible argument for parameter beginIndex of String.substring.
+            final String trailingContent = src.substring(traillingStart);
+                                                         ^
+  found   : int
+  required: @LTEqLengthOf("src") int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:242: error: [argument] incompatible argument for parameter endIndex of String.substring.
+                return result.substring(0, traillingStartResult) + trailingContent;
+                                           ^
+  found   : int
+  required: @LTEqLengthOf("result") int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:831: error: [argument] incompatible argument for parameter endIndex of String.substring.
+                    : parentName.substring(0, parentName.length() - 1);
+                                                                  ^
+  found   : @GTENegativeOne int
+  required: @NonNegative int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:1115: error: [argument] incompatible argument for parameter capacity of StringBuilder constructor.
+            final StringBuilder sb = new StringBuilder(1 + indentCount * indentationString.length());
+                                                         ^
+  found   : int
+  required: @NonNegative int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:1798: error: [argument] incompatible argument for parameter beginIndex of String.substring.
+                            + PomTunerUtils.anyNs("modules", "module").substring(1) + "[text() = '" + m + "'" + "]";
+                                                                                 ^
+  found   : @UpperBoundLiteral(1) int
+  required: @LTEqLengthOf("org.l2x6.pom.tuner.PomTunerUtils.anyNs("modules", "module")") int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:1944: error: [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+                path[i++] = "project";
+                      ^
+  found   : String []
+  required: @MinLen(1) -- an array guaranteed to have at least 1 elements
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:1945: error: [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 1 could be larger than the array's bound
+                path[i++] = elementName;
+                      ^
+  found   : String []
+  required: @MinLen(2) -- an array guaranteed to have at least 2 elements
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:1947: error: [array.access.unsafe.high] Potentially unsafe array access: the index could be larger than the array's bound
+                    path[i++] = n;
+                          ^
+  found   : int
+  required: @IndexFor("path") or @LTLengthOf("path") -- an integer less than path's length
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:2022: error: [argument] incompatible argument for parameter beginIndex of String.substring.
+                        final String modulePath = wholeText.substring(MODULE_COMMENT_PREFIX.length(),
+                                                                                                  ^
+  found   : @LTEqLengthOf("org.l2x6.pom.tuner.PomTransformer.MODULE_COMMENT_PREFIX") int
+  required: @LTEqLengthOf("wholeText") int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/PomTransformer.java:2023: error: [argument] incompatible argument for parameter endIndex of String.substring.
+                                wholeText.length() - MODULE_COMMENT_INFIX.length() - commentText.length() - 1);
+                                                                                                          ^
+  found   : int
+  required: @NonNegative int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/MavenSourceTree.java:355: error: [argument] incompatible argument for parameter beginIndex of String.substring.
+                            new Expression(src.substring(offset, m.start()), expression.getGa())));
+                                                         ^
+  found   : int
+  required: @LTEqLengthOf("src") int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/MavenSourceTree.java:355: error: [argument] incompatible argument for parameter endIndex of String.substring.
+                            new Expression(src.substring(offset, m.start()), expression.getGa())));
+                                                                        ^
+  found   : int
+  required: @LTEqLengthOf("src") int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Module.java:102: error: [argument] incompatible argument for parameter index of Vector.get.
+                            final String grandParent = elementStack.get(elementStackSize - 2);
+                                                                                         ^
+  found   : int
+  required: @NonNegative int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Module.java:125: error: [argument] incompatible argument for parameter index of Vector.get.
+                                    && "pluginManagement".equals(elementStack.get(elementStackSize - 2))) {
+                                                                                                   ^
+  found   : int
+  required: @NonNegative int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:126: error: [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 0 could be larger than the array's bound
+                if (number < range[0] || number > range[1]) {
+                                   ^
+  found   : int []
+  required: @MinLen(1) -- an array guaranteed to have at least 1 elements
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:126: error: [array.access.unsafe.high.constant] Potentially unsafe array access: the constant index 1 could be larger than the array's bound
+                if (number < range[0] || number > range[1]) {
+                                                        ^
+  found   : int []
+  required: @MinLen(2) -- an array guaranteed to have at least 2 elements
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:156: error: [argument] incompatible argument for parameter index of String.charAt.
+            char current = globString.charAt(i);
+                                             ^
+  found   : int
+  required: @NonNegative int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:159: error: [argument] incompatible argument for parameter index of String.charAt.
+                if (i < length && globString.charAt(i) == '*') {
+                                                    ^
+  found   : int
+  required: @NonNegative int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:171: error: [argument] incompatible argument for parameter index of String.charAt.
+                } else if (i < length && "!^".indexOf(globString.charAt(i)) >= 0) {
+                                                                        ^
+  found   : int
+  required: @NonNegative int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:187: error: [argument] incompatible argument for parameter beginIndex of String.substring.
+                    final String choice = globString.substring(i, -j);
+                                                               ^
+  found   : int
+  required: @NonNegative int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:187: error: [argument] incompatible argument for parameter beginIndex of String.substring.
+                    final String choice = globString.substring(i, -j);
+                                                               ^
+  found   : int
+  required: @LTEqLengthOf("globString") int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:187: error: [argument] incompatible argument for parameter endIndex of String.substring.
+                    final String choice = globString.substring(i, -j);
+                                                                  ^
+  found   : int
+  required: @NonNegative int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:187: error: [argument] incompatible argument for parameter endIndex of String.substring.
+                    final String choice = globString.substring(i, -j);
+                                                                  ^
+  found   : int
+  required: @LTEqLengthOf("globString") int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:207: error: [argument] incompatible argument for parameter index of String.charAt.
+                if (i < length && globString.charAt(i) == '*') {
+                                                    ^
+  found   : int
+  required: @NonNegative int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:208: error: [argument] incompatible argument for parameter index of String.charAt.
+                    if (i + 1 < length && globString.charAt(i + 1) == '*' && i + 2 < length
+                                                              ^
+  found   : int
+  required: @NonNegative int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:209: error: [argument] incompatible argument for parameter index of String.charAt.
+                            && globString.charAt(i + 2) == '/') {
+                                                   ^
+  found   : int
+  required: @NonNegative int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:293: error: [argument] incompatible argument for parameter index of String.charAt.
+        while (j < length && (pattern.charAt(j) != stopAt || escapedChar)) {
+                                             ^
+  found   : int
+  required: @NonNegative int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:293: error: [argument] incompatible argument for parameter index of String.charAt.
+        while (j < length && (pattern.charAt(j) != stopAt || escapedChar)) {
+                                             ^
+  found   : int
+  required: @LTLengthOf("pattern") int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:294: error: [argument] incompatible argument for parameter index of String.charAt.
+            if (pattern.charAt(j) == c && !escapedChar) {
+                               ^
+  found   : int
+  required: @NonNegative int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:294: error: [argument] incompatible argument for parameter index of String.charAt.
+            if (pattern.charAt(j) == c && !escapedChar) {
+                               ^
+  found   : int
+  required: @LTLengthOf("pattern") int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:297: error: [argument] incompatible argument for parameter index of String.charAt.
+            escapedChar = pattern.charAt(j) == '\\' && !escapedChar;
+                                         ^
+  found   : int
+  required: @NonNegative int
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Glob.java:297: error: [argument] incompatible argument for parameter index of String.charAt.
+            escapedChar = pattern.charAt(j) == '\\' && !escapedChar;
+                                         ^
+  found   : int
+  required: @LTLengthOf("pattern") int
+Note: /home/ubuntu/GenDATA/annotation_evaluation/temp_repos/pom-tuner/pom-tuner/src/main/java/org/l2x6/pom/tuner/model/Gavtcs.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+32 errors
+3 warnings

@@ -1,0 +1,19 @@
+/home/ubuntu/GenDATA/case_studies/training_signature/SignatureBeforeAnnotation.java:30: warning: [argument] incompatible argument for parameter typeName of SignatureBeforeAnnotation.registerType.
+        registerType(getTypeName()); // WARNING: incompatible argument
+                                ^
+  found   : @SignatureUnknown String
+  required: @FullyQualifiedName String
+/home/ubuntu/GenDATA/case_studies/training_signature/SignatureTrainingExample.java:35: warning: [type.anno.before.modifier] write type annotation @BinaryName immediately before type, after modifiers [private]
+    private String className1 = "java.lang.String";
+                   ^
+/home/ubuntu/GenDATA/case_studies/training_signature/SignatureTrainingExample.java:56: warning: [argument] incompatible argument for parameter typeName of SignatureTrainingExample.registerType.
+        registerType(getTypeName());  // WARNING: [argument] incompatible
+                                ^
+  found   : @SignatureUnknown String
+  required: @FullyQualifiedName String
+/home/ubuntu/GenDATA/case_studies/training_signature/SignatureTrainingExample.java:72: warning: [assignment] incompatible types in assignment.
+        String fullName = pkg + "." + simple;
+                                    ^
+  found   : @SignatureUnknown String
+  required: @BinaryName String
+4 warnings

@@ -1,0 +1,60 @@
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/eclipse-external-annotations-m2e-plugin/eclipse-external-annotations-m2e-plugin.core/src/org/lastnpe/m2e/core/configurator/ClasspathConfigurator.java:46: error: package org.eclipse.m2e.jdt does not exist
+import org.eclipse.m2e.jdt.IClasspathDescriptor;
+                          ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/eclipse-external-annotations-m2e-plugin/eclipse-external-annotations-m2e-plugin.core/src/org/lastnpe/m2e/core/configurator/ClasspathConfigurator.java:47: error: package org.eclipse.m2e.jdt does not exist
+import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
+                          ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/eclipse-external-annotations-m2e-plugin/eclipse-external-annotations-m2e-plugin.core/src/org/lastnpe/m2e/core/configurator/ClasspathConfigurator.java:48: error: package org.eclipse.m2e.jdt does not exist
+import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
+                          ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/eclipse-external-annotations-m2e-plugin/eclipse-external-annotations-m2e-plugin.core/src/org/lastnpe/m2e/core/configurator/ClasspathConfigurator.java:59: error: cannot find symbol
+public class ClasspathConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
+                                                                                  ^
+  symbol: class IJavaProjectConfigurator
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/eclipse-external-annotations-m2e-plugin/eclipse-external-annotations-m2e-plugin.core/src/org/lastnpe/m2e/core/configurator/ClasspathConfigurator.java:83: error: cannot find symbol
+    public void configureClasspath(final IMavenProjectFacade mavenProjectFacade, final IClasspathDescriptor classpath,
+                                                                                       ^
+  symbol:   class IClasspathDescriptor
+  location: class ClasspathConfigurator
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/eclipse-external-annotations-m2e-plugin/eclipse-external-annotations-m2e-plugin.core/src/org/lastnpe/m2e/core/configurator/ClasspathConfigurator.java:99: error: cannot find symbol
+    private void setExternalAnnotationsPath(final IClasspathEntryDescriptor cpEntry, final String path) {
+                                                  ^
+  symbol:   class IClasspathEntryDescriptor
+  location: class ClasspathConfigurator
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/eclipse-external-annotations-m2e-plugin/eclipse-external-annotations-m2e-plugin.core/src/org/lastnpe/m2e/core/configurator/ClasspathConfigurator.java:211: error: cannot find symbol
+    public void configureRawClasspath(final ProjectConfigurationRequest request, final IClasspathDescriptor classpath,
+                                                                                       ^
+  symbol:   class IClasspathDescriptor
+  location: class ClasspathConfigurator
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/eclipse-external-annotations-m2e-plugin/eclipse-external-annotations-m2e-plugin.core/src/org/lastnpe/m2e/core/configurator/ClasspathConfigurator.java:296: error: cannot find symbol
+    private boolean setContainerClasspathEeaPath(final IClasspathDescriptor classpath,
+                                                       ^
+  symbol:   class IClasspathDescriptor
+  location: class ClasspathConfigurator
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/eclipse-external-annotations-m2e-plugin/eclipse-external-annotations-m2e-plugin.core/src/org/lastnpe/m2e/core/configurator/ClasspathConfigurator.java:316: error: cannot find symbol
+    private void setContainerClasspathExternalAnnotationsPath(final IClasspathDescriptor classpath,
+                                                                    ^
+  symbol:   class IClasspathDescriptor
+  location: class ClasspathConfigurator
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/eclipse-external-annotations-m2e-plugin/eclipse-external-annotations-m2e-plugin.core/src/org/lastnpe/m2e/core/configurator/ClasspathConfigurator.java:478: error: cannot find symbol
+    private String toString(final IClasspathEntryDescriptor entry) {
+                                  ^
+  symbol:   class IClasspathEntryDescriptor
+  location: class ClasspathConfigurator
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/eclipse-external-annotations-m2e-plugin/eclipse-external-annotations-m2e-plugin.core/src/org/lastnpe/m2e/core/configurator/ClasspathConfigurator.java:82: error: method does not override or implement a method from a supertype
+    @Override
+    ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/eclipse-external-annotations-m2e-plugin/eclipse-external-annotations-m2e-plugin.core/src/org/lastnpe/m2e/core/configurator/ClasspathConfigurator.java:88: error: cannot find symbol
+        for (final IClasspathEntryDescriptor cpEntry : classpath.getEntryDescriptors()) {
+                   ^
+  symbol:   class IClasspathEntryDescriptor
+  location: class ClasspathConfigurator
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/eclipse-external-annotations-m2e-plugin/eclipse-external-annotations-m2e-plugin.core/src/org/lastnpe/m2e/core/configurator/ClasspathConfigurator.java:210: error: method does not override or implement a method from a supertype
+    @Override
+    ^
+/home/ubuntu/GenDATA/annotation_evaluation/temp_repos/eclipse-external-annotations-m2e-plugin/eclipse-external-annotations-m2e-plugin.core/src/org/lastnpe/m2e/core/configurator/ClasspathConfigurator.java:318: error: cannot find symbol
+        for (final IClasspathEntryDescriptor cpEntry : classpath.getEntryDescriptors()) {
+                   ^
+  symbol:   class IClasspathEntryDescriptor
+  location: class ClasspathConfigurator
+14 errors

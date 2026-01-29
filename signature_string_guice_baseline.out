@@ -1,0 +1,368 @@
+/home/ubuntu/GenDATA/case_studies/guice/tools/OsgiWrapper.java:3: error: package aQute.bnd.osgi does not exist
+import aQute.bnd.osgi.Analyzer;
+                     ^
+/home/ubuntu/GenDATA/case_studies/guice/tools/OsgiWrapper.java:4: error: package aQute.bnd.osgi does not exist
+import aQute.bnd.osgi.Jar;
+                     ^
+/home/ubuntu/GenDATA/case_studies/guice/tools/OsgiWrapper.java:10: error: package picocli does not exist
+import picocli.CommandLine;
+              ^
+/home/ubuntu/GenDATA/case_studies/guice/tools/OsgiWrapper.java:11: error: package picocli.CommandLine does not exist
+import picocli.CommandLine.Command;
+                          ^
+/home/ubuntu/GenDATA/case_studies/guice/tools/OsgiWrapper.java:12: error: package picocli.CommandLine does not exist
+import picocli.CommandLine.Option;
+                          ^
+/home/ubuntu/GenDATA/case_studies/guice/tools/OsgiWrapper.java:15: error: cannot find symbol
+@Command(name = "osgi_wrapper")
+ ^
+  symbol: class Command
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/Provider.java:43: error: package jakarta.inject does not exist
+        jakarta.inject.Provider<T> {
+                      ^
+/home/ubuntu/GenDATA/case_studies/guice/extensions/spring/src/com/google/inject/spring/SpringIntegration.java:19: error: package com.google.common.base does not exist
+import static com.google.common.base.Preconditions.checkNotNull;
+                                    ^
+/home/ubuntu/GenDATA/case_studies/guice/extensions/spring/src/com/google/inject/spring/SpringIntegration.java:19: error: static import only from classes and interfaces
+import static com.google.common.base.Preconditions.checkNotNull;
+^
+/home/ubuntu/GenDATA/case_studies/guice/extensions/spring/src/com/google/inject/spring/SpringIntegration.java:25: error: package org.springframework.beans.factory does not exist
+import org.springframework.beans.factory.BeanFactory;
+                                        ^
+/home/ubuntu/GenDATA/case_studies/guice/extensions/spring/src/com/google/inject/spring/SpringIntegration.java:26: error: package org.springframework.beans.factory does not exist
+import org.springframework.beans.factory.ListableBeanFactory;
+                                        ^
+/home/ubuntu/GenDATA/case_studies/guice/extensions/spring/test/com/google/inject/spring/SpringIntegrationTest.java:27: error: package junit.framework does not exist
+import junit.framework.TestCase;
+                      ^
+/home/ubuntu/GenDATA/case_studies/guice/extensions/spring/test/com/google/inject/spring/SpringIntegrationTest.java:28: error: package org.springframework.beans.factory does not exist
+import org.springframework.beans.factory.BeanFactory;
+                                        ^
+/home/ubuntu/GenDATA/case_studies/guice/extensions/spring/test/com/google/inject/spring/SpringIntegrationTest.java:29: error: package org.springframework.beans.factory.config does not exist
+import org.springframework.beans.factory.config.BeanDefinition;
+                                               ^
+/home/ubuntu/GenDATA/case_studies/guice/extensions/spring/test/com/google/inject/spring/SpringIntegrationTest.java:30: error: package org.springframework.beans.factory.support does not exist
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+                                                ^
+/home/ubuntu/GenDATA/case_studies/guice/extensions/spring/test/com/google/inject/spring/SpringIntegrationTest.java:31: error: package org.springframework.beans.factory.support does not exist
+import org.springframework.beans.factory.support.RootBeanDefinition;
+                                                ^
+/home/ubuntu/GenDATA/case_studies/guice/extensions/spring/test/com/google/inject/spring/SpringIntegrationTest.java:34: error: cannot find symbol
+public class SpringIntegrationTest extends TestCase {
+                                           ^
+  symbol: class TestCase
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/CreationException.java:19: error: package com.google.common.base does not exist
+import static com.google.common.base.Preconditions.checkArgument;
+                                    ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/CreationException.java:19: error: static import only from classes and interfaces
+import static com.google.common.base.Preconditions.checkArgument;
+^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/CreationException.java:21: error: package com.google.common.collect does not exist
+import com.google.common.collect.ImmutableSet;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/CreationException.java:34: error: cannot find symbol
+  private final ImmutableSet<Message> messages;
+                ^
+  symbol:   class ImmutableSet
+  location: class CreationException
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/Message.java:19: error: package com.google.common.base does not exist
+import static com.google.common.base.Preconditions.checkNotNull;
+                                    ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/Message.java:19: error: static import only from classes and interfaces
+import static com.google.common.base.Preconditions.checkNotNull;
+^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/Message.java:21: error: package com.google.common.collect does not exist
+import com.google.common.collect.ImmutableList;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/Message.java:22: error: package com.google.common.collect does not exist
+import com.google.common.collect.Iterables;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/ErrorDetail.java:3: error: package com.google.common.base does not exist
+import com.google.common.base.Objects;
+                             ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/ErrorDetail.java:4: error: package com.google.common.collect does not exist
+import com.google.common.collect.ImmutableList;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/Binder.java:31: error: package org.aopalliance.intercept does not exist
+import org.aopalliance.intercept.MethodInterceptor;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/Binder.java:212: error: cannot find symbol
+      MethodInterceptor... interceptors);
+      ^
+  symbol:   class MethodInterceptor
+  location: interface Binder
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/Key.java:19: error: package com.google.common.base does not exist
+import static com.google.common.base.Preconditions.checkArgument;
+                                    ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/Key.java:19: error: static import only from classes and interfaces
+import static com.google.common.base.Preconditions.checkArgument;
+^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/Key.java:20: error: package com.google.common.base does not exist
+import static com.google.common.base.Preconditions.checkNotNull;
+                                    ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/Key.java:20: error: static import only from classes and interfaces
+import static com.google.common.base.Preconditions.checkNotNull;
+^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/Annotations.java:21: error: package com.google.common.base does not exist
+import com.google.common.base.Joiner;
+                             ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/Annotations.java:22: error: package com.google.common.base.Joiner does not exist
+import com.google.common.base.Joiner.MapJoiner;
+                                    ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/Annotations.java:23: error: package com.google.common.base does not exist
+import com.google.common.base.Preconditions;
+                             ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/Annotations.java:24: error: package com.google.common.cache does not exist
+import com.google.common.cache.CacheBuilder;
+                              ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/Annotations.java:25: error: package com.google.common.cache does not exist
+import com.google.common.cache.CacheLoader;
+                              ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/Annotations.java:26: error: package com.google.common.cache does not exist
+import com.google.common.cache.LoadingCache;
+                              ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/Annotations.java:27: error: package com.google.common.collect does not exist
+import com.google.common.collect.ImmutableMap;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/Annotations.java:28: error: package com.google.common.collect does not exist
+import com.google.common.collect.Maps;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/Key.java:24: error: package com.google.errorprone.annotations does not exist
+import com.google.errorprone.annotations.CheckReturnValue;
+                                        ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/Key.java:51: error: cannot find symbol
+@CheckReturnValue
+ ^
+  symbol: class CheckReturnValue
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/binder/LinkedBindingBuilder.java:19: error: package com.google.errorprone.annotations does not exist
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+                                        ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/binder/LinkedBindingBuilder.java:24: error: package org.jspecify.annotations does not exist
+import org.jspecify.annotations.Nullable;
+                               ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/TypeLiteral.java:19: error: package com.google.common.base does not exist
+import static com.google.common.base.Preconditions.checkArgument;
+                                    ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/TypeLiteral.java:19: error: static import only from classes and interfaces
+import static com.google.common.base.Preconditions.checkArgument;
+^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/TypeLiteral.java:20: error: package com.google.common.base does not exist
+import static com.google.common.base.Preconditions.checkNotNull;
+                                    ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/TypeLiteral.java:20: error: static import only from classes and interfaces
+import static com.google.common.base.Preconditions.checkNotNull;
+^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/MoreTypes.java:19: error: package com.google.common.base does not exist
+import static com.google.common.base.Preconditions.checkArgument;
+                                    ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/MoreTypes.java:19: error: static import only from classes and interfaces
+import static com.google.common.base.Preconditions.checkArgument;
+^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/MoreTypes.java:20: error: package com.google.common.base does not exist
+import static com.google.common.base.Preconditions.checkNotNull;
+                                    ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/MoreTypes.java:20: error: static import only from classes and interfaces
+import static com.google.common.base.Preconditions.checkNotNull;
+^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/MoreTypes.java:22: error: package com.google.common.base does not exist
+import com.google.common.base.Objects;
+                             ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/MoreTypes.java:23: error: package com.google.common.collect does not exist
+import com.google.common.collect.ImmutableMap;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/TypeLiteral.java:23: error: package com.google.common.collect does not exist
+import com.google.common.collect.ImmutableList;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/Dependency.java:19: error: package com.google.common.base does not exist
+import static com.google.common.base.Preconditions.checkNotNull;
+                                    ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/Dependency.java:19: error: static import only from classes and interfaces
+import static com.google.common.base.Preconditions.checkNotNull;
+^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/Dependency.java:21: error: package com.google.common.base does not exist
+import com.google.common.base.Objects;
+                             ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/Dependency.java:22: error: package com.google.common.collect does not exist
+import com.google.common.collect.ImmutableSet;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/Dependency.java:23: error: package com.google.common.collect does not exist
+import com.google.common.collect.Lists;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/InjectionPoint.java:21: error: package com.google.common.collect does not exist
+import com.google.common.collect.ImmutableList;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/InjectionPoint.java:22: error: package com.google.common.collect does not exist
+import com.google.common.collect.ImmutableSet;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/InjectionPoint.java:23: error: package com.google.common.collect does not exist
+import com.google.common.collect.Iterables;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/InjectionPoint.java:24: error: package com.google.common.collect does not exist
+import com.google.common.collect.Lists;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/InjectionPoint.java:25: error: package com.google.common.collect does not exist
+import com.google.common.collect.ObjectArrays;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/InjectionPoint.java:73: error: cannot find symbol
+  private final ImmutableList<Dependency<?>> dependencies;
+                ^
+  symbol:   class ImmutableList
+  location: class InjectionPoint
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/Errors.java:20: error: package com.google.common.collect does not exist
+import com.google.common.collect.ImmutableList;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/Errors.java:21: error: package com.google.common.collect does not exist
+import com.google.common.collect.ImmutableSet;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/Errors.java:22: error: package com.google.common.collect does not exist
+import com.google.common.collect.Lists;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/Errors.java:23: error: package com.google.common.collect does not exist
+import com.google.common.collect.Multimap;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/Errors.java:24: error: package com.google.common.collect does not exist
+import com.google.common.collect.Ordering;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/InjectionPoint.java:131: error: cannot find symbol
+  private ImmutableList<Dependency<?>> forMember(
+          ^
+  symbol:   class ImmutableList
+  location: class InjectionPoint
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/InterceptorBinding.java:19: error: package com.google.common.base does not exist
+import static com.google.common.base.Preconditions.checkNotNull;
+                                    ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/InterceptorBinding.java:19: error: static import only from classes and interfaces
+import static com.google.common.base.Preconditions.checkNotNull;
+^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/InterceptorBinding.java:21: error: package com.google.common.collect does not exist
+import com.google.common.collect.ImmutableList;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/InterceptorBinding.java:26: error: package org.aopalliance.intercept does not exist
+import org.aopalliance.intercept.MethodInterceptor;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/TypeConverterBinding.java:19: error: package com.google.common.base does not exist
+import static com.google.common.base.Preconditions.checkNotNull;
+                                    ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/TypeConverterBinding.java:19: error: static import only from classes and interfaces
+import static com.google.common.base.Preconditions.checkNotNull;
+^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/Errors.java:359: error: cannot find symbol
+  public <K, V> Errors duplicateMapKey(Key<Map<K, V>> mapKey, Multimap<K, Binding<V>> duplicates) {
+                                                              ^
+  symbol:   class Multimap
+  location: class Errors
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/ScopeBinding.java:19: error: package com.google.common.base does not exist
+import static com.google.common.base.Preconditions.checkNotNull;
+                                    ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/ScopeBinding.java:19: error: static import only from classes and interfaces
+import static com.google.common.base.Preconditions.checkNotNull;
+^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/ScopeBinding.java:21: error: package com.google.common.base does not exist
+import com.google.common.base.MoreObjects;
+                             ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/InternalProvisionException.java:18: error: package com.google.common.base does not exist
+import static com.google.common.base.Preconditions.checkArgument;
+                                    ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/InternalProvisionException.java:18: error: static import only from classes and interfaces
+import static com.google.common.base.Preconditions.checkArgument;
+^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/InternalProvisionException.java:20: error: package com.google.common.collect does not exist
+import com.google.common.collect.ImmutableList;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/InternalProvisionException.java:21: error: package com.google.common.collect does not exist
+import com.google.common.collect.Lists;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/ElementSource.java:19: error: package com.google.common.base does not exist
+import com.google.common.base.Preconditions;
+                             ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/ModuleSource.java:19: error: package com.google.common.base does not exist
+import com.google.common.base.Preconditions;
+                             ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/ModuleSource.java:20: error: package com.google.common.collect does not exist
+import com.google.common.collect.ImmutableList;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/BindingSourceRestriction.java:3: error: package com.google.common.base does not exist
+import static com.google.common.base.Preconditions.checkNotNull;
+                                    ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/BindingSourceRestriction.java:3: error: static import only from classes and interfaces
+import static com.google.common.base.Preconditions.checkNotNull;
+^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/BindingSourceRestriction.java:6: error: package com.google.common.annotations does not exist
+import com.google.common.annotations.VisibleForTesting;
+                                    ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/BindingSourceRestriction.java:7: error: package com.google.common.collect does not exist
+import com.google.common.collect.ImmutableList;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/BindingSourceRestriction.java:8: error: package com.google.common.collect does not exist
+import com.google.common.collect.ImmutableSet;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/BindingSourceRestriction.java:9: error: package com.google.common.collect does not exist
+import com.google.common.collect.Iterables;
+                                ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/BindingSourceRestriction.java:57: error: cannot find symbol
+    ImmutableSet<Class<? extends Annotation>> getPermits(ElementSource elementSource);
+    ^
+  symbol:   class ImmutableSet
+  location: interface PermitMap
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/BindingSourceRestriction.java:92: error: cannot find symbol
+  public static ImmutableList<Message> check(GuiceInternal guiceInternal, List<Element> elements) {
+                ^
+  symbol:   class ImmutableList
+  location: class BindingSourceRestriction
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/BindingSourceRestriction.java:100: error: cannot find symbol
+  private static ImmutableList<Message> check(List<Element> elements) {
+                 ^
+  symbol:   class ImmutableList
+  location: class BindingSourceRestriction
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/spi/BindingSourceRestriction.java:108: error: cannot find symbol
+  private static ImmutableList<Message> check(Element element) {
+                 ^
+  symbol:   class ImmutableList
+  location: class BindingSourceRestriction
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/InternalFlags.java:204: warning: [removal] AccessController in java.security has been deprecated and marked for removal
+          AccessController.doPrivileged(
+          ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/aop/HiddenClassDefiner.java:32: warning: Unsafe is internal proprietary API and may be removed in a future release
+  private static final sun.misc.Unsafe THE_UNSAFE;
+                               ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/aop/HiddenClassDefiner.java:42: warning: Unsafe is internal proprietary API and may be removed in a future release
+    sun.misc.Unsafe theUnsafe;
+            ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/aop/UnsafeGetter.java:24: warning: Unsafe is internal proprietary API and may be removed in a future release
+  static sun.misc.Unsafe getUnsafe() throws ReflectiveOperationException {
+                 ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/aop/UnsafeGetter.java:26: warning: Unsafe is internal proprietary API and may be removed in a future release
+      return sun.misc.Unsafe.getUnsafe();
+                     ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/aop/UnsafeGetter.java:31: warning: Unsafe is internal proprietary API and may be removed in a future release
+    Class<sun.misc.Unsafe> k = sun.misc.Unsafe.class;
+                  ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/aop/UnsafeGetter.java:31: warning: Unsafe is internal proprietary API and may be removed in a future release
+    Class<sun.misc.Unsafe> k = sun.misc.Unsafe.class;
+                                       ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/aop/UnsafeClassDefiner.java:134: warning: [removal] AccessController in java.security has been deprecated and marked for removal
+      return AccessController.doPrivileged(action);
+             ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/aop/UnsafeClassDefiner.java:144: warning: [removal] AccessController in java.security has been deprecated and marked for removal
+      return AccessController.doPrivileged(
+             ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/aop/ChildClassDefiner.java:63: warning: [removal] AccessController in java.security has been deprecated and marked for removal
+    return AccessController.doPrivileged(action);
+           ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/aop/AnonymousClassDefiner.java:29: warning: Unsafe is internal proprietary API and may be removed in a future release
+  private static final sun.misc.Unsafe THE_UNSAFE;
+                               ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/aop/AnonymousClassDefiner.java:36: warning: Unsafe is internal proprietary API and may be removed in a future release
+    sun.misc.Unsafe theUnsafe;
+            ^
+/home/ubuntu/GenDATA/case_studies/guice/core/src/com/google/inject/internal/aop/AnonymousClassDefiner.java:42: warning: Unsafe is internal proprietary API and may be removed in a future release
+          sun.misc.Unsafe.class.getMethod(
+                  ^
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+100 errors
+13 warnings
+only showing the first 100 errors, of 10472 total; use -Xmaxerrs if you would like to see more

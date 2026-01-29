@@ -1,0 +1,59 @@
+/*
+ * Copyright (c) 2015 Maven Utilities Project
+ * project contributors as indicated by the @author tags.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.l2x6.pom.tuner.model;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.index.inequality.LessThanChecker")
+public class ValueDefinition {
+
+    private final  Module module;
+
+    private final  Expression value;
+
+    private final  String xPath;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public ValueDefinition( Module module,  String xPath,  Expression value) {
+        super();
+        this.module = module;
+        this.xPath = xPath;
+        this.value = value;
+    }
+
+    /**
+     * @return the {@link Module} in which {@link #value} is defined
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  Module getModule( ValueDefinition this) {
+        return module;
+    }
+
+    /**
+     * @return the value of the {@link Expression}
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  Expression getValue( ValueDefinition this) {
+        return value;
+    }
+
+    /**
+     * @return an XPath expression pointing at the element where the {@link #value} is defined
+     */
+    @org.checkerframework.dataflow.qual.Pure
+    public  String getXPath( ValueDefinition this) {
+        return xPath;
+    }
+}

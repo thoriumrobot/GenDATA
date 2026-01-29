@@ -1,0 +1,59 @@
+package sortpom.wrapper.operation;
+
+import org.dom4j.Element;
+import sortpom.wrapper.content.Wrapper;
+
+/**
+ * Exposes the methods that are available to the root of the wrapper hierarchy. This also means that
+ * we always have an element as root element.
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.common.value.ValueChecker")
+public class HierarchyRootWrapper extends HierarchyWrapper {
+
+    @org.checkerframework.dataflow.qual.Impure
+    public HierarchyRootWrapper( Wrapper<Element> wrapper) {
+        super(wrapper);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public void createWrappedStructure( HierarchyRootWrapper this,  WrapperFactory factory) {
+        super.createWrappedStructure(factory);
+    }
+
+    /**
+     * Sorts the attributes of the xml elements
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void sortStructureAttributes( HierarchyRootWrapper this) {
+        processOperation(new SortAttributesOperation());
+    }
+
+    /**
+     * Sorts all xml elements
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void sortStructureElements( HierarchyRootWrapper this) {
+        processOperation(new SortChildrenOperation());
+    }
+
+    /**
+     * Creates a fresh xml structure
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void connectXmlStructure( HierarchyRootWrapper this) {
+        processOperation(new GetContentStructureOperation());
+    }
+
+    /**
+     * Detaches all xml elements
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public void detachStructure( HierarchyRootWrapper this) {
+        processOperation(new DetachOperation());
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  Wrapper<Element> getElementContent( HierarchyRootWrapper this) {
+        return super.getElementContent();
+    }
+}

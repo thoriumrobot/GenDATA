@@ -2,29 +2,43 @@
 
 **Generated**: December 2025
 
+**Last Updated**: January 2026
+
+> **IMPORTANT UPDATE**: This report was generated before Maven classpath integration was implemented. The 100% warning reduction claims below were **incorrect** due to compilation failures preventing proper checker analysis. See `MAVEN_INTEGRATION_AND_ACCURATE_RESULTS.md` for accurate results.
+
 This report provides a comprehensive analysis of how placed annotations
 reduce Lower Bound Checker warnings through constraint propagation and
-value assertions. All data in this report is verified as real.
+value assertions.
 
 ## Data Verification
 
-⚠️ **Verification Notes**
+⚠️ **Critical Verification Notes**
 - sortpom/gbt: No predictions found
 - eclipse-external-annotations-m2e-plugin/gbt: No predictions found
 - pom-tuner/gbt: No predictions found
+- **All 100% reduction claims were false positives** - caused by compilation failures
 
 ## Executive Summary
 
+### Original (Incorrect) Results - Pre-Maven Integration
+
 - **Projects Analyzed**: 3
-- **Total Baseline Warnings**: 151
+- **Total Baseline Warnings**: 151 (incorrect - compilation errors were miscounted)
 - **Total Annotations Placed**: 2137
 - **Total Warnings Eliminated**: 151
-- **Warning Reduction Rate**: 100.0%
-- **Successful Model Runs**: 18
-- **Failed Model Runs**: 3
+- **Warning Reduction Rate**: 100.0% **(FALSE - compilation failures)**
 
-**Key Finding**: All successful models achieve 100% warning reduction
-through comprehensive annotation placement that satisfies all constraint requirements.
+### Corrected Results - With Maven Integration (January 2026)
+
+- **Projects Analyzed**: 3
+- **Total Baseline Warnings**: 123 (2 + 83 + 38)
+- **Total Annotations Placed**: ~410 (~130 + ~14 + ~248)
+- **Actual Warning Reduction**:
+  - sortpom: 50% (2 → 1)
+  - eclipse-external-annotations-m2e-plugin: -6% (83 → 88, warnings increased)
+  - pom-tuner: 84% (38 → 6)
+
+**Key Finding**: Model effectiveness varies significantly by project. pom-tuner shows excellent results (84%), while eclipse-external-annotations-m2e-plugin shows models are not effective for that domain.
 
 ## sortpom
 

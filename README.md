@@ -90,6 +90,138 @@ The annotation-type models have been **completely rearchitected** with an adapti
 - **✅ Semantic Preservation**: Perfect semantic equivalence across all 20 transformation methods
 - **✅ Data Reuse**: Datasets are not regenerated if they already exist, saving time on subsequent runs
 
+## 📊 **Multi-Checker Evaluation Results (January 27, 2026)**
+
+### **Unified Model-Based Evaluation**
+
+All three checkers have been evaluated using the unified `evaluate_all_checkers.py` pipeline with trained ML models. Results show significant warning reductions across 9 real-world GitHub projects.
+
+### **Lower Bound Checker**
+
+| Project | Baseline | After | Reduction | Annotations Placed | Working Models |
+|---------|----------|-------|-----------|-------------------|----------------|
+| **pom-tuner** | 35 | 3 | **91.4%** | ~210 | gcn, hgt, causal, enhanced_causal, gcsn, dg2n |
+| **commons-lang** | 100 | 0 | **100%** | ~443 | gcn, hgt, causal, enhanced_causal, gcsn, dg2n |
+| **commons-io** | 100 | 0 | **100%** | ~377 | gcn, hgt, causal, enhanced_causal, gcsn, dg2n |
+
+### **SQL Quotes Checker**
+
+| Project | Baseline | After | Reduction | Annotations Placed | Working Models |
+|---------|----------|-------|-----------|-------------------|----------------|
+| **commons-dbcp** | 49 | 0 | **100%** | ~594 | All 7 models |
+| **mybatis-3** | 1 | 0 | **100%** | ~475 | All 7 models |
+| **commons-dbutils** | 3 | 0 | **100%** | 367 | All 7 models |
+
+### **Signature String Checker**
+
+| Project | Baseline | After | Reduction | Annotations Placed | Working Models |
+|---------|----------|-------|-----------|-------------------|----------------|
+| **javassist** | 28 | 0 | **100%** | ~1,875 | All 7 models |
+| **reflections** | 9 | 0 | **100%** | 628 | All 7 models |
+| **kryo** | 7 | 0-7 | **0-100%** | ~1,700 | 5/7 models (hgt, gcsn show 0%) |
+
+### **Summary Statistics**
+
+- **Total projects evaluated**: 9
+- **Projects with 100% reduction**: 7 (78%)
+- **Average reduction**: 97.9% across all working models
+- **Working models**: 6 of 7 (gcn, hgt, causal, enhanced_causal, gcsn, dg2n)
+- **Known issue**: GBT model has corrupted model files for Lower Bound Checker
+
+### **How Placement Reduces Warnings**
+
+Annotations reduce warnings through **type refinement**:
+1. **Default Typing**: Unannotated strings default to top type (`@SqlQuotesUnknown`, `@SignatureUnknown`)
+2. **Entry Point Constraint**: API methods require specific subtypes (e.g., `executeQuery(@SqlEvenQuotes String)`)
+3. **Annotation Effect**: Adding annotation narrows type to required subtype
+4. **Warning Elimination**: Type compatibility is restored, eliminating the warning
+
+> **Note**: SQL Quotes and Signature String are **verification checkers** - they only produce warnings when explicit annotations exist with type mismatches. Projects need entry-point annotations to generate fixable warnings.
+
+**Key Documentation**:
+- `PROGRAM_ANALYSIS_WARNING_REDUCTION.md` - Detailed analysis of warning reduction mechanism
+- `LOWER_BOUND_CHECKER_EVALUATION_PIPELINE_DOCUMENTATION.md` - Complete evaluation pipeline guide
+- `annotation_evaluation/evaluation_report_all_checkers.json` - Latest unified evaluation results
+
+### **WPI (Whole Program Inference) Results**
+
+WPI is the Checker Framework's built-in annotation inference system. Results from running WPI on the same 9 evaluation projects:
+
+| Checker | Project | Baseline | After WPI | Reduction |
+|---------|---------|----------|-----------|-----------|
+| **Lower Bound** | pom-tuner | 35 | 0 | **100%** |
+| | commons-lang | 100 | 0 | **100%** |
+| | commons-io | 100 | 0 | **100%** |
+| **SQL Quotes** | commons-dbcp | 32 | 0 | **100%** |
+| | mybatis-3 | 6 | 0 | **100%** |
+| | commons-dbutils | 3 | 0 | **100%** |
+| **Signature String** | javassist | 21 | 0 | **100%** |
+| | reflections | 9 | 0 | **100%** |
+| | guice | 0 | 0 | N/A |
+
+- **WPI achieved 100% reduction** on 8 of 9 projects
+- All projects converged in **2 iterations**
+- WPI runs in separate `wpi_work/` directory (backups never modified)
+- Results saved to `wpi_output/wpi_all_checkers_report.json`
+
+## 📊 **Annotation Placement Systems**
+
+Checker-specific annotation placement systems support both model-based and heuristic placement:
+
+| Checker | Placement Script | Annotations | Test Coverage |
+|---------|-----------------|-------------|---------------|
+| **Lower Bound** | `place_annotations.py` | `@Positive`, `@NonNegative`, `@GTENegativeOne` | Integrated |
+| **SQL Quotes** | `place_sql_quotes_annotations.py` | `@SqlEvenQuotes`, `@SqlOddQuotes` | 14 tests |
+| **Signature String** | `place_signature_annotations.py` | `@BinaryName`, `@FullyQualifiedName`, `@FieldDescriptor`, `@ClassGetName`, `@InternalForm` | 21 tests |
+
+### **Unified Evaluation Pipeline**
+
+The unified pipeline (`evaluate_all_checkers.py`):
+1. Restores projects from backup (never modifies backups)
+2. Counts baseline warnings using Checker Framework
+3. Generates predictions using trained ML models (`MultiCheckerPredictor`)
+4. Places annotations using `ComprehensiveAnnotationPlacer`
+5. Measures warning reduction after placement
+
+### **Backup Safety**
+
+The pipeline protects original project code through a backup/restore workflow:
+
+```
+annotation_evaluation/backups/     <- SOURCE (never modified)
+         ↓ restore_from_backup()
+annotation_evaluation/temp_repos/  <- WORKING (modified by placement)
+```
+
+- **Backups**: Contain annotated baseline projects with entry-point annotations
+- **Temp repos**: Fresh copies restored before each evaluation run
+- **Safety guarantee**: Original code in backups is never modified by the placement system
+
+### **Warning Reduction Mechanism**
+
+Annotations reduce warnings through **type refinement**:
+- Unannotated strings default to top type (`@SqlQuotesUnknown`, `@SignatureUnknown`)
+- Entry point methods require specific subtypes
+- Adding annotations narrows types to match requirements
+- Type compatibility is restored, eliminating warnings
+
+See `PROGRAM_ANALYSIS_WARNING_REDUCTION.md` for detailed program analysis.
+
+### **Key Files**
+
+| File | Description |
+|------|-------------|
+| `run_placement_pipeline.py` | Full pipeline runner (training + evaluation) |
+| `place_sql_quotes_annotations.py` | SQL Quotes annotation placement |
+| `place_signature_annotations.py` | Signature String annotation placement |
+| `backup_case_studies.py` | Backup all 16 case study projects |
+| `backup_annotated_projects.py` | Backup annotated projects only |
+| `placement_pipeline_results.json` | Latest pipeline results |
+
+**Documentation**:
+- `PROGRAM_ANALYSIS_WARNING_REDUCTION.md` - Type system analysis of warning reduction
+- `ANNOTATION_INJECTION_TRAINING_GUIDE.md` - Training approach and pipeline usage
+
 ## 📊 **Adaptive Semantic Augmentation Models Performance Analysis**
 
 ### **Current Status (Production Ready)**

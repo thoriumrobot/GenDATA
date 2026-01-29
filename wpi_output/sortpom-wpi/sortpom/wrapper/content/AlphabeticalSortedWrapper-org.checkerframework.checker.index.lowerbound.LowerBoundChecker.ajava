@@ -1,0 +1,41 @@
+package sortpom.wrapper.content;
+
+import org.dom4j.Element;
+import org.dom4j.Node;
+
+/**
+ * En wrapper lets its element be sorted in alphabetical order
+ *
+ * @author Bjorn
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.index.lowerbound.LowerBoundChecker")
+public class AlphabeticalSortedWrapper implements Wrapper<Element> {
+
+    private final  Element element;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public AlphabeticalSortedWrapper( Element element) {
+        this.element = element;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public  Element getContent( AlphabeticalSortedWrapper this) {
+        return element;
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public  @org.checkerframework.checker.index.qual.LowerBoundBottom boolean isBefore( AlphabeticalSortedWrapper this,  Wrapper<? extends Node> wrapper) {
+        return wrapper instanceof AlphabeticalSortedWrapper && isBeforeAlphabeticalSortedWrapper((AlphabeticalSortedWrapper) wrapper);
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    private   boolean isBeforeAlphabeticalSortedWrapper( AlphabeticalSortedWrapper this,  AlphabeticalSortedWrapper wrapper) {
+        return wrapper.getContent().getName().compareTo(getContent().getName()) > 0;
+    }
+
+    @org.checkerframework.framework.qual.EnsuresQualifier(expression = { "this.element" }, qualifier = org.checkerframework.checker.index.qual.LowerBoundBottom.class)
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    public  String toString( AlphabeticalSortedWrapper this) {
+        return "AlphabeticalSortedWrapper{element=" + (element == null ? "null" : element.toString().replaceAll(".+@[^ ]+ ", "")) + '}';
+    }
+}

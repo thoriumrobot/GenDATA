@@ -1,0 +1,55 @@
+package sortpom.wrapper.content;
+
+import static sortpom.wrapper.content.Phase.compareTo;
+import org.dom4j.Element;
+import org.dom4j.Node;
+
+/**
+ * A wrapper that contains a execution element. The element is sorted according to: 1 no phase and
+ * no id 2 no phase and id (sorted by id value) 3 standard phase and no id (sorted by Maven phase
+ * order) 4 standard phase and id (sorted by Maven phase order and then id value) 5 other phase and
+ * no id (sorted by phase value) 6 other phase and id (sorted by phase value and then id value)
+ */
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.common.value.ValueChecker")
+public class ExecutionSortedWrapper extends SortedWrapper {
+
+    private final  Phase phase;
+
+    private final  String id;
+
+    /**
+     * Instantiates a new child element sorted wrapper with a plugin element.
+     *
+     * @param element the element
+     * @param sortOrder the sort order
+     */
+    @org.checkerframework.dataflow.qual.Impure
+    public ExecutionSortedWrapper( Element element,   int sortOrder) {
+        super(element, sortOrder);
+        var children = getContent().elements();
+        phase = children.stream().filter(e -> e.getName().equals("phase") && e.getText() != null).map(e -> Phase.getPhase(e.getTextTrim())).findFirst().orElse(null);
+        id = children.stream().filter(e -> e.getName().equals("id")).map(Element::getTextTrim).findFirst().orElse("");
+    }
+
+    @org.checkerframework.dataflow.qual.Impure
+    public   boolean isBefore( ExecutionSortedWrapper this,  Wrapper<? extends Node> wrapper) {
+        if (wrapper instanceof ExecutionSortedWrapper) {
+            return isBeforeWrapper((ExecutionSortedWrapper) wrapper);
+        }
+        return super.isBefore(wrapper);
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    private   boolean isBeforeWrapper( ExecutionSortedWrapper this,  ExecutionSortedWrapper wrapper) {
+        var compare = compareTo(phase, wrapper.phase);
+        if (compare != 0) {
+            return compare < 0;
+        }
+        return id.compareTo(wrapper.id) < 0;
+    }
+
+    @org.checkerframework.dataflow.qual.Pure
+    public @org.checkerframework.common.value.qual.ArrayLenRange(from = 37, to = 2147483647) String toString( ExecutionSortedWrapper this) {
+        return "ExecutionSortedWrapper{phase=" + phase + ", id='" + id + '\'' + '}';
+    }
+}

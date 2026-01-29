@@ -1,0 +1,23 @@
+package sortpom.parameter;
+
+import sortpom.exception.FailureException;
+
+@org.checkerframework.framework.qual.AnnotatedFor("org.checkerframework.checker.index.inequality.LessThanChecker")
+public enum IndentAttribute {
+
+    NONE, SCHEMA_LOCATION, ALL;
+
+    @org.checkerframework.dataflow.qual.SideEffectFree
+    static  IndentAttribute fromString(@org.checkerframework.checker.index.qual.LessThanBottom String indentAttribute) {
+        if (indentAttribute == null) {
+            return NONE;
+        }
+        if ("schemaLocation".equalsIgnoreCase(indentAttribute)) {
+            return SCHEMA_LOCATION;
+        }
+        if ("all".equalsIgnoreCase(indentAttribute)) {
+            return ALL;
+        }
+        throw new FailureException(String.format("indentAttribute must be either schemaLocation or all. Was: %s", indentAttribute));
+    }
+}

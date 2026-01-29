@@ -37,8 +37,12 @@ class CheckerFrameworkRunner:
             processor: Checker Framework processor to use (overrides checker_name if provided)
             checker_name: Name of checker to use (e.g., 'lower_bound', 'sql_quotes', 'signature_string')
         """
-        self.checker_home = checker_home or os.environ.get('CHECKERFRAMEWORK_HOME', '/home/ubuntu/checker-framework-3.42.0')
-        self.checker_cp = checker_cp or os.environ.get('CHECKERFRAMEWORK_CP', '')
+        # Use the local Checker Framework build which has SqlQuotesChecker and SignatureChecker
+        default_cf_home = '/home/ubuntu/checker-framework'
+        default_cf_cp = '/home/ubuntu/checker-framework/checker/dist/checker-qual.jar:/home/ubuntu/checker-framework/checker/dist/checker.jar'
+        
+        self.checker_home = checker_home or os.environ.get('CHECKERFRAMEWORK_HOME', default_cf_home)
+        self.checker_cp = checker_cp or os.environ.get('CHECKERFRAMEWORK_CP', default_cf_cp)
         self.max_warnings = max_warnings
         
         # Determine processor from checker_name or use provided processor
@@ -76,8 +80,8 @@ class CheckerFrameworkRunner:
         """Get default processor class name for a checker"""
         processor_map = {
             'lower_bound': 'org.checkerframework.checker.index.IndexChecker',
-            'sql_quotes': 'org.checkerframework.checker.quotes.QuotesChecker',
-            'signature_string': 'org.checkerframework.checker.signature.qual.SignatureChecker',
+            'sql_quotes': 'org.checkerframework.checker.sqlquotes.SqlQuotesChecker',
+            'signature_string': 'org.checkerframework.checker.signature.SignatureChecker',
         }
         return processor_map.get(checker_name.lower(), 'org.checkerframework.checker.index.IndexChecker')
     

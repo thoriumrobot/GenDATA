@@ -1,0 +1,171 @@
+SqlQuotesConcat.java:10: error: [assignment] incompatible types in assignment.
+    @SqlOddQuotes String oddResult1 = odd1 + odd2;
+                                           ^
+  found   : @SqlEvenQuotes String
+  required: @SqlOddQuotes String
+SqlQuotesConcat.java:13: error: [compound.assignment] expression type incompatible with left-hand side in compound assignment.
+    odd1 += odd2;
+         ^
+  found   : @SqlEvenQuotes String
+  required: @SqlOddQuotes String
+SqlQuotesConcat.java:15: error: [compound.assignment] expression type incompatible with left-hand side in compound assignment.
+    odd2 += odd1;
+         ^
+  found   : @SqlEvenQuotes String
+  required: @SqlOddQuotes String
+SqlQuotesConcat.java:20: error: [assignment] incompatible types in assignment.
+    @SqlOddQuotes String oddResult2 = odd3 + odd4;
+                                           ^
+  found   : @SqlEvenQuotes String
+  required: @SqlOddQuotes String
+SqlQuotesConcat.java:23: error: [compound.assignment] expression type incompatible with left-hand side in compound assignment.
+    odd3 += odd4;
+         ^
+  found   : @SqlEvenQuotes String
+  required: @SqlOddQuotes String
+SqlQuotesConcat.java:25: error: [compound.assignment] expression type incompatible with left-hand side in compound assignment.
+    odd4 += odd3;
+         ^
+  found   : @SqlEvenQuotes String
+  required: @SqlOddQuotes String
+SqlQuotesConcat.java:32: error: [assignment] incompatible types in assignment.
+    @SqlEvenQuotes String evenResult1 = odd1 + even1;
+                                             ^
+  found   : @SqlOddQuotes String
+  required: @SqlEvenQuotes String
+SqlQuotesConcat.java:36: error: [compound.assignment] expression type incompatible with left-hand side in compound assignment.
+    even1 += odd1;
+          ^
+  found   : @SqlOddQuotes String
+  required: @SqlEvenQuotes String
+SqlQuotesConcat.java:41: error: [assignment] incompatible types in assignment.
+    @SqlEvenQuotes String evenResult2 = odd2 + even2;
+                                             ^
+  found   : @SqlOddQuotes String
+  required: @SqlEvenQuotes String
+SqlQuotesConcat.java:45: error: [compound.assignment] expression type incompatible with left-hand side in compound assignment.
+    even2 += odd2;
+          ^
+  found   : @SqlOddQuotes String
+  required: @SqlEvenQuotes String
+SqlQuotesConcat.java:52: error: [assignment] incompatible types in assignment.
+    @SqlEvenQuotes String evenResult1 = even1 + odd1;
+                                              ^
+  found   : @SqlOddQuotes String
+  required: @SqlEvenQuotes String
+SqlQuotesConcat.java:56: error: [compound.assignment] expression type incompatible with left-hand side in compound assignment.
+    even1 += odd1;
+          ^
+  found   : @SqlOddQuotes String
+  required: @SqlEvenQuotes String
+SqlQuotesConcat.java:61: error: [assignment] incompatible types in assignment.
+    @SqlEvenQuotes String evenResult2 = even2 + odd2;
+                                              ^
+  found   : @SqlOddQuotes String
+  required: @SqlEvenQuotes String
+SqlQuotesConcat.java:65: error: [compound.assignment] expression type incompatible with left-hand side in compound assignment.
+    even2 += odd2;
+          ^
+  found   : @SqlOddQuotes String
+  required: @SqlEvenQuotes String
+SqlQuotesConcat.java:72: error: [assignment] incompatible types in assignment.
+    @SqlOddQuotes String oddResult1 = even1 + even2;
+                                            ^
+  found   : @SqlEvenQuotes String
+  required: @SqlOddQuotes String
+SqlQuotesConcat.java:80: error: [assignment] incompatible types in assignment.
+    @SqlOddQuotes String oddResult2 = even3 + even4;
+                                            ^
+  found   : @SqlEvenQuotes String
+  required: @SqlOddQuotes String
+SqlQuotesConcat.java:89: error: [assignment] incompatible types in assignment.
+    @SqlOddQuotes String oddResult1 = odd1 + top;
+                                           ^
+  found   : @SqlQuotesUnknown String
+  required: @SqlOddQuotes String
+SqlQuotesConcat.java:91: error: [assignment] incompatible types in assignment.
+    @SqlEvenQuotes String evenResult1 = odd1 + top;
+                                             ^
+  found   : @SqlQuotesUnknown String
+  required: @SqlEvenQuotes String
+SqlQuotesConcat.java:94: error: [assignment] incompatible types in assignment.
+    @SqlOddQuotes String oddResult2 = top + odd1;
+                                          ^
+  found   : @SqlQuotesUnknown String
+  required: @SqlOddQuotes String
+SqlQuotesConcat.java:96: error: [assignment] incompatible types in assignment.
+    @SqlEvenQuotes String evenResult2 = top + odd1;
+                                            ^
+  found   : @SqlQuotesUnknown String
+  required: @SqlEvenQuotes String
+SqlQuotesConcat.java:99: error: [compound.assignment] expression type incompatible with left-hand side in compound assignment.
+    odd1 += top;
+         ^
+  found   : @SqlQuotesUnknown String
+  required: @SqlOddQuotes String
+SqlQuotesConcat.java:104: error: [assignment] incompatible types in assignment.
+    @SqlOddQuotes String oddResult3 = even1 + top;
+                                            ^
+  found   : @SqlQuotesUnknown String
+  required: @SqlOddQuotes String
+SqlQuotesConcat.java:106: error: [assignment] incompatible types in assignment.
+    @SqlEvenQuotes String evenResult3 = even1 + top;
+                                              ^
+  found   : @SqlQuotesUnknown String
+  required: @SqlEvenQuotes String
+SqlQuotesConcat.java:109: error: [assignment] incompatible types in assignment.
+    @SqlOddQuotes String oddResult4 = top + even1;
+                                          ^
+  found   : @SqlQuotesUnknown String
+  required: @SqlOddQuotes String
+SqlQuotesConcat.java:111: error: [assignment] incompatible types in assignment.
+    @SqlEvenQuotes String evenResult4 = top + even1;
+                                            ^
+  found   : @SqlQuotesUnknown String
+  required: @SqlEvenQuotes String
+SqlQuotesConcat.java:114: error: [compound.assignment] expression type incompatible with left-hand side in compound assignment.
+    even1 += top;
+          ^
+  found   : @SqlQuotesUnknown String
+  required: @SqlEvenQuotes String
+SqlQuotesConcat.java:118: error: [assignment] incompatible types in assignment.
+    @SqlOddQuotes String oddResult5 = top + top;
+                                          ^
+  found   : @SqlQuotesUnknown String
+  required: @SqlOddQuotes String
+SqlQuotesConcat.java:120: error: [assignment] incompatible types in assignment.
+    @SqlEvenQuotes String evenResult5 = top + top;
+                                            ^
+  found   : @SqlQuotesUnknown String
+  required: @SqlEvenQuotes String
+SqlQuotesRegex.java:8: error: [assignment] incompatible types in assignment.
+    @SqlOddQuotes String none = "asdf";
+                                ^
+  found   : @SqlEvenQuotes String
+  required: @SqlOddQuotes String
+SqlQuotesRegex.java:11: error: [assignment] incompatible types in assignment.
+    @SqlOddQuotes String two = "'asdf'";
+                               ^
+  found   : @SqlEvenQuotes String
+  required: @SqlOddQuotes String
+SqlQuotesRegex.java:14: error: [assignment] incompatible types in assignment.
+    @SqlOddQuotes String manyEven = "'asdf''asdf'asdf'asdf'''";
+                                    ^
+  found   : @SqlEvenQuotes String
+  required: @SqlOddQuotes String
+SqlQuotesRegex.java:21: error: [assignment] incompatible types in assignment.
+    @SqlEvenQuotes String one = "'asdf";
+                                ^
+  found   : @SqlOddQuotes String
+  required: @SqlEvenQuotes String
+SqlQuotesRegex.java:24: error: [assignment] incompatible types in assignment.
+    @SqlEvenQuotes String three = "asdf'asdf''";
+                                  ^
+  found   : @SqlOddQuotes String
+  required: @SqlEvenQuotes String
+SqlQuotesRegex.java:27: error: [assignment] incompatible types in assignment.
+    @SqlEvenQuotes String manyOdd = "asdf''''asdf'asdf'asdf'asdf";
+                                    ^
+  found   : @SqlOddQuotes String
+  required: @SqlEvenQuotes String
+34 errors

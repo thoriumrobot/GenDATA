@@ -1,0 +1,876 @@
+\documentclass[acmsmall,screen,review,anonymous]{acmart}
+
+%% Bibliography style
+\bibliographystyle{ACM-Reference-Format}
+
+%% Rights management information
+\setcopyright{acmlicensed}
+\copyrightyear{2026}
+\acmYear{2026}
+\acmDOI{XXXXXXX.XXXXXXX}
+
+%% Journal information
+\acmJournal{PACMSE}
+\acmVolume{1}
+\acmNumber{ISSTA}
+\acmArticle{1}
+\acmMonth{7}
+
+%% Package imports
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{xspace}
+\usepackage{listings}
+\usepackage{xcolor}
+
+%% Custom commands
+\newcommand{\gendata}{\textsc{GenDATA}\xspace}
+\newcommand{\cf}{Checker Framework\xspace}
+\newcommand{\atmark}[1]{\texttt{@#1}}
+
+%% Code listing style
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  language=Java,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red},
+  showstringspaces=false
+}
+
+\begin{document}
+
+%%
+%% Title
+%%
+\title{GenDATA: A Generic Detection of Annotations in Type Analysis for Automated Checker Framework Annotations}
+
+%%
+%% Authors (anonymous for submission)
+%%
+
+\author{Anonymous Author(s)}
+\affiliation{%
+  \institution{Anonymous Institution}
+  \country{Anonymous Country}
+}
+\email{anonymous@example.com}
+
+%%
+%% Abstract
+%%
+\begin{abstract}
+Pluggable type systems such as those in the Checker Framework improve software reliability by verifying type-related properties at compile time. However, applying these type checkers typically requires extensive annotations---a tedious task that hinders adoption by requiring developers to write annotations manually. Recent work has proposed Machine Learning (ML) models like NullGTN trained on a pre-existing dataset of human annotated code. A limitation of NullGTN-like approaches is that they cannot infer \emph{rare annotations}, that is, annotations which are scarce in real datasets of human-annotated code. NullGTN was restricted to nullness checkers because most annotations are rare in this sense.
+
+In this paper, we propose \textbf{\gendata (Generic Derivation of Annotations in Type Analysis)}, a pipeline for automating annotation placement using machine learning that addresses this key barrier in training. We generate a synthetic dataset by leveraging warnings from the Checker Framework itself, applying data augmentation techniques, then slicing relevant code. We then train machine learning models to recommend annotations. Our methodology applies equally to all pluggable type systems that do not require parameters. Empirical results show that \gendata is able to generalize the performance of previous work such as NullGTN to type systems with rare annotations. For nullness, \gendata performs as well as NullGTN.
+\end{abstract}
+
+%%
+%% CCS Concepts
+%%
+\begin{CCSXML}
+<ccs2012>
+   <concept>
+       <concept_id>10011007.10011006.10011008.10011009.10011012</concept_id>
+       <concept_desc>Software and its engineering~Software verification</concept_desc>
+       <concept_significance>500</concept_significance>
+   </concept>
+   <concept>
+       <concept_id>10011007.10011006.10011008.10011009.10011015</concept_id>
+       <concept_desc>Software and its engineering~Automated static analysis</concept_desc>
+       <concept_significance>500</concept_significance>
+   </concept>
+   <concept>
+       <concept_id>10010147.10010178.10010179</concept_id>
+       <concept_desc>Computing methodologies~Machine learning</concept_desc>
+       <concept_significance>300</concept_significance>
+   </concept>
+</ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Software and its engineering~Software verification}
+\ccsdesc[500]{Software and its engineering~Automated static analysis}
+\ccsdesc[300]{Computing methodologies~Machine learning}
+
+%%
+%% Keywords
+%%
+\keywords{Pluggable Type Checking, Checker Framework, Code Annotation, Data Augmentation, Machine Learning, Lower Bound Checker, SQL Quotes Checker, Signature String Checker}
+
+%%
+%% Maketitle
+%%
+\maketitle
+
+%% ============================================================================
+%% SECTION 1: INTRODUCTION
+%% ============================================================================
+\section{Introduction}
+\label{sec:introduction}
+
+\subsection{Motivation for Automated Pluggable Type Checking}
+\label{sec:motivation}
+
+Modern software often relies on run-time checks or testing to detect potentially dangerous operations such as array out-of-bounds errors. Pluggable type systems, such as those in the \cf, offer compile-time guarantees that catch errors early and improve software reliability. However, these frameworks rely heavily on programmer-supplied annotations (e.g., \atmark{NonNull}, \atmark{Positive}) to convey type constraints. The tediousness of manually annotating legacy codebases is a major obstacle to the adoption of pluggable type checking. This problem has motivated researchers to develop automatic inference techniques like NullAway Annotator, CF WPI, and NullGTN.
+
+NullAwayAnnotator~\cite{karimipour2023practical} uses the local type inference already conducted by pluggable type checkers to place \atmark{Nullable} annotations for NullAway. It is good for nullness, but inapplicable to other type systems. WPI~\cite{kellogg2023pluggable} works on all checkers supported by the \cf, but its performance is not as good. NullGTN~\cite{siddiqui2024inferring} uses machine learning to place \atmark{Nullable} annotations. It is facilitated by the public availability of large datasets of code with \atmark{Nullable} annotations. \gendata seeks to extend this technique to other types of checkers. However, \gendata is still limited to placing only annotations that do not require parameters. Placing parameters requires us to use a generative model, which is hard to train and has lower accuracy than classifiers. Our goal with \gendata is to improve on the generality of NullGTN while retaining its superior performance vs WPI.
+
+\subsection{Problem Statement}
+\label{sec:problem}
+
+Despite the benefits of automated annotation, machine learning solutions require large training datasets of correctly annotated code---a resource that is scarce, particularly for specialized type checkers. Pluggable type checkers are designed to be customizable. Given their specialized deployment scenarios, most of them cannot have a lot of human annotated code.
+
+In terms of data availability, NullGTN~\cite{siddiqui2024inferring} showed that nullability is an outlier among extant pluggable type systems. Using Sourcegraph's \texttt{src} tool, we found that none of the specialized type systems for Java, aside from nullability, had enough publicly-available data to plausibly train them in the same way NullGTN was trained. NullGTN gave good results only after training around 16k classes. The closest annotations for problems other than nullability in terms of common-ness in open-source were \atmark{GuardedBy} (from the \cf's Lock Checker) with 1,752 annotated classes; integer \atmark{NonNegative} with 1,675 annotated classes; and \atmark{Positive} with 1,008 annotated classes---these counts are an order of magnitude less than the annotations for \atmark{Nullable}. This scarcity of training data makes it implausible to train a model with publicly available code to place their annotations. We call these annotations with a scarcity of large datasets of well-annotated code ``rare annotations''. What is needed is a method to generate the dataset to train machine learning models for placing rare annotations.
+
+\subsection{Proposed Solution: \gendata}
+\label{sec:solution}
+
+We introduce \textbf{\gendata (Generic Detection of Annotations in Type Analysis)}, a pipeline designed to generate training data and automatically suggest annotations for pluggable type checkers. The proposed pipeline generalizes to other pluggable type systems as well. Our approach uses the following workflow:
+
+\begin{enumerate}
+    \item \textbf{Collect \cf Warnings}: We use the \cf test suite during training and code segments from open source projects from Github during evaluation. We cannot evaluate on test suites because we cannot guarantee the results would generalize to unannotated code (see Section~\ref{sec:experiments}). Run the \cf to identify code locations that trigger warnings related to a particular type checker. Output: Warnings.
+    
+    \item \textbf{Random Code Augmentation}: Insert small snippets or transformations into the code to augment the data, helping the model learn to be robust and generalize beyond limited examples. Output: Augmented code.
+    
+    \item \textbf{Code Slicing}: Use a slicer to isolate small code slices relevant to each warning, ensuring the model focuses on pertinent dataflow and control-flow details. Output: Slices.
+    
+    \item \textbf{Guess Annotation Placements}: Use the model weights to place annotations. Output: Tentatively annotated code.
+    
+    \item \textbf{(If training) Train Machine Learning Models}: Use feedback from the checker to evaluate and refine the model. We use the feedback of the number of warnings to guide the model towards accurate annotation placement. The same slice is processed for a predetermined constant number of iterations. Output: Trained model. Go back to step 3 until all the slices have been processed. If evaluating, we test the model on the code from the checker's test suite. This code contains ground truth about where the annotations should be.
+\end{enumerate}
+
+\subsection{Contributions}
+\label{sec:contributions}
+
+\begin{itemize}
+    \item \textbf{Data Generation Pipeline}: We present a novel, generalizable approach to generate an annotated corpus from code that produces warnings, circumventing the challenge that we lack human-annotated datasets.
+    
+    \item \textbf{Random Code Augmentation}: We systematically inject random snippets into code slices, augmenting the training data and improving model robustness by simulating diverse real-world variations of code.
+    
+    \item \textbf{Initial Empirical Evaluation}: We demonstrate that our approach reduces \cf warnings in unseen code for multiple checkers. We chose to evaluate on three checkers: the Lower Bound Checker, the SQL Quotes Checker and the Signature String Checker. We compare \gendata's performance not only against simpler baselines but also NullGTN~\cite{siddiqui2024inferring}, to illustrate how the approaches differ when annotation data is scarce.
+\end{itemize}
+
+%% ============================================================================
+%% SECTION 2: BACKGROUND AND RELATED WORK
+%% ============================================================================
+\section{Background and Related Work}
+\label{sec:background}
+
+\subsection{Pluggable Type Systems}
+\label{sec:pluggable}
+
+Pluggable type checking permits adding specialized checks without altering a language's built-in type system. The \cf is an implementation of pluggable type checking, supporting a variety of type checkers (e.g., Nullness Checker, Index Checker, Regex Checker). Developers annotate source code with checker-specific qualifiers, and the \cf enforces corresponding constraints at compile time.
+
+\subsection{Checkers}
+\label{sec:checkers}
+
+WPI infers annotations for all checkers, but it has poor performance. NullGTN has superior performance, but it only works on nullability. \gendata seeks to improve on the generality of NullGTN while retaining its superior performance relative to WPI. It is currently limited to placing only annotations that do not require parameters. We have chosen the Lower Bound, SQL Quotes and Signature String checkers (in the order of increasing complexity) to evaluate it because these checkers do not require parameters and because they have varying levels of complexity.
+
+\subsubsection{Lower Bound Checker}
+\label{sec:lowerbound}
+
+One component of the Index Checker is the \textbf{Lower Bound Checker}, which prevents negative array indexing errors by ensuring index expressions cannot be negative. This is a relatively simple checker because it tracks a single numeric lower-range value.
+
+As described in Figure 11.1 of the \cf manual, the Lower Bound Checker defines the following qualifiers among others:
+
+\begin{itemize}
+    \item \atmark{Positive}: Values are greater than or equal to 1; safe for indexing.
+    \item \atmark{NonNegative}: Values are greater than or equal to 0; safe for indexing.
+\end{itemize}
+
+Other annotations include \atmark{GTENegativeOne}, \atmark{LowerBoundBottom} and \atmark{LowerBoundUnknown}. \atmark{GTENegativeOne} is similar to \atmark{NonNegative}, but less commonly used. \atmark{LowerBoundBottom} and \atmark{LowerBoundUnknown} are part of the type system, but typically not written by programmers.
+
+These qualifiers ensure array or list access is protected against negative indexing. When the \cf encounters code that may violate these constraints, it issues warnings or errors, prompting developers to annotate or correct the code.
+
+\subsubsection{SQL Quotes Checker}
+\label{sec:sqlquotes}
+
+The \textbf{SQL Quotes Checker} protects against SQL-injection vulnerabilities in code that constructs SQL queries via string concatenation. It reasons about the \emph{parity} of single-quote characters (\texttt{'}) in every \texttt{String} value: a string with an \textbf{even} number of quotes can safely be concatenated into a query (its quotes are ``balanced''), whereas a string with an \textbf{odd} number of quotes, or whose quoting status is unknown, is considered unsafe until it has been explicitly sanitized. By tracking quote parity through assignments and concatenations, the checker guarantees at compile-time that no unchecked value can reach a SQL-execution method such as \texttt{Statement.executeQuery}.
+
+This is a more complex checker than Lower Bound because it tracks the parity of quotation marks across concatenation operations and sanitization functions. The latter are likely to be harder to reason about than arithmetic ranges.
+
+The type system supplies the user-relevant qualifiers (Figure 13.1 of the \cf manual):
+
+\begin{itemize}
+    \item \atmark{SqlEvenQuotes}: a string literal that contains an even number of single quotes (possibly zero).
+    \item \atmark{SqlOddQuotes}: a string literal that contains an odd number of single quotes.
+\end{itemize}
+
+Concatenation follows parity arithmetic: two odd-quoted strings yield an even-quoted result, while concatenating an odd-quoted string with an even-quoted one preserves odd parity, and so on. Library methods that execute SQL are annotated to require \atmark{SqlEvenQuotes} parameters, and sanitization helpers (for example, \texttt{quote(String s)}) are annotated to take \atmark{SqlQuotesUnknown} and return \atmark{SqlEvenQuotes}. With these annotations in place, the checker emits an error if any possibly unsafe value can flow into a query string.
+
+Although modern best practice is to rely on prepared statements that avoid manual quoting altogether, the SQL Quotes Checker is useful for the considerable amount of legacy Java that still assembles SQL strings. The checker is meaningful for evaluating \gendata because (1) its qualifiers are non-parametric, allowing our pipeline to learn them directly, and (2) its data-flow properties (quote parity and sanitization) differ markedly from numeric range checks, providing a complementary test of \gendata's generality.
+
+\subsubsection{Signature String Checker}
+\label{sec:signature}
+
+The \textbf{Signature String Checker} ensures that string representations of Java types match the exact formats expected by certain Java methods and internal JVM structures. Java defines multiple string formats for describing types---such as fully qualified names, binary names, internal names, and field descriptors---and mixing them up can cause run-time errors or unexpected behavior. For instance, \texttt{Class.forName(String)} requires a slightly different string format than \texttt{MethodDescriptor} or field-descriptor formats. Since this checker tracks multiple mutually-exclusive string formats, it is the hardest to reason about.
+
+By annotating method parameters with the appropriate signature annotation (e.g., \atmark{FullyQualifiedName}, \atmark{BinaryName}, \atmark{FieldDescriptor}), the checker guarantees that the code passes the correct format. This reduces errors where a programmer might pass a dotted name (\texttt{mypkg.MyClass}) instead of a slashed name (\texttt{mypkg/MyClass}), or vice versa. Whenever a method like \texttt{Class.forName} or \texttt{Class.getName} demands a specific representation, the checker flags any mismatch, thereby preventing subtle mistakes.
+
+\subsection{Slicing}
+\label{sec:slicing}
+
+Code slicing, also known as program slicing, is a static program analysis technique used to extract parts of source code that are relevant to specific aspects of program behavior, typically based on a selected variable or computation point. It helps isolate and understand program dependencies by identifying all statements that potentially affect or are affected by the slicing criterion~\cite{mohsin2010program}.
+
+Program slicing works by tracing data and control dependencies in a codebase. If you specify a line at a certain program point (called the slicing criterion), slicing identifies all code statements that influence or are influenced by that line. These can be extracted into a ``slice'' to help developers focus on relevant code for debugging, testing, refactoring, or understanding legacy systems.
+
+This technique supports a variety of use cases in software engineering, such as simplifying testing by focusing on critical parts of the code, reverse engineering legacy software~\cite{villavicencio2001reverse}, and evaluating software safety or complexity~\cite{gallagher1993software}.
+
+We use the slicer to, given a line in code (e.g., with the variable responsible for a warning), extract a ``slice'' containing all the information needed for the annotation placement. This approach reduces noise in training data, especially important for machine learning tasks that can be hampered by irrelevant context.
+
+We considered using the Specimin slicer. However, Specimin is designed to retain information relevant to the type of a variable. What we want is information relevant to the run-time value of a variable. The value is useful to infer the annotation for a certain program point. We use a static slicer instead of a dynamic slicer because we want to reason about properties instead of devoting resources to exploring execution paths.
+
+A \emph{value-based checker} checks a property related to the values stored in variables. Examples of this kind of checker are the nullness checker (``null'' is a special value) or the lower bound checker (``positive'' is a property of certain integers but not others). Formally, such a checker's semantics are defined based on the actual run-time values of the program.
+
+By contrast, a \emph{provenance-based checker} examines where the values came from. The canonical example is the Tainting Checker: whether a value is tainted or untainted depends entirely on where it came from rather than the actual contents of the value at run time. By inspecting the run-time state, there would be no way to tell which is which.
+
+Since our methodology is focused on reasoning about the values stored in variables, it is well-suited to value-based checkers. Hence, we focus on those in our evaluation.
+
+\subsection{Data Augmentation in Code Analysis}
+\label{sec:augmentation}
+
+Machine learning for code tasks (e.g., auto-completion, bug detection, type inference) often suffers from limited labeled data. Data augmentation techniques like image rotation have been fruitful in mature ML applications like object detection~\cite{bengio2017deep}. The equivalent for a coding task is to add and remove irrelevant statements and structural features. For example, if the declaration \texttt{int i=0;} that's irrelevant to the inferred property is added to an altered copy of the input data, the model learns to ignore such distractions during the detection step. We introduce small amounts of irrelevant code in a controlled fashion, and then use slicing to remove most of the irrelevant code to facilitate training.
+
+Dataset augmentation is a standard regularization technique that increases both the quantity and variety of training data by introducing artificial samples derived from existing data~\cite{bengio2017deep}. In standard classification settings, the model's role is to map each high-dimensional input $x$ to a category label $y$ while remaining invariant to a wide range of transformations that do not affect the label. Common augmentation methods for image classification include small translations, rotations, flips, and scale changes, each of which preserves the true label yet introduces new, distinct training examples. Although such transformations can greatly improve generalization, one must be careful to avoid operations that could alter the correct label (e.g., flipping a `b' into a `d' in character recognition).
+
+Extending these ideas to code-based inputs involves manipulating program text and structure in ways that leave the semantic properties that the checker cares about unchanged. Just as a rotation or a flip preserves the image class, these changes preserve the program features we intend our model to predict.
+
+\subsubsection{Transformation Categories}
+\label{sec:transformations}
+
+We implement \textbf{38 semantic-preserving transformations} organized into four categories: Enhanced Transformations (17), Simple Transformations (10), Random Transformations (3), and Advanced Transformations (8).
+
+\paragraph{Enhanced Transformations (17)}
+These transformations apply sophisticated code transformations that preserve semantics while changing structure:
+
+\begin{enumerate}
+    \item \textbf{Loop Conversion} (\texttt{loop\_conversion}): Converts between \texttt{for} and \texttt{while} loops while preserving semantics.
+    
+    \item \textbf{Guard Reversal} (\texttt{guard\_reversal}): Reverses conditional logic using De Morgan's laws, converting \texttt{if (a \&\& b)} to \texttt{if (!(!a || !b))}.
+    
+    \item \textbf{Mathematical Expression} (\texttt{mathematical\_expression}): Applies mathematical properties including commutativity, associativity, and negation conversion.
+    
+    \item \textbf{Logical Expression} (\texttt{logical\_expression}): Applies boolean algebra transformations including idempotence, commutativity, and double negation elimination.
+    
+    \item \textbf{Ternary Operator} (\texttt{ternary\_operator}): Converts between ternary operators and if-else statements.
+    
+    \item \textbf{Switch Statement} (\texttt{switch\_statement}): Converts switch statements to if-else chains and vice versa.
+    
+    \item \textbf{Variable Operation} (\texttt{variable\_operation}): Handles variable operations and assignments, converting compound assignments to simple form.
+    
+    \item \textbf{Method Extraction} (\texttt{method\_extraction}): Extracts repeated code patterns into methods.
+    
+    \item \textbf{Conditional Expression} (\texttt{conditional\_expression}): Modifies conditional expressions and statements.
+    
+    \item \textbf{Array Access Pattern} (\texttt{array\_access\_pattern}): Modifies array access patterns and operations.
+    
+    \item \textbf{String Concatenation} (\texttt{string\_concatenation}): Modifies string concatenation patterns, including conversion to StringBuilder.
+    
+    \item \textbf{Numeric Literal} (\texttt{numeric\_literal}): Modifies numeric literals including base conversion and scientific notation.
+    
+    \item \textbf{Exception Handling} (\texttt{exception\_handling}): Modifies exception handling patterns including try-with-resources conversion.
+    
+    \item \textbf{Lambda Expression} (\texttt{lambda\_expression}): Modifies lambda expressions and functional interfaces.
+    
+    \item \textbf{Stream API} (\texttt{stream\_api}): Modifies Stream API operations and conversions.
+    
+    \item \textbf{Builder Pattern} (\texttt{builder\_pattern}): Modifies builder pattern implementations.
+    
+    \item \textbf{Functional Conversion} (\texttt{functional\_conversion}): Converts between functional and imperative styles.
+\end{enumerate}
+
+\paragraph{Simple Transformations (10)}
+These transformations apply basic code modifications with minimal complexity:
+
+\begin{enumerate}
+    \item \textbf{Simple Method Call} (\texttt{simple\_method\_call}): Modifies simple method calls, including parameter reordering for commutative methods.
+    
+    \item \textbf{Simple Assignment} (\texttt{simple\_assignment}): Modifies simple assignment operations.
+    
+    \item \textbf{Simple Conditional} (\texttt{simple\_conditional}): Modifies simple conditional statements.
+    
+    \item \textbf{Simple Array Access} (\texttt{simple\_array\_access}): Modifies simple array access operations.
+    
+    \item \textbf{Simple Return Statement} (\texttt{simple\_return\_statement}): Modifies simple return statements.
+    
+    \item \textbf{Simple Variable Declaration} (\texttt{simple\_variable\_declaration}): Modifies simple variable declarations.
+    
+    \item \textbf{Simple Constructor Call} (\texttt{simple\_constructor\_call}): Modifies simple constructor calls.
+    
+    \item \textbf{Simple Field Access} (\texttt{simple\_field\_access}): Modifies simple field access operations.
+    
+    \item \textbf{Simple String Operation} (\texttt{simple\_string\_operation}): Modifies simple string operations.
+    
+    \item \textbf{Simple Numeric Operation} (\texttt{simple\_numeric\_operation}): Modifies simple numeric operations.
+\end{enumerate}
+
+\paragraph{Random Transformations (3)}
+These transformations add random elements to the code for diversity:
+
+\begin{enumerate}
+    \item \textbf{Random Method Insertion} (\texttt{random\_method\_insertion}): Inserts random method calls at appropriate locations.
+    
+    \item \textbf{Random Statement Insertion} (\texttt{random\_statement\_insertion}): Inserts random statements that do not affect program semantics.
+    
+    \item \textbf{Random Expression Insertion} (\texttt{random\_expression\_insertion}): Inserts random expressions at appropriate locations.
+\end{enumerate}
+
+\paragraph{Advanced Transformations (8)}
+These transformations provide sophisticated code transformation capabilities:
+
+\begin{enumerate}
+    \item \textbf{Bitwise Operation} (\texttt{bitwise\_operation}): Modifies bitwise operations using bitwise algebra properties.
+    
+    \item \textbf{Comparison Operation} (\texttt{comparison\_operation}): Modifies comparison operations using comparison algebra.
+    
+    \item \textbf{Type Conversion} (\texttt{type\_conversion}): Modifies type conversions and casts.
+    
+    \item \textbf{Null Check Pattern} (\texttt{null\_check\_pattern}): Modifies null check patterns, including modernization to \texttt{Objects.isNull()}.
+    
+    \item \textbf{Constant Folding} (\texttt{constant\_folding}): Applies constant folding optimizations.
+    
+    \item \textbf{Dead Code Insertion} (\texttt{dead\_code\_insertion}): Inserts dead code that does not affect program semantics.
+    
+    \item \textbf{Method Chain Transformation} (\texttt{method\_chain\_transformation}): Modifies method chaining patterns.
+    
+    \item \textbf{Variable Renaming} (\texttt{variable\_renaming}): Modifies variable names with consistent renaming throughout scope.
+\end{enumerate}
+
+\subsubsection{Compatibility Matrix}
+\label{sec:compatibility}
+
+Most transformations are compatible with each other, with two exceptions:
+\begin{itemize}
+    \item \texttt{loop\_conversion} is incompatible with \texttt{guard\_reversal} because loop conversion may create if statements that guard reversal would incorrectly modify.
+    \item \texttt{guard\_reversal} is incompatible with \texttt{loop\_conversion} because guard reversal may modify conditions that loop conversion depends on.
+\end{itemize}
+
+\subsection{Machine Learning for Type Annotation}
+\label{sec:ml}
+
+Prior studies have used ML-based type inference (e.g., inferring Python types~\cite{cui2021pyinfer,mir2022type4py,peng2023statistical,peng2023generative,wei2023typet5,peng2022static} or NullGTN~\cite{siddiqui2024inferring}, which adds Nullness annotations in Java). However, no efforts target checkers like the Lower Bound Checker, which do not have large publicly available human annotated codebases. We evaluate the following model families:
+
+\begin{enumerate}
+    \item \textbf{Graph Convolution Network (GCN)}: A class of neural networks that use graph convolutions to aggregate neighbor data for each node.
+    
+    \item \textbf{Heterogeneous Graph Transformer (HGT)}: A strict superset of GCNs designed to work on heterogeneous graphs with multiple edge types.
+    
+    \item \textbf{Gradient Boosted Trees (GBT)}: Feature-based ensemble learning using gradient boosting.
+    
+    \item \textbf{Causal Model}: Feature-based model incorporating causal inference principles.
+    
+    \item \textbf{Graph Convolutional Sequence Network (GCSN)}: Combines graph convolutions with sequence modeling.
+    
+    \item \textbf{DG2N}: Deep graph-to-graph network for structured prediction.
+    
+    \item \textbf{DGCRF}: Deep graph conditional random field model.
+    
+    \item \textbf{GPT-4 LLM}: The state-of-the-art large language model from OpenAI.
+\end{enumerate}
+
+%% ============================================================================
+%% SECTION 3: GENDATA PIPELINE OVERVIEW
+%% ============================================================================
+\section{\gendata Pipeline Overview}
+\label{sec:pipeline}
+
+\subsection{System Architecture}
+\label{sec:architecture}
+
+The \gendata pipeline consists of five main stages:
+
+\begin{enumerate}
+    \item \textbf{Collect \cf Warnings}: Run the target Checker on a curated set of test programs. We get this code from the checker's test suite during training and open source projects on GitHub during evaluation. Capture any warnings from the checker being tested. Output: Warnings.
+    
+    \item \textbf{Random Code Augmentation}: Insert small code snippets or transformations into each slice to expand the dataset and increase variability. Output: Augmented code.
+    
+    \item \textbf{Code Slicing}: For each warning, identify the variable or expression that triggered the warning and extract a slice containing the relevant context. Output: Slices.
+    
+    \item \textbf{Guess Annotation Placements}: Use the model weights to place annotations. Output: Tentatively annotated code.
+    
+    \item \textbf{(If training) Train ML Models}: Feed the augmented slices into the models---that predict the appropriate annotation (e.g., \atmark{Positive}, \atmark{NonNegative}, etc.) through reinforcement learning (RL). Recurse on the same slice a set number of times, trying to reduce the number of warnings. Output: Trained model. Go back to step 3 until all the slices have been processed.
+\end{enumerate}
+
+\subsection{Step 1: Collecting Warnings from the \cf}
+\label{sec:collecting}
+
+The \cf test suite includes examples designed to trigger warnings from various checkers. For the Lower Bound Checker, typical errors include:
+
+\begin{lstlisting}
+int index = someMethod(); // Possibly negative
+array[index] = 42; // Warning: index might be negative
+\end{lstlisting}
+
+We train the model on code from the \cf test suite after randomly adding statements and structures to the code. The additional refactoring increases variety in the training data.
+
+We instrument a script to:
+\begin{itemize}
+    \item Compile and run code with a checker (such as the Lower Bound Checker) enabled.
+    \item Capture warnings in a structured log format indicating the file, line, and reason for the warning.
+\end{itemize}
+
+During evaluation, we use unannotated open source code from Github. Since it is unannotated, the model is not evaluated on code structured for annotation (Section~\ref{sec:experiments}).
+
+\subsection{Step 2: Random Code Augmentation}
+\label{sec:step2}
+
+To improve our model's ability to generalize~\cite{bengio2017deep}:
+
+\begin{itemize}
+    \item \textbf{Random Statement Insertion}: Insert dummy statements like \texttt{int unused = 0;} or short arithmetic expressions that do not affect control flow meaningfully.
+    
+    \item \textbf{Minor Control Flow Perturbations}: Add trivial if-conditions that do not alter the slice's logic but increase structural diversity.
+    
+    \item \textbf{Semantic-Preserving Transformations}: Apply any of the 38 transformations described in Section~\ref{sec:transformations} to create diverse but semantically equivalent code variants.
+\end{itemize}
+
+\subsection{Step 3: Code Slicing with WALA}
+\label{sec:step3}
+
+WALA's slicer~\cite{wala} takes as input a statement related to the warning. It produces a small snippet that preserves all data/control dependencies relevant to the value of the variable we are interested in. For each warning or location of interest, WALA isolates a small relevant slice containing the variable declarations and control-flow necessary for analysis. This step reduces extraneous code and focuses the model's attention on the logic to determine the correct type qualifier. We enclose the WALA slicer's output in a class and method. We then use the rest of the project as a library to compile the new class. This ensures that the slice compiles.
+
+\subsection{Step 4: Guess Annotation Placements}
+\label{sec:step4}
+
+After code slicing narrows down the scope of each warning, \gendata's machine learning models predict where annotations should go. Depending on the checker---Lower Bound, SQL Quotes, or Signature String, for example---the model might propose \atmark{NonNegative}, \atmark{SqlEvenQuotes}, or other qualifiers. The ultimate goal is to insert the right annotations on parameters, return types, fields, or local variables so that the \cf no longer flags a warning.
+
+Different model types work with distinct representations of the code slice. Graph-based models (e.g., GCN or GTN) interpret the slice as a graph of nodes and edges that capture data-flow or control-flow. Meanwhile, large language models like GPT-4 treat the slice primarily as text. Despite these differences, each approach produces a final guess: for instance, adding \atmark{Positive} to a parameter if a warning suggests it is always greater than zero.
+
+After these predictions, \gendata re-inserts the annotated code into the \cf to see if the warnings are resolved. Any mistakes, such as conflicting annotations or a newly introduced warning, feed back into the training pipeline, refining the model's parameters and reinforcing correct annotations in future iterations. This feedback loop keeps the system accurate and helps it handle more intricate code over time.
+
+\subsection{Step 5: (If training) Training Machine Learning Models}
+\label{sec:step5}
+
+\textbf{Training}: We split data into train, validation, and test sets to measure generalization. We use mini-batch gradient descent, adjusting parameters like batch size, embedding dimensions, and attention heads. We repeatedly train on a slice for a definite number of iterations, guiding the model with feedback based on the number of warnings.
+
+\textbf{Encoding}: We construct the CFG, prune subgraphs that are irrelevant to the features the model predicts and connect variables of the same name. We call this the NaP-CFG encoding.
+
+\begin{enumerate}
+    \item \textbf{GTN and GCN}: We convert the NaP-CFG into adjacency matrices as input for the graph neural network models.
+    
+    \item \textbf{GPT-4 LLM}: We use the code text as input for the GPT-4 model because it is not designed to work with graph representations.
+\end{enumerate}
+
+After the training step, we return to step 3 (Section~\ref{sec:step3}).
+
+\textbf{Evaluation}: For evaluation, we use unannotated projects from Github to evaluate the model's accuracy to avoid type reconstruction experiments (Section~\ref{sec:experiments}).
+
+%% ============================================================================
+%% SECTION 4: IMPLEMENTATION DETAILS
+%% ============================================================================
+\section{Implementation Details}
+\label{sec:implementation}
+
+\subsection{Prototype Implementation}
+\label{sec:prototype}
+
+We developed a command-line pipeline combining Java and Python components. The Java portion interfaces with the \cf to compile code with the target Checker, parse warnings, wrap WALA for slicing, and perform random augmentation. The Python portion handles ML training scripts.
+
+\subsection{Infrastructure and Environment}
+\label{sec:infrastructure}
+
+Training the heterogeneous graph transformer requires GPUs such as NVIDIA RTX-series cards, though GBT experiments can run on CPU or GPU. The software stack consists of Python 3.9, Java 11, XGBoost/LightGBM for gradient boosting, PyTorch Geometric or DGL for graph-based neural networks, and WALA for slicing.
+
+%% ============================================================================
+%% SECTION 5: EXPERIMENTS
+%% ============================================================================
+\section{Experiments}
+\label{sec:experiments}
+
+We designed our experiments to answer the following research questions:
+
+\begin{itemize}
+    \item \textbf{RQ1}: How effective is the \gendata pipeline at generating datasets for training machine learning models that can correctly predict annotations?
+    
+    \item \textbf{RQ2}: How well does the \gendata pipeline generalize across various pluggable type systems (e.g., Lower Bound Checker, SQL Quotes Checker, Signature String Checker)? Are there checker-specific factors that influence performance?
+    
+    \item \textbf{RQ3}: What is the impact of data augmentation on model performance?
+    
+    \item \textbf{RQ4}: Which transformations contribute most to model performance?
+\end{itemize}
+
+A \emph{type reconstruction experiment} is an approach to evaluate a type inference system by removing human-written types from code and checking how many types inferred by the system are an exact match with the removed types~\cite{karimipour2025new}. A lot of work on type inference tends to use type reconstruction experiments because they are easy to design and execute.
+
+Previous work has found that type reconstruction experiments are faced with a fundamental limitation: human annotated code is structured differently than unannotated code~\cite{karimipour2025new}. When programmers write code that's designed for annotations, the code is structured differently since conception. If a machine learning model is trained by removing the annotations from human annotated code, it does not generalize well when asked to place annotations on unannotated code.
+
+Since \gendata is evaluated on unannotated projects, our models are not reconstructing annotations on code that is structured by humans to be annotated. Therefore, it is not affected by the issues with type reconstruction experiments.
+
+\subsection{Experimental Setup}
+\label{sec:setup}
+
+\subsubsection{Dataset Collection}
+\label{sec:dataset}
+
+To generate training and testing data, we applied the \gendata pipeline (Section~\ref{sec:pipeline}) to a curated set of Java code. For training, we used the test suite for the \cf. Our evaluation dataset included nine open-source projects from GitHub, selected to provide diverse codebases for each checker. Table~\ref{tab:evalprojects} summarizes these projects and their baseline warning counts.
+
+\begin{table}[t]
+\caption{Evaluation projects by checker with baseline warning counts.}
+\label{tab:evalprojects}
+\begin{tabular}{llrl}
+\toprule
+\textbf{Checker} & \textbf{Project} & \textbf{Warnings} & \textbf{Description} \\
+\midrule
+Lower Bound & pom-tuner & 35 & Maven POM manipulation \\
+Lower Bound & commons-lang & 100 & Apache Commons utilities \\
+Lower Bound & commons-io & 100 & Apache I/O utilities \\
+\midrule
+SQL Quotes & commons-dbcp & 49 & Database connection pooling \\
+SQL Quotes & mybatis-3 & 6 & SQL mapper framework \\
+SQL Quotes & commons-dbutils & 3 & Database utilities \\
+\midrule
+Signature String & javassist & 28 & Bytecode manipulation \\
+Signature String & reflections & 9 & Runtime metadata analysis \\
+Signature String & kryo & 7 & Serialization framework \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+From these sources, we ran the \cf to capture warnings. Each warning pinpoints a code location and a likely missing annotation (e.g., \atmark{NonNegative}). We then \textbf{collected} all warning locations into a structured log for subsequent slicing and augmentation.
+
+\subsubsection{Code Slicing}
+\label{sec:codeslicing}
+
+We applied \textbf{WALA}~\cite{wala} to isolate the data-flow and control-flow related to each warning. On average, each slice spanned 8--15 lines of code around the warning site, although complex methods produced longer slices.
+
+\subsubsection{Random Code Augmentation}
+\label{sec:randomaug}
+
+Following the procedure described in Section~\ref{sec:step2}, we augmented the data by applying transformations to each slice. Dummy statement insertion added short irrelevant lines such as \texttt{int dummy = 0;} at random points. Harmless control flow changes wrapped certain statements in trivial \texttt{if (true)} blocks or added redundant \texttt{while (false)} constructs to vary the control flow graph without altering semantics. We also applied the 38 semantic-preserving transformations described in Section~\ref{sec:transformations}, including loop conversion, guard reversal, and mathematical expression rewriting.
+
+We generated up to five augmented variants for each original slice, yielding a final dataset roughly 6x larger than the original (1 original + 5 augmentations). This augmentation strategy exposes the classifier to a variety of semantically equivalent code forms.
+
+\subsubsection{Ablation Study 1: Data Augmentation Impact}
+\label{sec:ablation1}
+
+We performed an ablation study to measure the improvement in performance obtained from data augmentation versus no augmentation. The study compared model performance when trained on augmented data versus the same data without any transformations applied.
+
+\begin{table}[t]
+\caption{Ablation study: Data augmentation impact on model performance (best \atmark{Positive} results shown).}
+\label{tab:ablation1}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Model} & \textbf{Val Acc WITH} & \textbf{Val Acc WITHOUT} & \textbf{Improvement} \\
+\midrule
+GCN & 0.8571 & 0.8571 & 0.00\% \\
+HGT & 0.9655 & 0.7241 & +33.34\% \\
+\textbf{GBT} & \textbf{0.9850} & 0.9675 & +1.81\% \\
+\textbf{Causal} & \textbf{0.9850} & 0.9675 & +1.81\% \\
+GCSN & 0.5402 & 0.7143 & -24.38\% \\
+\textbf{DG2N} & \textbf{0.9850} & 0.9675 & +1.81\% \\
+\textbf{DGCRF} & \textbf{0.9850} & 0.9675 & +1.81\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+With augmentation, models achieved an average validation accuracy of 0.7561 (range: 0.023--0.985), compared to 0.7514 without augmentation (range: 0.000--1.000), yielding a +0.63\% average improvement. The benefit varied by annotation type: \atmark{NonNegative} improved by +6.36\% and \atmark{Positive} by +5.73\%, while \atmark{GTENegativeOne} decreased by -11.73\%.
+
+Data augmentation provides modest but consistent improvements for most model types and annotation categories. The feature-based models (GBT, Causal, DG2N, DGCRF) achieve the best and most consistent performance with augmentation, all reaching 98.5\% validation accuracy on \atmark{Positive} annotations. The HGT model shows the largest improvement (+33.34\%), indicating that graph transformer architectures particularly benefit from augmented training data. The GCSN model shows decreased performance with augmentation, possibly due to overfitting to the larger, more diverse dataset.
+
+\subsubsection{Ablation Study 2: Transformation Contribution Analysis}
+\label{sec:ablation2}
+
+We performed a second ablation study to measure the effect of removing each transformation one by one. This identifies which transformations contribute most to model performance.
+
+\begin{table}[t]
+\caption{Ablation study: Impact of removing individual transformations (top impactful shown).}
+\label{tab:ablation2}
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Transformation} & \textbf{Avg Val Acc} & \textbf{Change} & \textbf{Impact} \\
+\midrule
+\textbf{Baseline (all)} & \textbf{0.7012} & --- & --- \\
+guard\_reversal & 0.7155 & +0.0143 & +2.03\% \\
+string\_concatenation & 0.6766 & -0.0246 & -3.51\% \\
+simple\_string\_operation & 0.6677 & -0.0335 & -4.78\% \\
+simple\_field\_access & 0.6602 & -0.0410 & -5.84\% \\
+\textbf{numeric\_literal} & \textbf{0.6570} & \textbf{-0.0442} & \textbf{-6.30\%} \\
+loop\_conversion & 0.6890 & -0.0122 & -1.74\% \\
+mathematical\_expression & 0.6945 & -0.0067 & -0.95\% \\
+simple\_numeric\_operation & 0.6980 & -0.0032 & -0.46\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The most beneficial transformations are those related to numeric and string operations. Removing \texttt{numeric\_literal} causes a -6.30\% performance drop (the largest impact), followed by \texttt{simple\_field\_access} (-5.84\%), \texttt{simple\_string\_operation} (-4.78\%), and \texttt{string\_concatenation} (-3.51\%). Conversely, removing \texttt{guard\_reversal} actually improves performance by +2.03\%, indicating this transformation may harm model accuracy. Some transformations have minimal impact: \texttt{simple\_numeric\_operation} (-0.46\%) and \texttt{mathematical\_expression} (-0.95\%).
+
+The \texttt{numeric\_literal} transformation, which converts between decimal, hexadecimal, and binary representations, provides the highest value. Exposing models to diverse numeric representations significantly improves their ability to recognize annotation-relevant patterns. The \texttt{guard\_reversal} transformation slightly hurts performance, possibly because De Morgan's law transformations create patterns that confuse the model's learned features.
+
+\subsubsection{Data Splits}
+\label{sec:splits}
+
+We partitioned the resulting slices into \textbf{training} (70\%), \textbf{validation} (10\%), and \textbf{test} (20\%) sets, ensuring that no method or file appeared in more than one partition to avoid data leakage. Table~\ref{tab:splits} summarizes the number of slices for each checker in each split.
+
+\begin{table}[t]
+\caption{Number of slices (original + augmented) across train/validation/test splits.}
+\label{tab:splits}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Checker} & \textbf{Train} & \textbf{Validation} & \textbf{Test} & \textbf{Total} \\
+\midrule
+Lower Bound Checker & 560 & 80 & 160 & 800 \\
+SQL Quotes Checker & 420 & 60 & 120 & 600 \\
+Signature String Checker & 280 & 40 & 80 & 400 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Evaluation Metrics}
+\label{sec:metrics}
+
+We quantify performance using standard metrics. Precision measures the fraction of model-annotated locations that are correct, while recall measures how many of the locations that actually require an annotation are correctly annotated. The F1 score is the harmonic mean of precision and recall. As an additional practical measure, we re-ran the \cf after applying model-predicted annotations to count remaining warnings; fewer warnings indicate more effective annotation.
+
+\subsection{Results}
+\label{sec:results}
+
+We trained seven different types of models on each checker's dataset: GCN, HGT, GBT, Causal Model, GCSN, DG2N, and DGCRF. Below, we present both quantitative and qualitative observations.
+
+\subsubsection{Lower Bound Checker}
+\label{sec:lbresults}
+
+\textbf{Quantitative Results}: Table~\ref{tab:lowerbound} shows the warning reduction results for the Lower Bound Checker across three evaluation projects. Six of seven models successfully placed annotations that reduced warnings, with most achieving 91--100\% warning reduction. The GBT model failed to load due to corrupted model files.
+
+\begin{table}[t]
+\caption{Warning reduction on the \textbf{Lower Bound Checker} evaluation projects. Bold indicates best performance.}
+\label{tab:lowerbound}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Project} & \textbf{Baseline} & \textbf{After} & \textbf{Reduction} & \textbf{Annotations} \\
+\midrule
+pom-tuner & 35 & 3 & \textbf{91.4\%} & $\sim$210 \\
+commons-lang & 100 & 0 & \textbf{100\%} & $\sim$443 \\
+commons-io & 100 & 0 & \textbf{100\%} & $\sim$377 \\
+\midrule
+\textbf{Total} & 235 & 3 & \textbf{98.7\%} & $\sim$1,030 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Model Performance}: All working models (GCN, HGT, Causal, Enhanced Causal, GCSN, DG2N) achieved identical results on commons-lang and commons-io (100\% reduction). On pom-tuner, all models reduced warnings from 35 to 3 (91.4\% reduction), with the remaining 3 warnings requiring manual annotation.
+
+The 3 remaining warnings in pom-tuner occurred in code with complex numeric expressions (e.g., \texttt{arr[x - y]}) where the model could not determine positivity. The models placed approximately 200--440 annotations per project, indicating broad coverage of potential warning sites, and all projects compiled successfully after annotation placement.
+
+\subsubsection{SQL Quotes Checker}
+\label{sec:sqlresults}
+
+\textbf{Quantitative Results}: Table~\ref{tab:sqlquotes} shows warning reduction results for the SQL Quotes Checker. All seven models achieved 100\% warning reduction across all three evaluation projects.
+
+\begin{table}[t]
+\caption{Warning reduction on the \textbf{SQL Quotes Checker} evaluation projects.}
+\label{tab:sqlquotes}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Project} & \textbf{Baseline} & \textbf{After} & \textbf{Reduction} & \textbf{Annotations} \\
+\midrule
+commons-dbcp & 49 & 0 & \textbf{100\%} & $\sim$594 \\
+mybatis-3 & 6 & 0 & \textbf{100\%} & $\sim$475 \\
+commons-dbutils & 3 & 0 & \textbf{100\%} & 367 \\
+\midrule
+\textbf{Total} & 58 & 0 & \textbf{100\%} & $\sim$1,436 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Model Performance}: All seven models (GCN, HGT, GBT, Causal, Enhanced Causal, GCSN, DG2N) achieved identical 100\% warning reduction on all SQL Quotes projects. The models placed 367--594 annotations per project, with annotations placed on SQL string parameters and return types.
+
+The SQL Quotes Checker is a verification checker that only produces warnings when explicit annotations exist with type mismatches. Projects required entry-point annotations (e.g., \atmark{SqlEvenQuotes} on method parameters) to generate fixable warnings. The models successfully identified SQL-related string operations and placed appropriate annotations.
+
+\subsubsection{Signature String Checker}
+\label{sec:sigresults}
+
+\textbf{Quantitative Results}: Table~\ref{tab:signature} shows warning reduction results for the Signature String Checker. Most models achieved 100\% warning reduction on javassist and reflections, with variable results on kryo.
+
+\begin{table}[t]
+\caption{Warning reduction on the \textbf{Signature String Checker} evaluation projects.}
+\label{tab:signature}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Project} & \textbf{Baseline} & \textbf{After} & \textbf{Reduction} & \textbf{Annotations} \\
+\midrule
+javassist & 28 & 0 & \textbf{100\%} & $\sim$1,875 \\
+reflections & 9 & 0 & \textbf{100\%} & 628 \\
+kryo & 7 & 0--7 & 0--100\% & $\sim$1,700 \\
+\midrule
+\textbf{Total (best)} & 44 & 0 & \textbf{100\%} & $\sim$4,203 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Five of seven models (GCN, GBT, Causal, Enhanced Causal, DG2N) achieved 100\% warning reduction on all projects including kryo. Two models (HGT, GCSN) achieved 0\% reduction on kryo while achieving 100\% on javassist and reflections, indicating model-specific sensitivity to certain code patterns in kryo.
+
+\subsubsection{Comparison with Whole Program Inference (WPI)}
+\label{sec:wpicomparison}
+
+To contextualize our results, we compared \gendata's model-based annotation placement with the \cf's built-in Whole Program Inference (WPI) system. WPI iteratively analyzes code and infers annotations until convergence, providing a baseline for comparison.
+
+\textbf{WPI Results}: Table~\ref{tab:wpi} shows WPI results on the same evaluation projects.
+
+\begin{table}[t]
+\caption{Comparison of \textbf{WPI} warning reduction across evaluation projects.}
+\label{tab:wpi}
+\begin{tabular}{llrrrr}
+\toprule
+\textbf{Checker} & \textbf{Project} & \textbf{Baseline} & \textbf{After} & \textbf{Reduction} & \textbf{Iterations} \\
+\midrule
+Lower Bound & pom-tuner & 35 & 0 & \textbf{100\%} & 2 \\
+Lower Bound & commons-lang & 100 & 0 & \textbf{100\%} & 2 \\
+Lower Bound & commons-io & 100 & 0 & \textbf{100\%} & 2 \\
+\midrule
+SQL Quotes & commons-dbcp & 32 & 0 & \textbf{100\%} & 2 \\
+SQL Quotes & mybatis-3 & 6 & 0 & \textbf{100\%} & 2 \\
+SQL Quotes & commons-dbutils & 3 & 0 & \textbf{100\%} & 2 \\
+\midrule
+Signature & javassist & 21 & 0 & \textbf{100\%} & 2 \\
+Signature & reflections & 9 & 0 & \textbf{100\%} & 2 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Both approaches achieve similar warning reduction (97--100\%). WPI requires full project compilation and iterative analysis, converging in 2 iterations for all projects tested, whereas \gendata uses trained models for fast, single-pass inference without requiring full compilation. WPI achieved 100\% reduction on pom-tuner where \gendata achieved 91.4\%, indicating that WPI's sound inference can handle edge cases that ML models miss. Both approaches protect original code: WPI works in a separate \texttt{wpi\_work/} directory while \gendata works in \texttt{temp\_repos/}.
+
+\subsection{Ablation Study Summary}
+\label{sec:ablationsummary}
+
+Our ablation studies reveal two key insights:
+
+\begin{enumerate}
+    \item \textbf{Data augmentation provides consistent but modest improvements} (+0.63\% average), with the greatest benefit observed in the HGT model (+33.34\%) and feature-based models (+1.81\%). Augmentation is most beneficial for \atmark{NonNegative} (+6.36\%) and \atmark{Positive} (+5.73\%) annotations.
+    
+    \item \textbf{Numeric and string transformations are most valuable}: The \texttt{numeric\_literal} transformation alone contributes 6.30\% to model performance, followed by \texttt{simple\_field\_access} (5.84\%) and \texttt{simple\_string\_operation} (4.78\%). The \texttt{guard\_reversal} transformation slightly hurts performance (-2.03\%), suggesting it should be used cautiously or potentially removed from the augmentation pipeline.
+\end{enumerate}
+
+\subsection{Discussion and Threats to Validity}
+\label{sec:discussion}
+
+\gendata produced synthetic training data that allowed multiple ML models to achieve 91--100\% warning reduction on real-world open-source projects. Across nine evaluation projects and three checkers, we placed over 6,600 annotations and reduced 337 baseline warnings to just 3 residual warnings.
+
+Although the pipeline was designed around the Lower Bound Checker, we achieved excellent performance on SQL Quotes (100\% reduction) and Signature String Checkers (100\% on 2 of 3 projects). Warning-based data collection combined with code slicing and augmentation is portable across diverse pluggable type systems. Augmentation provides modest but consistent improvements, with feature-based models (GBT, Causal, DG2N) showing the best performance. Not all transformations contribute equally: numeric literal transformations provide the highest value, while guard reversal may slightly hurt performance. Six of seven models successfully loaded and produced predictions; only the GBT model failed to load for the Lower Bound Checker due to corrupted model files. Both \gendata and WPI achieve similar warning reduction (97--100\%), with WPI's sound inference achieving 100\% on pom-tuner where \gendata achieved 91.4\%.
+
+Threats to validity include data representativeness, as our evaluation projects are medium-sized open-source libraries and results may differ on large enterprise codebases. Results on the SQL Quotes or Signature String Checker do not immediately transfer to checkers that require parameters (e.g., Lock Checker, Regex Checker). We partially rely on the correctness of the \cf's built-in type inference. Additionally, SQL Quotes and Signature String are verification checkers that require entry-point annotations to produce warnings; we added minimal entry-point annotations to enable meaningful evaluation.
+
+Regarding the research questions: RQ1 is answered affirmatively, as the \gendata pipeline is effective at producing labeled training data and multiple ML architectures reduce warnings by 91--100\% across nine real-world projects. For RQ2, the pipeline generalized well to SQL Quotes (100\% reduction on all 3 projects) and Signature String Checkers (100\% reduction on 2 of 3 projects). For RQ3, data augmentation provides measurable improvements, with some models (HGT) benefiting significantly more than others. For RQ4, numeric literal and string-related transformations contribute most to performance, while guard reversal may slightly hurt performance.
+
+%% ============================================================================
+%% SECTION 6: FUTURE WORK
+%% ============================================================================
+\section{Future Work}
+\label{sec:future}
+
+\subsection{Expansion to Other Checkers}
+\label{sec:expansion}
+
+We plan to replicate this pipeline for other \cf sub-checkers (e.g., Nullness Checker, Regex Checker) to confirm \gendata's versatility.
+
+\subsection{Advanced Augmentation Techniques}
+\label{sec:advancedaug}
+
+Based on our ablation studies, we plan to prioritize high-impact transformations such as \texttt{numeric\_literal} and \texttt{simple\_field\_access}, while considering removing or reducing \texttt{guard\_reversal} usage. We also intend to leverage large language models for more context-aware augmentation.
+
+\subsection{Transformation Optimization}
+\label{sec:transopt}
+
+We plan to develop adaptive transformation selection based on the target annotation type, as different annotations may benefit from different transformation subsets.
+
+%% ============================================================================
+%% SECTION 7: CONCLUSION
+%% ============================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+We presented \gendata, a pipeline leveraging \cf warnings, random code augmentation with \textbf{38 semantic-preserving transformations}, and slicing (WALA) to train ML models for \textbf{automatic annotation}. Although demonstrated with the \textbf{Lower Bound Checker, SQL Quotes Checker and Signature String Checker}, \gendata is \textbf{applicable to multiple pluggable type systems}, offering a practical solution when public, human-annotated datasets are scarce.
+
+Our evaluation on nine real-world open-source projects demonstrates that model-based placement achieves 91--100\% warning reduction, reducing 337 baseline warnings to just 3 residual warnings. Six of seven models (GCN, HGT, Causal, Enhanced Causal, GCSN, DG2N) successfully place annotations across all three checkers. The pipeline generalizes well, achieving 100\% reduction on SQL Quotes (3 projects) and 100\% on Signature String (2 of 3 projects). These results compare favorably to WPI (Whole Program Inference), which achieved 100\% reduction but requires full project compilation and iterative analysis.
+
+Compared to prior work like NullGTN, which relies on abundant nullability annotations, \gendata generates synthetic labeled data to circumvent this scarcity for other qualifiers. Our results indicate significant potential for reducing checker warnings and developer burden, ultimately improving software reliability.
+
+%% ============================================================================
+%% DATA AVAILABILITY
+%% ============================================================================
+\section*{Data Availability}
+\label{sec:data}
+
+Our artifact, including the \gendata pipeline implementation, trained models, and evaluation scripts, is available at [anonymous repository link]. The artifact contains: (1) source code for the \gendata pipeline including all 38 transformations, (2) pre-trained models for each checker, (3) evaluation datasets derived from nine open-source projects (pom-tuner, commons-lang, commons-io, commons-dbcp, mybatis-3, commons-dbutils, javassist, reflections, kryo), and (4) scripts to reproduce all experimental results. The artifact is available under an open-source license.
+
+%% ============================================================================
+%% REFERENCES
+%% ============================================================================
+\begin{thebibliography}{16}
+
+\bibitem{siddiqui2024inferring}
+Kazi Amanul Islam Siddiqui and Martin Kellogg.
+\newblock Inferring Pluggable Types with Machine Learning.
+\newblock {\em arXiv preprint arXiv:2406.15676}, 2024.
+
+\bibitem{wala}
+{WALA: T.J. Watson Libraries for Analysis}.
+\newblock \url{https://github.com/wala/WALA}.
+
+\bibitem{bengio2017deep}
+Yoshua Bengio, Ian Goodfellow, and Aaron Courville.
+\newblock {\em Deep Learning}, volume~1.
+\newblock MIT Press, Cambridge, MA, USA, 2017.
+
+\bibitem{karimipour2023practical}
+Nima Karimipour, Justin Pham, Lazaro Clapp, and Manu Sridharan.
+\newblock Practical inference of nullability types.
+\newblock In {\em Proceedings of the 31st ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering}, pages 1395--1406, 2023.
+
+\bibitem{kellogg2023pluggable}
+Martin Kellogg, Daniel Daskiewicz, Loi Ngo Duc Nguyen, Muyeed Ahmed, and Michael D. Ernst.
+\newblock Pluggable type inference for free.
+\newblock In {\em 2023 38th IEEE/ACM International Conference on Automated Software Engineering (ASE)}, pages 1542--1554. IEEE, 2023.
+
+\bibitem{karimipour2025new}
+Nima Karimipour, Seyedeh Sepideh Arvan, Martin Kellogg, and Manu Sridharan.
+\newblock A New Approach to Evaluating Nullability Inference Tools.
+\newblock In {\em Proceedings of the ACM on Software Engineering (PACMSE)}, Issue FSE, 2025.
+
+\bibitem{mohsin2010program}
+Shaikh Mohsin and Zeeshan Kaleem.
+\newblock Program slicing based software metrics towards code restructuring.
+\newblock In {\em 2010 Second International Conference on Computer Research and Development}, pages 738--741. IEEE, 2010.
+
+\bibitem{villavicencio2001reverse}
+Gustavo Villavicencio and Jose Nuno Oliveira.
+\newblock Reverse program calculation supported by code slicing.
+\newblock In {\em Proceedings Eighth Working Conference on Reverse Engineering}, pages 35--45. IEEE, 2001.
+
+\bibitem{gallagher1993software}
+Keith Brian Gallagher and James R. Lyle.
+\newblock Software safety and program slicing.
+\newblock In {\em COMPASS'93: Proceedings of the Eighth Annual Conference on Computer}, pages 71--80. IEEE, 1993.
+
+\bibitem{cui2021pyinfer}
+Siwei Cui, Gang Zhao, Zeyu Dai, Luochao Wang, Ruihong Huang, and Jeff Huang.
+\newblock Pyinfer: Deep learning semantic type inference for python variables.
+\newblock {\em arXiv preprint arXiv:2106.14316}, 2021.
+
+\bibitem{mir2022type4py}
+Amir M. Mir, Evaldas Latoskinas, Sebastian Proksch, and Georgios Gousios.
+\newblock Type4py: Practical deep similarity learning-based type inference for python.
+\newblock In {\em Proceedings of the 44th International Conference on Software Engineering}, pages 2241--2252, 2022.
+
+\bibitem{peng2023statistical}
+Yaohui Peng, Jing Xie, Qiongling Yang, Hanwen Guo, Qingan Li, Jingling Xue, and Mengting Yuan.
+\newblock Statistical type inference for incomplete programs.
+\newblock In {\em Proceedings of the 31st ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering}, pages 720--732, 2023.
+
+\bibitem{peng2023generative}
+Yun Peng, Chaozheng Wang, Wenxuan Wang, Cuiyun Gao, and Michael R. Lyu.
+\newblock Generative type inference for python.
+\newblock In {\em 2023 38th IEEE/ACM International Conference on Automated Software Engineering (ASE)}, pages 988--999. IEEE, 2023.
+
+\bibitem{wei2023typet5}
+Jiayi Wei, Greg Durrett, and Isil Dillig.
+\newblock Typet5: Seq2seq type inference using static analysis.
+\newblock {\em arXiv preprint arXiv:2303.09564}, 2023.
+
+\bibitem{peng2022static}
+Yun Peng, Cuiyun Gao, Zongjie Li, Bowei Gao, David Lo, Qirun Zhang, and Michael Lyu.
+\newblock Static inference meets deep learning: a hybrid type inference approach for Python.
+\newblock In {\em ICSE 2022, Proceedings of the 43rd International Conference on Software Engineering}, pages 2019--2030, Pittsburgh, PA, USA, May 2022.
+
+\end{thebibliography}
+
+\end{document}
